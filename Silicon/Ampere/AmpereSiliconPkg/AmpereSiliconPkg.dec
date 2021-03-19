@@ -1,0 +1,46 @@
+## @file
+#
+# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001B
+  PACKAGE_NAME                   = AmpereSiliconPkg
+  PACKAGE_GUID                   = F9EB69A8-7569-4C0E-87D1-3CC9EB7CBF09
+  PACKAGE_VERSION                = 0.1
+
+################################################################################
+#
+# Include Section - list of Include Paths that are provided by this package.
+#                   Comments are used for Keywords and Module Types.
+#
+# Supported Module Types:
+#  BASE SEC PEI_CORE PEIM DXE_CORE DXE_DRIVER DXE_RUNTIME_DRIVER DXE_SMM_DRIVER DXE_SAL_DRIVER UEFI_DRIVER UEFI_APPLICATION
+#
+################################################################################
+[Includes.common]
+
+[LibraryClasses]
+
+[Guids]
+  gAmpereTokenSpaceGuid = { 0xdbd4436e, 0x89cb, 0x44dc, { 0xb5, 0xc0, 0x49, 0xc3, 0x91, 0x35, 0xbf, 0xdf } }
+
+[Ppis]
+
+[PcdsFixedAtBuild]
+  #
+  # SMpro PMpro Pcds
+  #
+  gAmpereTokenSpaceGuid.PcdSmproDbBaseReg|0x100000540000|UINT64|0x00000001
+  gAmpereTokenSpaceGuid.PcdSmproEfuseShadow0|0x10000054a000|UINT64|0x00000002
+  gAmpereTokenSpaceGuid.PcdSmproNsMailboxIndex|0x1|UINT32|0x00000003
+  gAmpereTokenSpaceGuid.PcdPmproDbBaseReg|0x100001540000|UINT64|0x00000004
+
+[PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
+  #
+  # Firmware Volume Pcds
+  #
+  gAmpereTokenSpaceGuid.PcdFvBlockSize|0|UINT32|0xB0000001

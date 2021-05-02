@@ -28,6 +28,9 @@
   ##  @libraryclass  Defines a set of methods to communicate with SCP.
   SystemFirmwareInterfaceLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/SystemFirmwareInterfaceLib.h
 
+  ##  @libraryclass  Defines a set of methods to read/write to I2C devices.
+  I2cLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/I2cLib.h
+
   ##  @libraryclass  Defines a set of methods to communicate with secure parition over MM interface.
   MmCommunicationLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/MmCommunicationLib.h
 

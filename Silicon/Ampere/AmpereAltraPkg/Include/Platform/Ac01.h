@@ -59,4 +59,14 @@
 //
 #define SLAVE_PRESENT_N                   BIT1
 
+//
+// The maximum number of I2C bus
+//
+#define AC01_I2C_MAX_BUS_NUM              2
+
+//
+// The base address of DW I2C
+//
+#define AC01_I2C_BASE_ADDRESS_LIST        0x1000026B0000ULL, 0x100002750000ULL
+
 #endif /* PLATFORM_AC01_H_ */

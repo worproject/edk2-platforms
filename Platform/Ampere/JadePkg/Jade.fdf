@@ -298,6 +298,11 @@ APRIORI DXE {
   INF Platform/Ampere/JadePkg/Drivers/PciPlatformDxe/PciPlatformDxe.inf
 
   #
+  # VGA Aspeed
+  #
+  INF Drivers/ASpeed/ASpeedGopBinPkg/ASpeedAst2500GopDxe.inf
+
+  #
   # UEFI application (Shell Embedded Boot Loader)
   #
   INF ShellPkg/Application/Shell/Shell.inf

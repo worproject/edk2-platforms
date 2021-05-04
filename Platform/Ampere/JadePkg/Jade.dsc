@@ -77,12 +77,22 @@
   #
   RealTimeClockLib|Platform/Ampere/JadePkg/Library/PCF85063RealTimeClockLib/PCF85063RealTimeClockLib.inf
 
+  #
+  # ACPI Libraries
+  #
+  AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
+
 ################################################################################
 #
 # Specific Platform Pcds
 #
 ################################################################################
 [PcdsFeatureFlag.common]
+  #
+  # Activate AcpiSdtProtocol
+  #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
+
 [PcdsFixedAtBuild.common]
   #
   # Platform config UUID
@@ -104,3 +114,13 @@
 #
 ################################################################################
 [Components.common]
+  #
+  # ACPI
+  #
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf {
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2B
+  }
+  Platform/Ampere/JadePkg/Drivers/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  Silicon/Ampere/AmpereAltraPkg/AcpiCommonTables/AcpiCommonTables.inf
+  Platform/Ampere/JadePkg/AcpiTables/AcpiTables.inf

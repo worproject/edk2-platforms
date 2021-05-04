@@ -22,11 +22,30 @@
 #
 ################################################################################
 [Includes.common]
+  Include                        # Root include for the package
 
 [LibraryClasses]
 
 [Guids]
   gAmpereTokenSpaceGuid = { 0xdbd4436e, 0x89cb, 0x44dc, { 0xb5, 0xc0, 0x49, 0xc3, 0x91, 0x35, 0xbf, 0xdf } }
+
+  #
+  # Platform Manager formset UUID
+  #
+  ## Include/Guid/PlatformManagerHii.h
+  gPlatformManagerFormsetGuid  = { 0x83ABD546, 0x7AD9, 0x4DE7, { 0xBD, 0x52, 0x12, 0x23, 0xF6, 0xE8, 0xFD, 0x4B } }
+
+  #
+  # Platform Manager entry UUID
+  #
+  ## Include/Guid/PlatformManagerHii.h
+  gPlatformManagerEntryEventGuid = { 0x28A4731E, 0x14A9, 0x488A, { 0xA8, 0x19, 0xFF, 0x27, 0x80, 0x6E, 0xDB, 0x0E } }
+
+  #
+  # Platform Manager exit UUID
+  #
+  ## Include/Guid/PlatformManagerHii.h
+  gPlatformManagerExitEventGuid  = { 0xE8887242, 0x4EFF, 0x4323, { 0x81, 0xF4, 0xC9, 0x5F, 0xD5, 0x8D, 0x80, 0xD5 } }
 
 [Ppis]
 

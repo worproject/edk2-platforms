@@ -167,6 +167,8 @@ APRIORI PEI {
   #
   # Print platform information before passing control into the Driver Execution Environment (DXE) phase
   #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/DebugInfoPei/DebugInfoPei.inf
+
   INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
 
   FILE FV_IMAGE = 9E21FD93-9C72-4c15-8C4B-E77F1DB2D792 {

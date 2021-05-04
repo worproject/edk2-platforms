@@ -348,4 +348,9 @@ APRIORI DXE {
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF Platform/Ampere/JadePkg/Drivers/SmbiosMemInfoDxe/SmbiosMemInfoDxe.inf
 
+  #
+  # HII
+  #
+  INF Silicon/Ampere/AmpereAltraPkg/Drivers/RootComplexConfigDxe/RootComplexConfigDxe.inf
+
 !include Silicon/Ampere/AmpereSiliconPkg/FvRules.fdf.inc

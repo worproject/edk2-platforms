@@ -523,8 +523,10 @@
   ArmPlatformPkg/PlatformPei/PlatformPeim.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
+  Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf
   UefiCpuPkg/CpuIoPei/CpuIoPei.inf
+  MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf
   MdeModulePkg/Universal/Variable/Pei/VariablePei.inf
   MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf {
     <LibraryClasses>
@@ -578,9 +580,9 @@
   #
   # Environment Variables Protocol
   #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/FlashFvbDxe/FlashFvbDxe.inf
+  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf {
-    <PcdsFixedAtBuild>
-      gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
     <LibraryClasses>
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
       TpmMeasurementLib|MdeModulePkg/Library/TpmMeasurementLibNull/TpmMeasurementLibNull.inf

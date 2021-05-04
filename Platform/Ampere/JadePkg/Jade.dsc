@@ -87,6 +87,8 @@
   #
   BoardPcieLib|Platform/Ampere/JadePkg/Library/BoardPcieLib/BoardPcieLib.inf
 
+  OemMiscLib|Platform/Ampere/JadePkg/Library/OemMiscLib/OemMiscLib.inf
+
 ################################################################################
 #
 # Specific Platform Pcds
@@ -98,11 +100,33 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
+[PcdsFixedAtBuild]
+!ifdef $(FIRMWARE_VER)
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
+!endif
+
 [PcdsFixedAtBuild.common]
   #
   # Platform config UUID
   #
   gAmpereTokenSpaceGuid.PcdPlatformConfigUuid|"$(PLATFORM_CONFIG_UUID)"
+
+  #
+  # SMBIOS PCDs
+  #
+  gArmTokenSpaceGuid.PcdProcessorManufacturer|L"Ampere(R)"
+  gArmTokenSpaceGuid.PcdProcessorVersion|L"Ampere(R) Altra(R) Processor"
+
+  gAmpereTokenSpaceGuid.PcdSmbiosTables1MajorVersion|$(MAJOR_VER)
+  gAmpereTokenSpaceGuid.PcdSmbiosTables1MinorVersion|$(MINOR_VER)
+
+  # Clearing BIT0 in this PCD prevents installing a 32-bit SMBIOS entry point,
+  # if the entry point version is >= 3.0. AARCH64 OSes cannot assume the
+  # presence of the 32-bit entry point anyway (because many AARCH64 systems
+  # don't have 32-bit addressable physical RAM), and the additional allocations
+  # below 4 GB needlessly fragment the memory map. So expose the 64-bit entry
+  # point only, for entry point versions >= 3.0.
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
 
 !if $(SECURE_BOOT_ENABLE) == TRUE
   # Override the default values from SecurityPkg to ensure images
@@ -112,6 +136,9 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdRemovableMediaImageVerificationPolicy|0x04
 !endif
 
+[PcdsDynamicDefault.common.DEFAULT]
+  # SMBIOS Type 0 - BIOS Information
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0BiosReleaseDate|"MM/DD/YYYY"
 
 [PcdsPatchableInModule]
   #
@@ -146,3 +173,11 @@
   # VGA Aspeed
   #
   Drivers/ASpeed/ASpeedGopBinPkg/ASpeedAst2500GopDxe.inf
+
+  #
+  # SMBIOS
+  #
+  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  Platform/Ampere/JadePkg/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
+  Platform/Ampere/JadePkg/Drivers/SmbiosMemInfoDxe/SmbiosMemInfoDxe.inf

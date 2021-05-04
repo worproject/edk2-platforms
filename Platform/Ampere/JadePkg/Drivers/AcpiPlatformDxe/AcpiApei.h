@@ -9,7 +9,9 @@
 #ifndef ACPI_APEI_H_
 #define ACPI_APEI_H_
 
+#include <AcpiConfigNVDataStruct.h>
 #include <Base.h>
+#include <Guid/AcpiConfigHii.h>
 #include <IndustryStandard/Acpi63.h>
 #include <Library/AcpiLib.h>
 #include <Library/AmpereCpuLib.h>

@@ -685,6 +685,11 @@
   MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
 
   #
+  # Random Number Generator Support
+  #
+  Silicon/Ampere/AmpereAltraPkg/Drivers/RngDxe/RngDxe.inf
+
+  #
   # Bds
   #
   MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf

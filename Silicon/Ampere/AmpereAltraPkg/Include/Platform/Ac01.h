@@ -69,4 +69,24 @@
 //
 #define AC01_I2C_BASE_ADDRESS_LIST        0x1000026B0000ULL, 0x100002750000ULL
 
+//
+// The Array of Soc Gpio Base Address
+//
+#define AC01_GPIO_BASE_ADDRESS_LIST       0x1000026f0000, 0x1000026e0000, 0x1000027b0000, 0x1000026d0000, 0x5000026f0000, 0x5000026e0000, 0x5000027b0000, 0x5000026d0000
+
+//
+// The Array of Soc Gpi Base Address
+//
+#define AC01_GPI_BASE_ADDRESS_LIST        0x1000026d0000, 0x5000026d0000
+
+//
+// Number of Pins Per Each Contoller
+//
+#define AC01_GPIO_PINS_PER_CONTROLLER     8
+
+//
+// Number of Pins Each Socket
+//
+#define AC01_GPIO_PINS_PER_SOCKET         32
+
 #endif /* PLATFORM_AC01_H_ */

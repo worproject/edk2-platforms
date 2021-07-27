@@ -226,6 +226,7 @@
   PerformanceLib|MdeModulePkg/Library/DxePerformanceLib/DxePerformanceLib.inf
   MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
   PciHostBridgeLib|Silicon/Ampere/AmpereAltraPkg/Library/PciHostBridgeLib/PciHostBridgeLib.inf
+  PciSegmentLib|Silicon/Ampere/AmpereAltraPkg/Library/PciSegmentLibPci/PciSegmentLibPci.inf
 
 [LibraryClasses.common.UEFI_APPLICATION]
   UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiTianoCustomDecompressLib.inf

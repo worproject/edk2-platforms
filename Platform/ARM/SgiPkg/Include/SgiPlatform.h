@@ -83,7 +83,8 @@ typedef enum {
   RdV1,
   RdV1Mc,
   RdN2,
-  RdN2Cfg1
+  RdN2Cfg1,
+  RdN2Cfg2,
 } ARM_RD_PRODUCT_ID;
 
 // Arm ProductId look-up table

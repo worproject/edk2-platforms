@@ -617,6 +617,7 @@ BootDiscoveryPolicyHandler (
 {
   EFI_STATUS                       Status;
   UINT32                           DiscoveryPolicy;
+  UINT32                           DiscoveryPolicyOld;
   UINTN                            Size;
   EFI_BOOT_MANAGER_POLICY_PROTOCOL *BMPolicy;
   EFI_GUID                         *Class;
@@ -678,7 +679,28 @@ BootDiscoveryPolicyHandler (
     return Status;
   }
 
-  EfiBootManagerRefreshAllBootOption();
+  //
+  // Refresh Boot Options if Boot Discovery Policy has been changed
+  //
+  Size = sizeof (DiscoveryPolicyOld);
+  Status = gRT->GetVariable (
+                  BOOT_DISCOVERY_POLICY_OLD_VAR,
+                  &gBootDiscoveryPolicyMgrFormsetGuid,
+                  NULL,
+                  &Size,
+                  &DiscoveryPolicyOld
+                  );
+  if ((Status == EFI_NOT_FOUND) || (DiscoveryPolicyOld != DiscoveryPolicy)) {
+    EfiBootManagerRefreshAllBootOption();
+
+    Status = gRT->SetVariable (
+                    BOOT_DISCOVERY_POLICY_OLD_VAR,
+                    &gBootDiscoveryPolicyMgrFormsetGuid,
+                    EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS,
+                    sizeof (DiscoveryPolicyOld),
+                    &DiscoveryPolicy
+                    );
+  }
 
   return EFI_SUCCESS;
 }

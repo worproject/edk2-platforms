@@ -5,7 +5,7 @@
   Reference Design platforms. Type 1 table defines attributes of the
   overall system such as manufacturer, product name, UUID etc.
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.
+  Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
@@ -32,7 +32,8 @@
   "RdV1\0"                                              \
   "RdV1Mc\0"                                            \
   "RdN2\0"                                              \
-  "RdN2Cfg1\0"
+  "RdN2Cfg1\0"                                          \
+  "RdN2Cfg2\0"
 
 typedef enum {
   ManufacturerName = 1,
@@ -68,6 +69,8 @@ STATIC GUID mSmbiosUid[] = {
   {0xf2cded73, 0x37f9, 0x4ec9, {0xd9, 0xf9, 0x89, 0x9b, 0x74, 0x91, 0x20, 0x49}},
   /* Rd-N2-Cfg1    */
   {0xa4941d3d, 0xfac3, 0x4ace, {0x9a, 0x7e, 0xce, 0x26, 0x76, 0x64, 0x5e, 0xda}},
+  /* Rd-N2-Cfg2    */
+  {0xd2946d07, 0x8057, 0x4c26, {0xbf, 0x53, 0x78, 0xa6, 0x5b, 0xe1, 0xc1, 0x60}},
 };
 
 /* System information */

@@ -6,7 +6,7 @@
   family, processor id, maximum operating frequency, and other information
   related to the processor.
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.
+  Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   @par Specification Reference:
@@ -27,7 +27,7 @@
 #define SOCKET_TYPE_BASE        3
 #define SOCKET_TYPE_NUM         1
 #define PROCESSOR_VERSION_BASE  (SOCKET_TYPE_BASE + SOCKET_TYPE_NUM)
-#define PROCESSOR_VERSION_NUM   9
+#define PROCESSOR_VERSION_NUM   10
 #define SERIAL_NUMBER_BASE      (PROCESSOR_VERSION_BASE + PROCESSOR_VERSION_NUM)
 #define TYPE4_STRINGS                                   \
   "0x000\0"                     /* Part Number */       \
@@ -42,6 +42,7 @@
   "Neoverse-V1\0"                                       \
   "Neoverse-N2\0"                                       \
   "Neoverse-N2\0"                                       \
+  "Neoverse-N2\0"                                       \
   "000-0\0"                     /* Serial number */     \
   "783-3\0"                                             \
   "786-1\0"                                             \
@@ -50,7 +51,8 @@
   "78A-1\0"                                             \
   "78A-2\0"                                             \
   "7B7-1\0"                                             \
-  "7B6-1\0"
+  "7B6-1\0"                                             \
+  "7B7-1\0"
 
 typedef enum {
   PartNumber = 1,
@@ -187,6 +189,13 @@ InstallType4ProcessorInformation (
     mArmRdSmbiosType4.Base.CoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
     mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
+    break;
+  case RdN2Cfg2:
+    mArmRdSmbiosType4.Base.CoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
+    mArmRdSmbiosType4.Base.EnabledCoreCount = CoreCount * FixedPcdGet32 (PcdChipCount);
+    mArmRdSmbiosType4.Base.ThreadCount = CoreCount * FixedPcdGet32 (PcdChipCount);
+    mArmRdSmbiosType4.Base.MaxSpeed = 3200;      // Frequency in MHz
+    mArmRdSmbiosType4.Base.CurrentSpeed = 3200;  // Frequency in MHz
     break;
   case RdE1Edge:
     mArmRdSmbiosType4.Base.CoreCount = CoreCount / NEOVERSE_E1_THREADS_PER_CORE;

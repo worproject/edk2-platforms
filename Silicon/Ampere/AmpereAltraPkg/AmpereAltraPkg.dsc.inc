@@ -534,6 +534,7 @@
   Silicon/Ampere/AmpereAltraPkg/Drivers/ATFHobPei/ATFHobPeim.inf
   ArmPlatformPkg/MemoryInitPei/MemoryInitPeim.inf
   Silicon/Ampere/AmpereAltraPkg/Drivers/FlashPei/FlashPei.inf
+  Silicon/Ampere/AmpereAltraPkg/Drivers/PcieInitPei/PcieInitPei.inf
   ArmPkg/Drivers/CpuPei/CpuPei.inf
   UefiCpuPkg/CpuIoPei/CpuIoPei.inf
   MdeModulePkg/Universal/FaultTolerantWritePei/FaultTolerantWritePei.inf

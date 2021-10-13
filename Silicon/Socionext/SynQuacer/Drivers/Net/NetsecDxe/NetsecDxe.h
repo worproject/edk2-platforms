@@ -27,6 +27,7 @@
 #include "netsec_for_uefi/pfdep.h"
 
 extern EFI_COMPONENT_NAME2_PROTOCOL gNetsecDriverComponentName2;
+extern EFI_DRIVER_BINDING_PROTOCOL  gNetsecDriverBinding;
 
 /*--------------- Simple Network Driver entry point functions ----------------*/
 

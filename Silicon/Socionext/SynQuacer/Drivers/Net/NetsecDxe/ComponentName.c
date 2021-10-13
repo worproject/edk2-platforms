@@ -159,6 +159,19 @@ NetsecGetControllerName (
   OUT CHAR16                                          **ControllerName
   )
 {
+  EFI_STATUS  Status;
+
+  if (!ControllerHandle) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = EfiTestManagedDevice (ControllerHandle,
+                                 gNetsecDriverBinding.DriverBindingHandle,
+                                 &gEdkiiNonDiscoverableDeviceProtocolGuid);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
   if (ChildHandle != NULL) {
     return EFI_UNSUPPORTED;
   }

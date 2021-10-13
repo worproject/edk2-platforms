@@ -131,7 +131,6 @@ NetsecDriverBindingStop (
 }
 
 
-STATIC
 EFI_DRIVER_BINDING_PROTOCOL  gNetsecDriverBinding = {
   NetsecDriverBindingSupported,
   NetsecDriverBindingStart,

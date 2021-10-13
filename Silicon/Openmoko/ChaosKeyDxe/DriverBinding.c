@@ -146,7 +146,6 @@ UsbHwrngDriverBindingStop (
 }
 
 
-STATIC
 EFI_DRIVER_BINDING_PROTOCOL  gUsbDriverBinding = {
   UsbHwrngDriverBindingSupported,
   UsbHwrngDriverBindingStart,

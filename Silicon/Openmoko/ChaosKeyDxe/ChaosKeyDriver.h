@@ -38,6 +38,7 @@ typedef struct {
   CR(a, CHAOSKEY_DEV, Rng, CHAOSKEY_DEV_SIGNATURE)
 
 extern EFI_COMPONENT_NAME2_PROTOCOL gChaosKeyDriverComponentName2;
+extern EFI_DRIVER_BINDING_PROTOCOL  gUsbDriverBinding;
 
 EFI_STATUS
 ChaosKeyInit (

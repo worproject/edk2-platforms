@@ -59,6 +59,7 @@ typedef struct {
 #define ATSHA204A_OPCODE_RANDOM   0x1b
 
 extern EFI_COMPONENT_NAME2_PROTOCOL gAtSha204aDriverComponentName2;
+extern EFI_DRIVER_BINDING_PROTOCOL  gI2cHwrngDriverBinding;
 
 EFI_STATUS
 AtSha204aInit (

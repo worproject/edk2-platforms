@@ -132,7 +132,6 @@ I2cHwrngDriverBindingStop (
 }
 
 
-STATIC
 EFI_DRIVER_BINDING_PROTOCOL  gI2cHwrngDriverBinding = {
   I2cHwrngDriverBindingSupported,
   I2cHwrngDriverBindingStart,

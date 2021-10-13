@@ -129,7 +129,7 @@ SynQuacerI2cDriverBindingStop (
 }
 
 
-STATIC EFI_DRIVER_BINDING_PROTOCOL  gSynQuacerI2cDriverBinding = {
+EFI_DRIVER_BINDING_PROTOCOL  gSynQuacerI2cDriverBinding = {
   SynQuacerI2cDriverBindingSupported,
   SynQuacerI2cDriverBindingStart,
   SynQuacerI2cDriverBindingStop,

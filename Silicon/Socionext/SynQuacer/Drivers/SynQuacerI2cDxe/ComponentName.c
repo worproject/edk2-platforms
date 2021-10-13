@@ -158,6 +158,19 @@ SynQuacerI2cGetControllerName (
   OUT CHAR16                                          **ControllerName
   )
 {
+  EFI_STATUS  Status;
+
+  if (!ControllerHandle) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = EfiTestManagedDevice (ControllerHandle,
+                                 gSynQuacerI2cDriverBinding.DriverBindingHandle,
+                                 &gEdkiiNonDiscoverableDeviceProtocolGuid);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
   if (ChildHandle != NULL) {
     return EFI_UNSUPPORTED;
   }

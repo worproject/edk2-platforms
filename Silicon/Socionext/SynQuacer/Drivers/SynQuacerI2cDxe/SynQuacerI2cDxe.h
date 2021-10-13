@@ -25,6 +25,7 @@
 #include <Protocol/NonDiscoverableDevice.h>
 
 extern EFI_COMPONENT_NAME2_PROTOCOL gSynQuacerI2cDriverComponentName2;
+extern EFI_DRIVER_BINDING_PROTOCOL  gSynQuacerI2cDriverBinding;
 
 #define SYNQUACER_I2C_SIGNATURE         SIGNATURE_32 ('S', 'I', '2', 'C')
 #define SYNQUACER_I2C_FROM_THIS(a)      CR ((a), SYNQUACER_I2C_MASTER, \

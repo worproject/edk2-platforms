@@ -6,6 +6,7 @@
 
 **/
 
+#include <Guid/RootComplexInfoHob.h>
 #include <Protocol/PciRootBridgeIo.h>
 #include <Library/NVParamLib.h>
 #include <NVParamDef.h>
@@ -40,6 +41,24 @@ typedef struct {
   OP_REGION_DWORD_DATA  RegionBase;
   OP_REGION_DWORD_DATA  RegionLen;
 } AML_OP_REGION;
+
+typedef struct {
+  UINT64 AddressGranularity;
+  UINT64 AddressMin;
+  UINT64 AddressMax;
+  UINT64 AddressTranslation;
+  UINT64 RangeLength;
+} QWORD_MEMORY;
+
+STATIC QWORD_MEMORY mQMemList[] = {
+  { AC01_PCIE_RCA2_QMEM_LIST },
+  { AC01_PCIE_RCA3_QMEM_LIST },
+  { AC01_PCIE_RCB0_QMEM_LIST },
+  { AC01_PCIE_RCB1_QMEM_LIST },
+  { AC01_PCIE_RCB2_QMEM_LIST },
+  { AC01_PCIE_RCB3_QMEM_LIST }
+};
+
 #pragma pack()
 
 EFI_STATUS
@@ -543,6 +562,76 @@ AcpiPatchPcieAerFwFirst (
   return Status;
 }
 
+VOID
+AcpiPatchPcieMmio32 (
+  EFI_ACPI_SDT_PROTOCOL   *AcpiSdtProtocol,
+  EFI_ACPI_HANDLE         TableHandle
+  )
+{
+  AC01_ROOT_COMPLEX                  *RootComplexList;
+  CHAR8                              *NextDescriptor, *Buffer;
+  CHAR8                              NodePath[256];
+  EFI_ACPI_DATA_TYPE                 DataType;
+  EFI_ACPI_HANDLE                    ObjectHandle;
+  EFI_STATUS                         Status;
+  EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR  *Descriptor;
+  UINTN                              DataSize;
+  UINTN                              Idx;
+  VOID                               *Hob;
+
+  Hob = GetFirstGuidHob (&gRootComplexInfoHobGuid);
+  if (Hob == NULL) {
+    return;
+  }
+
+  RootComplexList = (AC01_ROOT_COMPLEX *)GET_GUID_HOB_DATA (Hob);
+
+  for (Idx = 0; Idx < AC01_PCIE_MAX_ROOT_COMPLEX; Idx++) {
+    if (!RootComplexList[Idx].Active) {
+      //
+      // Patch for disabled Root Complex
+      //
+      AsciiSPrint (NodePath, sizeof (NodePath), "\\_SB.PCI%X._STA", Idx);
+      UpdateStatusMethodObject (AcpiSdtProtocol, TableHandle, NodePath, 0x0);
+      continue;
+    }
+
+    if (!IsSlaveSocketActive () && Idx <= SOCKET0_LAST_RC) {
+      //
+      // Patch MMIO32 resource in 1P system
+      //
+      AsciiSPrint (NodePath, sizeof (NodePath), "\\_SB.PCI%X.RBUF", Idx);
+      Status = AcpiSdtProtocol->FindPath (TableHandle, NodePath, &ObjectHandle);
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
+
+      Status = AcpiSdtProtocol->GetOption (ObjectHandle, 2, &DataType, (VOID *)&Buffer, &DataSize);
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
+
+      if (DataType != EFI_ACPI_DATA_TYPE_CHILD) {
+        AcpiSdtProtocol->Close (ObjectHandle);
+        continue;
+      }
+
+      NextDescriptor = Buffer + 5; // Point to first address space descriptor
+      while ((NextDescriptor - Buffer) < DataSize) {
+        Descriptor = (EFI_ACPI_ADDRESS_SPACE_DESCRIPTOR *)NextDescriptor;
+        if (Descriptor->Desc == ACPI_QWORD_ADDRESS_SPACE_DESCRIPTOR
+            && Descriptor->ResType == ACPI_ADDRESS_SPACE_TYPE_MEM) {
+          CopyMem (&Descriptor->AddrSpaceGranularity, &mQMemList[Idx - 2], sizeof (QWORD_MEMORY));
+          break;
+        }
+        NextDescriptor += (Descriptor->Len + sizeof (ACPI_LARGE_RESOURCE_HEADER));
+      }
+
+      AcpiSdtProtocol->Close (ObjectHandle);
+    }
+  }
+}
+
 EFI_STATUS
 AcpiPatchDsdtTable (
   VOID
@@ -593,6 +682,7 @@ AcpiPatchDsdtTable (
   AcpiPatchNvdimm (AcpiSdtProtocol, TableHandle);
   AcpiPatchPcieNuma (AcpiSdtProtocol, TableHandle);
   AcpiPatchPcieAerFwFirst (AcpiSdtProtocol, TableHandle);
+  AcpiPatchPcieMmio32 (AcpiSdtProtocol, TableHandle);
 
   AcpiSdtProtocol->Close (TableHandle);
   AcpiUpdateChecksum ((UINT8 *)Table, Table->Length);

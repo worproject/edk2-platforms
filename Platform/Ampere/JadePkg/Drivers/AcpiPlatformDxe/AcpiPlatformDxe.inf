@@ -52,6 +52,7 @@
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiLib
+  UefiRuntimeServicesTableLib
 
 [Pcd]
   gArmPlatformTokenSpaceGuid.PcdCoreCount
@@ -70,6 +71,7 @@
   gEfiEventReadyToBootGuid
   gPlatformInfoHobGuid
   gRootComplexInfoHobGuid
+  gRootComplexConfigFormSetGuid
 
 [Protocols]
   gEfiAcpiTableProtocolGuid                     ## ALWAYS_CONSUMED

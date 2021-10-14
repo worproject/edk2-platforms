@@ -7,6 +7,7 @@
 **/
 
 #include <AcpiHeader.h>
+#include <Guid/RootComplexConfigHii.h>
 #include <Guid/RootComplexInfoHob.h>
 #include <IndustryStandard/Acpi30.h>
 #include <IndustryStandard/IoRemappingTable.h>
@@ -17,6 +18,7 @@
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Platform/Ac01.h>
 #include <Protocol/AcpiTable.h>
 
@@ -282,8 +284,10 @@ AcpiInstallIort (
   EFI_ACPI_TABLE_PROTOCOL           *AcpiTableProtocol;
   EFI_STATUS                        Status;
   INT32                             EnabledRCs[AC01_PCIE_MAX_ROOT_COMPLEX];
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA VarStoreConfig;
   UINT32                            RcCount, SmmuPmuAgentCount, TotalCount;
   UINT8                             Idx;
+  UINTN                             BufferSize;
   UINTN                             TableKey;
   VOID                              *Hob;
   VOID                              *IortBuffer;
@@ -313,14 +317,28 @@ AcpiInstallIort (
   }
 
   SmmuPmuAgentCount = 0;
-  for (Idx = 0; Idx < RcCount; Idx++) {
-    if (mRootComplexList[EnabledRCs[Idx]].Type == RootComplexTypeA) {
-      SmmuPmuAgentCount += AC01_RCA_MAX_TBU_PMU;
-    } else {
-      SmmuPmuAgentCount += AC01_RCB_MAX_TBU_PMU;
+
+  //
+  // Check SMMU setting
+  //
+  BufferSize = sizeof (VarStoreConfig);
+  Status = gRT->GetVariable (
+                  ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
+                  &gRootComplexConfigFormSetGuid,
+                  NULL,
+                  &BufferSize,
+                  &VarStoreConfig
+                  );
+  if (!EFI_ERROR (Status) && VarStoreConfig.SmmuPmu) {
+    for (Idx = 0; Idx < RcCount; Idx++) {
+      if (mRootComplexList[EnabledRCs[Idx]].Type == RootComplexTypeA) {
+        SmmuPmuAgentCount += AC01_RCA_MAX_TBU_PMU;
+      } else {
+        SmmuPmuAgentCount += AC01_RCB_MAX_TBU_PMU;
+      }
+      // Plus 1 TCU
+      SmmuPmuAgentCount += 1;
     }
-    // Plus 1 TCU
-    SmmuPmuAgentCount += 1;
   }
 
   TotalCount = sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE) +

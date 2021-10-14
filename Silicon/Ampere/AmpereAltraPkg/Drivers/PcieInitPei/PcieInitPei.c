@@ -8,6 +8,7 @@
 
 #include <PiPei.h>
 
+#include <Guid/RootComplexConfigHii.h>
 #include <Guid/RootComplexInfoHob.h>
 #include <Library/AmpereCpuLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -15,7 +16,9 @@
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/Ac01PcieLib.h>
+#include <Library/PeiServicesLib.h>
 #include <Platform/Ac01.h>
+#include <Ppi/ReadOnlyVariable2.h>
 
 #include "RootComplexNVParam.h"
 
@@ -43,8 +46,39 @@ BuildRootComplexData (
   )
 {
   AC01_ROOT_COMPLEX                    *RootComplex;
+  BOOLEAN                              ConfigFound;
+  EFI_PEI_READ_ONLY_VARIABLE2_PPI      *VariablePpi;
+  EFI_STATUS                           Status;
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA    RootComplexConfig;
   UINT8                                RCIndex;
   UINT8                                PcieIndex;
+  UINTN                                DataSize;
+
+  ConfigFound = FALSE;
+
+  //
+  // Get the Root Complex config from NVRAM
+  //
+  Status = PeiServicesLocatePpi (
+             &gEfiPeiReadOnlyVariable2PpiGuid,
+             0,
+             NULL,
+             (VOID **)&VariablePpi
+             );
+  if (!EFI_ERROR (Status)) {
+    DataSize = sizeof (RootComplexConfig);
+    Status = VariablePpi->GetVariable (
+                            VariablePpi,
+                            ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
+                            &gRootComplexConfigFormSetGuid,
+                            NULL,
+                            &DataSize,
+                            &RootComplexConfig
+                            );
+    if (!EFI_ERROR (Status)) {
+      ConfigFound = TRUE;
+    }
+  }
 
   ZeroMem (&mRootComplexList, sizeof (AC01_ROOT_COMPLEX) * AC01_PCIE_MAX_ROOT_COMPLEX);
 
@@ -58,9 +92,9 @@ BuildRootComplexData (
 
   for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
     RootComplex = &mRootComplexList[RCIndex];
-    RootComplex->Active = TRUE;
-    RootComplex->DevMapLow = 0;
-    RootComplex->DevMapHigh = 0;
+    RootComplex->Active = ConfigFound ? RootComplexConfig.RCStatus[RCIndex] : TRUE;
+    RootComplex->DevMapLow = ConfigFound ? RootComplexConfig.RCBifurcationLow[RCIndex] : 0;
+    RootComplex->DevMapHigh = ConfigFound ? RootComplexConfig.RCBifurcationLow[RCIndex] : 0;
     RootComplex->Socket = RCIndex / AC01_PCIE_MAX_RCS_PER_SOCKET;
     RootComplex->ID = RCIndex % AC01_PCIE_MAX_RCS_PER_SOCKET;
     RootComplex->CsrBase = mCsrBase[RCIndex];

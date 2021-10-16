@@ -34,6 +34,9 @@
   ##  @libraryclass  Defines a set of methods to generate random numbers by using Hardware RNG.
   TrngLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/TrngLib.h
 
+  ##  @libraryclass  Defines a set of methods to access flash memory.
+  FlashLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/FlashLib.h
+
 [Guids]
   ## NVParam MM GUID
   gNVParamMmGuid               = { 0xE4AC5024, 0x29BE, 0x4ADC, { 0x93, 0x36, 0x87, 0xB5, 0xA0, 0x76, 0x23, 0x2D } }

@@ -687,6 +687,7 @@
 
   $(RP_PKG)/BiosInfo/BiosInfo.inf
 
+  WhitleySiliconPkg/Pch/SouthClusterLbg/MultiPch/Pei/MultiPchPei.inf
   UefiCpuPkg/PiSmmCommunication/PiSmmCommunicationPei.inf
 
   UefiCpuPkg/CpuMpPei/CpuMpPei.inf

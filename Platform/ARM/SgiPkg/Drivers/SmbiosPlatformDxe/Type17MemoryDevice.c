@@ -259,7 +259,7 @@ UpdateMemorySize (
   }
 
   /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-     Table 75 – Memory Device (Type 17) structure, description for Size field.
+     Table 75 - Memory Device (Type 17) structure, description for Size field.
      If the value is 0, no memory device is installed in the socket; if
      the size is unknown, the field value is FFFFh.
   */
@@ -276,13 +276,13 @@ UpdateMemorySize (
   }
 
   /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-     Table 75 – Memory Device (Type 17) structure, description for Size field.
+     Table 75 - Memory Device (Type 17) structure, description for Size field.
      If the size is 32 GB-1 MB or greater, the field value is 7FFFh and the
      actual size is stored in the Extended Size field.
   */
   if (MemorySize < (SIZE_32GB - SIZE_1MB)) {
     /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-       section 7.18.5 Memory Device — Extended Size
+       section 7.18.5 Memory Device - Extended Size
        For compatibility with older SMBIOS parsers, memory devices
        smaller than (32 GB - 1 MB) should be represented using their
        size in the Size field, leaving the Extended Size field set to 0.
@@ -290,7 +290,7 @@ UpdateMemorySize (
     Type17Table->ExtendedSize = 0;
 
     /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-       Table 75 – Memory Device (Type 17) structure, description for Size field.
+       Table 75 - Memory Device (Type 17) structure, description for Size field.
        The granularity in which the value is specified depends on the setting
        of the most-significant bit (bit 15). If the bit is 0, the value is
        specified in megabyte units; if the bit is 1, the value is specified
@@ -308,7 +308,7 @@ UpdateMemorySize (
   }
 
   /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-      section 7.18.5 Memory Device — Extended Size
+      section 7.18.5 Memory Device - Extended Size
       The Extended Size field is intended to represent memory devices
       larger than 32,767 MB (32 GB - 1 MB), which cannot be described
       using the Size field. This field is only meaningful if the value
@@ -317,12 +317,12 @@ UpdateMemorySize (
   Type17Table->Size = 0x7FFF;
 
   /* Ref: SMBIOS Specifiation, Version 3.4.0, Document Identifier: DSP0134,
-     section 7.18.5 Memory Device — Extended Size
+     section 7.18.5 Memory Device - Extended Size
      Bit 31 is reserved for future use and must be set to 0.
      Bits 30:0 represent the size of the memory device in megabytes.
      EXAMPLE: 0000_8000h indicates a 32 GB memory device (32,768 MB),
               0002_0000h represents a 128 GB memory device (131,072 MB), and
-              0000_7FFFh represents a 32,767 MB (32 GB – 1 MB) device.
+              0000_7FFFh represents a 32,767 MB (32 GB - 1 MB) device.
   */
   Type17Table->ExtendedSize = (MemorySize >> 20) & (~BIT31);
   return EFI_SUCCESS;

@@ -10,7 +10,7 @@
 [Defines]
   DEC_SPECIFICATION              = 0x00010005
   PACKAGE_NAME                   = ArmVExpressPkg
-  PACKAGE_GUID                   = 9c0aaed4-74c5-4043-b417-a3223814ce76
+  PACKAGE_GUID                   = 9F8DA3A6-3B84-44E4-9E36-E51972F6F688
   PACKAGE_VERSION                = 0.1
 
 ################################################################################
@@ -29,7 +29,7 @@
   ArmPlatformSysConfigLib|Include/Library/ArmPlatformSysConfigLib.h
 
 [Guids.common]
-  gArmVExpressTokenSpaceGuid    =  { 0x9c0aaed4, 0x74c5, 0x4043, { 0xb4, 0x17, 0xa3, 0x22, 0x38, 0x14, 0xce, 0x76 } }
+  gArmVExpressTokenSpaceGuid    =  { 0xD8D68B8E, 0x0ACE, 0x4942, { 0xA4, 0xB9, 0x36, 0xEE, 0x9E, 0x80, 0x80, 0x9D } }
 
 [PcdsFeatureFlag.common]
 

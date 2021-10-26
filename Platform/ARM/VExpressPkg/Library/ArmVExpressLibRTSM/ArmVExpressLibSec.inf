@@ -8,7 +8,7 @@
 [Defines]
   INF_VERSION                    = 0x00010005
   BASE_NAME                      = RTSMArmVExpressLibSec
-  FILE_GUID                      = a79eed97-4b98-4974-9690-37b32d6a5b56
+  FILE_GUID                      = D6E41970-281F-4C0B-AC38-F1284B0A6FBF
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
   LIBRARY_CLASS                  = ArmPlatformLib

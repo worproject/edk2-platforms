@@ -797,7 +797,7 @@ InstallAllStructures (
   // Fixup some table values
   mArmDefaultType0.Base.SystemBiosMajorRelease = (PcdGet32 ( PcdFirmwareRevision ) >> 16) & 0xFF;
   mArmDefaultType0.Base.SystemBiosMinorRelease = PcdGet32 ( PcdFirmwareRevision ) & 0xFF;
-  if ( JunoRevision == JUNO_REVISION_R1 ) 
+  if ( JunoRevision == JUNO_REVISION_R1 )
   {
     mArmDefaultType2.Base.Version = 6;
   }

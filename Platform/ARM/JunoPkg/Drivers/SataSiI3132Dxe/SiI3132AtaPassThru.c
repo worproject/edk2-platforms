@@ -23,7 +23,8 @@ GetSataDevice (
   IN  SATA_SI3132_INSTANCE* SataInstance,
   IN  UINT16 Port,
   IN  UINT16 PortMultiplierPort
-) {
+  )
+{
   LIST_ENTRY              *List;
   SATA_SI3132_PORT        *SataPort;
   SATA_SI3132_DEVICE      *SataDevice;

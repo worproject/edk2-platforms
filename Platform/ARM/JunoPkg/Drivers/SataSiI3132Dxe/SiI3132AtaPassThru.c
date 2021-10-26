@@ -260,7 +260,7 @@ SiI3132AtaPassThruCommand (
     // Clear Command Complete
     SATA_PORT_WRITE32 (SataPort->RegBase + SII3132_PORT_INTSTATUS_REG, SII3132_PORT_INT_CMDCOMPL << 16);
 
-    if (PciAllocMapping) {
+    if (PciAllocMapping != NULL) {
       Status = PciIo->Unmap (PciIo, PciAllocMapping);
       ASSERT (!EFI_ERROR (Status));
     }

@@ -91,7 +91,7 @@ SataSiI3132Constructor (
   SATA_SI3132_INSTANCE    *Instance;
   EFI_ATA_PASS_THRU_MODE  *AtaPassThruMode;
 
-  if (!SataSiI3132Instance) {
+  if (SataSiI3132Instance == NULL) {
     return EFI_INVALID_PARAMETER;
   }
 
@@ -223,7 +223,7 @@ SataSiI3132Initialization (
   UINTN                 Index;
   EFI_PCI_IO_PROTOCOL*  PciIo;
 
-  if (!SataSiI3132Instance) {
+  if (SataSiI3132Instance == NULL) {
     return EFI_INVALID_PARAMETER;
   }
 

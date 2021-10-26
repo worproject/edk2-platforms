@@ -45,7 +45,7 @@ Lan9118RawMmioRead32(
   UINTN Delay
   );
 #define Lan9118MmioRead32(a) \
-	Lan9118RawMmioRead32(a, a ## _RD_DELAY)
+  Lan9118RawMmioRead32(a, a ## _RD_DELAY)
 
 UINT32
 Lan9118RawMmioWrite32(
@@ -54,7 +54,7 @@ Lan9118RawMmioWrite32(
   UINTN Delay
   );
 #define Lan9118MmioWrite32(a, v) \
-	Lan9118RawMmioWrite32(a, v, a ## _WR_DELAY)
+  Lan9118RawMmioWrite32(a, v, a ## _WR_DELAY)
 
 /* ------------------ MAC CSR Access ------------------- */
 

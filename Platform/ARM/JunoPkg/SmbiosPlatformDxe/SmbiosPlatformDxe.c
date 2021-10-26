@@ -743,35 +743,39 @@ InstallMemoryStructure (
 }
 
 /**
-   Install a whole table worth of structructures
+  Install a whole table worth of structures.
 
-   @parm
+  @param [in] Smbios         Smbios protocol.
+  @param [in] DefaultTables  Default Smbios tables.
+
+  @retval EFI_SUCCESS           Record was added.
+  @retval EFI_OUT_OF_RESOURCES  Record was not added.
+  @retval EFI_ALREADY_STARTED   The SmbiosHandle passed in was already in use.
 **/
 EFI_STATUS
 InstallStructures (
-   IN EFI_SMBIOS_PROTOCOL       *Smbios,
-   IN CONST VOID *DefaultTables[]
+   IN EFI_SMBIOS_PROTOCOL   *Smbios,
+   IN CONST VOID            *DefaultTables[]
    )
 {
     EFI_STATUS                Status = EFI_SUCCESS;
     EFI_SMBIOS_HANDLE         SmbiosHandle;
+    UINTN                     TableEntry;
 
-    int TableEntry;
-    for ( TableEntry=0; DefaultTables[TableEntry] != NULL; TableEntry++)
-    {
-	SmbiosHandle = ((EFI_SMBIOS_TABLE_HEADER*)DefaultTables[TableEntry])->Handle;
-	Status = Smbios->Add (
-	    Smbios,
-	    NULL,
-	    &SmbiosHandle,
-	    (EFI_SMBIOS_TABLE_HEADER*) DefaultTables[TableEntry]
-	    );
-	if (EFI_ERROR(Status))
-	    break;
+    for (TableEntry = 0; DefaultTables[TableEntry] != NULL; TableEntry++) {
+      SmbiosHandle = ((EFI_SMBIOS_TABLE_HEADER*)DefaultTables[TableEntry])->Handle;
+      Status = Smbios->Add (
+                         Smbios,
+                         NULL,
+                         &SmbiosHandle,
+                         (EFI_SMBIOS_TABLE_HEADER*)DefaultTables[TableEntry]
+                         );
+      if (EFI_ERROR(Status)) {
+        break;
+      }
     }
     return Status;
 }
-
 
 /**
    Install all structures from the DefaultTables structure

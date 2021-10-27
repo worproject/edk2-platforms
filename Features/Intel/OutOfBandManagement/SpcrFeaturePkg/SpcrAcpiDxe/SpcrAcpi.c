@@ -324,7 +324,9 @@ GetPciTypeInfo (
   }
 
   gSpcrInfo.BaseAddress.Address = BaseAddress;
-  gSpcrInfo.Irq = (UINT8) Irq;
+  gSpcrInfo.InterruptType = EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERRUPT_TYPE_APIC;
+  gSpcrInfo.Irq = 0;
+  gSpcrInfo.GlobalSystemInterrupt = (UINT32)Irq;
 
   gSpcrInfo.PciDeviceId       = DeviceId;
   gSpcrInfo.PciVendorId       = VendorId;
@@ -332,6 +334,7 @@ GetPciTypeInfo (
   gSpcrInfo.PciDeviceNumber   = (UINT8) Device;
   gSpcrInfo.PciFunctionNumber = (UINT8) Function;
   gSpcrInfo.PciSegment        = (UINT8) SegNum;
+  gSpcrInfo.PciFlags          = 1;
 
 Done:
   if (Resources != NULL) {

@@ -169,7 +169,7 @@
   #######################################
   # Silicon Initialization Package
   #######################################
-  SpiFlashCommonLib|$(PCH_PKG)/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
+  SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
 
 #######################################
 # PEI Components
@@ -288,6 +288,7 @@
   $(PCH_PKG)/SmmControl/RuntimeDxe/SmmControl2Dxe.inf
   $(PCH_PKG)/Spi/Smm/PchSpiSmm.inf
   $(SKT_PKG)/Smm/Access/SmmAccess2Dxe.inf
+  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 !endif
 
   #####################################
@@ -295,9 +296,6 @@
   #####################################
   $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitDxe/PlatformInitDxe.inf
   $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
-!endif
 
   #######################################
   # Board Package

@@ -210,7 +210,7 @@ INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 
 INF  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
 INF  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
-INF  MinPlatformPkg/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 INF  BoardModulePkg/LegacySioDxe/LegacySioDxe.inf
 INF  BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf

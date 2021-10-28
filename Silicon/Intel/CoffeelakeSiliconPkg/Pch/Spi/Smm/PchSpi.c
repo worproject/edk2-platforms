@@ -14,7 +14,7 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <Library/PciSegmentLib.h>
-#include <Protocol/Spi.h>
+#include <Protocol/Spi2.h>
 #include <Protocol/SmmCpu.h>
 #include <Private/Library/PchSpiCommonLib.h>
 #include <Private/Library/SmmPchPrivateLib.h>
@@ -45,8 +45,8 @@ GLOBAL_REMOVE_IF_UNREFERENCED UINT32                mSpiResvMmioAddr;
       - Documented in System Management Mode Core Interface Specification .
 
   - @result
-    The SPI SMM driver produces @link _PCH_SPI_PROTOCOL PCH_SPI_PROTOCOL @endlink with GUID
-    gPchSmmSpiProtocolGuid which is different from SPI RUNTIME driver.
+    The SPI SMM driver produces @link _PCH_SPI2_PROTOCOL PCH_SPI2_PROTOCOL @endlink with GUID
+    gPchSmmSpi2ProtocolGuid which is different from SPI RUNTIME driver.
 
   - <b>Integration Check List</b>\n
     - This driver supports Descriptor Mode only.
@@ -108,11 +108,11 @@ InstallPchSpi (
     return Status;
   }
   ///
-  /// Install the SMM PCH_SPI_PROTOCOL interface
+  /// Install the SMM PCH_SPI2_PROTOCOL interface
   ///
   Status = gSmst->SmmInstallProtocolInterface (
                     &(mSpiInstance->Handle),
-                    &gPchSmmSpiProtocolGuid,
+                    &gPchSmmSpi2ProtocolGuid,
                     EFI_NATIVE_INTERFACE,
                     &(mSpiInstance->SpiProtocol)
                     );

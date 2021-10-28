@@ -39,5 +39,5 @@ PchSpi.c
 
 
 [Ppis]
-gPchSpiPpiGuid ## PRODUCES
+gPchSpi2PpiGuid ## PRODUCES
 

@@ -11,7 +11,7 @@
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Library/PciSegmentLib.h>
-#include <Ppi/Spi.h>
+#include <Ppi/Spi2.h>
 #include <Private/Library/PchSpiCommonLib.h>
 #include <PchReservedResources.h>
 #include <IndustryStandard/Pci30.h>
@@ -62,13 +62,13 @@ SpiServiceInit (
   EFI_STATUS        Status;
   PEI_SPI_INSTANCE  *PeiSpiInstance;
   SPI_INSTANCE      *SpiInstance;
-  PCH_SPI_PPI       *SpiPpi;
+  PCH_SPI2_PPI      *Spi2Ppi;
 
   Status = PeiServicesLocatePpi (
-             &gPchSpiPpiGuid,
+             &gPchSpi2PpiGuid,
              0,
              NULL,
-             (VOID **)&SpiPpi
+             (VOID **)&Spi2Ppi
              );
 
   if (Status != EFI_SUCCESS) {
@@ -90,7 +90,7 @@ SpiServiceInit (
     SpiProtocolConstructor (SpiInstance);
 
     PeiSpiInstance->PpiDescriptor.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
-    PeiSpiInstance->PpiDescriptor.Guid = &gPchSpiPpiGuid;
+    PeiSpiInstance->PpiDescriptor.Guid = &gPchSpi2PpiGuid;
     PeiSpiInstance->PpiDescriptor.Ppi = &(SpiInstance->SpiProtocol);
 
     ///

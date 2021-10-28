@@ -46,6 +46,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
   KabylakeSiliconPkg/SiPkg.dec
   SecurityPkg/SecurityPkg.dec
 
@@ -92,7 +93,7 @@
   gEfiMpServiceProtocolGuid          ## CONSUMES
   gDxeSiPolicyProtocolGuid           ## CONSUMES
   gHstiPublishCompleteProtocolGuid   ## PRODUCES
-  
+
 [FixedPcd]
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature1
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature2

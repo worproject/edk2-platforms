@@ -30,6 +30,7 @@ CpuCommonLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 KabylakeSiliconPkg/SiPkg.dec
 KabylakeSiliconPkg/KabylakeSiliconPrivate.dec
 

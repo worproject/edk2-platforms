@@ -167,6 +167,9 @@ FILE = $(PLATFORM_SI_BIN_PACKAGE)/FV/FvTempMemorySilicon/$(TARGET)/FvTempMemoryS
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeBase    = gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress + gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeSize    = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
 
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase   = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize   = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
+
 SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchAddress    = gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress + gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase + 0x60
 SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchRegionSize = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize - 0x60
 
@@ -395,7 +398,7 @@ FvNameGuid         = 5AB52883-85DF-445B-99F7-E0C1D517A905
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/CoreOsBootInclude.fdf
 
-INF  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf
 

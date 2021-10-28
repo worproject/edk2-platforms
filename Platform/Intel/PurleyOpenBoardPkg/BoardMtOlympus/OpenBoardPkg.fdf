@@ -343,7 +343,7 @@ FvNameGuid         = 5AB52883-85DF-445B-99F7-E0C1D517A905
 
 !include $(PLATFORM_PACKAGE)/Include/Fdf/CoreOsBootInclude.fdf
 
-INF  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf
 

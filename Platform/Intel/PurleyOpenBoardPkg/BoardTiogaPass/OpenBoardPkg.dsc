@@ -89,7 +89,7 @@
 [Components.$(DXE_ARCH)]
 #TiogaPass Override START : Added Board Specific changes in core drivers
 #!include $(PLATFORM_PACKAGE)/Include/Dsc/CoreDxeInclude.dsc
-!include CoreDxeInclude.dsc 
+!include CoreDxeInclude.dsc
 #TiogaPass Override END
 
 #######################################
@@ -210,7 +210,7 @@
         GCC:*_*_*_ASLCC_FLAGS  = -D PURLEY_FLAG -D PCH_SPT
   }
 
-  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
   $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
   $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf {
     <LibraryClasses>

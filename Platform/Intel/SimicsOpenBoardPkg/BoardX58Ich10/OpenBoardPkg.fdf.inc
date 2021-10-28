@@ -45,10 +45,10 @@ SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize = $(BLOCK_SIZ
 SET gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsFlashNvStorageFtwSpareBase = gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsFlashNvStorageFtwWorkingBase + gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize = 0x10000
 
-SET gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress = 0xFFE00000
-SET gEfiPchTokenSpaceGuid.PcdFlashAreaSize = 0x00200000
+SET gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress = $(FW_BASE_ADDRESS)
+SET gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize = $(FW_SIZE)
 
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress = gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize = gEfiPchTokenSpaceGuid.PcdFlashAreaSize
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress = gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize = gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize
 
 DEFINE MEMFD_BASE_ADDRESS = 0x800000

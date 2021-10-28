@@ -48,8 +48,8 @@ gSiPolicyPpiGuid                    ## CONSUMES
 gSiPreMemPolicyPpiGuid              ## CONSUMES
 
 [FixedPcd]
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
 
 [Pcd]
 gUefiCpuPkgTokenSpaceGuid.PcdCpuApLoopMode  ## Produces

@@ -474,13 +474,8 @@ gSiPkgTokenSpaceGuid.PcdNemCodeCacheBase|0xFFF80000|UINT32|0x20000009
 ## NOTE: The size restriction may be changed in next generation processor.
 ## Please refer to Processor BWG for detail.
 ##
-gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress|0xFF800000|UINT32|0x10000001
-gSiPkgTokenSpaceGuid.PcdBiosSize|0x00800000|UINT32|0x10000002
 gSiPkgTokenSpaceGuid.PcdTemporaryRamBase|0xfef00000|UINT32|0x00010028
 gSiPkgTokenSpaceGuid.PcdTemporaryRamSize|0x2000|UINT32|0x00010029
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase|0xFFE60000|UINT32|0x30000004
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize|0x000A0000|UINT32|0x30000005
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset|0x00660000|UINT32|0x30000006
 
 ##
 ## PcdEfiGcdAllocateType is using for EFI_GCD_ALLOCATE_TYPE selection

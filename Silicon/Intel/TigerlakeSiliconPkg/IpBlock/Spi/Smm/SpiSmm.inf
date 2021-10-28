@@ -30,6 +30,7 @@ PchPciBdfLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 TigerlakeSiliconPkg/SiPkg.dec
 
 

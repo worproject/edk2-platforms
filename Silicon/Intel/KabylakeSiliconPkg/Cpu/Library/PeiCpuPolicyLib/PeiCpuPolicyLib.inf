@@ -45,8 +45,8 @@ CpuPrintPolicy.c
 gSiPolicyPpiGuid ## CONSUMES
 
 [FixedPcd]
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
 
 [Pcd]
 gSiPkgTokenSpaceGuid.PcdSmmbaseSwSmi

@@ -173,7 +173,7 @@
   !include $(PLATFORM_SI_PACKAGE)/SiPkgDxeLib.dsc
 
 [LibraryClasses.X64.DXE_SMM_DRIVER]
-  SpiFlashCommonLib|$(PLATFORM_BOARD_PACKAGE)/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
+  SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
 !if $(TARGET) == DEBUG
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
 !endif
@@ -297,6 +297,10 @@
   !include $(PLATFORM_SI_PACKAGE)/SiPkgDxe.dsc
   $(PLATFORM_SI_BIN_PACKAGE)/Microcode/MicrocodeUpdates.inf
 
+!if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+!endif
+
   #
   # SmmAccess
   #
@@ -326,7 +330,6 @@
       NULL|$(PROJECT)/Library/BoardAcpiLib/SmmMultiBoardAcpiSupportLib.inf
   }
 
-  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
   $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
 
   UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf {

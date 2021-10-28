@@ -2,6 +2,7 @@
 #  Component description file for the PchSpiCommonLib
 #
 # Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+# Copyright (c) Microsoft Corporation.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -27,3 +28,14 @@
   IoLib
   DebugLib
   PmcLib
+
+[Guids]
+  gFlashRegionDescriptorGuid
+  gFlashRegionBiosGuid
+  gFlashRegionMeGuid
+  gFlashRegionGbeGuid
+  gFlashRegionPlatformDataGuid
+  gFlashRegionDerGuid
+  gFlashRegionEcGuid
+  gFlashRegionAllGuid
+  gFlashRegionMaxGuid

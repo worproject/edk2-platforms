@@ -17,7 +17,7 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/SmmServicesTableLib.h>
 #include <PchAccess.h>
-#include <Protocol/Spi.h>
+#include <Protocol/Spi2.h>
 #include <IncludePrivate/Library/PchSpiCommonLib.h>
 
 #endif

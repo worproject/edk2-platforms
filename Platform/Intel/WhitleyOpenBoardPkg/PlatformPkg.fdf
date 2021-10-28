@@ -360,7 +360,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   #
   SET gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase = gCpPlatFlashTokenSpaceGuid.PcdFlashFvBinaryBase + gCpPlatFlashTokenSpaceGuid.PcdFlashFvAcmRegionSize + gCpPlatFlashTokenSpaceGuid.PcdFlashFvOpromSize
   SET gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize = gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeSize
-
+  SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase  = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+  SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize  = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
 ################################################################################
 #
 #    FD FPGA
@@ -649,7 +650,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   INF  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
   INF  UefiCpuPkg/PiSmmCommunication/PiSmmCommunicationSmm.inf
 
-  INF  MinPlatformPkg/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+  INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 
   INF  MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
   INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf

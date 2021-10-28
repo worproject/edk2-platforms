@@ -739,7 +739,7 @@
   UefiCpuPkg/CpuS3DataDxe/CpuS3DataDxe.inf
 
   $(RP_PKG)/Features/Pci/Dxe/PciHostBridge/PciHostBridge.inf
-  $(PLATFORM_PKG)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 
   $(RP_PKG)/Features/Pci/Dxe/PciPlatform/PciPlatform.inf
 

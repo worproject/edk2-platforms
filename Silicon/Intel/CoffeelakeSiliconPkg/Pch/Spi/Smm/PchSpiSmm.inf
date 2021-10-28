@@ -29,6 +29,7 @@ SmmPchPrivateLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 CoffeelakeSiliconPkg/SiPkg.dec
 
 

@@ -37,8 +37,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize              = 0x001D00
 ## Build script checks the requirement.
 SET gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesOffset       = 0x00800000  # Flash addr (0xFFC00000)
 SET gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesSize         = 0x00080000  # Keep 0x80000 or larger
-SET gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset                    = 0x00880000  # Flash addr (0xFFC80000)
-SET gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                      = 0x00070000  # Keep 0x70000 or larger, change MicrocodeFv.fdf in case that this value change
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset          = 0x00880000  # Flash addr (0xFFC80000)
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize            = 0x00070000  # Keep 0x70000 or larger, change MicrocodeFv.fdf in case that this value change
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryOffset          = 0x008F0000  # Flash addr (0xFFC00000)
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize            = 0x00080000  #
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSOffset                = 0x00970000  # Flash addr (0xFFD70000)

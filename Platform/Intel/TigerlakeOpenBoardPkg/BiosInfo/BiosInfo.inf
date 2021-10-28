@@ -39,8 +39,8 @@
   BoardModulePkg/BoardModulePkg.dec
 
 [Pcd]
-  gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress                     ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdBiosSize                                ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress           ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize                      ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase    ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    ## CONSUMES
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase  ## CONSUMES
@@ -61,8 +61,8 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryBase          ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize          ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase                    ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                    ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase          ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize          ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSBase                ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize                ## CONSUMES
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMBase                ## CONSUMES

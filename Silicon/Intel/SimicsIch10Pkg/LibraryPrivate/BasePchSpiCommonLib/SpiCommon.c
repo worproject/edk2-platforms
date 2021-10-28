@@ -158,7 +158,7 @@ PchPmTimerStallRuntimeSafe (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashRead (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     FLASH_REGION_TYPE  FlashRegionType,
   IN     UINT32             Address,
   IN     UINT32             ByteCount,
@@ -197,7 +197,7 @@ SpiProtocolFlashRead (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashWrite (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     FLASH_REGION_TYPE  FlashRegionType,
   IN     UINT32             Address,
   IN     UINT32             ByteCount,
@@ -235,7 +235,7 @@ SpiProtocolFlashWrite (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashErase (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     FLASH_REGION_TYPE  FlashRegionType,
   IN     UINT32             Address,
   IN     UINT32             ByteCount
@@ -274,7 +274,7 @@ SpiProtocolFlashErase (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashReadSfdp (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT8              ComponentNumber,
   IN     UINT32             Address,
   IN     UINT32             ByteCount,
@@ -328,7 +328,7 @@ SpiProtocolFlashReadSfdp (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashReadJedecId (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT8              ComponentNumber,
   IN     UINT32             ByteCount,
   OUT    UINT8              *JedecId
@@ -379,7 +379,7 @@ SpiProtocolFlashReadJedecId (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashWriteStatus (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT32             ByteCount,
   IN     UINT8              *StatusValue
   )
@@ -414,7 +414,7 @@ SpiProtocolFlashWriteStatus (
 EFI_STATUS
 EFIAPI
 SpiProtocolFlashReadStatus (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT32             ByteCount,
   OUT    UINT8              *StatusValue
   )
@@ -450,7 +450,7 @@ SpiProtocolFlashReadStatus (
 EFI_STATUS
 EFIAPI
 SpiProtocolGetRegionAddress (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     FLASH_REGION_TYPE  FlashRegionType,
   OUT    UINT32             *BaseAddress,
   OUT    UINT32             *RegionSize
@@ -510,7 +510,7 @@ SpiProtocolGetRegionAddress (
 EFI_STATUS
 EFIAPI
 SpiProtocolReadPchSoftStrap (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT32             SoftStrapAddr,
   IN     UINT32             ByteCount,
   OUT    VOID               *SoftStrapValue
@@ -568,7 +568,7 @@ SpiProtocolReadPchSoftStrap (
 EFI_STATUS
 EFIAPI
 SpiProtocolReadCpuSoftStrap (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINT32             SoftStrapAddr,
   IN     UINT32             ByteCount,
   OUT    VOID               *SoftStrapValue
@@ -626,7 +626,7 @@ SpiProtocolReadCpuSoftStrap (
 **/
 EFI_STATUS
 SendSpiCmd (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     FLASH_REGION_TYPE  FlashRegionType,
   IN     FLASH_CYCLE_TYPE   FlashCycleType,
   IN     UINT32             Address,
@@ -897,7 +897,7 @@ SendSpiCmdEnd:
 **/
 BOOLEAN
 WaitForSpiCycleComplete (
-  IN     EFI_SPI_PROTOCOL   *This,
+  IN     PCH_SPI_PROTOCOL   *This,
   IN     UINTN              PchSpiBar0,
   IN     BOOLEAN            ErrorCheck
   )

@@ -28,6 +28,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
   SimicsIch10Pkg/Ich10Pkg.dec
 
 [Sources]
@@ -36,7 +37,7 @@
 
 
 [Protocols]
-  gEfiSmmSpiProtocolGuid      # PRODUCES   #SERVER_BIOS
+  gPchSmmSpiProtocolGuid      # PRODUCES
 
 
 [Depex]

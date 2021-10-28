@@ -92,11 +92,11 @@ InstallPchSpi (
     return Status;
   }
   //
-  // Install the SMM EFI_SPI_PROTOCOL interface
+  // Install the SMM PCH_SPI_PROTOCOL interface
   //
   Status = gSmst->SmmInstallProtocolInterface (
                     &(mSpiInstance->Handle),
-                    &gEfiSmmSpiProtocolGuid,
+                    &gPchSmmSpiProtocolGuid,
                     EFI_NATIVE_INTERFACE,
                     &(mSpiInstance->SpiProtocol)
                     );

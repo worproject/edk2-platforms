@@ -26,7 +26,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Protocol/AdapterInformation.h>
 #include <Library/HstiLib.h>
 #include <HstiFeatureBit.h>
-#include <Protocol/Spi.h>
+#include <Protocol/Spi2.h>
 #include <Library/PchCycleDecodingLib.h>
 #include <Library/HobLib.h>
 #include <Library/PchPcrLib.h>

@@ -2,11 +2,14 @@
   This file contains the tests for the SecureMemoryMapConfiguration bit
 
 Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+Copyright (c) Microsoft Corporation.<BR>
+
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
 #include "HstiSiliconDxe.h"
+#include <Guid/FlashRegion.h>
 
 typedef struct {
   UINT64   Base;
@@ -99,6 +102,90 @@ MEMORY_RANGE  mNonLockableMemoryRange[NonLockableMemoryRangeMax] = {
 // 13. PWRMBASE (BDF 0:31:2 + 0x48)
 // 14. SPI_BAR0 (BDF 0:31:5 + 0x10)
 };
+
+typedef enum {
+  FlashRegionDescriptor,
+  FlashRegionBios,
+  FlashRegionMe,
+  FlashRegionGbe,
+  FlashRegionPlatformData,
+  FlashRegionDer,
+  FlashRegionAll,
+  FlashRegionMax
+} FLASH_REGION_TYPE;
+
+typedef struct {
+  EFI_GUID            *Guid;
+  FLASH_REGION_TYPE   Type;
+} FLASH_REGION_MAPPING;
+
+FLASH_REGION_MAPPING mFlashRegionTypes[] = {
+  {
+    &gFlashRegionDescriptorGuid,
+    FlashRegionDescriptor
+  },
+  {
+    &gFlashRegionBiosGuid,
+    FlashRegionBios
+  },
+  {
+    &gFlashRegionMeGuid,
+    FlashRegionMe
+  },
+  {
+    &gFlashRegionGbeGuid,
+    FlashRegionGbe
+  },
+  {
+    &gFlashRegionPlatformDataGuid,
+    FlashRegionPlatformData
+  },
+  {
+    &gFlashRegionDerGuid,
+    FlashRegionDer
+  },
+  {
+    &gFlashRegionAllGuid,
+    FlashRegionAll
+  },
+  {
+    &gFlashRegionMaxGuid,
+    FlashRegionMax
+  }
+};
+
+/**
+  Returns the type of a flash region given its GUID.
+
+  @param[in]    FlashRegionGuid   Pointer to the flash region GUID.
+  @param[out]   FlashRegionType   Pointer to a buffer that will be set to the flash region type value.
+
+  @retval       EFI_SUCCESS             The flash region type was found for the given flash region GUID.
+  @retval       EFI_INVALID_PARAMETER   A pointer argument passed to the function is NULL.
+  @retval       EFI_NOT_FOUND           The flash region type was not found for the given flash region GUID.
+
+**/
+EFI_STATUS
+GetFlashRegionType (
+  IN     EFI_GUID           *FlashRegionGuid,
+  OUT    FLASH_REGION_TYPE  *FlashRegionType
+  )
+{
+  UINTN   Index;
+
+  if (FlashRegionGuid == NULL || FlashRegionType == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  for (Index = 0; Index < ARRAY_SIZE (mFlashRegionTypes); Index++) {
+    if (CompareGuid (mFlashRegionTypes[Index].Guid, FlashRegionGuid)) {
+      *FlashRegionType = mFlashRegionTypes[Index].Type;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
 
 /**
   Check for overlaps in single range array
@@ -224,7 +311,7 @@ AcquireSpiBar0 (
 {
   UINT32                          SpiBar0;
   UINTN                           PchSpiBase;
-  
+
   //
   // Init PCH spi reserved MMIO address.
   //
@@ -269,8 +356,8 @@ ReleaseSpiBar0 (
 /**
   Get the SPI region base and size, based on the enum type
 
-  @param[in] This                 Pointer to the PCH_SPI_PROTOCOL instance.
-  @param[in] FlashRegionType      The Flash Region type for for the base address which is listed in the Descriptor.
+  @param[in] This                 Pointer to the PCH_SPI2_PROTOCOL instance.
+  @param[in] FlashRegionGuid      The Flash Region GUID for the base address which corresponds to the type in the descriptor.
   @param[out] BaseAddress         The Flash Linear Address for the Region 'n' Base
   @param[out] RegionSize          The size for the Region 'n'
 
@@ -281,13 +368,20 @@ ReleaseSpiBar0 (
 EFI_STATUS
 EFIAPI
 GetRegionAddress (
-  IN     FLASH_REGION_TYPE  FlashRegionType,
+  IN     EFI_GUID           *FlashRegionGuid,
   OUT    UINT32             *BaseAddress,
   OUT    UINT32             *RegionSize
   )
 {
-  UINTN           PchSpiBar0;
-  UINT32          ReadValue;
+  EFI_STATUS          Status;
+  FLASH_REGION_TYPE   FlashRegionType;
+  UINTN               PchSpiBar0;
+  UINT32              ReadValue;
+
+  Status = GetFlashRegionType (FlashRegionGuid, &FlashRegionType);
+  if (EFI_ERROR (Status)) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   if (FlashRegionType >= FlashRegionMax) {
     return EFI_INVALID_PARAMETER;
@@ -484,7 +578,7 @@ CheckSecureMemoryMapConfiguration (
  //
  // Locate BIOS region size to update High bios base address
  //
-    GetRegionAddress (FlashRegionBios, &BaseAddress, &RegionSize);
+    GetRegionAddress (&gFlashRegionBiosGuid, &BaseAddress, &RegionSize);
     DEBUG ((DEBUG_INFO, "Bios Region Size %x:\n", RegionSize));
     mLockableMemoryRange[LockableMemoryRangeHighBios].Base  = SIZE_4GB - RegionSize;
     mLockableMemoryRange[LockableMemoryRangeLowDram].End  = (MmioRead32 (MmPciBase (0,SA_MC_DEV,SA_MC_FUN) + R_SA_TOLUD) & B_SA_TOLUD_TOLUD_MASK) - 1;

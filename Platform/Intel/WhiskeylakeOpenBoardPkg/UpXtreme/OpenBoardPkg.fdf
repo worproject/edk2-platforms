@@ -31,8 +31,8 @@
 # assigned with PCD values. Instead, it uses the definitions for its variety, which
 # are FLASH_BASE, FLASH_SIZE, FLASH_BLOCK_SIZE and FLASH_NUM_BLOCKS.
 #
-BaseAddress   = $(FLASH_BASE) | gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress  #The base address of the FLASH Device.
-Size          = $(FLASH_SIZE) | gSiPkgTokenSpaceGuid.PcdBiosSize             #The size in bytes of the FLASH Device
+BaseAddress   = $(FLASH_BASE) | gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress  #The base address of the FLASH Device.
+Size          = $(FLASH_SIZE) | gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize             #The size in bytes of the FLASH Device
 ErasePolarity = 1
 BlockSize     = $(FLASH_BLOCK_SIZE)
 NumBlocks     = $(FLASH_NUM_BLOCKS)
@@ -43,21 +43,21 @@ DEFINE SIPKG_PEI_BIN      = INF
 # Set FLASH_REGION_FV_RECOVERY_OFFSET to PcdNemCodeCacheBase, because macro expression is not supported.
 # So, PlatformSecLib uses PcdBiosAreaBaseAddress + PcdNemCodeCacheBase to get the real CodeCache base address.
 SET gSiPkgTokenSpaceGuid.PcdNemCodeCacheBase = $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryOffset)
-SET gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase = $(gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset)
-SET gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize = $(gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize)
-SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchAddress = $(gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase) + 0x60
-SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchRegionSize = $(gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize) - 0x60
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase = $(gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset)
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize = $(gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize)
+SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchAddress = $(gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase) + 0x60
+SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchRegionSize = $(gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize) - 0x60
 SET gMinPlatformPkgTokenSpaceGuid.PcdMicrocodeOffsetInFv     = 0x60
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeBase    = gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeSize    = gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeOffset  = gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset
-SET gIntelFsp2WrapperTokenSpaceGuid.PcdFlashCodeCacheAddress = gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress
-SET gIntelFsp2WrapperTokenSpaceGuid.PcdFlashCodeCacheSize    = gSiPkgTokenSpaceGuid.PcdBiosSize
-SET gIntelFsp2WrapperTokenSpaceGuid.PcdFsptBaseAddress       = $(gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTOffset)
-SET gIntelFsp2WrapperTokenSpaceGuid.PcdFspmBaseAddress       = $(gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMOffset)
-SET gIntelFsp2WrapperTokenSpaceGuid.PcdFspsBaseAddress       = $(gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSOffset)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress    = gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize           = gSiPkgTokenSpaceGuid.PcdBiosSize
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeBase    = gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeSize    = gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeOffset  = gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset
+SET gIntelFsp2WrapperTokenSpaceGuid.PcdFlashCodeCacheAddress = gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress
+SET gIntelFsp2WrapperTokenSpaceGuid.PcdFlashCodeCacheSize    = gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize
+SET gIntelFsp2WrapperTokenSpaceGuid.PcdFsptBaseAddress       = $(gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTOffset)
+SET gIntelFsp2WrapperTokenSpaceGuid.PcdFspmBaseAddress       = $(gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMOffset)
+SET gIntelFsp2WrapperTokenSpaceGuid.PcdFspsBaseAddress       = $(gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress) + $(gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSOffset)
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaBaseAddress    = gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize           = gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize
 ################################################################################
 #
 # Following are lists of FD Region layout which correspond to the locations of different
@@ -158,8 +158,8 @@ gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSBase|gMinPlatformPkgTokenSpaceGuid.P
 # FSP_S Section
 FILE = $(PLATFORM_FSP_BIN_PACKAGE)/Fsp_Rebased_S.fd
 
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset|gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
-gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase|gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvOffset|gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase|gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
 #Microcode
 FV = FvMicrocode
 

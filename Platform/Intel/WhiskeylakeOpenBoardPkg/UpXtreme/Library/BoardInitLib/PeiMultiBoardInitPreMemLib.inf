@@ -293,7 +293,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize
   gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
 
 [FixedPcd]
   gSiPkgTokenSpaceGuid.PcdMchBaseAddress              ## CONSUMES

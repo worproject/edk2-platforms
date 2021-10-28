@@ -47,8 +47,8 @@
 
 [Pcd]
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress                     ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase                          ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                          ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase                ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                ## CONSUMES
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdIntelGopEnable
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdPlatformFlavor
   gWhiskeylakeOpenBoardPkgTokenSpaceGuid.PcdPlatformType

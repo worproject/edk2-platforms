@@ -36,8 +36,8 @@
   MinPlatformPkg/MinPlatformPkg.dec
 
 [Pcd]
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase                    ## CONSUMES
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                    ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase                    ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize                    ## CONSUMES
 
 [Sources]
   BiosInfo.c

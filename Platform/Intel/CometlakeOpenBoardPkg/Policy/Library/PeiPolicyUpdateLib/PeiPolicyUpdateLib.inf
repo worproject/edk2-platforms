@@ -52,7 +52,6 @@
   SecurityPkg/SecurityPkg.dec
   IntelSiliconPkg/IntelSiliconPkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
-  IntelSiliconPkg/IntelSiliconPkg.dec
 
 [FixedPcd]
   gSiPkgTokenSpaceGuid.PcdTsegSize                             ## CONSUMES

@@ -266,7 +266,7 @@
 
 [Ppis]
   gWdtPpiGuid                                   ## CONSUMES
-  gPchSpiPpiGuid                                ## CONSUMES
+  gPchSpi2PpiGuid                               ## CONSUMES
   gSiPolicyPpiGuid                              ## CONSUMES
   gSiPreMemPolicyPpiGuid                        ## CONSUMES
   gPeiTbtPolicyPpiGuid                          ## CONSUMES

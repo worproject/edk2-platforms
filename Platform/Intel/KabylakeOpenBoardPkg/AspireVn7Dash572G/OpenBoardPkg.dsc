@@ -346,7 +346,7 @@
   #######################################
   # Silicon Initialization Package
   #######################################
-  SpiFlashCommonLib|$(PLATFORM_SI_PACKAGE)/Pch/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
+  SpiFlashCommonLib|IntelSiliconPkg/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
 
   #######################################
   # Platform Package
@@ -610,6 +610,10 @@
   IntelSiliconPkg/Feature/VTd/IntelVTdDxe/IntelVTdDxe.inf
   $(PLATFORM_SI_BIN_PACKAGE)/Microcode/MicrocodeUpdates.inf
 
+!if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
+  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+!endif
+
   #######################################
   # Platform Package
   #######################################
@@ -633,7 +637,6 @@
 
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
 
-  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
   $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
 
   $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf {

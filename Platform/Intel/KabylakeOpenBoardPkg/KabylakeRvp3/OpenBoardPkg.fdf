@@ -408,7 +408,7 @@ INF  UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
 INF  $(PLATFORM_PACKAGE)/PlatformInit/SiliconPolicyDxe/SiliconPolicyDxe.inf
 INF  $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
-INF  $(PLATFORM_PACKAGE)/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+INF  IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiTables/AcpiPlatform.inf
 INF  $(PLATFORM_PACKAGE)/Acpi/AcpiSmm/AcpiSmm.inf

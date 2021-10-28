@@ -68,11 +68,11 @@
 
 [Pcd]
   gSiPkgTokenSpaceGuid.PcdPeiMinMemorySize
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
-  gSiPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
   gSiPkgTokenSpaceGuid.PcdMchBaseAddress
   gSiPkgTokenSpaceGuid.PcdSmbusBaseAddress
   gSiPkgTokenSpaceGuid.PcdTsegSize
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase
+  gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGraphicsVbtGuid
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdSaMiscUserBd           ## CONSUMES
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdMrcCaVrefConfig        ## CONSUMES

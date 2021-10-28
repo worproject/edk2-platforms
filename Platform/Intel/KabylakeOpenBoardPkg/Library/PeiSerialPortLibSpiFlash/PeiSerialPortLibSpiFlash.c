@@ -8,7 +8,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
 #include <Base.h>
-#include <Ppi/Spi.h>
+#include <Ppi/Spi2.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/HobLib.h>
@@ -24,29 +24,29 @@ typedef struct {
 /**
   Returns a pointer to the PCH SPI PPI.
 
-  @return Pointer to PCH_SPI_PPI    If an instance of the PCH SPI PPI is found
+  @return Pointer to PCH_SPI2_PPI   If an instance of the PCH SPI PPI is found
   @return NULL                      If an instance of the PCH SPI PPI is not found
 
 **/
-PCH_SPI_PPI *
+PCH_SPI2_PPI *
 GetSpiPpi (
   VOID
   )
 {
   EFI_STATUS    Status;
-  PCH_SPI_PPI   *PchSpiPpi;
+  PCH_SPI2_PPI  *PchSpi2Ppi;
 
   Status =  PeiServicesLocatePpi (
-              &gPchSpiPpiGuid,
+              &gPchSpi2PpiGuid,
               0,
               NULL,
-              (VOID **) &PchSpiPpi
+              (VOID **) &PchSpi2Ppi
               );
   if (EFI_ERROR (Status)) {
     return NULL;
   }
 
-  return PchSpiPpi;
+  return PchSpi2Ppi;
 }
 
 /**
@@ -67,7 +67,7 @@ SerialPortWrite (
   EFI_STATUS                Status;
   EFI_HOB_GUID_TYPE         *GuidHob;
   SPI_FLASH_DEBUG_CONTEXT   *Context;
-  PCH_SPI_PPI               *PchSpiPpi;
+  PCH_SPI2_PPI              *PchSpi2Ppi;
   UINT32                    BytesWritten;
   UINT32                    SourceBufferOffset;
   UINT32                    NvMessageAreaSize;
@@ -89,19 +89,19 @@ SerialPortWrite (
   if (Context == NULL || Context->CurrentWriteOffset >= NvMessageAreaSize) {
     return 0;
   }
-  PchSpiPpi = GetSpiPpi ();
-  if (PchSpiPpi == NULL) {
+  PchSpi2Ppi = GetSpiPpi ();
+  if (PchSpi2Ppi == NULL) {
     return 0;
   }
 
   if ((Context->CurrentWriteOffset + NumberOfBytes) / NvMessageAreaSize > 0) {
     LinearOffset = (UINT32) (FixedPcdGet32 (PcdFlashNvDebugMessageBase) - FixedPcdGet32 (PcdFlashAreaBaseAddress));
-    Status = PchSpiPpi->FlashErase (
-                          PchSpiPpi,
-                          FlashRegionBios,
-                          LinearOffset,
-                          NvMessageAreaSize
-                          );
+    Status = PchSpi2Ppi->FlashErase (
+                           PchSpi2Ppi,
+                           &gFlashRegionBiosGuid,
+                           LinearOffset,
+                           NvMessageAreaSize
+                           );
     if (!EFI_ERROR (Status)) {
       Context->CurrentWriteOffset = 0;
     } else {
@@ -116,13 +116,13 @@ SerialPortWrite (
 
   LinearOffset = (FixedPcdGet32 (PcdFlashNvDebugMessageBase) + Context->CurrentWriteOffset) - FixedPcdGet32 (PcdFlashAreaBaseAddress);
 
-  Status = PchSpiPpi->FlashWrite (
-                        PchSpiPpi,
-                        FlashRegionBios,
-                        LinearOffset,
-                        BytesWritten,
-                        (UINT8 *) &Buffer[SourceBufferOffset]
-                        );
+  Status = PchSpi2Ppi->FlashWrite (
+                         PchSpi2Ppi,
+                         &gFlashRegionBiosGuid,
+                         LinearOffset,
+                         BytesWritten,
+                         (UINT8 *) &Buffer[SourceBufferOffset]
+                         );
   if (!EFI_ERROR (Status)) {
     Context->CurrentWriteOffset += BytesWritten;
     return BytesWritten;

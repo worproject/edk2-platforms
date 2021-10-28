@@ -69,7 +69,7 @@ SpiProtocolConstructor (
                                                 SpiInstance->WritePermission));
 
   //
-  SpiInstance->TotalFlashSize = PcdGet32(PcdFlashAreaSize);
+  SpiInstance->TotalFlashSize = PcdGet32 (PcdBiosSize);
   DEBUG ((DEBUG_INFO, "Total Flash Size : %0x\n", SpiInstance->TotalFlashSize));
   return EFI_SUCCESS;
 }

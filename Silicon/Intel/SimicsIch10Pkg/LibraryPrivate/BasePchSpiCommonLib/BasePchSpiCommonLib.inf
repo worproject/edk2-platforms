@@ -20,6 +20,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
   SimicsIch10Pkg/Ich10Pkg.dec
 
 [LibraryClasses]
@@ -27,5 +28,5 @@
   DebugLib
 
 [Pcd]
-  gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress  ## CONSUMES
-  gEfiPchTokenSpaceGuid.PcdFlashAreaSize         ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdBiosAreaBaseAddress   ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdBiosSize              ## CONSUMES

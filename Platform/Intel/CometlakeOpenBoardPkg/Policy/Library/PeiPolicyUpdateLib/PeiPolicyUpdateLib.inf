@@ -270,3 +270,4 @@
 [Guids]
   gTianoLogoGuid                                ## CONSUMES
   gSiConfigGuid                                 ## CONSUMES
+  gEfiMemoryTypeInformationGuid                 ## PRODUCES

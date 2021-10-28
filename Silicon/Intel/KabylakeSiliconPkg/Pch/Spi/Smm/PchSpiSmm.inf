@@ -41,7 +41,7 @@ PchSpi.c
 
 
 [Protocols]
-gPchSmmSpiProtocolGuid ## PRODUCES
+gPchSmmSpi2ProtocolGuid ## PRODUCES
 
 
 [Depex]

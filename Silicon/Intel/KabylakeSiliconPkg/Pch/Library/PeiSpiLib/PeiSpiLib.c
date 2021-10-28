@@ -8,7 +8,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 #include <PchReservedResources.h>
 #include <IndustryStandard/Pci30.h>
-#include <Ppi/Spi.h>
+#include <Ppi/Spi2.h>
 #include <Register/PchRegsLpc.h>
 #include <Register/PchRegsSpi.h>
 #include <Library/DebugLib.h>
@@ -65,16 +65,16 @@ SpiServiceInit (
   EFI_STATUS        Status;
   PEI_SPI_INSTANCE  *PeiSpiInstance;
   SPI_INSTANCE      *SpiInstance;
-  PCH_SPI_PPI       *SpiPpi;
+  PCH_SPI2_PPI      *Spi2Ppi;
   UINT16            AcpiBase;
 
   AcpiBase = 0;
 
   Status = PeiServicesLocatePpi (
-             &gPchSpiPpiGuid,
+             &gPchSpi2PpiGuid,
              0,
              NULL,
-             (VOID **) &SpiPpi
+             (VOID **) &Spi2Ppi
              );
 
   if (Status != EFI_SUCCESS) {
@@ -102,7 +102,7 @@ SpiServiceInit (
     SpiProtocolConstructor (SpiInstance);
 
     PeiSpiInstance->PpiDescriptor.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
-    PeiSpiInstance->PpiDescriptor.Guid = &gPchSpiPpiGuid;
+    PeiSpiInstance->PpiDescriptor.Guid = &gPchSpi2PpiGuid;
     PeiSpiInstance->PpiDescriptor.Ppi = &(SpiInstance->SpiProtocol);
 
     Status = PeiServicesInstallPpi (&PeiSpiInstance->PpiDescriptor);

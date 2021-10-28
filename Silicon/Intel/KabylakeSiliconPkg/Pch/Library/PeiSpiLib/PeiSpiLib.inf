@@ -42,4 +42,4 @@
   gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress       ## CONSUMES
 
 [Ppis]
-  gPchSpiPpiGuid      ## PRODUCES
+  gPchSpi2PpiGuid      ## PRODUCES

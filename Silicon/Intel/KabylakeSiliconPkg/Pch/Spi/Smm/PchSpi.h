@@ -17,7 +17,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/SmmServicesTableLib.h>
 #include <Library/MmPciLib.h>
 #include <PchAccess.h>
-#include <Protocol/Spi.h>
+#include <Protocol/Spi2.h>
 #include <Library/PchSpiCommonLib.h>
 #include <Library/CpuCommonLib.h>
 

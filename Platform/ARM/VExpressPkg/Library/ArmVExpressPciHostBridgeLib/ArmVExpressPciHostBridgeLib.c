@@ -106,7 +106,7 @@ STATIC CONST CHAR16 mAcpiAddrSpaceTypeStr[][4] = {
 
   @param [out] Count  Return the count of root bridge instances.
 
-  @returns All the root bridge instances in an array.
+  @return  All the root bridge instances in an array.
            The array should be passed into PciHostBridgeFreeRootBridges()
            when it's not used.
 **/

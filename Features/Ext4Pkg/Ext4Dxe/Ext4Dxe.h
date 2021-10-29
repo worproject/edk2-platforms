@@ -1131,4 +1131,25 @@ Ext4SuperblockCheckMagic (
   IN EFI_BLOCK_IO_PROTOCOL  *BlockIo
   );
 
+/**
+   Check if the extent is uninitialized
+
+   @param[in] Extent    Pointer to the EXT4_EXTENT
+
+   @returns True if uninitialized, else false.
+**/
+#define EXT4_EXTENT_IS_UNINITIALIZED(Extent) ((Extent)->ee_len > EXT4_EXTENT_MAX_INITIALIZED)
+
+/**
+   Retrieves the extent's length, dealing with uninitialized extents in the process.
+
+   @param[in] Extent      Pointer to the EXT4_EXTENT
+
+   @returns Extent's length, in filesystem blocks.
+**/
+EXT4_BLOCK_NR
+Ext4GetExtentLength (
+  IN CONST EXT4_EXTENT  *Extent
+  );
+
 #endif

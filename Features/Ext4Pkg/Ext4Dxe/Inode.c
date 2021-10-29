@@ -144,11 +144,19 @@ Ext4Read (
 
     HasBackingExtent = Status != EFI_NO_MAPPING;
 
-    if (!HasBackingExtent) {
+    if (!HasBackingExtent || EXT4_EXTENT_IS_UNINITIALIZED (&Extent)) {
+
       HoleOff = BlockOff;
-      HoleLen = Partition->BlockSize - HoleOff;
+
+      if (!HasBackingExtent) {
+        HoleLen = Partition->BlockSize - HoleOff;
+      } else {
+        // Uninitialized extents behave exactly the same as file holes.
+        HoleLen = Ext4GetExtentLength (&Extent) - HoleOff;
+      }
+
       WasRead = HoleLen > RemainingRead ? RemainingRead : HoleLen;
-      // Potential improvement: In the future, we could get the hole's tota
+      // Potential improvement: In the future, we could get the file hole's total
       // size and memset all that
       SetMem (Buffer, WasRead, 0);
     } else {

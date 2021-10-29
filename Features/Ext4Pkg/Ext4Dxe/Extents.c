@@ -332,7 +332,7 @@ Ext4GetExtent (
     return EFI_NO_MAPPING;
   }
 
-  if (!(LogicalBlock >= Ext->ee_block && Ext->ee_block + Ext->ee_len > LogicalBlock)) {
+  if (!(LogicalBlock >= Ext->ee_block && Ext->ee_block + Ext4GetExtentLength (Ext) > LogicalBlock)) {
     // This extent does not cover the block
     if (Buffer != NULL) {
       FreePool (Buffer);
@@ -413,7 +413,7 @@ Ext4ExtentsMapKeyCompare (
   Extent = UserStruct;
   Block  = (UINT32)(UINTN)StandaloneKey;
 
-  if (Block >= Extent->ee_block && Block < Extent->ee_block + Extent->ee_len) {
+  if (Block >= Extent->ee_block && Block < Extent->ee_block + Ext4GetExtentLength (Extent)) {
     return 0;
   }
 
@@ -592,4 +592,24 @@ Ext4CheckExtentChecksum (
   Tail = (EXT4_EXTENT_TAIL *)((CONST CHAR8 *)ExtHeader + (Partition->BlockSize - 4));
 
   return Tail->eb_checksum == Ext4CalculateExtentChecksum (ExtHeader, File);
+}
+
+/**
+   Retrieves the extent's length, dealing with uninitialized extents in the process.
+
+   @param[in] Extent      Pointer to the EXT4_EXTENT
+
+   @returns Extent's length, in filesystem blocks.
+**/
+EXT4_BLOCK_NR
+Ext4GetExtentLength (
+  IN CONST EXT4_EXTENT  *Extent
+  )
+{
+  // If it's an unintialized extent, the true length is ee_len - 2^15
+  if (EXT4_EXTENT_IS_UNINITIALIZED (Extent)) {
+    return Extent->ee_len - EXT4_EXTENT_MAX_INITIALIZED;
+  }
+
+  return Extent->ee_len;
 }

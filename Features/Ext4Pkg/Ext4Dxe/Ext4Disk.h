@@ -448,6 +448,14 @@ typedef struct {
   UINT32    eb_checksum;
 } EXT4_EXTENT_TAIL;
 
+/**
+ * EXT4 has this feature called uninitialized extents:
+ * An extent has a maximum of 32768 blocks (2^15 or 1 << 15).
+ * When we find an extent with > 32768 blocks, this extent is called uninitialized.
+ * Long story short, it's an extent that behaves as a file hole but has blocks already allocated.
+ */
+#define EXT4_EXTENT_MAX_INITIALIZED  (1 << 15)
+
 typedef UINT64  EXT4_BLOCK_NR;
 typedef UINT32  EXT4_INO_NR;
 

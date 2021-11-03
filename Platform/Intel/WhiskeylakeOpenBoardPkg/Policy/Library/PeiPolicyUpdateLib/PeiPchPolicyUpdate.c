@@ -17,7 +17,6 @@
 #include <Library/PchPcrLib.h>
 #include <Library/PchSerialIoLib.h>
 #include <Library/PchPcieRpLib.h>
-#include <Ppi/Spi.h>
 #include <GpioConfig.h>
 #include <Library/DebugLib.h>
 #include <Library/PchGbeLib.h>

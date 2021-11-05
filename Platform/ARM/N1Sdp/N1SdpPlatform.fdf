@@ -1,8 +1,10 @@
+## @file
+#  FDF file of N1Sdp
 #
-#  Copyright (c) 2018 - 2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2018 - 2021, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
-#
+##
 
 ################################################################################
 #
@@ -109,6 +111,9 @@ READ_LOCK_STATUS   = TRUE
   # SATA Controller
   INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
+  # NVMe boot devices
+  INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
   # Usb Support
   INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
   INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
@@ -137,9 +142,13 @@ READ_LOCK_STATUS   = TRUE
 
   # FV FileSystem
   INF MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
+  INF MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf
 
   # UEFI applications
   INF  ShellPkg/Application/Shell/Shell.inf
+
+  # Platform driver
+  INF Platform/ARM/N1Sdp/Drivers/PlatformDxe/PlatformDxe.inf
 
   # Bds
   INF MdeModulePkg/Application/UiApp/UiApp.inf

@@ -1,8 +1,14 @@
+## @file
+# Component Description File for N1Sdp
 #
-#  Copyright (c) 2018 - 2020, ARM Limited. All rights reserved.
+# This provides platform specific component descriptions and libraries that
+# conform to EFI/Framework standards.
 #
-#  SPDX-License-Identifier: BSD-2-Clause-Patent
+# Copyright (c) 2018 - 2021, ARM Limited. All rights reserved.<BR>
 #
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
 
 ################################################################################
 #
@@ -32,6 +38,9 @@
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   UefiUsbLib|MdePkg/Library/UefiUsbLib/UefiUsbLib.inf
+
+  # file explorer library support
+  FileExplorerLib|MdeModulePkg/Library/FileExplorerLib/FileExplorerLib.inf
 
 [LibraryClasses.common.SEC]
   HobLib|MdePkg/Library/PeiHobLib/PeiHobLib.inf
@@ -71,6 +80,9 @@
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
+!if $(TARGET) != RELEASE
+  DebugLib|MdePkg/Library/DxeRuntimeDebugLibSerialPort/DxeRuntimeDebugLibSerialPort.inf
+!endif
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
@@ -82,10 +94,15 @@
 ################################################################################
 
 [PcdsFeatureFlag.common]
+  gArmN1SdpTokenSpaceGuid.PcdRamDiskSupported|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
   gArmTokenSpaceGuid.PcdVFPEnabled|1
+
+  # RAM Disk
+  gArmN1SdpTokenSpaceGuid.PcdRamDiskBase|0x88000000
+  gArmN1SdpTokenSpaceGuid.PcdRamDiskSize|0x18000000
 
   # Stacks for MPCores in Normal World
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x80000000
@@ -98,6 +115,9 @@
 
   # Secondary DDR memory
   gArmNeoverseN1SocTokenSpaceGuid.PcdDramBlock2Base|0x8080000000
+
+  # External memory
+  gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace|0x40000000000
 
   # GIC Base Addresses
   gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0x2C000000
@@ -198,6 +218,9 @@
       BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
   }
 
+  # Platform driver
+  Platform/ARM/N1Sdp/Drivers/PlatformDxe/PlatformDxe.inf
+
   # Human Interface Support
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
@@ -236,6 +259,9 @@
   # SATA Controller
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
+  # NVMe boot devices
+  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
   # Usb Support
   MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
   MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
@@ -244,3 +270,6 @@
   MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
   MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
   MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
+
+  # RAM Disk
+  MdeModulePkg/Universal/Disk/RamDiskDxe/RamDiskDxe.inf

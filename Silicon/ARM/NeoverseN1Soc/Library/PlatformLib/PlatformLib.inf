@@ -1,6 +1,7 @@
 ## @file
+#  Platform Library for N1Sdp.
 #
-#  Copyright (c) 2018-2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2018-2021, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -29,13 +30,17 @@
   AArch64/Helper.S | GCC
 
 [FixedPcd]
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
-
-  gArmTokenSpaceGuid.PcdSystemMemoryBase
-  gArmTokenSpaceGuid.PcdSystemMemorySize
-  gArmTokenSpaceGuid.PcdArmPrimaryCore
-  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
-
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMax
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMin
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixExpressBaseAddress
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Base
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Size
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Base
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Size
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseAddress
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseSize
+  gArmNeoverseN1SocTokenSpaceGuid.PcdDramBlock2Base
+  gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMax
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMin
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio32Base
@@ -45,7 +50,12 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseAddress
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseSize
 
-  gArmNeoverseN1SocTokenSpaceGuid.PcdDramBlock2Base
+  gArmTokenSpaceGuid.PcdArmPrimaryCore
+  gArmTokenSpaceGuid.PcdArmPrimaryCoreMask
+  gArmTokenSpaceGuid.PcdSystemMemoryBase
+  gArmTokenSpaceGuid.PcdSystemMemorySize
+
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
 
 [Guids]
   gEfiHobListGuid          ## CONSUMES  ## SystemTable

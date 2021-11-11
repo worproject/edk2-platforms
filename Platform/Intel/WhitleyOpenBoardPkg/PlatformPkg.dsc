@@ -627,10 +627,10 @@
 
 [LibraryClasses.Common.DXE_SMM_DRIVER]
   SpiFlashCommonLib|$(RP_PKG)/Library/SmmSpiFlashCommonLib/SmmSpiFlashCommonLib.inf
-
   TestPointCheckLib|MinPlatformPkg/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
   TestPointLib|MinPlatformPkg/Test/Library/TestPointLib/SmmTestPointLib.inf
   MmServicesTableLib|MdePkg/Library/MmServicesTableLib/MmServicesTableLib.inf
+  BoardAcpiEnableLib|$(RP_PKG)/Library/BoardAcpiLib/SmmBoardAcpiEnableLib.inf
 
 [LibraryClasses.Common.SMM_CORE]
   S3BootScriptLib|MdePkg/Library/BaseS3BootScriptLibNull/BaseS3BootScriptLibNull.inf
@@ -745,10 +745,7 @@
 
   $(RP_PKG)/Features/AcpiVtd/AcpiVtd.inf
 
-  $(PLATFORM_PKG)/Acpi/AcpiSmm/AcpiSmm.inf {
-    <LibraryClasses>
-      BoardAcpiEnableLib|$(RP_PKG)/Library/BoardAcpiLib/SmmBoardAcpiEnableLib.inf
-  }
+  $(PLATFORM_PKG)/Acpi/AcpiSmm/AcpiSmm.inf
 
   $(PLATFORM_PKG)/PlatformInit/PlatformInitDxe/PlatformInitDxe.inf {
   <LibraryClasses>

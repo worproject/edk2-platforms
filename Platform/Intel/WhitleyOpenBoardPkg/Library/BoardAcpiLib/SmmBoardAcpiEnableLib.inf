@@ -38,7 +38,6 @@
   WhitleySiliconPkg/CpRcPkg.dec
 
 [Sources]
-  SmmSiliconAcpiEnableLib.c
   SmmBoardAcpiEnableLib.c
 
 [Protocols]

@@ -359,6 +359,7 @@ F: Silicon/NXP/Library/Pcf8563RealTimeClockLib/
 F: Silicon/Socionext/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <leif@nuviainc.com>
+R: Masami Hiramatsu <masami.hiramatsu@linaro.org>
 
 Silicon/RISC-V/ProcessorPkg
 F: Silicon/RISC-V/ProcessorPkg/

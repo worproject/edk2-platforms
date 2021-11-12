@@ -55,9 +55,15 @@ DEFINE VARS_FTW_SPARE_OFFSET         = 0x00808000
 DEFINE VARS_FTW_SPARE_SIZE           = 0x00018000
 
 #
+# Device Tree memory region
+#
+DEFINE DTB_OFFSET                    = 0x00840000
+DEFINE DTB_SIZE                      = 0x00002000
+
+#
 # Scratch area memory region
 #
-DEFINE SCRATCH_OFFSET                = 0x00840000
+DEFINE SCRATCH_OFFSET                = 0x00880000
 DEFINE SCRATCH_SIZE                  = 0x00010000
 
 DEFINE FW_DOMAIN_SIZE    = $(FVMAIN_OFFSET) + $(FVMAIN_SIZE) - $(PEIFV_OFFSET)

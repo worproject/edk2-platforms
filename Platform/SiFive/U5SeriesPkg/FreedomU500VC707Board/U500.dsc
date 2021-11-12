@@ -503,6 +503,8 @@
   MdeModulePkg/Universal/MemoryTest/NullMemoryTestDxe/NullMemoryTestDxe.inf
   MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
+  Platform/SiFive/U5SeriesPkg/FreedomU500VC707Board/DeviceTree/U500DeviceTree.inf
+
   #
   # SMBIOS Support
   #

@@ -82,6 +82,11 @@
   #
   AcpiLib|EmbeddedPkg/Library/AcpiLib/AcpiLib.inf
 
+  #
+  # Pcie Board
+  #
+  BoardPcieLib|Silicon/Ampere/AmpereAltraPkg/Library/BoardPcieLibNull/BoardPcieLibNull.inf
+
 ################################################################################
 #
 # Specific Platform Pcds

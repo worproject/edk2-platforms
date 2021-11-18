@@ -43,6 +43,12 @@
   ##  @libraryclass  Defines a set of methods to access flash memory.
   FlashLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/FlashLib.h
 
+  ##  @libraryclass  Defines a set of platform dependent functions
+  BoardPcieLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/BoardPcieLib.h
+
+  ##  @libraryclass  Defines a set of methods to initialize Pcie
+  Ac01PcieLib|Silicon/Ampere/AmpereAltraPkg/Include/Library/Ac01PcieLib.h
+
 [Guids]
   ## NVParam MM GUID
   gNVParamMmGuid               = { 0xE4AC5024, 0x29BE, 0x4ADC, { 0x93, 0x36, 0x87, 0xB5, 0xA0, 0x76, 0x23, 0x2D } }

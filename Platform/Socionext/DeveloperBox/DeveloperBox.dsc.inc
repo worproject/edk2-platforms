@@ -147,7 +147,7 @@
 
   # non-secure SRAM
   gArmPlatformTokenSpaceGuid.PcdCPUCoresStackBase|0x2E000000
-  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0xFFC0
+  gArmPlatformTokenSpaceGuid.PcdCPUCorePrimaryStackSize|0xF000
 
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
 

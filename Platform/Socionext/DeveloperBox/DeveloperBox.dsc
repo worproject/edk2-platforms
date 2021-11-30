@@ -185,6 +185,9 @@
 
   gSynQuacerTokenSpaceGuid.PcdDramInfoBase|0x2E00FFC0
 
+  # SCP-firmware stored SPD DDR4 data in non-secure SRAM
+  gSynQuacerTokenSpaceGuid.PcdStoredSpdDDR4Address|0x2E00F000
+
   #
   # 96boards mezzanine support
   #

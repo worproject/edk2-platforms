@@ -43,6 +43,9 @@
   # for capsule update
   gSynQuacerTokenSpaceGuid.PcdLowestSupportedFirmwareVersion|1|UINT32|0x00000009
 
+  # for SMBIOS Type17
+  gSynQuacerTokenSpaceGuid.PcdStoredSpdDDR4Address|0|UINT32|0x0000000A
+
 [PcdsPatchableInModule, PcdsDynamic]
   # Enable both RC #0 and RC #1 by default
   gSynQuacerTokenSpaceGuid.PcdPcieEnableMask|0x3|UINT8|0x00000007

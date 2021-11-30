@@ -21,6 +21,7 @@
   ArmPkg/ArmPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
+  Silicon/Socionext/SynQuacer/SynQuacer.dec
 
 [LibraryClasses]
   BaseMemoryLib
@@ -34,6 +35,7 @@
 [FixedPcd]
   gArmTokenSpaceGuid.PcdFdSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision
+  gSynQuacerTokenSpaceGuid.PcdStoredSpdDDR4Address
 
 [Protocols]
   gEfiSmbiosProtocolGuid                      # PROTOCOL ALWAYS_CONSUMED

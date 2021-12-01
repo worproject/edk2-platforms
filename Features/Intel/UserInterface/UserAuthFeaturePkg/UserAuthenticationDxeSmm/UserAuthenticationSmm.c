@@ -504,7 +504,12 @@ SmmPasswordHandler (
 
     if (!IsPasswordVerified (UserGuid, SmmCommunicateSetPassword.OldPassword, PasswordLen + 1)) {
       DEBUG ((DEBUG_ERROR, "SmmPasswordHandler: PasswordVerify - FAIL\n"));
-      Status = EFI_SECURITY_VIOLATION;
+      if (*PasswordTryCount >= PASSWORD_MAX_TRY_COUNT) {
+        DEBUG ((DEBUG_ERROR, "SmmPasswordHandler: SET_PASSWORD try count reach!\n"));
+        Status = EFI_ACCESS_DENIED;
+      } else {
+        Status = EFI_SECURITY_VIOLATION;
+      }
       goto EXIT;
     }
 
@@ -554,7 +559,12 @@ SmmPasswordHandler (
     }
     if (!IsPasswordVerified (UserGuid, SmmCommunicateVerifyPassword.Password, PasswordLen + 1)) {
       DEBUG ((DEBUG_ERROR, "SmmPasswordHandler: PasswordVerify - FAIL\n"));
-      Status = EFI_SECURITY_VIOLATION;
+      if (*PasswordTryCount >= PASSWORD_MAX_TRY_COUNT) {
+        DEBUG ((DEBUG_ERROR, "SmmPasswordHandler: VERIFY_PASSWORD try count reach!\n"));
+        Status = EFI_ACCESS_DENIED;
+      } else {
+        Status = EFI_SECURITY_VIOLATION;
+      }
       goto EXIT;
     }
     mPasswordVerified = TRUE;

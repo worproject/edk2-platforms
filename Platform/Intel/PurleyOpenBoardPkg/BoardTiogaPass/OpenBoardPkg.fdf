@@ -21,33 +21,33 @@
 #       This requires all code to only use the PCD tokens to recover the values.
 !if gPlatformTokenSpaceGuid.PcdLinuxBootEnable == TRUE
 
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = 0x00000000  # Flash addr (0xFF840000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            = 0x00300000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset          = 0x00300000  # Flash addr (0xFF8A0000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            = 0x00100000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset            = 0x00400000  # Flash addr (0xFF910000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              = 0x00100000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset              = 0x00500000  # Flash addr (0xFFE00000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize                = 0x00100000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset          = 0x00600000  # Flash addr (0xFF9A0000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            = 0x00600000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset   = 0x00C00000  # Flash addr (0xFF800000)
-SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    = 0x0007C000  #
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = 0x00000000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            = 0x00200000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset          = 0x00200000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            = 0x000F0000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset            = 0x002F0000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              = 0x00100000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset              = 0x003F0000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize                = 0x00100000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset          = 0x004F0000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            = 0x00710000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset   = 0x00C00000
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    = 0x0007C000
 
 !else
 
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = 0x00000000  # Flash addr (0xFF840000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            = 0x00500000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset          = 0x00500000  # Flash addr (0xFF8A0000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            = 0x00100000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset            = 0x00600000  # Flash addr (0xFF910000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              = 0x00100000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset              = 0x00700000  # Flash addr (0xFFE00000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize                = 0x00200000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset          = 0x00900000  # Flash addr (0xFF9A0000)
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            = 0x00300000  #
-SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset   = 0x00C00000  # Flash addr (0xFF800000)
-SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    = 0x0007C000  #
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedOffset          = 0x00000000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize            = 0x00500000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecurityOffset          = 0x00500000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize            = 0x00100000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootOffset            = 0x00600000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize              = 0x00100000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUOffset              = 0x00700000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize                = 0x00200000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootOffset          = 0x00900000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize            = 0x00300000
+SET gMinPlatformPkgTokenSpaceGuid.PcdFlashNvStorageVariableOffset   = 0x00C00000
+SET gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize    = 0x0007C000
 
 !endif
 
@@ -345,9 +345,6 @@ FILE DRIVER = 81339b04-fa8c-4be0-9ca7-916fc5319eb5 {
     SECTION PE32 = $(PLATFORM_BOARD_PACKAGE)/Features/LinuxBoot/LinuxBinaries/linux.efi
 }
 
-FILE FREEFORM = 16b60e5d-f1c5-42f0-9b34-08C81C430473 {
-  SECTION RAW = $(PLATFORM_BOARD_PACKAGE)/Features/LinuxBoot/LinuxBinaries/initrd.cpio.xz
-}
 
 !endif
 

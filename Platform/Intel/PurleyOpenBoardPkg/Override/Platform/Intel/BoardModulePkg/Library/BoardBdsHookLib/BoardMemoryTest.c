@@ -1,12 +1,13 @@
 /** @file
   Perform the platform memory test
 
-Copyright (c) 2017, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2019, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2021, American Megatrends International LLC.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#include "BdsPlatform.h"
+#include "BoardBdsHook.h"
 #include <Protocol/GenericMemoryTest.h>
 
 /**

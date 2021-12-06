@@ -109,7 +109,7 @@
   LoadLinuxLib|OvmfPkg/Library/LoadLinuxLib/LoadLinuxLib.inf
 !else
   LinuxBootLib|$(PLATFORM_BOARD_PACKAGE)/Features/LinuxBoot/LinuxBootNull.inf
-!endif 
+!endif
 
 !if gPlatformTokenSpaceGuid.PcdFastBoot == FALSE
   PlatformBootManagerLib|$(PLATFORM_PACKAGE)/Bds/Library/DxePlatformBootManagerLib/DxePlatformBootManagerLib.inf
@@ -155,7 +155,11 @@
 !endif
   TestPointLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointLib/DxeTestPointLib.inf
   BoardBootManagerLib|$(PLATFORM_PACKAGE)/Bds/Library/BoardBootManagerLibNull/BoardBootManagerLibNull.inf
+!if gPlatformTokenSpaceGuid.PcdFastBoot == FALSE
   BoardBdsHookLib|BoardModulePkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
+!else
+  BoardBdsHookLib|$(PLATFORM_BOARD_PACKAGE)/Override/Platform/Intel/BoardModulePkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
+!endif
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
   IpmiBaseLib|OutOfBandManagement/IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
 !endif

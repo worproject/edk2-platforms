@@ -26,12 +26,6 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DxeServicesLib.h>
 #include "LinuxBoot.h"
 
-//16b60e5d-f1c5-42f0-9b34-08C81C430473
-#define LINUX_BOOT_INITRD_GUID \
-  { \
-    0x16b60e5d, 0xf1c5, 0x42f0, {0x9b, 0x34, 0x08, 0xc8, 0x1c, 0x43, 0x04, 0x73} \
-  }
-
 #define LINUX_BOOT_KERNEL_GUID \
   { \
     0x81339b04, 0xfa8c, 0x4be0, {0x9c, 0xa7, 0x91, 0x6f, 0xc5, 0x31, 0x9e, 0xb5} \
@@ -77,15 +71,6 @@ LoadLinux (
   IN VOID      *Kernel,
   IN OUT VOID  *KernelSetup
   );
-
-VOID*
-EFIAPI
-LoadLinuxAllocateInitrdPages (
-  IN VOID                   *KernelSetup,
-  IN UINTN                  Pages
-  );
-
-EFI_GUID gLinuxBootInitrdFileGuid = LINUX_BOOT_INITRD_GUID;
 
 EFI_GUID gLinuxBootKernelFileGuid = LINUX_BOOT_KERNEL_GUID;
 
@@ -189,9 +174,6 @@ LoadAndLaunchKernel (
     VOID                        *KernelBuffer = NULL;
     VOID                        *KernelFfsBuffer = NULL;
     UINTN                       KernelFfsSize = 0;
-    VOID                        *InitrdData = NULL;
-    VOID                        *InitrdBuffer = NULL;
-    UINTN                       InitrdSize = 0;
     struct BootParams          *BootParams = NULL;
     struct BootParams          *HandoverParams = NULL;
     UINT32                      StartOffset = 0;
@@ -301,49 +283,6 @@ LoadAndLaunchKernel (
 
     DEBUG((DEBUG_INFO, "Kernel loaded.\n"));
 
-    //
-    // Initrd load and preparation
-    //
-    DEBUG((DEBUG_INFO, "Preparing the initrd...\n"));
-
-    // Retrieve the initrd from the firmware volume
-    Status = GetSectionFromAnyFv(
-        &gLinuxBootInitrdFileGuid,
-        EFI_SECTION_RAW,
-        0,
-        &InitrdBuffer,
-        &InitrdSize
-    );
-
-    if (EFI_ERROR(Status)) {
-        DEBUG((DEBUG_ERROR, "Could not retrieve initrd; %r.\n", Status));
-        goto FatalError;
-    }
-
-    DEBUG((DEBUG_INFO, "Loaded initrd to buffer at 0x%p with size 0x%X.\n", InitrdBuffer, InitrdSize));
-    DEBUG((DEBUG_INFO, "Printing first 0x%X bytes:\n", MIN(0x100, InitrdSize)));
-    DumpHex(2, 0, MIN(0x100, InitrdSize), InitrdBuffer);
-
-    // Allocate the initrd for the kernel and copy it in
-    InitrdData = LoadLinuxAllocateInitrdPages(HandoverParams, EFI_SIZE_TO_PAGES(InitrdSize));
-    if (InitrdData == NULL) {
-        DEBUG((DEBUG_ERROR, "Unable to allocate memory for initrd.\n"));
-        goto FatalError;
-    }
-
-    gBS->CopyMem(InitrdData, InitrdBuffer, InitrdSize);
-
-    HandoverParams->Hdr.RamDiskStart = (UINT32)(UINTN) InitrdData;
-    HandoverParams->Hdr.RamDiskLen = (UINT32) InitrdSize;
-
-    DEBUG((DEBUG_INFO, "Initrd loaded.\n"));
-    DEBUG((DEBUG_INFO, "Printing first 0x%X bytes of initrd buffer:\n", MIN(0x100, InitrdSize)));
-    DumpHex(2, 0, MIN(0x100, InitrdSize), InitrdData);
-
-    // General cleanup before launching the kernel
-    gBS->FreePool(InitrdBuffer);
-    InitrdBuffer = NULL;
-
     gBS->UnloadImage(KernelHandle);
     gBS->FreePool(KernelFfsBuffer);
     KernelFfsBuffer = NULL;
@@ -367,10 +306,8 @@ LoadAndLaunchKernel (
 
 FatalError:
     // Free everything
-    if (InitrdData != NULL) gBS->FreePages((EFI_PHYSICAL_ADDRESS) InitrdData, EFI_SIZE_TO_PAGES(InitrdSize));
     if (KernelBuffer != NULL) gBS->FreePages((EFI_PHYSICAL_ADDRESS) KernelBuffer, EFI_SIZE_TO_PAGES(HandoverParams->Hdr.InitSize));
     if (HandoverParams != NULL) gBS->FreePages((EFI_PHYSICAL_ADDRESS) HandoverParams, EFI_SIZE_TO_PAGES(KERNEL_SETUP_SIZE));
-    if (InitrdBuffer != NULL) gBS->FreePool(InitrdBuffer);
     if (KernelHandle != NULL) gBS->UnloadImage(KernelHandle);
     if (KernelFfsBuffer != NULL) gBS->FreePool(KernelFfsBuffer);
 

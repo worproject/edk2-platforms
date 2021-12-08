@@ -166,6 +166,19 @@ SetPkgLength (
   UINT8  ByteCount;
   UINT8  *PkgLeadByte = TablePtr;
 
+  // Increase Payload Length to include the size of the Length Field
+  if (Length <= (0x3F - 1))
+    Length += 1;
+  else if (Length <= (0xFFF - 2))
+    Length += 2;
+  else if (Length <= (0xFFFFF - 3))
+    Length += 3;
+  else if (Length <= (0xFFFFFFF - 4))
+    Length += 4;
+  else
+    DEBUG ((DEBUG_ERROR, "Failed to set PkgLength: too large\n"));
+
+  // Smaller payloads fit into a single length byte
   if (Length < 64) {
     *TablePtr = Length;
     return 1;
@@ -250,10 +263,10 @@ AddSsdtTable (
   *New = AML_SCOPE_OP;
   New++;
   Offset = SetPkgLength (New,
-             (TableSize - sizeof (EFI_ACPI_DESCRIPTION_HEADER) - 1));
+             (sizeof (ScopeOpName) + (sizeof (CpuDevice) * NumCores)));
 
   // Adjust TableSize now we know header length of _SB
-  TableSize -= (SBSAQEMU_ACPI_SCOPE_OP_MAX_LENGTH - Offset);
+  TableSize -= (SBSAQEMU_ACPI_SCOPE_OP_MAX_LENGTH - (Offset + 1));
   ((EFI_ACPI_DESCRIPTION_HEADER*) HeaderAddr)->Length = TableSize;
 
   New += Offset;

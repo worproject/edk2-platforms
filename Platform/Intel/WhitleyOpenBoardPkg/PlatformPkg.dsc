@@ -3,6 +3,7 @@
 #
 # @copyright
 # Copyright 2008 - 2021 Intel Corporation. <BR>
+# Copyright (c) 2021, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -86,8 +87,6 @@
   gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit     |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit       |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly        |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable   |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable             |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable|TRUE
   gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable      |FALSE
 
@@ -453,6 +452,8 @@
   gEfiSecurityPkgTokenSpaceGuid.PcdTpmInitializationPolicy|0
   gEfiSecurityPkgTokenSpaceGuid.PcdTpm2InitializationPolicy|1
   gEfiSecurityPkgTokenSpaceGuid.PcdTpm2SelfTestPolicy|0
+  gEfiSecurityPkgTokenSpaceGuid.PcdTpm2AcpiTableRev|4
+  gEfiSecurityPkgTokenSpaceGuid.PcdTcg2PhysicalPresenceFlags|0x600C0
 
   gCpuPkgTokenSpaceGuid.PcdCpuSmmUseDelayIndication|FALSE
   gCpuPkgTokenSpaceGuid.PcdCpuSmmUseBlockIndication|FALSE
@@ -484,6 +485,20 @@
   !include $(RP_PKG)/StructurePcdCpx.dsc
 !else
   !include $(RP_PKG)/StructurePcd.dsc
+!endif
+
+[PcdsFeatureFlag]
+!if $(gMinPlatformPkgTokenSpaceGuid.PcdBootStage) >= 5
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable           |TRUE
+  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable |TRUE
+!else
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable           |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable |FALSE
+!endif
+
+[Defines]
+!if gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable == TRUE
+  DEFINE SECURE_BOOT_ENABLE = TRUE
 !endif
 
 ################################################################################
@@ -605,10 +620,12 @@
   ReportCpuHobLib|MinPlatformPkg/PlatformInit/Library/ReportCpuHobLib/ReportCpuHobLib.inf
   SetCacheMtrrLib|$(RP_PKG)/Library/SetCacheMtrrLib/SetCacheMtrrLib.inf
 
+  ResetSystemLib|MdeModulePkg/Library/PeiResetSystemLib/PeiResetSystemLib.inf
+
 [LibraryClasses.common.DXE_CORE, LibraryClasses.common.DXE_SMM_DRIVER, LibraryClasses.common.SMM_CORE, LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION]
   DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
 
-  Tcg2PhysicalPresenceLib|$(RP_PKG)/Library/Tcg2PhysicalPresenceLibNull/DxeTcg2PhysicalPresenceLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/DxeTcg2PhysicalPresenceLib/DxeTcg2PhysicalPresenceLib.inf
   TcgPhysicalPresenceLib|SecurityPkg/Library/DxeTcgPhysicalPresenceLib/DxeTcgPhysicalPresenceLib.inf
 
   BiosIdLib|BoardModulePkg/Library/BiosIdLib/DxeBiosIdLib.inf
@@ -631,6 +648,7 @@
   TestPointLib|MinPlatformPkg/Test/Library/TestPointLib/SmmTestPointLib.inf
   MmServicesTableLib|MdePkg/Library/MmServicesTableLib/MmServicesTableLib.inf
   BoardAcpiEnableLib|$(RP_PKG)/Library/BoardAcpiLib/SmmBoardAcpiEnableLib.inf
+  Tcg2PhysicalPresenceLib|SecurityPkg/Library/SmmTcg2PhysicalPresenceLib/SmmTcg2PhysicalPresenceLib.inf
 
 [LibraryClasses.Common.SMM_CORE]
   S3BootScriptLib|MdePkg/Library/BaseS3BootScriptLibNull/BaseS3BootScriptLibNull.inf
@@ -931,8 +949,6 @@ DEFINE EDKII_DSC_FEATURE_BUILD_OPTIONS = $(EDKII_DSC_FEATURE_BUILD_OPTIONS) $(ME
 #
 # Override ASL Compiler parameters in tools_def.template.
 #
-  MSFT:*_*_*_ASL_PATH == $(WORKSPACE)/../FDBin/Tools/IaslCompiler/6.3/iasl.exe
-  GCC:*_*_*_ASL_PATH == $(WORKSPACE)/../FDBin/Tools/IaslCompiler/6.3/iasl
   *_*_*_ASL_FLAGS == -vr -we -oi
 #
 # Override the VFR compile flags to speed the build time

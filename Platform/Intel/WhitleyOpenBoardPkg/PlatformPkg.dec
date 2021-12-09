@@ -4,6 +4,7 @@
 #
 # @copyright
 # Copyright 2008 - 2021 Intel Corporation. <BR>
+# Copyright (c) 2021, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -136,6 +137,7 @@
 
   gEfiPlatformTypeWilsonCitySMTProtocolGuid           = { 0xEE55562D, 0x4001, 0xFC27, { 0xDF, 0x16, 0x7B, 0x90, 0xEB, 0xE1, 0xAB, 0x04 } }
   gEfiPlatformTypeCooperCityRPProtocolGuid            = { 0x45c302e1, 0x4b86, 0x89be, { 0xab, 0x0f, 0x5e, 0xb5, 0x57, 0xdf, 0xe8, 0xd8 } }
+  gEfiPlatformTypeJunctionCityProtocolGuid            = { 0xB1C2B1C9, 0xB606, 0x4B62, { 0x9D, 0x78, 0xCB, 0xD6, 0x0F, 0xF9, 0x0D, 0x0C } }
 
 #
 # UBA_END
@@ -214,6 +216,13 @@
 
   #If True, extend PCR7 when VT-d disabled.
   gPlatformTokenSpaceGuid.PcdConditionallyExtendPcr7|FALSE|BOOLEAN|0xE0000045
+
+  #If 0 BoardId detection is done using GPIO. Otherwise Board id will be forced to value set by this PCD
+  #Non zero value should match the values defined in PlatformInfoTypes.h
+  gPlatformTokenSpaceGuid.PcdBoardId|0|UINT8|0xE0000046
+
+  # BoardRevion Id value. Valid only if PcdBoardId is not equal to 0
+  gPlatformTokenSpaceGuid.PcdBoardRevId|0|UINT8|0xE0000047
 
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   gPlatformTokenSpaceGuid.PcdShellFile|{ 0xB7, 0xD6, 0x7A, 0xC5, 0x15, 0x05, 0xA8, 0x40, 0x9D, 0x21, 0x55, 0x16, 0x52, 0x85, 0x4E, 0x37 }|VOID*|0x40000004

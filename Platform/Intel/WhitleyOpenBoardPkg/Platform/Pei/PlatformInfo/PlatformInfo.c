@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 1999 - 2021 Intel Corporation.
+  Copyright (c) 2021, American Megatrends International LLC. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -494,6 +495,18 @@ GetPlatformInfo (
   ASSERT (PciCfgPpi != NULL);
 
   PlatformInfoHob->BoardId = TypeNeonCityEPRP;
+
+  //
+  //Check if BoardId is fixed during build time.
+  //
+  BoardId = FixedPcdGet8 (PcdBoardId);
+  if (BoardId != 0) {
+    PlatformInfoHob->BoardId = (UINT8)BoardId;
+    PlatformInfoHob->TypeRevisionId = FixedPcdGet8 (PcdBoardRevId);
+    DEBUG((DEBUG_INFO, "Board ID = %2x  Board Rev = %x \n", PlatformInfoHob->BoardId, PlatformInfoHob->TypeRevisionId));
+    return EFI_SUCCESS;
+  }
+
   DEBUG ((DEBUG_INFO, "Use GPIO to read Board ID\n"));
 
   Status = GpioGetBoardId (&BoardId);

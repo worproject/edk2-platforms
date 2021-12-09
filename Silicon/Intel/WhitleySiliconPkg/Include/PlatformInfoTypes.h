@@ -2,6 +2,7 @@
 
   @copyright
   Copyright 2020 - 2021 Intel Corporation. <BR>
+  Copyright (c) 2021, American Megatrends International LLC. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -63,6 +64,7 @@ typedef enum {
   TypeArcherCityXPV,
   TypeBigPineKey,
   TypeExperWorkStationRP,
+  TypeJunctionCity,
   EndOfEfiPlatformTypeEnum
 } EFI_PLATFORM_TYPE;
 

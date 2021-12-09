@@ -2,6 +2,7 @@
 #  Platform description.
 #
 # Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2021, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -133,5 +134,6 @@
   }
   SecurityPkg/Tcg/Tcg2Smm/Tcg2Smm.inf
   SecurityPkg/Tcg/Tcg2Config/Tcg2ConfigDxe.inf
+  SecurityPkg/Tcg/Tcg2Acpi/Tcg2Acpi.inf
 !endif
 

@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 2014 - 2021 Intel Corporation.
+  Copyright (c) 2021, American Megatrends International LLC. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -82,6 +83,16 @@ BoardInitDxeDriverEntry (
       Status = gBS->InstallProtocolInterface (
         &Handle,
         &gEfiPlatformTypeCooperCityRPProtocolGuid,
+        EFI_NATIVE_INTERFACE,
+        NULL
+        );
+      ASSERT_EFI_ERROR (Status);
+      break;
+
+   case TypeJunctionCity:
+      Status = gBS->InstallProtocolInterface (
+        &Handle,
+        &gEfiPlatformTypeJunctionCityProtocolGuid,
         EFI_NATIVE_INTERFACE,
         NULL
         );

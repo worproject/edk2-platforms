@@ -101,6 +101,8 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
 | TiogaPass                             | Purley                                     | PurleyOpenBoardPkg           | BoardTiogaPass     |
+----------------------------------------|--------------------------------------------|------------------------------|--------------------|
+| JunctionCity                          | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | JunctionCity       |
 
 
 #### Simics
@@ -290,6 +292,10 @@ return back to the minimum platform caller.
           |       |        |       |------UpXtreme
           |       |        |               |---build_config.cfg: UpXtreme specific build
           |       |        |                                     settings environment variables.
+		  |       |        |------WhitleyOpenBoardPkg
+          |       |        |       |------JunctionCity
+          |       |        |               |---build_config.cfg: JunctionCity specific build
+          |       |        |                                     settings environment variables.
           |       |        |       |------WhiskeylakeURvp
           |       |        |               |---build_config.cfg: WhiskeylakeURvp specific build
           |       |        |                                     settings environment variables.
@@ -391,6 +397,14 @@ For PurleyOpenBoardPkg (TiogaPass)
 
 **WhitleyOpenBoardPkg**
 1. This firmware project has been tested booting to UEFI shell with headless serial console
+
+**JunctionCity**
+1. This firmware project has been tested booting to UEFI shell
+2. Booted to RHEL 8.2, Ubuntu 18.04 using U2 NVME Disk
+3. Booted to Windows 2019 using M2 SSD Disk
+4. Booted to Ubuntu 18.04,Windows 2019, RHEL 8.3 using SATA HDD
+5. Connected PCIE Network card and made sure PCIE card detected in POST and in OS
+6. Verified TPM offboard chip detection
 
 ### **Package Builds**
 

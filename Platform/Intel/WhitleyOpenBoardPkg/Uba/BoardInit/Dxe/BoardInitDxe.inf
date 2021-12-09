@@ -3,6 +3,7 @@
 #
 # @copyright
 # Copyright 2014 - 2021 Intel Corporation.
+# Copyright (c) 2021, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -62,6 +63,7 @@
   gEfiPlatformTypeIsoscelesPeakProtocolGuid              #PRODUCER
   gEfiPlatformTypeWilsonCitySMTProtocolGuid              #PRODUCER
   gEfiPlatformTypeCooperCityRPProtocolGuid               #PRODUCER
+  gEfiPlatformTypeJunctionCityProtocolGuid               #PRODUCER
 
 [FixedPcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdMaxCpuSocketCount

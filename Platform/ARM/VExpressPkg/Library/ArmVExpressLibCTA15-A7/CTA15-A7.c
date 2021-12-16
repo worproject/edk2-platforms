@@ -18,7 +18,7 @@
 ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
   {
     // Cluster 0, Core 0
-    0x0, 0x0,
+    0x000,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A15_BX_ADDR0,
@@ -28,7 +28,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
   },
   {
     // Cluster 0, Core 1
-    0x0, 0x1,
+    0x001,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A15_BX_ADDR1,
@@ -39,7 +39,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
 #ifndef ARM_BIGLITTLE_TC2
   {
     // Cluster 0, Core 2
-    0x0, 0x2,
+    0x002,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A15_BX_ADDR2,
@@ -49,7 +49,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
   },
   {
     // Cluster 0, Core 3
-    0x0, 0x3,
+    0x003,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A15_BX_ADDR3,
@@ -60,7 +60,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
 #endif
   {
     // Cluster 1, Core 0
-    0x1, 0x0,
+    0x100,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A7_BX_ADDR0,
@@ -70,7 +70,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
   },
   {
     // Cluster 1, Core 1
-    0x1, 0x1,
+    0x101,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A7_BX_ADDR1,
@@ -80,7 +80,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
   },
   {
     // Cluster 1, Core 2
-    0x1, 0x2,
+    0x102,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A7_BX_ADDR2,
@@ -91,7 +91,7 @@ ARM_CORE_INFO mVersatileExpressCTA15A7InfoTable[] = {
 #ifndef ARM_BIGLITTLE_TC2
   ,{
     // Cluster 1, Core 3
-    0x1, 0x3,
+    0x103,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_CTA15A7_SPC_A7_BX_ADDR3,

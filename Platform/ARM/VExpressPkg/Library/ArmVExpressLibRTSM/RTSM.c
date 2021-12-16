@@ -31,7 +31,7 @@ ArmGetCpuCountPerCluster (
 ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
-    0x0, 0x0,
+    0x000,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -41,7 +41,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 1
-    0x0, 0x1,
+    0x001,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -51,7 +51,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 2
-    0x0, 0x2,
+    0x002,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -61,7 +61,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 3
-    0x0, 0x3,
+    0x003,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -71,7 +71,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 1, Core 0
-    0x1, 0x0,
+    0x100,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -81,7 +81,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 1, Core 1
-    0x1, 0x1,
+    0x101,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -91,7 +91,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 1, Core 2
-    0x1, 0x2,
+    0x102,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,
@@ -101,7 +101,7 @@ ARM_CORE_INFO mVersatileExpressMpCoreInfoTable[] = {
   },
   {
     // Cluster 1, Core 3
-    0x1, 0x3,
+    0x103,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)ARM_VE_SYS_FLAGS_REG,

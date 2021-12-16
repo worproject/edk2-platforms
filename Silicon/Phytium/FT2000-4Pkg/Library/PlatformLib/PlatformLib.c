@@ -15,7 +15,7 @@
 
 ARM_CORE_INFO mPhytiumMpCoreInfoTable[] = {
   {
-    0x0, 0x0,              // Cluster 0, Core 0
+    0x000,              // Cluster 0, Core 0
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,

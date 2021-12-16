@@ -14,7 +14,7 @@
 ARM_CORE_INFO mArmada7k8kMpCoreInfoTable[] = {
   {
     // Cluster 0, Core 0
-    0x0, 0x0,
+    0x000,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,
@@ -24,7 +24,7 @@ ARM_CORE_INFO mArmada7k8kMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 1
-    0x0, 0x1,
+    0x001,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,
@@ -34,7 +34,7 @@ ARM_CORE_INFO mArmada7k8kMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 2
-    0x0, 0x2,
+    0x002,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,
@@ -44,7 +44,7 @@ ARM_CORE_INFO mArmada7k8kMpCoreInfoTable[] = {
   },
   {
     // Cluster 0, Core 3
-    0x0, 0x3,
+    0x003,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,

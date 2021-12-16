@@ -50,7 +50,7 @@ ClusterInRange (
   )
 {
   do {
-    if (ClusterId == ArmCoreInfoTable[LowIndex].ClusterId)
+    if (ClusterId == GET_MPIDR_AFF1 (ArmCoreInfoTable[LowIndex].Mpidr))
       return TRUE;
   } while (++LowIndex <= HighIndex);
 
@@ -70,7 +70,7 @@ NumberOfCoresInCluster (
 
   Cores = 0;
   for (Index = 0; Index < NumberOfEntries; ++Index) {
-    if (ClusterId == ArmCoreInfoTable[Index].ClusterId)
+    if (ClusterId == GET_MPIDR_AFF1 (ArmCoreInfoTable[Index].Mpidr))
       ++Cores;
   }
 
@@ -92,7 +92,7 @@ NumberOfClustersInTable (
   Cores = NumberOfEntries;
   while (Cores) {
      ++Clusters;
-     ClusterId = ArmCoreInfoTable[Index].ClusterId;
+     ClusterId = GET_MPIDR_AFF1 (ArmCoreInfoTable[Index].Mpidr);
      Cores -= NumberOfCoresInCluster (ArmCoreInfoTable,
                                       NumberOfEntries,
                                       ClusterId);
@@ -100,7 +100,7 @@ NumberOfClustersInTable (
        do {
          ++Index;
        } while (ClusterInRange (ArmCoreInfoTable,
-                                ArmCoreInfoTable[Index].ClusterId,
+                                GET_MPIDR_AFF1 (ArmCoreInfoTable[Index].Mpidr),
                                 0, Index-1));
      }
   }
@@ -402,8 +402,7 @@ PrepareFdt (
 
     fdt_setprop_string (Fdt, CpuNode, "enable-method", "psci");
 
-    MpId = (UINTN)GET_MPID (ArmCoreInfoTable[Index].ClusterId,
-                            ArmCoreInfoTable[Index].CoreId);
+    MpId = ArmCoreInfoTable[Index].Mpidr;
     MpId = cpu_to_fdt64 (MpId);
     fdt_setprop (Fdt, CpuNode, "reg", &MpId, sizeof (MpId));
     fdt_setprop (Fdt, CpuNode, "compatible", mCpuCompatible,
@@ -417,7 +416,7 @@ PrepareFdt (
     fdt_setprop_cell (Fdt, CpuNode, "d-cache-line-size", 64);
     fdt_setprop_cell (Fdt, CpuNode, "d-cache-sets", 256);
     fdt_setprop_cell (Fdt, CpuNode, "l2-cache",
-      L2Phandle[ArmCoreInfoTable[Index].ClusterId]);
+      L2Phandle[GET_MPIDR_AFF1 (ArmCoreInfoTable[Index].Mpidr)]);
   }
 
   // Create /cpu-map node
@@ -435,7 +434,7 @@ PrepareFdt (
         return EFI_INVALID_PARAMETER;
       }
 
-      ClusterId = ArmCoreInfoTable[ClusterIndex].ClusterId;
+      ClusterId = GET_MPIDR_AFF1 (ArmCoreInfoTable[ClusterIndex].Mpidr);
       CoreIndex = ClusterIndex;
       CoresInCluster = NumberOfCoresInCluster (ArmCoreInfoTable,
                                                ArmCoreCount,
@@ -454,7 +453,7 @@ PrepareFdt (
         if (CoresInCluster) {
           do {
              --CoreIndex;
-          } while (ClusterId != ArmCoreInfoTable[CoreIndex].ClusterId);
+          } while (ClusterId != GET_MPIDR_AFF1 (ArmCoreInfoTable[CoreIndex].Mpidr));
         }
       }
 
@@ -463,7 +462,7 @@ PrepareFdt (
         do {
            --ClusterIndex;
         } while (ClusterInRange (ArmCoreInfoTable,
-                                 ArmCoreInfoTable[ClusterIndex].ClusterId,
+                                 GET_MPIDR_AFF1 (ArmCoreInfoTable[ClusterIndex].Mpidr),
                                  ClusterIndex + 1,
                                  ArmCoreCount - 1));
       }
@@ -481,8 +480,7 @@ PrepareFdt (
 
     // append PMU interrupts
     for (Index = 0; Index < ArmCoreCount; Index++) {
-      MpId = (UINTN)GET_MPID (ArmCoreInfoTable[Index].ClusterId,
-                              ArmCoreInfoTable[Index].CoreId);
+      MpId = (UINTN)ArmCoreInfoTable[Index].Mpidr;
 
       Status = AmdMpCoreInfoProtocol->GetPmuSpiFromMpId (MpId, &PmuInt.IntId);
       if (EFI_ERROR (Status)) {

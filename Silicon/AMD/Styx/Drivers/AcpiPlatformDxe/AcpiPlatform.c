@@ -100,8 +100,7 @@ EnableAvailableCores (
 
   while (CoreCount--) {
     for (Index = 0; Index < MAX_CORES; Index++) {
-      if (GicC[Index].MPIDR == GET_MPID (ArmCoreInfoTable->ClusterId,
-                                         ArmCoreInfoTable->CoreId)) {
+      if (GicC[Index].MPIDR == ArmCoreInfoTable->Mpidr) {
         GicC[Index].Flags |= EFI_ACPI_5_1_GIC_ENABLED;
         break;
       }

@@ -166,12 +166,12 @@ PlatInitPeiEntryPoint (
       ASSERT (CpuResetInfo.CoreStatus.Status != CPU_CORE_DISABLED);
       ASSERT (CpuResetInfo.CoreStatus.Status != CPU_CORE_UNDEFINED);
 
-      mAmdMpCoreInfoTable[Index].ClusterId = CpuResetInfo.CoreStatus.ClusterId;
-      mAmdMpCoreInfoTable[Index].CoreId = CpuResetInfo.CoreStatus.CoreId;
+      mAmdMpCoreInfoTable[Index].Mpidr = GET_MPID (CpuResetInfo.CoreStatus.ClusterId,
+		                           CpuResetInfo.CoreStatus.CoreId);
 
       DEBUG ((EFI_D_ERROR, "Core[%d]: ClusterId = %d   CoreId = %d\n",
-        Index, mAmdMpCoreInfoTable[Index].ClusterId,
-        mAmdMpCoreInfoTable[Index].CoreId));
+        Index, GET_MPIDR_AFF1 (mAmdMpCoreInfoTable[Index].Mpidr),
+        GET_MPIDR_AFF0 (mAmdMpCoreInfoTable[Index].Mpidr)));
 
       // Next core in Table
       ++Index;

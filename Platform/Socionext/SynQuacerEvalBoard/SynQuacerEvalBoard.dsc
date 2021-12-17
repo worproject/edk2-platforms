@@ -561,7 +561,6 @@
   }
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
   MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
-  MdeModulePkg/Universal/EbcDxe/EbcDxe.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
 
   #
@@ -633,3 +632,6 @@
   SignedCapsulePkg/Universal/SystemFirmwareUpdate/SystemFirmwareUpdateDxe.inf
 
 !include Silicon/Socionext/SynQuacer/Acpi.dsc.inc
+
+[Components.AARCH64]
+  MdeModulePkg/Universal/EbcDxe/EbcDxe.inf

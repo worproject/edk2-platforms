@@ -346,7 +346,7 @@ F: Platform/RaspberryPi/
 F: Silicon/Broadcom/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <leif@nuviainc.com>
-R: Pete Batard <pete@akeo.ie>
+R: Jeremy Linton <jeremy.linton@arm.com>
 
 RPMB driver for OP-TEE
 F: Drivers/OpTee/OpteeRpmbPkg/

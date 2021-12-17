@@ -4,9 +4,6 @@
 # Copyright (c) 2010 - 2020, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-# vendor.  This file may not be modified, except as allowed by
-# additional terms of your license agreement.
-#
 ##
 
 [Defines]
@@ -15,7 +12,7 @@
   FILE_GUID                      = C4210E71-0A38-4728-8D25-4876348AA380
   MODULE_TYPE                    = PEIM
   CONSTRUCTOR                    = PeiBeepStatusCodeHandlerLibConstructor
-  LIBRARY_CLASS                  = StatusCodeHandlerLib|SEC PEIM PEI_COR
+  LIBRARY_CLASS                  = StatusCodeHandlerLib|SEC PEIM PEI_CORE
 
 #
 # The following information is for reference only and not required by the build tools.

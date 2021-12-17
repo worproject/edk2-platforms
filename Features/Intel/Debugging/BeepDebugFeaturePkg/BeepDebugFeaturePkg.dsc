@@ -24,6 +24,34 @@
   PEI_ARCH                       = IA32
   DXE_ARCH                       = X64
 
+[Packages]
+  MinPlatformPkg/MinPlatformPkg.dec
+  BeepDebugFeaturePkg/BeepDebugFeaturePkg.dec
+
+[PcdsFeatureFlag]
+  #
+  # PCD needed for MinPlatform build includes
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
+
+[PcdsDynamicExDefault]
+  gBeepDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUseBeep|TRUE
+
+#
+# Include common libraries
+#
+!include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
+!include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
+!include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
+
+[LibraryClasses.Common]
+  #
+  # Required by common status code handler infrastructure
+  #
+  PlatformHookLib|MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf
+
 #
 # This package always builds the feature.
 #

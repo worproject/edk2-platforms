@@ -4,9 +4,6 @@
 # Copyright (c) 2010 - 2020, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
-# vendor.  This file may not be modified, except as allowed by
-# additional terms of your license agreement.
-#
 ##
 
 [Defines]

@@ -725,7 +725,67 @@ Pp2SnpReceiveFilters (
   IN EFI_MAC_ADDRESS             *MCastFilter OPTIONAL
   )
 {
-  return EFI_SUCCESS;
+  PP2DXE_CONTEXT *Pp2Context;
+  EFI_TPL SavedTpl;
+  UINTN Count;
+
+  /* Check Snp Instance. */
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
+  Pp2Context = INSTANCE_FROM_SNP(This);
+
+  /* Check whether the driver was started and initialized. */
+  if (This->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (This->Mode->State) {
+    case EfiSimpleNetworkStopped:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_NOT_STARTED);
+    case EfiSimpleNetworkStarted:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    default:
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        This->Mode->State));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    }
+  }
+
+  if (((Enable | Disable) & ~This->Mode->ReceiveFilterMask) != 0) {
+    ReturnUnlock (SavedTpl, EFI_INVALID_PARAMETER);
+  }
+
+  if (!ResetMCastFilter &&
+      (Disable & EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST) == 0 &&
+      (Enable & EFI_SIMPLE_NETWORK_RECEIVE_MULTICAST) != 0) {
+    if (MCastFilterCnt == 0 ||
+        MCastFilterCnt > This->Mode->MaxMCastFilterCount ||
+        MCastFilter == NULL) {
+      ReturnUnlock (SavedTpl, EFI_INVALID_PARAMETER);
+    }
+
+    for (Count = 0; Count < MCastFilterCnt; Count++) {
+      if ((MCastFilter[Count].Addr[0] & 1) == 0) {
+        ReturnUnlock (SavedTpl, EFI_INVALID_PARAMETER);
+      }
+      CopyMem (&This->Mode->MCastFilter[Count],
+        &MCastFilter[Count],
+        sizeof (EFI_MAC_ADDRESS));
+    }
+    This->Mode->MCastFilterCount = MCastFilterCnt;
+  } else if (ResetMCastFilter) {
+    This->Mode->MCastFilterCount = 0;
+  }
+
+  This->Mode->ReceiveFilterSetting |= Enable;
+  This->Mode->ReceiveFilterSetting &= ~Disable;
+
+  ReturnUnlock (SavedTpl, EFI_SUCCESS);
 }
 
 EFI_STATUS

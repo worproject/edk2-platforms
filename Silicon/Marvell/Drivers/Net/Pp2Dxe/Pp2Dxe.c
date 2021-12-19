@@ -633,14 +633,12 @@ Pp2SnpReset (
   return EFI_SUCCESS;
 }
 
+STATIC
 VOID
-EFIAPI
 Pp2DxeHalt (
-  IN EFI_EVENT Event,
-  IN VOID *Context
+  IN PP2DXE_CONTEXT *Pp2Context
   )
 {
-  PP2DXE_CONTEXT *Pp2Context = Context;
   PP2DXE_PORT *Port = &Pp2Context->Port;
   MVPP2_SHARED *Mvpp2Shared = Pp2Context->Port.Priv;
   INTN Index;
@@ -661,29 +659,57 @@ Pp2DxeHalt (
   MvGop110PortDisable(Port);
 }
 
+VOID
+EFIAPI
+Pp2DxeHaltEvent (
+  IN EFI_EVENT Event,
+  IN VOID *Context
+  )
+{
+  PP2DXE_CONTEXT *Pp2Context = Context;
+
+  Pp2DxeHalt (Pp2Context);
+}
+
 EFI_STATUS
 EFIAPI
 Pp2SnpShutdown (
   IN EFI_SIMPLE_NETWORK_PROTOCOL *This
   )
 {
+  PP2DXE_CONTEXT *Pp2Context;
   EFI_TPL SavedTpl;
-  SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
-  PP2DXE_CONTEXT *Pp2Context = INSTANCE_FROM_SNP(This);
-  UINT32 State = This->Mode->State;
 
-  if (State != EfiSimpleNetworkInitialized) {
-    switch (State) {
+  /* Check Snp Instance. */
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
+  Pp2Context = INSTANCE_FROM_SNP (This);
+
+  /* Check whether the driver was started and initialized. */
+  if (This->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (This->Mode->State) {
     case EfiSimpleNetworkStopped:
-      DEBUG((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
       ReturnUnlock (SavedTpl, EFI_NOT_STARTED);
     case EfiSimpleNetworkStarted:
-    /* Fall through */
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
     default:
-      DEBUG((DEBUG_ERROR, "Pp2Dxe%d: wrong state\n", Pp2Context->Instance));
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        This->Mode->State));
       ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
     }
   }
+
+  Pp2DxeHalt (Pp2Context);
+
+  This->Mode->State = EfiSimpleNetworkStarted;
 
   ReturnUnlock (SavedTpl, EFI_SUCCESS);
 }
@@ -1458,7 +1484,7 @@ Pp2DxeInitialiseController (
     Status = gBS->CreateEvent (
                  EVT_SIGNAL_EXIT_BOOT_SERVICES,
                  TPL_NOTIFY,
-                 Pp2DxeHalt,
+                 Pp2DxeHaltEvent,
                  Pp2Context,
                  &Pp2Context->EfiExitBootServicesEvent
                );

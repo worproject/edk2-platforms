@@ -647,6 +647,33 @@ Pp2SnpReset (
   IN BOOLEAN                     ExtendedVerification
   )
 {
+  PP2DXE_CONTEXT *Pp2Context;
+
+  /* Check This Instance. */
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Pp2Context = INSTANCE_FROM_SNP (This);
+
+  /* Check that driver was started and initialized. */
+  if (This->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (This->Mode->State) {
+    case EfiSimpleNetworkStopped:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      return EFI_NOT_STARTED;
+    case EfiSimpleNetworkStarted:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      return EFI_DEVICE_ERROR;
+    default:
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        This->Mode->State));
+      return EFI_DEVICE_ERROR;
+    }
+  }
+
   return EFI_SUCCESS;
 }
 

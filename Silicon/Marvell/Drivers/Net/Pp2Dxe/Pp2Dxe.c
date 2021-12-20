@@ -575,11 +575,19 @@ Pp2SnpStart (
   )
 {
   PP2DXE_CONTEXT *Pp2Context;
-  UINT32 State = This->Mode->State;
   EFI_TPL SavedTpl;
+  UINT32 State;
+
+  /* Check Snp Instance. */
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
 
   SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
   Pp2Context = INSTANCE_FROM_SNP(This);
+  State = This->Mode->State;
 
   if (State != EfiSimpleNetworkStopped) {
     switch (State) {
@@ -604,9 +612,18 @@ Pp2SnpStop (
   )
 {
   EFI_TPL SavedTpl;
+  PP2DXE_CONTEXT *Pp2Context;
+  UINT32 State;
+
+  // Check Snp Instance
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
-  PP2DXE_CONTEXT *Pp2Context = INSTANCE_FROM_SNP(This);
-  UINT32 State = This->Mode->State;
+
+  Pp2Context = INSTANCE_FROM_SNP(This);
+  State = This->Mode->State;
 
   if (State != EfiSimpleNetworkStarted && State != EfiSimpleNetworkInitialized) {
     switch (State) {

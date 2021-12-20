@@ -1214,23 +1214,50 @@ Pp2SnpReceive (
   )
 {
   INTN ReceivedPackets;
-  PP2DXE_CONTEXT *Pp2Context = INSTANCE_FROM_SNP(This);
-  PP2DXE_PORT *Port = &Pp2Context->Port;
-  MVPP2_SHARED *Mvpp2Shared = Pp2Context->Port.Priv;
+  PP2DXE_CONTEXT *Pp2Context;
+  PP2DXE_PORT *Port;
   UINTN PhysAddr, VirtAddr;
-  EFI_STATUS Status = EFI_SUCCESS;
+  EFI_STATUS Status;
   EFI_TPL SavedTpl;
   UINT32 StatusReg;
   INTN PoolId;
   UINTN PktLength;
   UINT8 *DataPtr;
   MVPP2_RX_DESC *RxDesc;
-  MVPP2_RX_QUEUE *Rxq = &Port->Rxqs[0];
+  MVPP2_RX_QUEUE *Rxq;
 
-  ASSERT (Port != NULL);
-  ASSERT (Rxq != NULL);
+  /* Check input parameters. */
+  if (This == NULL || Buffer == NULL || BufferSize == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
 
   SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
+  Pp2Context = INSTANCE_FROM_SNP (This);
+
+  /* Check whether the driver was started and initialized. */
+  if (This->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (This->Mode->State) {
+    case EfiSimpleNetworkStopped:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_NOT_STARTED);
+    case EfiSimpleNetworkStarted:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    default:
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        This->Mode->State));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    }
+  }
+
+  Port = &Pp2Context->Port;
+  ASSERT (Port != NULL);
+  Rxq = &Port->Rxqs[0];
+  ASSERT (Rxq != NULL);
+
   ReceivedPackets = Mvpp2RxqReceived(Port, Rxq->Id);
 
   if (ReceivedPackets == 0) {
@@ -1285,10 +1312,12 @@ Pp2SnpReceive (
     *EtherType = NTOHS (*(UINT16 *)(&DataPtr[12]));
   }
 
+  Status = EFI_SUCCESS;
+
 drop:
   /* Refill: pass packet back to BM */
   PoolId = (StatusReg & MVPP2_RXD_BM_POOL_ID_MASK) >> MVPP2_RXD_BM_POOL_ID_OFFS;
-  Mvpp2BmPoolPut(Mvpp2Shared, PoolId, PhysAddr, VirtAddr);
+  Mvpp2BmPoolPut (Pp2Context->Port.Priv, PoolId, PhysAddr, VirtAddr);
 
   /* Update counters with 1 packet received and 1 packet refilled */
   Mvpp2RxqStatusUpdate(Port, Rxq->Id, 1, 1);

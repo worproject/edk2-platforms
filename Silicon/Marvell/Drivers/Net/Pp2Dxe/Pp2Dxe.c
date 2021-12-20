@@ -991,15 +991,42 @@ Pp2SnpGetStatus (
   OUT VOID                       **TxBuf OPTIONAL
   )
 {
-  PP2DXE_CONTEXT *Pp2Context = INSTANCE_FROM_SNP(Snp);
-  PP2DXE_PORT *Port = &Pp2Context->Port;
+  PP2DXE_CONTEXT *Pp2Context;
+  PP2DXE_PORT *Port;
   BOOLEAN LinkUp;
   EFI_TPL SavedTpl;
 
+  /* Check Snp Instance. */
+  if (Snp == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
   SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
+  Pp2Context = INSTANCE_FROM_SNP (Snp);
+
+  /* Check whether the driver was started and initialized. */
+  if (Snp->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (Snp->Mode->State) {
+    case EfiSimpleNetworkStopped:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_NOT_STARTED);
+    case EfiSimpleNetworkStarted:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    default:
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        Snp->Mode->State));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    }
+  }
 
   if (!Pp2Context->Initialized)
     ReturnUnlock(SavedTpl, EFI_NOT_READY);
+
+  Port = &Pp2Context->Port;
 
   LinkUp = Port->AlwaysUp ? TRUE : MvGop110PortIsLinkUp(Port);
 

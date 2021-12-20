@@ -889,12 +889,85 @@ EFI_STATUS
 EFIAPI
 Pp2SnpIpToMac (
   IN EFI_SIMPLE_NETWORK_PROTOCOL *This,
-  IN BOOLEAN                     IPv6,
-  IN EFI_IP_ADDRESS              *IP,
-  OUT EFI_MAC_ADDRESS            *MAC
+  IN BOOLEAN                     IsIpv6,
+  IN EFI_IP_ADDRESS              *Ip,
+  OUT EFI_MAC_ADDRESS            *McastMac
   )
 {
-  return EFI_UNSUPPORTED;
+  PP2DXE_CONTEXT *Pp2Context;
+  EFI_TPL SavedTpl;
+
+  /* Check Snp Instance. */
+  if (This == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
+
+  Pp2Context = INSTANCE_FROM_SNP (This);
+
+  /* Check that driver was started and initialised. */
+  if (This->Mode->State != EfiSimpleNetworkInitialized) {
+    switch (This->Mode->State) {
+    case EfiSimpleNetworkStopped:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not started\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_NOT_STARTED);
+    case EfiSimpleNetworkStarted:
+      DEBUG ((DEBUG_WARN, "Pp2Dxe%d: not initialized\n", Pp2Context->Instance));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    default:
+      DEBUG ((DEBUG_WARN,
+        "Pp2Dxe%d: wrong state: %u\n",
+        Pp2Context->Instance,
+        This->Mode->State));
+      ReturnUnlock (SavedTpl, EFI_DEVICE_ERROR);
+    }
+  }
+
+  /* Check parameters. */
+  if ((McastMac == NULL) || (Ip == NULL)) {
+    ReturnUnlock (SavedTpl, EFI_INVALID_PARAMETER);
+  }
+
+  /* Make sure MAC address is empty. */
+  ZeroMem (McastMac, sizeof(EFI_MAC_ADDRESS));
+
+  /* If we need ipv4 address. */
+  if (!IsIpv6) {
+    /*
+     * Most significant 25 bits of a multicast HW address are set.
+     * 01-00-5E is the IPv4 Ethernet Multicast Address (see RFC 1112).
+     */
+    McastMac->Addr[0] = 0x01;
+    McastMac->Addr[1] = 0x00;
+    McastMac->Addr[2] = 0x5E;
+
+    /*
+     * Lower 23 bits from ipv4 address
+     * Clear the most significant bit (25th bit of MAC must be 0).
+     */
+    McastMac->Addr[3] = Ip->v4.Addr[1] & 0x7F;
+    McastMac->Addr[4] = Ip->v4.Addr[2];
+    McastMac->Addr[5] = Ip->v4.Addr[3];
+  } else {
+    /*
+     * Most significant 16 bits of multicast v6 HW address are set
+     * 33-33 is the IPv6 Ethernet Multicast Address (see RFC 2464).
+     */
+    McastMac->Addr[0] = 0x33;
+    McastMac->Addr[1] = 0x33;
+
+    /* Lower four octets are taken from ipv6 address. */
+    McastMac->Addr[2] = Ip->v6.Addr[8];
+    McastMac->Addr[3] = Ip->v6.Addr[9];
+    McastMac->Addr[4] = Ip->v6.Addr[10];
+    McastMac->Addr[5] = Ip->v6.Addr[11];
+  }
+
+  /* Restore TPL and return. */
+  gBS->RestoreTPL (SavedTpl);
+
+  return EFI_SUCCESS;
 }
 
 EFI_STATUS

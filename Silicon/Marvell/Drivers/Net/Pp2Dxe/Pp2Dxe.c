@@ -1074,9 +1074,15 @@ Pp2SnpTransmit (
   }
 
   if (HeaderSize != 0) {
-    ASSERT (HeaderSize == This->Mode->MediaHeaderSize);
-    ASSERT (EtherTypePtr != NULL);
-    ASSERT (DestAddr != NULL);
+    if (HeaderSize != This->Mode->MediaHeaderSize ||
+        EtherTypePtr == NULL ||
+        DestAddr == NULL) {
+      return EFI_INVALID_PARAMETER;
+    }
+  }
+
+  if (BufferSize < This->Mode->MediaHeaderSize) {
+      return EFI_BUFFER_TOO_SMALL;
   }
 
   SavedTpl = gBS->RaiseTPL (TPL_CALLBACK);
@@ -1100,8 +1106,6 @@ Pp2SnpTransmit (
     ReturnUnlock(SavedTpl, EFI_NOT_READY);
   }
 
-  EtherType = HTONS (*EtherTypePtr);
-
   /* Fetch next descriptor */
   TxDesc = Mvpp2TxqNextDescGet(AggrTxq);
 
@@ -1117,6 +1121,8 @@ Pp2SnpTransmit (
       CopyMem(DataPtr + NET_ETHER_ADDR_LEN, SrcAddr, NET_ETHER_ADDR_LEN);
     else
       CopyMem(DataPtr + NET_ETHER_ADDR_LEN, &This->Mode->CurrentAddress, NET_ETHER_ADDR_LEN);
+
+    EtherType = HTONS (*EtherTypePtr);
 
     CopyMem(DataPtr + NET_ETHER_ADDR_LEN * 2, &EtherType, 2);
   }

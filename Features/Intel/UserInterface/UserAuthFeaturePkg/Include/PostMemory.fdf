@@ -7,6 +7,6 @@
 #
 ##
 
-  INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
-  INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
-  INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf
+INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
+INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
+INF UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf

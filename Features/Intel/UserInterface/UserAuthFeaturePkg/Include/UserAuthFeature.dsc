@@ -58,8 +58,8 @@
   #####################################
   # User Authentication Feature Package
   #####################################
-  PlatformPasswordLib|UserInterface/UserAuthFeaturePkg/Library/PlatformPasswordLibNull/PlatformPasswordLibNull.inf
-  UserPasswordLib|UserInterface/UserAuthFeaturePkg/Library/UserPasswordLib/UserPasswordLib.inf
+  PlatformPasswordLib|UserAuthFeaturePkg/Library/PlatformPasswordLibNull/PlatformPasswordLibNull.inf
+  UserPasswordLib|UserAuthFeaturePkg/Library/UserPasswordLib/UserPasswordLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   #######################################
@@ -122,12 +122,12 @@
 
   # Add library instances here that are not included in package components and should be tested
   # in the package build.
-  UserInterface/UserAuthFeaturePkg/Library/UserPasswordUiLib/UserPasswordUiLib.inf
+  UserAuthFeaturePkg/Library/UserPasswordUiLib/UserPasswordUiLib.inf
 
   # Add components here that should be included in the package build.
-  UserInterface/UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
-  UserInterface/UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
-  UserInterface/UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationDxe.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthentication2Dxe.inf
+  UserAuthFeaturePkg/UserAuthenticationDxeSmm/UserAuthenticationSmm.inf
 
 ###################################################################################################
 #

@@ -18,36 +18,12 @@
 #
 ################################################################################
 [Defines]
-!ifndef $(PEI_ARCH)
-  !error "PEI_ARCH must be specified to build this feature!"
-!endif
-!ifndef $(DXE_ARCH)
-  !error "DXE_ARCH must be specified to build this feature!"
-!endif
-
-################################################################################
-#
-# Library Class section - list of all Library Classes needed by this feature.
-#
-################################################################################
-
-!include MdePkg/MdeLibs.dsc.inc
-
-[LibraryClasses]
-  #######################################
-  # Edk2 Packages
-  #######################################
-  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
-  BaseMemoryLib|MdePkg/Library/BaseMemoryLibRepStr/BaseMemoryLibRepStr.inf
-  DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
-  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
-  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
-
-[LibraryClasses.common.DXE_DRIVER]
-  #######################################
-  # Edk2 Packages
-  #######################################
-  PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
+  !ifndef $(PEI_ARCH)
+    !error "PEI_ARCH must be specified to build this feature!"
+  !endif
+  !ifndef $(DXE_ARCH)
+    !error "DXE_ARCH must be specified to build this feature!"
+  !endif
 
 ################################################################################
 #
@@ -71,31 +47,8 @@
 # @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
 #        is completed.
 [Components.X64]
-  #####################################
-  # Logo Feature Package
-  #####################################
-
-  # Add library instances here that are not included in package components and should be tested
-  # in the package build.
-
-  # Add components here that should be included in the package build.
-!if gLogoFeaturePkgTokenSpaceGuid.PcdJpgEnable == TRUE
-  LogoFeaturePkg/LogoDxe/JpegLogoDxe.inf
-!else
-  LogoFeaturePkg/LogoDxe/LogoDxe.inf
-!endif
-
-###################################################################################################
-#
-# BuildOptions Section - Define the module specific tool chain flags that should be used as
-#                        the default flags for a module. These flags are appended to any
-#                        standard flags that are defined by the build process. They can be
-#                        applied for any modules or only those modules with the specific
-#                        module style (EDK or EDKII) specified in [Components] section.
-#
-#                        For advanced features, it is recommended to enable [BuildOptions] in
-#                        the applicable INF file so it does not affect the whole board package
-#                        build when this DSC file is active.
-#
-###################################################################################################
-[BuildOptions]
+  !if gLogoFeaturePkgTokenSpaceGuid.PcdJpgEnable == TRUE
+    LogoFeaturePkg/LogoDxe/JpegLogoDxe.inf
+  !else
+    LogoFeaturePkg/LogoDxe/LogoDxe.inf
+  !endif

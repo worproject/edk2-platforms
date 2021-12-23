@@ -7,4 +7,4 @@
 #
 ##
 
-  INF UserInterface/VirtualKeyboardFeaturePkg/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
+  INF VirtualKeyboardFeaturePkg/VirtualKeyboardDxe/VirtualKeyboardDxe.inf

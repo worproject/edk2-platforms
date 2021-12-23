@@ -81,7 +81,7 @@
   #####################################
   # Virtual Keyboard Feature Package
   #####################################
-  UserInterface/VirtualKeyboardFeaturePkg/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
+  VirtualKeyboardFeaturePkg/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
 
 ###################################################################################################
 #

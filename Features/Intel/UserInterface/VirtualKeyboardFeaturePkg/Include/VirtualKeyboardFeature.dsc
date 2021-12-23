@@ -18,43 +18,12 @@
 #
 ################################################################################
 [Defines]
-!ifndef $(PEI_ARCH)
-  !error "PEI_ARCH must be specified to build this feature!"
-!endif
-!ifndef $(DXE_ARCH)
-  !error "DXE_ARCH must be specified to build this feature!"
-!endif
-
-################################################################################
-#
-# Library Class section - list of all Library Classes needed by this feature.
-#
-################################################################################
-
-!include MdePkg/MdeLibs.dsc.inc
-
-[LibraryClasses]
-  #######################################
-  # Edk2 Packages
-  #######################################
-  BaseLib|MdePkg/Library/BaseLib/BaseLib.inf
-  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
-  DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
-  UefiBootServicesTableLib|MdePkg/Library/UefiBootServicesTableLib/UefiBootServicesTableLib.inf
-  UefiDriverEntryPoint|MdePkg/Library/UefiDriverEntryPoint/UefiDriverEntryPoint.inf
-  UefiLib|MdePkg/Library/UefiLib/UefiLib.inf
-  PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
-  HiiLib|MdeModulePkg/Library/UefiHiiLib/UefiHiiLib.inf
-  DevicePathLib|MdePkg/Library/UefiDevicePathLib/UefiDevicePathLib.inf
-  PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
-  UefiHiiServicesLib|MdeModulePkg/Library/UefiHiiServicesLib/UefiHiiServicesLib.inf
-  UefiRuntimeServicesTableLib|MdePkg/Library/UefiRuntimeServicesTableLib/UefiRuntimeServicesTableLib.inf
-
-[LibraryClasses.common.UEFI_DRIVER]
-  #######################################
-  # Edk2 Packages
-  #######################################
-  MemoryAllocationLib|MdePkg/Library/UefiMemoryAllocationLib/UefiMemoryAllocationLib.inf
+  !ifndef $(PEI_ARCH)
+    !error "PEI_ARCH must be specified to build this feature!"
+  !endif
+  !ifndef $(DXE_ARCH)
+    !error "DXE_ARCH must be specified to build this feature!"
+  !endif
 
 ###################################################################################################
 #
@@ -74,26 +43,9 @@
 #       generated for it, but the binary will not be put into any firmware volume.
 #
 ###################################################################################################
+
 #
 # Feature DXE Components
 #
 [Components.X64]
-  #####################################
-  # Virtual Keyboard Feature Package
-  #####################################
   VirtualKeyboardFeaturePkg/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
-
-###################################################################################################
-#
-# BuildOptions Section - Define the module specific tool chain flags that should be used as
-#                        the default flags for a module. These flags are appended to any
-#                        standard flags that are defined by the build process. They can be
-#                        applied for any modules or only those modules with the specific
-#                        module style (EDK or EDKII) specified in [Components] section.
-#
-#                        For advanced features, it is recommended to enable [BuildOptions] in
-#                        the applicable INF file so it does not affect the whole board package
-#                        build when this DSC file is active.
-#
-###################################################################################################
-[BuildOptions]

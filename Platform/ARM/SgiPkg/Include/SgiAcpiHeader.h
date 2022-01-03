@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2018-2021, ARM Limited. All rights reserved.
+*  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -41,135 +41,169 @@
 #define OSC_CAP_PLAT_COORDINATED_LPI  (1U << 7)
 #define OSC_CAP_OS_INITIATED_LPI      (1U << 8)
 
+// Cache type identifier used to calculate unique cache ID for PPTT
+typedef enum {
+  L1DataCache = 1,
+  L1InstructionCache,
+  L2Cache,
+  L3Cache,
+} RD_PPTT_CACHE_TYPE;
+
 #pragma pack(1)
 // PPTT processor core structure
 typedef struct {
-  EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Core;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR  Core;
   UINT32                                 ResourceOffset[2];
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      DCache;
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      ICache;
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      L2Cache;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE      DCache;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE      ICache;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE      L2Cache;
 } RD_PPTT_CORE;
 
 // PPTT processor cluster structure
 typedef struct {
-  EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Cluster;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR  Cluster;
   UINT32                                 ResourceOffset;
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      L3Cache;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE      L3Cache;
   RD_PPTT_CORE                           Core[CORE_COUNT];
 } RD_PPTT_CLUSTER;
 
 // PPTT processor cluster structure without cache
 typedef struct {
-  EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Cluster;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR  Cluster;
   RD_PPTT_CORE                           Core[CORE_COUNT];
 } RD_PPTT_MINIMAL_CLUSTER;
 
 // PPTT processor package structure
 typedef struct {
-  EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Package;
+  EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR  Package;
   RD_PPTT_MINIMAL_CLUSTER                Cluster[CLUSTER_COUNT];
 } RD_PPTT_PACKAGE;
 #pragma pack ()
 
 //
 // PPTT processor structure flags for different SoC components as defined in
-// ACPI 6.3 specification
+// ACPI 6.4 specification
 //
 
 // Processor structure flags for SoC package
 #define PPTT_PROCESSOR_PACKAGE_FLAGS                                           \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_PHYSICAL,                                        \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
-    EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,                                        \
-    EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL                                 \
+    EFI_ACPI_6_4_PPTT_PACKAGE_PHYSICAL,                                        \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_INVALID,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
+    EFI_ACPI_6_4_PPTT_NODE_IS_NOT_LEAF,                                        \
+    EFI_ACPI_6_4_PPTT_IMPLEMENTATION_IDENTICAL                                 \
   }
 
 // Processor structure flags for cluster
 #define PPTT_PROCESSOR_CLUSTER_FLAGS                                           \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,                                      \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
-    EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,                                        \
-    EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL                                 \
+    EFI_ACPI_6_4_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_VALID,                                      \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
+    EFI_ACPI_6_4_PPTT_NODE_IS_NOT_LEAF,                                        \
+    EFI_ACPI_6_4_PPTT_IMPLEMENTATION_IDENTICAL                                 \
   }
 
 // Processor structure flags for cluster with multi-thread core
 #define PPTT_PROCESSOR_CLUSTER_THREADED_FLAGS                                  \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
-    EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,                                        \
-    EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL                                 \
+    EFI_ACPI_6_4_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_INVALID,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
+    EFI_ACPI_6_4_PPTT_NODE_IS_NOT_LEAF,                                        \
+    EFI_ACPI_6_4_PPTT_IMPLEMENTATION_IDENTICAL                                 \
   }
 
 // Processor structure flags for single-thread core
 #define PPTT_PROCESSOR_CORE_FLAGS                                              \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,                                      \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
-    EFI_ACPI_6_3_PPTT_NODE_IS_LEAF                                             \
+    EFI_ACPI_6_4_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_VALID,                                      \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
+    EFI_ACPI_6_4_PPTT_NODE_IS_LEAF                                             \
   }
 
 // Processor structure flags for multi-thread core
 #define PPTT_PROCESSOR_CORE_THREADED_FLAGS                                     \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_INVALID,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
-    EFI_ACPI_6_3_PPTT_NODE_IS_NOT_LEAF,                                        \
-    EFI_ACPI_6_3_PPTT_IMPLEMENTATION_IDENTICAL                                 \
+    EFI_ACPI_6_4_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_INVALID,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_NOT_THREAD,                                 \
+    EFI_ACPI_6_4_PPTT_NODE_IS_NOT_LEAF,                                        \
+    EFI_ACPI_6_4_PPTT_IMPLEMENTATION_IDENTICAL                                 \
   }
 
 // Processor structure flags for CPU thread
 #define PPTT_PROCESSOR_THREAD_FLAGS                                            \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_ID_VALID,                                      \
-    EFI_ACPI_6_3_PPTT_PROCESSOR_IS_THREAD,                                     \
-    EFI_ACPI_6_3_PPTT_NODE_IS_LEAF                                             \
+    EFI_ACPI_6_4_PPTT_PACKAGE_NOT_PHYSICAL,                                    \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_ID_VALID,                                      \
+    EFI_ACPI_6_4_PPTT_PROCESSOR_IS_THREAD,                                     \
+    EFI_ACPI_6_4_PPTT_NODE_IS_LEAF                                             \
   }
 
-// PPTT cache structure flags as defined in ACPI 6.3 Specification
+// PPTT cache structure flags as defined in ACPI 6.4 Specification
 #define PPTT_CACHE_STRUCTURE_FLAGS                                             \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_CACHE_SIZE_VALID,                                        \
-    EFI_ACPI_6_3_PPTT_NUMBER_OF_SETS_VALID,                                    \
-    EFI_ACPI_6_3_PPTT_ASSOCIATIVITY_VALID,                                     \
-    EFI_ACPI_6_3_PPTT_ALLOCATION_TYPE_VALID,                                   \
-    EFI_ACPI_6_3_PPTT_CACHE_TYPE_VALID,                                        \
-    EFI_ACPI_6_3_PPTT_WRITE_POLICY_VALID,                                      \
-    EFI_ACPI_6_3_PPTT_LINE_SIZE_VALID                                          \
+    EFI_ACPI_6_4_PPTT_CACHE_SIZE_VALID,                                        \
+    EFI_ACPI_6_4_PPTT_NUMBER_OF_SETS_VALID,                                    \
+    EFI_ACPI_6_4_PPTT_ASSOCIATIVITY_VALID,                                     \
+    EFI_ACPI_6_4_PPTT_ALLOCATION_TYPE_VALID,                                   \
+    EFI_ACPI_6_4_PPTT_CACHE_TYPE_VALID,                                        \
+    EFI_ACPI_6_4_PPTT_WRITE_POLICY_VALID,                                      \
+    EFI_ACPI_6_4_PPTT_LINE_SIZE_VALID,                                         \
+    EFI_ACPI_6_4_PPTT_CACHE_ID_VALID                                           \
   }
 
 // PPTT cache attributes for data cache
 #define PPTT_DATA_CACHE_ATTR                                                   \
   {                                                                            \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                       \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,                             \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                       \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_CACHE_TYPE_DATA,                             \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
   }
 
 // PPTT cache attributes for instruction cache
 #define PPTT_INST_CACHE_ATTR                                                   \
   {                                                                            \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ,                             \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,                      \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_ALLOCATION_READ,                             \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_CACHE_TYPE_INSTRUCTION,                      \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
   }
 
 // PPTT cache attributes for unified cache
 #define PPTT_UNIFIED_CACHE_ATTR                                                \
   {                                                                            \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                       \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,                          \
-    EFI_ACPI_6_3_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_ALLOCATION_READ_WRITE,                       \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_CACHE_TYPE_UNIFIED,                          \
+    EFI_ACPI_6_4_CACHE_ATTRIBUTES_WRITE_POLICY_WRITE_BACK                      \
   }
+
+/** Helper macro to calculate a unique cache ID
+
+  Macro to calculate a unique 32 bit cache ID. The 32-bit encoding format of the
+  cache ID is
+  * Bits[31:24]: Unused
+  * Bits[23:20]: Package number the cache belongs to
+  * Bits[19:12]: Cluster number the cache belongs to (0, if not a cluster cache)
+  * Bits[11:4] : Core number the cache belongs to (0, if not a CPU cache)
+  * Bits[3:0]  : Cache Type (as defined by RD_PPTT_CACHE_TYPE)
+
+  Note: Cache ID zero is invalid as per ACPI 6.4 specification. Also this
+  calculation is not based on any specification.
+
+  @param [in] PackageId Package instance number.
+  @param [in] ClusterId Cluster instance number (for Cluster cache, 0 otherwise)
+  @param [in] CpuId     CPU instance number (for CPU cache, 0 otherwise).
+  @param [in] CacheType Identifier for cache type as defined by
+                        RD_PPTT_CACHE_TYPE.
+**/
+#define RD_PPTT_CACHE_ID(PackageId, ClusterId, CoreId, CacheType)              \
+    (                                                                          \
+      (((PackageId) & 0xF) << 20) | (((ClusterId) & 0xFF) << 12) |             \
+      (((CoreId) & 0xFF) << 4) | ((CacheType) & 0xF)                           \
+    )
 
 // A macro to initialise the common header part of EFI ACPI tables as defined by
 // EFI_ACPI_DESCRIPTION_HEADER structure.
@@ -185,12 +219,13 @@ typedef struct {
     EFI_ACPI_ARM_CREATOR_REVISION   /* UINT32  CreatorRevision */ \
   }
 
-// EFI_ACPI_6_2_GIC_STRUCTURE
-#define EFI_ACPI_6_2_GICC_STRUCTURE_INIT(GicId, AcpiCpuUid, Mpidr, Flags,      \
-  PmuIrq, GicBase, GicVBase, GicHBase, GsivId, GicRBase, Efficiency)           \
+// EFI_ACPI_6_4_GIC_STRUCTURE
+#define EFI_ACPI_6_4_GICC_STRUCTURE_INIT(GicId, AcpiCpuUid, Mpidr, Flags,      \
+  PmuIrq, GicBase, GicVBase, GicHBase, GsivId, GicRBase, Efficiency,           \
+  SpeOverflowInterrupt)                                                        \
   {                                                                            \
-    EFI_ACPI_6_2_GIC,                     /* Type */                           \
-    sizeof (EFI_ACPI_6_2_GIC_STRUCTURE),  /* Length */                         \
+    EFI_ACPI_6_4_GIC,                     /* Type */                           \
+    sizeof (EFI_ACPI_6_4_GIC_STRUCTURE),  /* Length */                         \
     EFI_ACPI_RESERVED_WORD,               /* Reserved */                       \
     GicId,                                /* CPUInterfaceNumber */             \
     AcpiCpuUid,                           /* AcpiProcessorUid */               \
@@ -205,19 +240,16 @@ typedef struct {
     GicRBase,                             /* GICRBaseAddress */                \
     Mpidr,                                /* MPIDR */                          \
     Efficiency,                           /* ProcessorPowerEfficiencyClass */  \
-    {                                                                          \
-      EFI_ACPI_RESERVED_BYTE,             /* Reserved2[0] */                   \
-      EFI_ACPI_RESERVED_BYTE,             /* Reserved2[1] */                   \
-      EFI_ACPI_RESERVED_BYTE              /* Reserved2[2] */                   \
-    }                                                                          \
+    EFI_ACPI_RESERVED_BYTE,               /* Reserved2 */                      \
+    SpeOverflowInterrupt                  /* SpeOverflowInterrupt */           \
   }
 
-// EFI_ACPI_6_2_GIC_DISTRIBUTOR_STRUCTURE
-#define EFI_ACPI_6_2_GIC_DISTRIBUTOR_INIT(GicDistHwId, GicDistBase,            \
+// EFI_ACPI_6_4_GIC_DISTRIBUTOR_STRUCTURE
+#define EFI_ACPI_6_4_GIC_DISTRIBUTOR_INIT(GicDistHwId, GicDistBase,            \
   GicDistVector, GicVersion)                                                   \
   {                                                                            \
-    EFI_ACPI_6_2_GICD,                    /* Type */                           \
-    sizeof (EFI_ACPI_6_2_GIC_DISTRIBUTOR_STRUCTURE),                           \
+    EFI_ACPI_6_4_GICD,                    /* Type */                           \
+    sizeof (EFI_ACPI_6_4_GIC_DISTRIBUTOR_STRUCTURE),                           \
     EFI_ACPI_RESERVED_WORD,               /* Reserved1 */                      \
     GicDistHwId,                          /* GicId */                          \
     GicDistBase,                          /* PhysicalBaseAddress */            \
@@ -230,43 +262,43 @@ typedef struct {
     }                                                                          \
   }
 
-// EFI_ACPI_6_2_GICR_STRUCTURE
-#define EFI_ACPI_6_2_GIC_REDISTRIBUTOR_INIT(RedisRegionAddr, RedisDiscLength)  \
+// EFI_ACPI_6_4_GICR_STRUCTURE
+#define EFI_ACPI_6_4_GIC_REDISTRIBUTOR_INIT(RedisRegionAddr, RedisDiscLength)  \
   {                                                                            \
-    EFI_ACPI_6_2_GICR,                    /* Type */                           \
-    sizeof (EFI_ACPI_6_2_GICR_STRUCTURE), /* Length */                         \
+    EFI_ACPI_6_4_GICR,                    /* Type */                           \
+    sizeof (EFI_ACPI_6_4_GICR_STRUCTURE), /* Length */                         \
     EFI_ACPI_RESERVED_WORD,               /* Reserved */                       \
     RedisRegionAddr,                      /* DiscoveryRangeBaseAddress */      \
     RedisDiscLength                       /* DiscoveryRangeLength */           \
   }
 
-// EFI_ACPI_6_2_GIC_ITS_STRUCTURE
-#define EFI_ACPI_6_2_GIC_ITS_INIT(GicItsId, GicItsBase)                        \
+// EFI_ACPI_6_4_GIC_ITS_STRUCTURE
+#define EFI_ACPI_6_4_GIC_ITS_INIT(GicItsId, GicItsBase)                        \
   {                                                                            \
-    EFI_ACPI_6_2_GIC_ITS,                 /* Type */                           \
-    sizeof (EFI_ACPI_6_2_GIC_ITS_STRUCTURE),                                   \
+    EFI_ACPI_6_4_GIC_ITS,                 /* Type */                           \
+    sizeof (EFI_ACPI_6_4_GIC_ITS_STRUCTURE),                                   \
     EFI_ACPI_RESERVED_WORD,               /* Reserved */                       \
     GicItsId,                             /* GicItsId */                       \
     GicItsBase,                           /* PhysicalBaseAddress */            \
     EFI_ACPI_RESERVED_DWORD               /* DiscoveryRangeLength */           \
   }
 
-// EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE
-#define EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE_INIT(                           \
+// EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE
+#define EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE_INIT(                           \
           ProximityDomain, Base, Length, Flags)                                \
   {                                                                            \
-    1, sizeof (EFI_ACPI_6_3_MEMORY_AFFINITY_STRUCTURE), ProximityDomain,       \
+    1, sizeof (EFI_ACPI_6_4_MEMORY_AFFINITY_STRUCTURE), ProximityDomain,       \
     EFI_ACPI_RESERVED_WORD, (Base) & 0xffffffff,                               \
     (Base) >> 32, (Length) & 0xffffffff,                                       \
     (Length) >> 32, EFI_ACPI_RESERVED_DWORD, Flags,                            \
     EFI_ACPI_RESERVED_QWORD                                                    \
   }
 
-// EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE
-#define EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE_INIT(                             \
+// EFI_ACPI_6_4_GICC_AFFINITY_STRUCTURE
+#define EFI_ACPI_6_4_GICC_AFFINITY_STRUCTURE_INIT(                             \
           ProximityDomain, ACPIProcessorUID, Flags, ClockDomain)               \
   {                                                                            \
-    3, sizeof (EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE), ProximityDomain,         \
+    3, sizeof (EFI_ACPI_6_4_GICC_AFFINITY_STRUCTURE), ProximityDomain,         \
     ACPIProcessorUID,  Flags,  ClockDomain                                     \
   }
 
@@ -274,16 +306,16 @@ typedef struct {
 // HMAT related structures
 //
 // Memory Proximity Domain Attributes Structure
-// Refer Section 5.2.27.3 in ACPI Specification, Version 6.3
-#define EFI_ACPI_6_3_HMAT_STRUCTURE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES_INIT(   \
+// Refer Section 5.2.27.3 in ACPI Specification, Version 6.4
+#define EFI_ACPI_6_4_HMAT_STRUCTURE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES_INIT(   \
     Flags, ProximityDomainForAttachedIntiator, ProximityDomainForMemory)       \
   {                                                                            \
-    EFI_ACPI_6_3_HMAT_TYPE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES,                 \
+    EFI_ACPI_6_4_HMAT_TYPE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES,                 \
     {                                                                          \
       EFI_ACPI_RESERVED_BYTE,                                                  \
       EFI_ACPI_RESERVED_BYTE                                                   \
     },                                                                         \
-    sizeof (EFI_ACPI_6_3_HMAT_STRUCTURE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES),   \
+    sizeof (EFI_ACPI_6_4_HMAT_STRUCTURE_MEMORY_PROXIMITY_DOMAIN_ATTRIBUTES),   \
     {                                                                          \
       Flags,                                                                   \
       0                                                                        \
@@ -319,28 +351,27 @@ typedef struct {
   }
 
 // System Locality Latency and Bandwidth Information Structure
-// Refer Section 5.2.27.4 in ACPI Specification, Version 6.3
-#define EFI_ACPI_6_3_HMAT_STRUCTURE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO_INIT(  \
-    Flags, DataType, NumInitiatorProximityDomains,                                    \
+// Refer Section 5.2.27.4 in ACPI Specification, Version 6.4
+#define EFI_ACPI_6_4_HMAT_STRUCTURE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO_INIT(  \
+    Flags, DataType, MinTransferSize, NumInitiatorProximityDomains,                   \
     NumTargetProximityDomains, EntryBaseUnit)                                         \
   {                                                                                   \
-    EFI_ACPI_6_3_HMAT_TYPE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO,                \
+    EFI_ACPI_6_4_HMAT_TYPE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO,                \
     {                                                                                 \
       EFI_ACPI_RESERVED_BYTE,                                                         \
       EFI_ACPI_RESERVED_BYTE                                                          \
     },                                                                                \
-    sizeof (EFI_ACPI_6_3_HMAT_STRUCTURE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO) + \
+    sizeof (EFI_ACPI_6_4_HMAT_STRUCTURE_SYSTEM_LOCALITY_LATENCY_AND_BANDWIDTH_INFO) + \
       (4 * NumInitiatorProximityDomains) + (4 * NumTargetProximityDomains) +          \
       (2 * NumInitiatorProximityDomains * NumTargetProximityDomains),                 \
     {                                                                                 \
       Flags,                                                                          \
+      0,                                                                              \
       0                                                                               \
     },                                                                                \
+    MinTransferSize,                                                                  \
     DataType,                                                                         \
-    {                                                                                 \
-      EFI_ACPI_RESERVED_BYTE,                                                         \
-      EFI_ACPI_RESERVED_BYTE                                                          \
-    },                                                                                \
+    EFI_ACPI_RESERVED_BYTE,                                                           \
     NumInitiatorProximityDomains,                                                     \
     NumTargetProximityDomains,                                                        \
     {                                                                                 \
@@ -353,17 +384,17 @@ typedef struct {
   }
 
 // Memory Side Cache Information Structure
-// Refer Section 5.2.27.5 in ACPI Specification, Version 6.3
-#define EFI_ACPI_6_3_HMAT_STRUCTURE_MEMORY_SIDE_CACHE_INFO_INIT(               \
+// Refer Section 5.2.27.5 in ACPI Specification, Version 6.4
+#define EFI_ACPI_6_4_HMAT_STRUCTURE_MEMORY_SIDE_CACHE_INFO_INIT(               \
     MemoryProximityDomain, MemorySideCacheSize, CacheAttributes,               \
     NumberOfSmbiosHandles)                                                     \
   {                                                                            \
-    EFI_ACPI_6_3_HMAT_TYPE_MEMORY_SIDE_CACHE_INFO,                             \
+    EFI_ACPI_6_4_HMAT_TYPE_MEMORY_SIDE_CACHE_INFO,                             \
     {                                                                          \
       EFI_ACPI_RESERVED_BYTE,                                                  \
       EFI_ACPI_RESERVED_BYTE                                                   \
     },                                                                         \
-    sizeof (EFI_ACPI_6_3_HMAT_STRUCTURE_MEMORY_SIDE_CACHE_INFO) +              \
+    sizeof (EFI_ACPI_6_4_HMAT_STRUCTURE_MEMORY_SIDE_CACHE_INFO) +              \
       (NumberOfSmbiosHandles * 2),                                             \
     MemoryProximityDomain,                                                     \
     {                                                                          \
@@ -382,7 +413,7 @@ typedef struct {
   }
 
 /** A macro to initialise the Memory Side Cache Information Attributes.
-    See Table 5.124 in ACPI Specification, Version 6.3
+    See Table 5.130 in ACPI Specification, Version 6.4
 
   @param [in] TotalCacheLevels    Total Cache Levels for this Memory Proximity.
   @param [in] CacheLevel          Cache Level described in this structure.
@@ -397,11 +428,11 @@ typedef struct {
   TotalCacheLevels, CacheLevel, CacheAssociativity, WritePolicy, CacheLineSize \
 }
 
-// EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR
-#define EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT(Length, Flag, Parent,       \
+// EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR
+#define EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR_INIT(Length, Flag, Parent,       \
   ACPIProcessorID, NumberOfPrivateResource)                                    \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_TYPE_PROCESSOR,                 /* Type 0 */             \
+    EFI_ACPI_6_4_PPTT_TYPE_PROCESSOR,                 /* Type 0 */             \
     Length,                                           /* Length */             \
     {                                                                          \
       EFI_ACPI_RESERVED_BYTE,                                                  \
@@ -413,12 +444,12 @@ typedef struct {
     NumberOfPrivateResource                           /* Resource count */     \
   }
 
-// EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE
-#define EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT(Flag, NextLevelCache, Size,     \
-  NoOfSets, Associativity, Attributes, LineSize)                               \
+// EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE
+#define EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE_INIT(Flag, NextLevelCache, Size,     \
+  NoOfSets, Associativity, Attributes, LineSize, CacheId)                      \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_TYPE_CACHE,                     /* Type 1 */             \
-    sizeof (EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE),       /* Length */             \
+    EFI_ACPI_6_4_PPTT_TYPE_CACHE,                     /* Type 1 */             \
+    sizeof (EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE),       /* Length */             \
     {                                                                          \
       EFI_ACPI_RESERVED_BYTE,                                                  \
       EFI_ACPI_RESERVED_BYTE,                                                  \
@@ -429,7 +460,8 @@ typedef struct {
     NoOfSets,                                         /* Num of sets */        \
     Associativity,                                    /* Num of ways */        \
     Attributes,                                       /* Cache attributes */   \
-    LineSize                                          /* Line size in bytes */ \
+    LineSize,                                         /* Line size in bytes */ \
+    CacheId                                           /* Cache id */           \
   }
 
 /** Helper macro for CPPC _CPC object initialization. Use of this macro is

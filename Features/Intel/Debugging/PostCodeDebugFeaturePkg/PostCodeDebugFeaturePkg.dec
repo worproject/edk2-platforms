@@ -28,5 +28,16 @@
 [Guids]
   gPostCodeDebugFeaturePkgTokenSpaceGuid  =  {0x68886ac8, 0x7a29, 0x4845, {0xa7, 0x02, 0xe9, 0x83, 0xc8, 0x7f, 0xfb, 0xab}}
 
+[PcdsFeatureFlag]
+  gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable|FALSE|BOOLEAN|0x00000002
+
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+  ## This PCD allows for dynamic control of post code use if so desired.
+  #
+  #  The PCD value can be modified at boot time to activate and deactivate the feature functionality.
+  #
+  #  Note that this differs from Pcd<FeatureName>FeatureEnable which determines whether the feature is included
+  #  as an advanced feature in the flash image. If enabled, the feature is then eligible to be activated/deactivated
+  #  via this PCD.
+  #
   gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode|FALSE|BOOLEAN|0x00000001

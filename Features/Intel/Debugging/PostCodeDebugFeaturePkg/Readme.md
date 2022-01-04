@@ -16,7 +16,7 @@ It also provide a library of PostCodeMap lib, it map the status code to post cod
 A library of PostCode lib is needed by platform.
 
 In the library contstructor function, PostCodeStatusCodeHandlerLib register the call back function for ReportStatusCode.
-When called, it call GetPostCodeFromStatusCode() in PostCodeMapLib to get post code from status code, and call PostCode() in PostCodeLib to show the post code.
+When called, it call GetPostCodeFromStatusCode () in PostCodeMapLib to get post code from status code, and call PostCode () in PostCodeLib to show the post code.
 
 PostCodeStatusCodeHandlerLib include 3 libraries for PEI, RuntimeDxe, SMM:
 * PeiPostCodeStatusCodeHandlerLib
@@ -38,6 +38,7 @@ This library provide a function to get post code from status code.
 
 ## Key Functions
 * In PeiPostCodeStatusCodeHandlerLib:
+```
   EFI_STATUS
   EFIAPI
   PostCodeStatusCodeReportWorker (
@@ -48,8 +49,10 @@ This library provide a function to get post code from status code.
     IN CONST EFI_GUID                 *CallerId,
     IN CONST EFI_STATUS_CODE_DATA     *Data OPTIONAL
   )
+```
 
 * In RuntimeDxePostCodeStatusCodeHandlerLib:
+```
   EFI_STATUS
   EFIAPI
   PostCodeStatusCodeReportWorker (
@@ -59,8 +62,10 @@ This library provide a function to get post code from status code.
     IN EFI_GUID                       *CallerId,
     IN EFI_STATUS_CODE_DATA           *Data OPTIONAL
   )
+```
 
 * In SmmPostCodeStatusCodeHandlerLib:
+```
   EFI_STATUS
   EFIAPI
   PostCodeStatusCodeReportWorker (
@@ -70,23 +75,28 @@ This library provide a function to get post code from status code.
     IN EFI_GUID                       *CallerId,
     IN EFI_STATUS_CODE_DATA           *Data OPTIONAL
     )
+```
 
 * In PostCodeMapLib:
+```
   UINT32
   EFIAPI
   GetPostCodeFromStatusCode (
     IN EFI_STATUS_CODE_TYPE           CodeType,
     IN EFI_STATUS_CODE_VALUE          Value
   )
+```
 
 ## Configuration
-* Link the library to StatusCodeHandler.efi.
+* Link the library to StatusCodeHandler.efi to add this status code handler.
+```
   Example:
     MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf {
       <LibraryClasses>
         NULL|PostCodeDebugFeaturePkg/Library/PostCodeStatusCodeHandlerLib/RuntimeDxePostCodeStatusCodeHandlerLib.inf
     }
-  Refer to PostCodeDebugFeature.dsc for other example.
+```
+  Refer to PostCodeDebugFeature.dsc for another example.
 * Config PCD gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode.
   In platform .dsc file, need to config the type of gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode.
   Use PcdsFixedAtBuild to save binary size, and use PcdsDynamic if want to enable/disable in runtime.
@@ -98,20 +108,23 @@ This library provide a function to get post code from status code.
 Status Code (ReportStatusCode) -> Post Code (GetPostCodeFromStatusCode).
 
 ## Control Flows
-ReportStatusCode() -> PostCodeStatusCodeReportWorker() -> GetPostCodeFromStatusCode() -> PostCode()
+ReportStatusCode () -> PostCodeStatusCodeReportWorker () -> GetPostCodeFromStatusCode () -> PostCode ()
 
 ## Build Flows
-There is not special build flows.
+There are not special build flows.
 
 ## Test Point Results
-Verify the post code shown is correct.
+There are no test points defined.
 
 ## Functional Exit Criteria
 N/A
 
 ## Feature Enabling Checklist
-* Set the PCD gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode to TRUE.
-* The post code can be shown.
+* Set the PCD gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable to TRUE.
+* Select the PCD type desired and set the PCD gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode to TRUE.
+* Implemented a platform specific PostCodeMapLib if needed.
+* Verify the post code can be shown correctly.
 
 ## Common Optimizations
-* Implemented platform's special PostCodeMapLib if needed.
+* Set gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdStatusCodeUsePostCode based on a larger, board specific, size
+  optimization or performance optimization setting.

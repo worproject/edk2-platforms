@@ -15,7 +15,7 @@
   FILE_GUID                      = FA32350A-63DB-4AC6-88D1-BC5327EE7ECE
   MODULE_TYPE                    = PEIM
   CONSTRUCTOR                    = PeiPostCodeStatusCodeHandlerLibConstructor
-  LIBRARY_CLASS                  = StatusCodeHandlerLib|SEC PEIM PEI_COR
+  LIBRARY_CLASS                  = StatusCodeHandlerLib|SEC PEIM PEI_CORE
 
 #
 # The following information is for reference only and not required by the build tools.

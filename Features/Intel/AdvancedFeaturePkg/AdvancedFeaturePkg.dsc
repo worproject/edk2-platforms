@@ -36,7 +36,6 @@
 
 !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
 
-
 ################################################################################
 #
 # Advanced Feature Enable section - all advanced features are enabling for the
@@ -44,25 +43,70 @@
 #
 ################################################################################
 [PcdsFeatureFlag]
-  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable            |TRUE
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                      |TRUE
-  gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                |TRUE
-  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                          |TRUE
-  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                  |TRUE
-  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable            |TRUE
-  gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable    |TRUE
-  gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                      |TRUE
-  gLogoFeaturePkgTokenSpaceGuid.PcdJpgEnable                              |FALSE
+  #
+  # Debugging features
+  #
+  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable              |TRUE
+  gBeepDebugFeaturePkgTokenSpaceGuid.PcdBeepDebugFeatureEnable              |TRUE
+  gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable      |TRUE
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable              |TRUE
+
+  #
+  # Network features
+  #
+  gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                  |TRUE
+
+  #
+  # OutOfBandManagement features
+  #
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |TRUE
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |TRUE
+
+  #
+  # PowerManagement features
+  #
+  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                            |TRUE
+
+  #
+  # SystemInformation features
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                    |TRUE
+
+  #
+  # UserInterface features
+  #
+  gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                        |TRUE
+  gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |TRUE
+  gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |TRUE
+
+#
+# PCD that are required to be set by the build target should be configured here for test purposes
+# These settings are only for the purposes of buildings, boards should follow instructions in Readme files.
+#
+
+[PcdsFixedAtBuild]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
+
+[PcdsFeatureFlag]
+  #
+  # MinPlatform common include currently required PCD
+  #
   gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
 
 #
-# Include common library
+# Include common libraries
 #
 !include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
+
+#
+# Libraries required to be specified by the build target
+#
+[LibraryClasses.Common]
+  PlatformHookLib|MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf # Required by BeepDebugFeature
 
 #
 # This package builds all advanced features.

@@ -195,32 +195,47 @@ At a minimum, an advanced feature must consist of the following elements:
 6. Add the source code for the advanced feature.
     * If the feature is large it is recommended to add libraries in one patch and then modules in a following patch.
 
-7. Update the feature DSC file. This file is in `XxxFeaturePkg/Include/XxxFeature.dsc`.
+7. Update the feature DSC include file. This file is in `XxxFeaturePkg/Include/XxxFeature.dsc`.
     * In most cases, `XxxFeaturePkg/XxxFeaturePkg.dsc` should just `!include XxxFeaturePkg/Include/XxxFeature.dsc`.
+    * This file should not duplicate core content from `MinPlatformPkg/Include/Dsc` except where a change is required by
+    the feature.
 
-8. Update the feature FDF files. These files are `XxxFeaturePkg/Include/PreMemory.fdf` and
+8. Update the feature FDF include files. These files are `XxxFeaturePkg/Include/PreMemory.fdf` and
    `XxxFeaturePkg/Include/PostMemory.fdf`.
     * Each file should contain the feature pre-memory modules and post-memory modules respectively.
 
 9. Build the advanced feature package to ensure the build is successful:
-
     From the workspace root:
-    1. cd edk2-platforms/edk2
-    2. Execute edksetup.bat (Windows) or edksetup.sh (Linux).
-    3. Verify the "WORKSPACE" environment variable is set to the edk2 directory in your workspace.
-    4. Set the "PACKAGES_PATH" environment variable to include the edk2-platforms/Platform/Intel, edk2-platforms/Silicon/Intel,
-       and edk2-platforms/Features/Intel directories.
+    1. Verify the "WORKSPACE" environment variable is set to the parent of edk2 and edk2-platforms directory in your
+       workspace.
+    2. Set the "PACKAGES_PATH" environment variable to include the edk2, edk2-platforms/Platform/Intel,
+       edk2-platforms/Silicon/Intel, and edk2-platforms/Features/Intel directories.
        * Windows example:
-         * set PACKAGES_PATH=c:\Edk2Workspace\edk2-platforms\Platform\Intel;
-                             c:\Edk2Workspace\edk2-platforms\Silicon\Intel;
-                             c:\Edk2Workspace\edk2-platforms\Features\Intel
+         * set PACKAGES_PATH=%WORKSPACE%\edk2;
+                             %WORKSPACE%\edk2-platforms\Platform\Intel;
+                             %WORKSPACE%\edk2-platforms\Silicon\Intel;
+                             %WORKSPACE%\edk2-platforms\Features\Intel;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\Debugging;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\Network;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\OutOfBandManagement;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\PowerManagement;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\SystemInformation;
+                             %WORKSPACE%\edk2-platforms\Features\Intel\UserInterface
        * Linux example:
-         * export PACKAGES_PATH=~/Edk2Workspace/edk2-platforms/Platform/Intel:
+         * export PACKAGES_PATH=~Edk2Workspace/edk2:
+                                ~/Edk2Workspace/edk2-platforms/Platform/Intel:
                                 ~/Edk2Workspace/edk2-platforms/Silicon/Intel:
-                                ~/Edk2Workspace/edk2-platforms/Features/Intel
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/Debugging:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/Network:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/OutOfBandManagement:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/PowerManagement:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/SystemInformation:
+                                ~/Edk2Workspace/edk2-platforms/Features/Intel/UserInterface
+    3. cd edk2
+    4. Execute edksetup.bat (Windows) or edksetup.sh (Linux).
     5. cd edk2-platforms/Features/Intel
-    6. <pre>build -p FeatureDomainDirectory/XxxFeaturePkg/XxxFeaturePkg.dsc -a IA32 -a X64</pre>
-
+    6. <pre>build -a IA32 -a X64 -p FeatureDomainDirectory/XxxFeaturePkg/XxxFeaturePkg.dsc</pre>
        *Note:* -a specifies the architecture. Typically IA32 and X64 modules are built for 32-bit PEI and 64-bit
        DXE though build for your specific requirements.
 
@@ -228,11 +243,13 @@ At a minimum, an advanced feature must consist of the following elements:
     1. Add `XxxFeaturePkg/Include/XxxFeature.dsc` to `AdvancedFeatures.dsc`
     2. Add `XxxFeaturePkg/Include/PreMemory.fdf` to `AdvancedFeaturePkg/Include/PreMemory.fdf`
     3. Add `XxxFeaturePkg/Include/PostMemory.fdf` to `AdvancedFeaturePkg/Include/PostMemory.fdf`
+    4. Add the `PcdFeatureEnable` to `AdvancedFeaturesPcd.dsc` set to FALSE
+    5. Add the `PcdFeatureEnable` to `AdvancedFeaturePkg.dsc` set to TRUE
 
 11. Build `AdvancedFeaturePkg` to ensure the build is successful.
     1. Follow the steps in step #9 but change the build command to:
 
-    <pre>build -p AdvancedFeaturePkg/AdvancedFeaturePkg.dsc -a IA32 -a X64</pre>
+    <pre>build  -a IA32 -a X64 -p AdvancedFeaturePkg/AdvancedFeaturePkg.dsc</pre>
 
 12. Before sending your patch series, ensure the `Readme.md` file in `XxxFeaturePkg` is completed so others can use it
     during the feature review.

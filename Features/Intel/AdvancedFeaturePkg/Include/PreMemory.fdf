@@ -12,10 +12,18 @@
 ##
 
 #
-# Debug Advanced Features
+# Debugging features
 #
 !if gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable == TRUE
   !include AcpiDebugFeaturePkg/Include/PreMemory.fdf
+!endif
+
+!if gBeepDebugFeaturePkgTokenSpaceGuid.PcdBeepDebugFeatureEnable == TRUE
+  !include BeepDebugFeaturePkg/Include/PreMemory.fdf
+!endif
+
+!if gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable == TRUE
+  !include PostCodeDebugFeaturePkg/Include/PreMemory.fdf
 !endif
 
 !if gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable == TRUE
@@ -23,40 +31,48 @@
 !endif
 
 #
-# Network Advanced Features
+# Network features
 #
 !if gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable == TRUE
   !include NetworkFeaturePkg/Include/PreMemory.fdf
 !endif
 
 #
-# Out-of-Band Management Advanced Features
+# OutOfBandManagement features
 #
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
   !include IpmiFeaturePkg/Include/PreMemory.fdf
 !endif
 
+!if gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable == TRUE
+  !include SpcrFeaturePkg/Include/PreMemory.fdf
+!endif
+
 #
-# Power Management Advanced Features
+# PowerManagement features
 #
 !if gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable == TRUE
   !include S3FeaturePkg/Include/PreMemory.fdf
 !endif
 
 #
-# System Information Advanced Features
+# SystemInformation features
 #
 !if gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable == TRUE
   !include SmbiosFeaturePkg/Include/PreMemory.fdf
 !endif
 
 #
-# User Interface Advanced Features
+# UserInterface features
 #
+!if gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable == TRUE
+  !include LogoFeaturePkg/Include/PreMemory.fdf
+!endif
+
 !if gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable == TRUE
   !include UserAuthFeaturePkg/Include/PreMemory.fdf
 !endif
 
-!if gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable == TRUE
-  !include LogoFeaturePkg/Include/PreMemory.fdf
+!if gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable == TRUE
+  !include VirtualKeyboardFeaturePkg/Include/PreMemory.fdf
 !endif

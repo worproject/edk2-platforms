@@ -24,6 +24,27 @@
   PEI_ARCH                       = IA32
   DXE_ARCH                       = X64
 
+[Packages]
+  MinPlatformPkg/MinPlatformPkg.dec
+
+#
+# Since there are no 32b libraries or components in this package, these PCD are specified for 64b only
+#
+[PcdsFeatureFlag.X64]
+  #
+  # PCD needed for MinPlatform build includes
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
+
+#
+# Include common libraries
+#
+!include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
+!include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
+!include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
+
 #
 # This package always builds the feature.
 #

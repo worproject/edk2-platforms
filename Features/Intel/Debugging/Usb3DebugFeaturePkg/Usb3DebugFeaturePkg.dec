@@ -36,6 +36,12 @@
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable|FALSE|BOOLEAN|0xA0000001
 
 [PcdsFixedAtBuild]
+  ## This PCD allows the board to select the Usb3DebugPortLib instance desired
+  # 0 = NULL instance
+  # 1 = Regular instance
+  # 2 = IO MMU instance
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|0|UINT8|0xF0000009
+
   ## These PCD specify XHCI controller Bus/Device/Function, which are used to enable
   #  XHCI debug device.
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsbSerialXhciBus|0x00|UINT8|0xF0000001
@@ -47,11 +53,3 @@
   #  Default timeout value is 2000000 microseconds.
   #  If user does not want system stall for long time, it can be set to small value.
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdXhciHostWaitTimeout|2000000|UINT64|0xF0000005
-
-  ## This PCD sepcifies the start index in CMOS, it will occupy 1 bytes space.
-  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortBusIndex|0x59|UINT8|0xF0000006
-  ## This PCD sepcifies the start index in CMOS, it will occupy 1 bytes space.
-  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortDeviceIndex|0x5A|UINT8|0xF0000007
-  ## This PCD sepcifies the start index in CMOS, it will occupy 1 bytes space.
-  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortFunctionIndex|0x5B|UINT8|0xF0000008
-

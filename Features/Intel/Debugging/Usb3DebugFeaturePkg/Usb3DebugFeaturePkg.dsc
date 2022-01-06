@@ -24,7 +24,25 @@
   PEI_ARCH                       = IA32
   DXE_ARCH                       = X64
 
+[PcdsFixedAtBuild]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|0
+
 #
 # This package always builds the feature.
 #
 !include Include/Usb3DebugFeature.dsc
+
+#
+# This package currently only contains library classes.  To force them to be built since there is no code to use them
+# we just tell the build that they are components and the build will compile the libraries
+#
+
+[Components]
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortLib/Usb3DebugPortLibNull.inf
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortParamLibPcd/Usb3DebugPortParamLibPcd.inf
+
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortLib/Usb3DebugPortLibPei.inf
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortLib/Usb3DebugPortLibPeiIoMmu.inf
+
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortLib/Usb3DebugPortLibDxe.inf
+  Usb3DebugFeaturePkg/Library/Usb3DebugPortLib/Usb3DebugPortLibDxeIoMmu.inf

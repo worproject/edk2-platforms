@@ -29,12 +29,15 @@ The description should not be constrained to implementation details but provide 
 feature is supposed to work.
 
 ## Firmware Volumes
-*_TODO_*
-A bulleted list of the firmware volumes that feature module(s) are placed in.
+Not applicable, the feature only produces libraries.
 
 ## Modules
-*_TODO_*
-A bulleted list of the modules that make up the feature.
+* Usb3DebugPortLibDxe
+* Usb3DebugPortLibDxeIoMmu
+* Usb3DebugPortLibNull
+* Usb3DebugPortLibPei
+* Usb3DebugPortLibPeiIoMmu
+* Usb3DebugPortParamLibPcd
 
 ## <Module Name>
 *_TODO_*
@@ -76,11 +79,7 @@ This is particularly useful for features that use custom build tools or require 
 standard flow in the feature package template is used, this section may be empty.
 
 ## Test Point Results
-*_TODO_*
-The test(s) that can verify porting is complete for the feature.
-
-Each feature must describe at least one test point to verify the feature is successful. If the test point is not
-implemented, this should be stated.
+No test points implemented
 
 ## Functional Exit Criteria
 *_TODO_*
@@ -90,8 +89,28 @@ This section should provide an ordered list of criteria that a board integrator 
 functional on their board.
 
 ## Feature Enabling Checklist
-*_TODO_*
-An ordered list of required activities to achieve desired functionality for the feature.
+* In the board DSC file, enable the feature
+```
+[PcdsFeatureFlag]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable|TRUE
+```
+* In the board DSC file, select the implementation desired
+```
+[PcdsFixedAtBuild]
+  # 0 = Non-functional instance
+  # 1 = Regular instance
+  # 2 = IO MMU instance
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
+```
+* In the board DSC file, configure the PCI device information
+```
+[PcdsFixedAtBuild]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsbSerialXhciBus|0x00
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsbSerialXhciDev|0x14
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsbSerialXhciFunc|0x00
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdXhciDefaultBaseAddress|0xFEA10000
+```
+
 
 ## Performance Impact
 A general expectation for the impact on overall boot performance due to using this feature.
@@ -102,7 +121,8 @@ This section is expected to provide guidance on:
 * How to manage performance impact of the feature
 
 ## Common Optimizations
-*_TODO_*
-Common size or performance tuning options for this feature.
-
-This section is recommended but not required. If not used, the contents should be left empty.
+* In the board DSC file, tune the timeout value
+```
+[PcdsFixedAtBuild]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdXhciHostWaitTimeout|2000000
+```

@@ -29,6 +29,7 @@
   SKUID_IDENTIFIER                    = DEFAULT
   PEI_ARCH                            = IA32
   DXE_ARCH                            = X64
+  FLASH_DEFINITION                    = AdvancedFeaturePkg/AdvancedFeaturePkg.fdf
 
 [Packages]
   MdePkg/MdePkg.dec

@@ -33,6 +33,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
   WhitleySiliconPkg/WhitleySiliconPkg.dec
   WhitleySiliconPkg/CpRcPkg.dec
   WhitleyOpenBoardPkg/PlatformPkg.dec

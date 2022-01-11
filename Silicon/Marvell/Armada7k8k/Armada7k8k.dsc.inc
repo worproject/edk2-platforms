@@ -1,5 +1,5 @@
 #
-#Copyright (c) 2011-2012, ARM Limited. All rights reserved.
+#Copyright (c) 2011-2022, ARM Limited. All rights reserved.
 #Copyright (C) 2016 Marvell International Ltd.
 #
 #SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -387,7 +387,6 @@
   # SMBIOS/DMI
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosDocRev|0x0
   gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosEntryPointProvideMethod|0x2
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmbiosVersion|0x0302
   gMarvellTokenSpaceGuid.PcdFirmwareVersion|"EDK2 SH 1.1"
 
   # TRNG

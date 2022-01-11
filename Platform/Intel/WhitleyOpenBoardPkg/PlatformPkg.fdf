@@ -84,7 +84,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize          = 0x00040000 # Size must match WhitleyFspPkg.fdf content
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize          = 0x00221000 # Size must match WhitleyFspPkg.fdf content
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize          = 0x00006000 # Size must match WhitleyFspPkg.fdf content
-  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize  = 0x00001000
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize  = 0x00010000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize     = gCpPlatFlashTokenSpaceGuid.PcdFlashFdSecPeiSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspTSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvBspPreMemorySize
 
   #
@@ -481,6 +481,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 09f25d44-b2ef-4225-8b2e-e0e094b51775
 
+  !include AdvancedFeaturePkg/Include/PreMemory.fdf
+
 [FV.FvBspPreMemory]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = e6c65995-8c2d-4119-a52d-7dbf1acb45a1
@@ -709,6 +711,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 [FV.FvAdvancedUncompressed]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 70aeaf57-4997-49ce-a4f7-122980745670
+
+  !include AdvancedFeaturePkg/Include/PostMemory.fdf
 
 [FV.FvAdvanced]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf

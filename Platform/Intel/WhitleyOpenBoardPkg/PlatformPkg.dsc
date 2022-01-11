@@ -39,6 +39,50 @@
   DEFINE IIO_INSTANCE           = UnknownCpu
 !endif
 
+!include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
+
+[PcdsFixedAtBuild]
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
+
+[PcdsFeatureFlag]
+  #
+  # Debugging features
+  #
+  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable              |FALSE
+  gBeepDebugFeaturePkgTokenSpaceGuid.PcdBeepDebugFeatureEnable              |FALSE
+  gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable      |FALSE
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable              |FALSE
+
+  #
+  # Network features
+  #
+  gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                  |FALSE
+
+  #
+  # OutOfBandManagement features
+  #
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |FALSE
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |FALSE
+
+  #
+  # PowerManagement features
+  #
+  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                            |FALSE
+
+  #
+  # SystemInformation features
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                    |FALSE
+
+  #
+  # UserInterface features
+  #
+  gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                        |FALSE
+  gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |FALSE
+  gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |FALSE
+
+!include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
+
   #
   # Platform On/Off features are defined here
   #

@@ -15,45 +15,46 @@
 # Debug Advanced Features
 #
 !if gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable == TRUE
-  !include Debugging/AcpiDebugFeaturePkg/Include/PostMemory.fdf
+  !include AcpiDebugFeaturePkg/Include/PostMemory.fdf
 !endif
+
 !if gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable == TRUE
-  !include Debugging/Usb3DebugFeaturePkg/Include/PostMemory.fdf
+  !include Usb3DebugFeaturePkg/Include/PostMemory.fdf
 !endif
 
 #
 # Network Advanced Features
 #
 !if gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable == TRUE
-  !include Network/NetworkFeaturePkg/Include/PostMemory.fdf
+  !include NetworkFeaturePkg/Include/PostMemory.fdf
 !endif
 
 #
 # Out-of-Band Management Advanced Features
 #
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
-  !include OutOfBandManagement/IpmiFeaturePkg/Include/PostMemory.fdf
+  !include IpmiFeaturePkg/Include/PostMemory.fdf
 !endif
 
 #
 # Power Management Advanced Features
 #
 !if gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable == TRUE
-  !include PowerManagement/S3FeaturePkg/Include/PostMemory.fdf
+  !include S3FeaturePkg/Include/PostMemory.fdf
 !endif
 
 #
 # System Information Advanced Features
 #
 !if gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable == TRUE
-  !include SystemInformation/SmbiosFeaturePkg/Include/PostMemory.fdf
+  !include SmbiosFeaturePkg/Include/PostMemory.fdf
 !endif
 
 #
 # User Interface Advanced Features
 #
 !if gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable == TRUE
-  !include UserInterface/UserAuthFeaturePkg/Include/PostMemory.fdf
+  !include UserAuthFeaturePkg/Include/PostMemory.fdf
 !endif
 
 !if gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable == TRUE

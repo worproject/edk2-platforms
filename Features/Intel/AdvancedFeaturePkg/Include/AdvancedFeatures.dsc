@@ -14,45 +14,46 @@
 # Debug Advanced Features
 #
 !if gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable == TRUE
-  !include Debugging/AcpiDebugFeaturePkg/Include/AcpiDebugFeature.dsc
+  !include AcpiDebugFeaturePkg/Include/AcpiDebugFeature.dsc
 !endif
+
 !if gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable == TRUE
-  !include Debugging/Usb3DebugFeaturePkg/Include/Usb3DebugFeature.dsc
+  !include Usb3DebugFeaturePkg/Include/Usb3DebugFeature.dsc
 !endif
 
 #
 # Network Advanced Features
 #
 !if gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable == TRUE
-  !include Network/NetworkFeaturePkg/Include/NetworkFeature.dsc
+  !include NetworkFeaturePkg/Include/NetworkFeature.dsc
 !endif
 
 #
 # Out-of-Band Management Advanced Features
 #
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
-  !include OutOfBandManagement/IpmiFeaturePkg/Include/IpmiFeature.dsc
+  !include IpmiFeaturePkg/Include/IpmiFeature.dsc
 !endif
 
 #
 # Power Management Advanced Features
 #
 !if gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable == TRUE
-  !include PowerManagement/S3FeaturePkg/Include/S3Feature.dsc
+  !include S3FeaturePkg/Include/S3Feature.dsc
 !endif
 
 #
 # System Information Advanced Features
 #
 !if gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable == TRUE
-  !include SystemInformation/SmbiosFeaturePkg/Include/SmbiosFeature.dsc
+  !include SmbiosFeaturePkg/Include/SmbiosFeature.dsc
 !endif
 
 #
 # User Interface Advanced Features
 #
 !if gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable == TRUE
-  !include UserInterface/UserAuthFeaturePkg/Include/UserAuthFeature.dsc
+  !include UserAuthFeaturePkg/Include/UserAuthFeature.dsc
 !endif
 
 !if gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable == TRUE

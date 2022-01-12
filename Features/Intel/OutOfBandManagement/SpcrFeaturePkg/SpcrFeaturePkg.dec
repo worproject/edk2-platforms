@@ -21,6 +21,12 @@
 [Includes]
   Include
 
+[Guids]
+  gSpcrFeaturePkgTokenSpaceGuid = { 0xe978c988, 0xeeba, 0x4671, { 0xb8, 0x0d, 0xcc, 0x8b, 0x89, 0xb5, 0xd1, 0xef }}
+
+[PcdsFeatureFlag]
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable|FALSE|BOOLEAN|0x00000001
+
 [LibraryClasses]
   ## @libraryclass  Provides an API for get SPCR device.
   #

@@ -22,10 +22,10 @@ Platform can implement its own library to select the serial port device.
 * SpcrDeviceLibNull
 
 ## SpcrAcpiDxe
-The main driver of convert the serial port device info to ACPI table.
-It will call the function GetSpcrDevice() in the library SpcrDeviceLib to get the serial port device path.
+The main driver of convert the serial port device info into an ACPI table.
+It will call the function GetSpcrDevice () in the library SpcrDeviceLib to get the serial port device path.
 If the serial port device path is not NULL, then use gEfiPciIoProtocolGuid to get the PCI info, and use the gEfiSerialIoProtocolGuid to get the serial port info, such as the baud rate etc.
-If the serial port device is PCI device 00:16:03 (AMT serial over lan PCI device), then will set the BaseAddress.
+If the serial port device is PCI device 00:16:03 (AMT serial over LAN PCI device), then will set the BaseAddress.
 At last fill the ACPI table as Windows required.
 
 ## SpcrDeviceLibNull
@@ -37,19 +37,19 @@ Fill the serial port device info used for SPCR to ACPI table.
 
 ## Configuration
 There is not special configuration.
-But the platform maybe implemente its own SpcrDeviceLib.
+But the platform may implement its own SpcrDeviceLib.
 
 ## Data Flows
 GetSpcrDevice() -> serial port device path -> get PCI info and serial port info -> ACPI table.
 
 ## Control Flows
-GetSpcrDevice() in SpcrDeviceLib -> SpcrAcpiDxe.
+GetSpcrDevice () in SpcrDeviceLib -> SpcrAcpiDxe.
 
 ## Build Flows
 There is not special build flow.
 
 ## Test Point Results
-* Check the output ACPI table.
+There are not test points implemented.
 
 ## Functional Exit Criteria
 * Check the output ACPI table.

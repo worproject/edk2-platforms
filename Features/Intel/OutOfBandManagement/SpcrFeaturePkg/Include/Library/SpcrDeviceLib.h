@@ -12,7 +12,7 @@
 
 /**
   Get a Serial Port device used for SPCR.
-  The caller should call FreePool() to free the memory if return value is not NULL.
+  The caller should call FreePool () to free the memory if return value is not NULL.
 
   @retval NULL          Can not get device.
   @retval Others        A serial port device path.

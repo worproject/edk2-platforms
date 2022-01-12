@@ -7,6 +7,6 @@
 #
 ##
 
-INF OutOfBandManagement/IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
-INF OutOfBandManagement/IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
-INF OutOfBandManagement/IpmiFeaturePkg/Frb/FrbPei.inf
+INF IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
+INF IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
+INF IpmiFeaturePkg/Frb/FrbPei.inf

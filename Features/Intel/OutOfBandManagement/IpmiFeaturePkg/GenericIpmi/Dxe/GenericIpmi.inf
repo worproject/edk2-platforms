@@ -36,7 +36,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  OutOfBandManagement/IpmiFeaturePkg/IpmiFeaturePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
   MemoryAllocationLib

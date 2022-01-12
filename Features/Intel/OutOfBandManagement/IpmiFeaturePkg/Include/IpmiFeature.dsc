@@ -36,14 +36,14 @@
 [LibraryClasses]
   IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
 
-  IpmiCommandLib|OutOfBandManagement/IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
-  IpmiPlatformHookLib|OutOfBandManagement/IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
+  IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  IpmiPlatformHookLib|IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
-  IpmiBaseLib|OutOfBandManagement/IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  IpmiBaseLib|IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
 
 [LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER]
-  IpmiBaseLib|OutOfBandManagement/IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
+  IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
 
 ################################################################################
 #
@@ -73,14 +73,14 @@
   # Add library instances here that are not included in package components and should be tested
   # in the package build.
 
-  OutOfBandManagement/IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
+  IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
   #
   # Add components here that should be included in the package build.
   #
-  OutOfBandManagement/IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
-  OutOfBandManagement/IpmiFeaturePkg/Frb/FrbPei.inf
-  OutOfBandManagement/IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
+  IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
+  IpmiFeaturePkg/Frb/FrbPei.inf
+  IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
 
 #
 # Feature DXE Components
@@ -96,17 +96,17 @@
   # Add library instances here that are not included in package components and should be tested
   # in the package build.
 
-  OutOfBandManagement/IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
+  IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
   #
   # Add components here that should be included in the package build.
   #
-  OutOfBandManagement/IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
-  OutOfBandManagement/IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
-  OutOfBandManagement/IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  OutOfBandManagement/IpmiFeaturePkg/BmcElog/BmcElog.inf
-  OutOfBandManagement/IpmiFeaturePkg/Frb/FrbDxe.inf
-  OutOfBandManagement/IpmiFeaturePkg/IpmiFru/IpmiFru.inf
-  OutOfBandManagement/IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
-  OutOfBandManagement/IpmiFeaturePkg/OsWdt/OsWdt.inf
-  OutOfBandManagement/IpmiFeaturePkg/SolStatus/SolStatus.inf
+  IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
+  IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
+  IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+  IpmiFeaturePkg/BmcElog/BmcElog.inf
+  IpmiFeaturePkg/Frb/FrbDxe.inf
+  IpmiFeaturePkg/IpmiFru/IpmiFru.inf
+  IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
+  IpmiFeaturePkg/OsWdt/OsWdt.inf
+  IpmiFeaturePkg/SolStatus/SolStatus.inf

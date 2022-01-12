@@ -21,7 +21,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  OutOfBandManagement/IpmiFeaturePkg/IpmiFeaturePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
   UefiBootServicesTableLib

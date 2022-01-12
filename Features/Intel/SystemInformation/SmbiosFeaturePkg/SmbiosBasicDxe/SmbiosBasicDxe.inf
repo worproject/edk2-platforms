@@ -33,7 +33,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+  SmbiosFeaturePkg/SmbiosFeaturePkg.dec
 
 [LibraryClasses]
   BaseLib

@@ -38,7 +38,7 @@
       IndustryStandard/SmBios.h
     <Packages>
       MdePkg/MdePkg.dec
-      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      SmbiosFeaturePkg/SmbiosFeaturePkg.dec
   }
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.Vendor|0x1
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType0BiosInformation.BiosVersion|0x2
@@ -71,7 +71,7 @@
       IndustryStandard/SmBios.h
     <Packages>
       MdePkg/MdePkg.dec
-      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      SmbiosFeaturePkg/SmbiosFeaturePkg.dec
   }
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.Manufacturer|0x1
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType1SystemInformation.ProductName|0x2
@@ -87,7 +87,7 @@
       IndustryStandard/SmBios.h
     <Packages>
       MdePkg/MdePkg.dec
-      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      SmbiosFeaturePkg/SmbiosFeaturePkg.dec
   }
 
   #
@@ -111,7 +111,7 @@
       IndustryStandard/SmBios.h
     <Packages>
       MdePkg/MdePkg.dec
-      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      SmbiosFeaturePkg/SmbiosFeaturePkg.dec
   }
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.Manufacturer|0x1
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType3SystemEnclosureChassis.Type|MiscChassisTypeRackMountChassis
@@ -131,7 +131,7 @@
       IndustryStandard/SmBios.h
     <Packages>
       MdePkg/MdePkg.dec
-      SystemInformation/SmbiosFeaturePkg/SmbiosFeaturePkg.dec
+      SmbiosFeaturePkg/SmbiosFeaturePkg.dec
   }
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosType32SystemBootInformation.BootStatus|BootInformationStatusNoError
 

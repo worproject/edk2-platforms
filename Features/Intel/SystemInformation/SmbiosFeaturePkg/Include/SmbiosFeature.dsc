@@ -100,7 +100,7 @@
   # in the package build.
 
   # Add components here that should be included in the package build.
-  SystemInformation/SmbiosFeaturePkg/SmbiosBasicDxe/SmbiosBasicDxe.inf
+  SmbiosFeaturePkg/SmbiosBasicDxe/SmbiosBasicDxe.inf
 
 ###################################################################################################
 #

@@ -91,7 +91,7 @@
   # in the package build.
 
   # Add components here that should be included in the package build.
-  PowerManagement/S3FeaturePkg/S3Pei/S3Pei.inf
+  S3FeaturePkg/S3Pei/S3Pei.inf
 
 #
 # Feature DXE Components

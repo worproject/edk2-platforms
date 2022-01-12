@@ -7,4 +7,4 @@
 #
 ##
 
-  INF PowerManagement/S3FeaturePkg/S3Pei/S3Pei.inf
+  INF S3FeaturePkg/S3Pei/S3Pei.inf

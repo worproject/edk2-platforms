@@ -23,7 +23,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   IntelSiliconPkg/IntelSiliconPkg.dec
-  PowerManagement/S3FeaturePkg/S3FeaturePkg.dec
+  S3FeaturePkg/S3FeaturePkg.dec
 
 [Sources]
   S3Pei.c

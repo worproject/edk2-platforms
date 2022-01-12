@@ -393,11 +393,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 ################################################################################
 
 [FV.FvSecurityPreMemory]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 40ab290f-8494-41cf-b302-31b178b4ce0b
 
 [FV.FvPreMemory]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 6522280D-28F9-4131-ADC4-F40EBFA45864
 
   INF  UefiCpuPkg/SecCore/SecCore.inf
@@ -478,11 +478,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvAdvancedPreMemory]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 09f25d44-b2ef-4225-8b2e-e0e094b51775
 
 [FV.FvBspPreMemory]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = e6c65995-8c2d-4119-a52d-7dbf1acb45a1
 
   FILE FV_IMAGE = 09f25d44-b2ef-4225-8b2e-e0e094b51775 {
@@ -493,11 +493,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 # FvPostMemory includes common hardware, common core variable services, load and invoke DXE etc
 #
 [FV.FvPostMemoryUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = B4705B4B-0BE6-4BDB-A83A-51CAD2345CEA
 
 [FV.FvPostMemory]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 3298afc4-c484-47f1-a65a-5917a54b5e8c
 
   FILE FV_IMAGE = B4705B4B-0BE6-4BDB-A83A-51CAD2345CEA {
@@ -510,11 +510,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 # FvBsp includes board specific components
 #
 [FV.FvBspUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = e4c65347-fd90-4143-8a41-113e1015fe07
 
 [FV.FvBsp]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 9e151cf3-ca90-444f-b33b-a9941cbc772f
 
   FILE FV_IMAGE = e4c65347-fd90-4143-8a41-113e1015fe07 {
@@ -524,7 +524,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvUefiBootUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = C4D3B0E2-FB26-44f8-A05B-E95895FCB960
 
   INF  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
@@ -556,7 +556,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   INF  BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf
 
 [FV.FvUefiBoot]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = ab9fe87b-1e37-440c-91cc-9aea03ce7bec
 
   FILE FV_IMAGE = C4D3B0E2-FB26-44f8-A05B-E95895FCB960 {
@@ -566,7 +566,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvOsBootUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = CDBB7B35-6833-4ed6-9AB2-57D2ACDDF6F0
 
   #
@@ -673,7 +673,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   INF  MinPlatformPkg/Acpi/AcpiSmm/AcpiSmm.inf
 
 [FV.FvOsBoot]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = c7488640-5f51-4969-b63b-89fc369e1725
 
   FILE FV_IMAGE = CDBB7B35-6833-4ed6-9AB2-57D2ACDDF6F0 {
@@ -683,11 +683,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvSecuritySilicon]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = AD262F8D-BDED-4668-A8D4-8BC73516652F
 
 [FV.FvSecurityUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 03E25550-89A5-4ee6-AF60-DB0553D91FD2
 
   FILE FV_IMAGE = 81F80AEA-91EB-4AD9-A563-7CEBAA167B25 {
@@ -697,7 +697,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvSecurity]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 68134833-2ff6-4d22-973b-575d0eae8ffd
 
   FILE FV_IMAGE = 03E25550-89A5-4ee6-AF60-DB0553D91FD2 {
@@ -707,11 +707,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   }
 
 [FV.FvAdvancedUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 70aeaf57-4997-49ce-a4f7-122980745670
 
 [FV.FvAdvanced]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = f21ee7a1-53a9-453d-aee3-b6a5c25bada5
 
   FILE FV_IMAGE = 70aeaf57-4997-49ce-a4f7-122980745670 {
@@ -724,7 +724,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 # FV for all Microcode Updates.
 #
 [FV.FvMicrocode]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   LOCK_STATUS        = FALSE
   FvNameGuid         = D2C29BA7-3809-480F-9C3D-DE389C61425A
 
@@ -736,7 +736,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 
 
 [FV.FvVPD]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   LOCK_STATUS        = FALSE
   FvNameGuid         = FFC29BA7-3809-480F-9C3D-DE389C61425A
   FILE RAW = FF7DB236-F856-4924-90F8-CDF12FB875F3 {
@@ -747,11 +747,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 # Various Vendor UEFI Drivers (OROMs).
 #
 [FV.FvOpromUncompressed]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = B6EDE22C-DE30-45fa-BB09-CA202C1654B7
 
 [FV.FvOprom]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 983BCAB5-BF10-42ce-B85D-CB805DCB1EFD
 
   FILE FV_IMAGE = B6EDE22C-DE30-45fa-BB09-CA202C1654B7 {
@@ -763,7 +763,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 [FV.FvWhea]
   BlockSize          = 0x1000
   NumBlocks          = 0x30
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = d6a1cd70-4b33-4994-a6ea-375f2ccc5437
 
 #
@@ -772,11 +772,11 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 [FV.FvAcm]
   BlockSize          = 0x1000
   NumBlocks          = 0x50
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 11668261-8A8D-47ca-9893-052D24435E59
 
 [FV.FvFpga]
-  !include WhitleyOpenBoardPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid         = 974650E7-6DFE-4998-A124-CEDEC5C9B47D
 
 ################################################################################

@@ -73,7 +73,7 @@
 #        is completed.
 [Components.IA32]
   #####################################
-  # <TEMPALTE> Feature Package
+  # <TEMPLATE> Feature Package
   #####################################
 
   # Add library instances here that are not included in package components and should be tested

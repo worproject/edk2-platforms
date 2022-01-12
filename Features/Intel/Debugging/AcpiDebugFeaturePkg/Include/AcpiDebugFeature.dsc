@@ -109,8 +109,8 @@
   # in the package build.
 
   # Add components here that should be included in the package build.
-  Debugging/AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugDxe.inf
-  Debugging/AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugSmm.inf
+  AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugDxe.inf
+  AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugSmm.inf
 
 ###################################################################################################
 #

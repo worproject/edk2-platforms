@@ -33,7 +33,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  Debugging/AcpiDebugFeaturePkg/AcpiDebugFeaturePkg.dec
+  AcpiDebugFeaturePkg/AcpiDebugFeaturePkg.dec
 
 [Pcd]
   gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureActive  ## CONSUMES

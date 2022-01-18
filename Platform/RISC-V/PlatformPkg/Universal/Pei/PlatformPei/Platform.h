@@ -1,7 +1,7 @@
 /** @file
   Platform PEI module include file.
 
-  Copyright (c) 2019, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+  Copyright (c) 2019-2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
   Copyright (c) 2006 - 2014, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -82,5 +82,16 @@ EFI_STATUS
 InitializeXen (
   VOID
   );
+
+/**
+  Build processor and platform information for the U5 platform
+
+  @return EFI_SUCCESS     Status.
+
+**/
+EFI_STATUS
+BuildRiscVSmbiosHobs (
+  VOID
+);
 
 #endif // _PLATFORM_PEI_H_INCLUDED_

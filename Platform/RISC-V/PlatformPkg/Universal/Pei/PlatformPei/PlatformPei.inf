@@ -3,7 +3,7 @@
 #
 #  This module provides platform specific function to detect boot mode.
 #
-#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2021-2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -32,14 +32,11 @@
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   Platform/RISC-V/PlatformPkg/RiscVPlatformPkg.dec
-  Platform/SiFive/U5SeriesPkg/U5SeriesPkg.dec
   Silicon/RISC-V/ProcessorPkg/RiscVProcessorPkg.dec
-  Silicon/SiFive/SiFive.dec
   UefiCpuPkg/UefiCpuPkg.dec
 
 [Guids]
   gEfiMemoryTypeInformationGuid
-  gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid
 
 [LibraryClasses]
   DebugLib
@@ -64,8 +61,6 @@
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdRiscVDxeFvSize
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamBase
   gUefiRiscVPlatformPkgTokenSpaceGuid.PcdTemporaryRamSize
-  gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdNumberofU5Cores
-  gSiFiveU5SeriesPlatformsPkgTokenSpaceGuid.PcdE5MCSupported
 
 [Ppis]
   gEfiPeiMasterBootModePpiGuid

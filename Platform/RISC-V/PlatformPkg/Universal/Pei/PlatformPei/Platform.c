@@ -296,7 +296,7 @@ BootModeInitialization (
 {
   EFI_STATUS    Status;
 
-  if (CheckResumeFromS3 ()) {
+  if (CheckResumeFromS3) {
     DEBUG ((DEBUG_INFO, "This is wake from S3\n"));
   } else {
     DEBUG ((DEBUG_INFO, "This is normal boot\n"));
@@ -357,7 +357,7 @@ InitializePlatform (
   MiscInitialization ();
   Status = BuildCoreInformationHob ();
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "Fail to build processor informstion HOB.\n"));
+    DEBUG ((DEBUG_ERROR, "Fail to build processor information HOB.\n"));
     ASSERT(FALSE);
   }
   return EFI_SUCCESS;

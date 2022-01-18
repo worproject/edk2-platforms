@@ -3,7 +3,7 @@
 #
 #  This module provides platform specific function to detect boot mode.
 #
-#  Copyright (c) 2021-2022, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
+#  Copyright (c) 2021, Hewlett Packard Enterprise Development LP. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -27,6 +27,7 @@
   Fv.c
   MemDetect.c
   Platform.c
+  Platform.h
 
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
@@ -42,12 +43,9 @@
   DebugLib
   HobLib
   IoLib
-  PciLib
-  PeiResourcePublicationLib
-  PeiServicesLib
-  PeiServicesTablePointerLib
-  PeimEntryPoint
   PcdLib
+  PeimEntryPoint
+  PeiResourcePublicationLib
   RiscVCoreplexInfoLib
 
 [Pcd]

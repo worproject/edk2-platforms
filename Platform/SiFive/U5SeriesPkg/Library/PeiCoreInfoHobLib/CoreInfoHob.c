@@ -119,7 +119,7 @@ CreateU5MCProcessorSmbiosDataHob (
   // Build up SMBIOS type 7 L2 cache record.
   //
   ZeroMem((VOID *)&L2CacheDataHob, sizeof (RISC_V_PROCESSOR_TYPE7_HOB_DATA));
-  L2CacheDataHob.PrcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
+  L2CacheDataHob.ProcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
   L2CacheDataHob.ProcessorUid = ProcessorUid;
   L2CacheDataHob.SmbiosType7Cache.SocketDesignation = TO_BE_FILLED_BY_VENDOR;
   L2CacheDataHob.SmbiosType7Cache.CacheConfiguration = RISC_V_CACHE_CONFIGURATION_CACHE_LEVEL_2 | \

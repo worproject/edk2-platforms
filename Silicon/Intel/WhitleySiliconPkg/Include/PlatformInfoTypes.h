@@ -65,13 +65,19 @@ typedef enum {
   TypeBigPineKey,
   TypeExperWorkStationRP,
   TypeJunctionCity,
-  EndOfEfiPlatformTypeEnum
+  EndOfEfiPlatformTypeEnum,
+  //
+  // Vendor board range currently starts at 0x80
+  //
+  TypeBoardPortTemplate               // 0x80
 } EFI_PLATFORM_TYPE;
 
 #define TypePlatformUnknown       0xFF
 #define TypePlatformMin           StartOfEfiPlatformTypeEnum + 1
 #define TypePlatformMax           EndOfEfiPlatformTypeEnum - 1
 #define TypePlatformDefault       TypeWilsonPointRP
+#define TypePlatformVendorMin     0x80
+#define TypePlatformVendorMax     TypeBoardPortTemplate - 1
 
 //
 // CPU type: Standard (no MCP), -F, etc

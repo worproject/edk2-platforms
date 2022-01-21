@@ -413,7 +413,8 @@ PdrGetPlatformInfo (
     return Status;
   }
 
-  if ((PlatformInfoHob->BoardId >= TypePlatformMin) && (PlatformInfoHob->BoardId <= TypePlatformMax)) {
+  if ((PlatformInfoHob->BoardId >= TypePlatformMin) && (PlatformInfoHob->BoardId <= TypePlatformMax) ||
+      (PlatformInfoHob->BoardId >= TypePlatformVendorMin) && (PlatformInfoHob->BoardId <= TypePlatformVendorMax)) {
     //
     // Valid Platform Identified
     //

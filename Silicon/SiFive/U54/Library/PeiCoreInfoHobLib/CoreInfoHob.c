@@ -145,7 +145,7 @@ CreateU54SmbiosType7L1DataHob (
   // Build up SMBIOS type 7 L1 cache record.
   //
   ZeroMem((VOID *)&L1CacheDataHob, sizeof (RISC_V_PROCESSOR_TYPE7_HOB_DATA));
-  L1CacheDataHob.PrcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
+  L1CacheDataHob.ProcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
   L1CacheDataHob.ProcessorUid = ProcessorUid;
   L1CacheDataHob.SmbiosType7Cache.SocketDesignation = TO_BE_FILLED_BY_VENDOR;
   L1CacheDataHob.SmbiosType7Cache.CacheConfiguration = RISC_V_CACHE_CONFIGURATION_CACHE_LEVEL_1 | \
@@ -193,7 +193,7 @@ CreateU54SmbiosType4DataHob (
   // Build up SMBIOS type 4 record.
   //
   ZeroMem((VOID *)&ProcessorDataHob, sizeof (RISC_V_PROCESSOR_TYPE4_HOB_DATA));
-  ProcessorDataHob.PrcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
+  ProcessorDataHob.ProcessorGuid = *((EFI_GUID *)PcdGetPtr (PcdSiFiveU5MCCoreplexGuid));
   ProcessorDataHob.ProcessorUid = ProcessorUid;
   ProcessorDataHob.SmbiosType4Processor.Socket = TO_BE_FILLED_BY_VENDOR;
   ProcessorDataHob.SmbiosType4Processor.ProcessorType = CentralProcessor;

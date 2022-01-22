@@ -8,6 +8,11 @@
 ##
 
 #
+# Currently shared by all platforms
+#
+INF  $(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+
+#
 # Platform TypeWilsonCityRP
 #
 INF  $(RP_PKG)/Uba/UbaMain/TypeWilsonCityRP/Dxe/UsbOcUpdateDxe/UsbOcUpdateDxe.inf

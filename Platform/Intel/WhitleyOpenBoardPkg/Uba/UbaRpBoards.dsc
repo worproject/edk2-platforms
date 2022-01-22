@@ -31,6 +31,11 @@ $(RP_PKG)/Uba/BoardInit/Pei/BoardInitPei.inf {
 
 [Components.X64]
 #
+# Currently shared by all platforms
+#
+$(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+
+#
 # Platform TypeWilsonCityRP
 #
 $(RP_PKG)/Uba/UbaMain/TypeWilsonCityRP/Dxe/UsbOcUpdateDxe/UsbOcUpdateDxe.inf

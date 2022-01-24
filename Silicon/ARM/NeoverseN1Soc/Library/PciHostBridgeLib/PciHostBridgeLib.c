@@ -1,7 +1,7 @@
 /** @file
 *  PCI Host Bridge Library instance for ARM Neoverse N1 platform
 *
-*  Copyright (c) 2019 - 2020, ARM Limited. All rights reserved.
+*  Copyright (c) 2019 - 2022, ARM Limited. All rights reserved.<BR>
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -16,6 +16,8 @@
 #include <Protocol/PciHostBridgeResourceAllocation.h>
 #include <Protocol/PciRootBridgeIo.h>
 
+#define ROOT_COMPLEX_NUM 2
+
 GLOBAL_REMOVE_IF_UNREFERENCED
 STATIC CHAR16 CONST * CONST mPciHostBridgeLibAcpiAddressSpaceTypeStr[] = {
   L"Mem", L"I/O", L"Bus"
@@ -28,7 +30,7 @@ typedef struct {
 } EFI_PCI_ROOT_BRIDGE_DEVICE_PATH;
 #pragma pack ()
 
-STATIC EFI_PCI_ROOT_BRIDGE_DEVICE_PATH mEfiPciRootBridgeDevicePath[] = {
+STATIC EFI_PCI_ROOT_BRIDGE_DEVICE_PATH mEfiPciRootBridgeDevicePath[ROOT_COMPLEX_NUM] = {
   // PCIe
   {
     {
@@ -51,10 +53,33 @@ STATIC EFI_PCI_ROOT_BRIDGE_DEVICE_PATH mEfiPciRootBridgeDevicePath[] = {
         0
       }
     }
-  }
+  },
+  //CCIX
+  {
+    {
+      {
+        ACPI_DEVICE_PATH,
+        ACPI_DP,
+        {
+          (UINT8)sizeof (ACPI_HID_DEVICE_PATH),
+          (UINT8)(sizeof (ACPI_HID_DEVICE_PATH) >> 8)
+        }
+      },
+      EISA_PNP_ID(0x0A09), // CCIX
+      0
+    },
+    {
+      END_DEVICE_PATH_TYPE,
+      END_ENTIRE_DEVICE_PATH_SUBTYPE,
+      {
+        END_DEVICE_PATH_LENGTH,
+        0
+      }
+    }
+  },
 };
 
-STATIC PCI_ROOT_BRIDGE mPciRootBridge[] = {
+STATIC PCI_ROOT_BRIDGE mPciRootBridge[ROOT_COMPLEX_NUM] = {
   {
     0,                                              // Segment
     0,                                              // Supports
@@ -90,7 +115,43 @@ STATIC PCI_ROOT_BRIDGE mPciRootBridge[] = {
       0
     },
     (EFI_DEVICE_PATH_PROTOCOL *)&mEfiPciRootBridgeDevicePath[0]
-  }
+  },
+  {
+    1,                                              // Segment
+    0,                                              // Supports
+    0,                                              // Attributes
+    TRUE,                                           // DmaAbove4G
+    FALSE,                                          // NoExtendedConfigSpace
+    FALSE,                                          // ResourceAssigned
+    EFI_PCI_HOST_BRIDGE_COMBINE_MEM_PMEM |          // AllocationAttributes
+    EFI_PCI_HOST_BRIDGE_MEM64_DECODE,
+    {
+      // Bus
+      FixedPcdGet32 (PcdCcixBusMin),
+      FixedPcdGet32 (PcdCcixBusMax)
+    }, {
+      // Io
+      FixedPcdGet64 (PcdCcixIoBase),
+      FixedPcdGet64 (PcdCcixIoBase) + FixedPcdGet64 (PcdCcixIoSize) - 1
+    }, {
+      // Mem
+      FixedPcdGet32 (PcdCcixMmio32Base),
+      FixedPcdGet32 (PcdCcixMmio32Base) + FixedPcdGet32 (PcdCcixMmio32Size) - 1
+    }, {
+      // MemAbove4G
+      FixedPcdGet64 (PcdCcixMmio64Base),
+      FixedPcdGet64 (PcdCcixMmio64Base) + FixedPcdGet64 (PcdCcixMmio64Size) - 1
+    }, {
+      // PMem
+      MAX_UINT64,
+      0
+    }, {
+      // PMemAbove4G
+      MAX_UINT64,
+      0
+    },
+    (EFI_DEVICE_PATH_PROTOCOL *)&mEfiPciRootBridgeDevicePath[1]
+  },
 };
 
 /**

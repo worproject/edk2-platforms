@@ -1,7 +1,7 @@
 ## @file
 #  PCI Host Bridge Library instance for ARM Neoverse N1 platform.
 #
-#  Copyright (c) 2019 - 2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2019 - 2022, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -41,6 +41,15 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio32Size
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Base
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Size
+
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMin
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMax
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoBase
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoSize
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Base
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Size
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Base
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Size
 
 [Protocols]
   gEfiCpuIo2ProtocolGuid

@@ -75,9 +75,7 @@
 [LibraryClasses.common.DXE_DRIVER]
   FdtLib|EmbeddedPkg/Library/FdtLib/FdtLib.inf
   PciHostBridgeLib|Silicon/ARM/NeoverseN1Soc/Library/PciHostBridgeLib/PciHostBridgeLib.inf
-  PciSegmentLib|MdePkg/Library/BasePciSegmentLibPci/BasePciSegmentLibPci.inf
-  PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
-  PciExpressLib|Silicon/ARM/NeoverseN1Soc/Library/NeoverseN1SocPciExpressLib/PciExpressLib.inf
+  PciSegmentLib|Silicon/ARM/NeoverseN1Soc/Library/PciSegmentLib/PciSegmentLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf

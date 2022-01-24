@@ -127,7 +127,6 @@
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x300C0000
 
   # PCIe
-  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x70000000
   gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|24
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
 

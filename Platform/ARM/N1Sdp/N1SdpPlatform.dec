@@ -34,9 +34,6 @@
   gArmN1SdpTokenSpaceGuid.PcdRamDiskBase|0x88000000|UINT32|0x00000001
   gArmN1SdpTokenSpaceGuid.PcdRamDiskSize|0x18000000|UINT32|0x00000002
 
-  # PCIe
-  gArmN1SdpTokenSpaceGuid.PcdPcieExpressBaseAddress|0x70000000|UINT32|0x00000007
-
   # External memory
   gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace|0|UINT64|0x00000029
 
@@ -92,8 +89,3 @@
   # unmapped reserved region results in a DECERR response.
   #
   gArmN1SdpTokenSpaceGuid.PcdCsComponentSize|0x1000|UINT32|0x00000049
-
-  # Remote Chip PCIe
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieIoTranslation|0x40075200000|UINT64|0x0000004A
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieMmio32Translation|0x40000000000|UINT64|0x0000004B
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieMmio64Translation|0x40000000000|UINT64|0x0000004C

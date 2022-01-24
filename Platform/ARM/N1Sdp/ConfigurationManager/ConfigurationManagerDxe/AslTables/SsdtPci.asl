@@ -80,8 +80,8 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "N1Sdp",
     Device(PCI0) {
       Name (_HID, EISAID("PNP0A08")) // PCI Express Root Bridge
       Name (_CID, EISAID("PNP0A03")) // Compatible PCI Root Bridge
-      Name (_SEG, Zero)              // PCI Segment Group number
-      Name (_BBN, Zero)              // PCI Base Bus Number
+      Name (_SEG, FixedPcdGet32 (PcdPcieSegmentNumber)) // Segment Number
+      Name (_BBN, FixedPcdGet32 (PcdPcieBusBaseNumber)) // Bus Base Number
       Name (_CCA, 1)                 // Cache Coherency Attribute
 
       // Root Complex 0
@@ -166,8 +166,8 @@ DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "N1Sdp",
     Device(PCI1) {
       Name (_HID, EISAID("PNP0A08")) // PCI Express Root Bridge
       Name (_CID, EISAID("PNP0A03")) // Compatible PCI Root Bridge
-      Name (_SEG, 1)                 // PCI Segment Group number
-      Name (_BBN, Zero)              // PCI Base Bus Number
+      Name (_SEG, FixedPcdGet32 (PcdCcixSegmentNumber)) // Segment Number
+      Name (_BBN, FixedPcdGet32 (PcdCcixBusBaseNumber)) // Bus Base Number
       Name (_CCA, 1)                 // Cache Coherency Attribute
 
     // Root Complex 1

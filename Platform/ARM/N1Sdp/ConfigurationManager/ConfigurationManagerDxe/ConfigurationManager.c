@@ -1047,24 +1047,24 @@ EDKII_PLATFORM_REPOSITORY_INFO N1sdpRepositoryInfo = {
   {
     // PCIe ECAM
     {
-      0x70000000,      // Base Address
-      0x0,             // Segment Group Number
-      0x0,             // Start Bus Number
-      17               // End Bus Number
+      FixedPcdGet64 (PcdPcieExpressBaseAddress),   // Base Address
+      FixedPcdGet32 (PcdPcieSegmentNumber),        // Segment Group Number
+      FixedPcdGet32 (PcdPcieBusMin),               // Start Bus Number
+      FixedPcdGet32 (PcdPcieBusMax)                // End Bus Number
     },
     // CCIX ECAM
     {
-      0x68000000,      // Base Address
-      0x1,             // Segment Group Number
-      0x0,               // Start Bus Number
-      17               // End Bus Number
+      FixedPcdGet32 (PcdCcixExpressBaseAddress),   // Base Address
+      FixedPcdGet32 (PcdCcixSegmentNumber),        // Segment Group Number
+      FixedPcdGet32 (PcdCcixBusMin),               // Start Bus Number
+      FixedPcdGet32 (PcdCcixBusMax)                // End Bus Number
     },
     //Remote Chip PCIe ECAM
     {
-      0x40070000000,   // Base Address
-      0x2,             // Segment Group Number
-      0x0,             // Start Bus Number
-      17               // End Bus Number
+      FixedPcdGet64 (PcdRemotePcieBaseAddress),   // Base Address
+      FixedPcdGet32 (PcdRemotePcieSegmentNumber),        // Segment Group Number
+      FixedPcdGet32 (PcdRemotePcieBusMin),               // Start Bus Number
+      FixedPcdGet32 (PcdRemotePcieBusMax)                // End Bus Number
     }
   },
 

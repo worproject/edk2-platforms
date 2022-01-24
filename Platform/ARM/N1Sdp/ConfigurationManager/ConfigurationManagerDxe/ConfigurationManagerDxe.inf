@@ -76,8 +76,6 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate
 
-  gArmN1SdpTokenSpaceGuid.PcdPcieExpressBaseAddress
-
   gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace
   gArmNeoverseN1SocTokenSpaceGuid.PcdDramBlock2Base
 
@@ -88,9 +86,11 @@
   gArmTokenSpaceGuid.PcdSystemMemorySize
 
   #PCIe
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusBaseNumber
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusCount
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMax
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMin
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieExpressBaseAddress
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoBase
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoMaxBase
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoSize
@@ -105,8 +105,10 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Translation
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseAddress
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseSize
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieSegmentNumber
 
   # CCIX
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusBaseNumber
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusCount
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMax
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMin
@@ -125,6 +127,7 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Translation
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseAddress
   gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseSize
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixSegmentNumber
 
   # Coresight
   gArmN1SdpTokenSpaceGuid.PcdCsComponentSize
@@ -158,9 +161,14 @@
   gArmN1SdpTokenSpaceGuid.PcdCsTpiuMaxBase
 
   # Remote PCIe
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieIoTranslation
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieMmio32Translation
-  gArmN1SdpTokenSpaceGuid.PcdRemotePcieMmio64Translation
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBaseAddress
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusBaseNumber
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusMax
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusMin
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieIoTranslation
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio32Translation
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio64Translation
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieSegmentNumber
 
 [Depex]
   TRUE

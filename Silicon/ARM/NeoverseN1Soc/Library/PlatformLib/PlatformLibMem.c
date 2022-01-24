@@ -115,8 +115,8 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
 
   // PCIe ECAM Configuration Space
-  VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdPciExpressBaseAddress);
-  VirtualMemoryTable[Index].VirtualBase     = PcdGet64 (PcdPciExpressBaseAddress);
+  VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdPcieExpressBaseAddress);
+  VirtualMemoryTable[Index].VirtualBase     = PcdGet64 (PcdPcieExpressBaseAddress);
   VirtualMemoryTable[Index].Length          = (FixedPcdGet32 (PcdPcieBusMax) -
                                                FixedPcdGet32 (PcdPcieBusMin) + 1) *
                                               SIZE_1MB;

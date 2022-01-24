@@ -29,11 +29,11 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdDramBlock2Base|0|UINT64|0x00000001
 
   #PCIe
-  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseAddress|0x60000000|UINT32|0x00000002
-  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseSize|0x00001000|UINT32|0x00000003
-  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusCount|18|UINT32|0x00000004
-  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMax|17|UINT32|0x00000005
-  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMin|0|UINT32|0x00000006
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusBaseNumber|0|UINT32|0x00000002
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusCount|18|UINT32|0x00000003
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMax|17|UINT32|0x00000004
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMin|0|UINT32|0x00000005
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieExpressBaseAddress|0x70000000|UINT64|0x00000006
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoBase|0x0|UINT32|0x00000007
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoMaxBase|0x001FFFF|UINT32|0x00000008
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieIoSize|0x020000|UINT32|0x00000009
@@ -46,30 +46,40 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64MaxBase|0x28FFFFFFFF|UINT64|0x00000010
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Size|0x2000000000|UINT64|0x00000011
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Translation|0x0|UINT64|0x00000012
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseAddress|0x60000000|UINT32|0x00000013
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieRootPortConfigBaseSize|0x00001000|UINT32|0x00000014
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieSegmentNumber|0|UINT32|0x00000015
 
   # CCIX
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusCount|18|UINT32|0x00000016
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMax|17|UINT32|0x00000017
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMin|0|UINT32|0x00000018
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixExpressBaseAddress|0x68000000|UINT32|0x00000019
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoBase|0x0|UINT32|0x0000001A
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoMaxBase|0x01FFFF|UINT32|0x0000001B
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoSize|0x020000|UINT32|0x0000001C
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoTranslation|0x6D200000|UINT32|0x00000001D
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Base|0x69200000|UINT32|0x0000001E
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32MaxBase|0x6D1FFFFF|UINT32|0x00000001F
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Size|0x04000000|UINT32|0x00000020
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Translation|0x0|UINT32|0x00000021
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Base|0x2900000000|UINT64|0x00000022
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64MaxBase|0x48FFFFFFFF|UINT64|0x00000023
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Size|0x2000000000|UINT64|0x00000024
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Translation|0x0|UINT64|0x00000025
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseAddress|0x62000000|UINT32|0x00000026
-  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseSize|0x00001000|UINT32|0x00000027
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusBaseNumber|0|UINT32|0x00000016
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusCount|18|UINT32|0x00000017
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMax|17|UINT32|0x00000018
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixBusMin|0|UINT32|0x00000019
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixExpressBaseAddress|0x68000000|UINT32|0x0000001A
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoBase|0x0|UINT32|0x0000001B
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoMaxBase|0x00FFFFFF|UINT32|0x0000001C
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoSize|0x01000000|UINT32|0x0000001D
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixIoTranslation|0x6D200000|UINT32|0x00000001E
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Base|0x69200000|UINT32|0x0000001F
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32MaxBase|0x6D1FFFFF|UINT32|0x000000020
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Size|0x04000000|UINT32|0x00000021
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio32Translation|0x0|UINT32|0x00000022
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Base|0x2900000000|UINT64|0x00000023
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64MaxBase|0x48FFFFFFFF|UINT64|0x00000024
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Size|0x2000000000|UINT64|0x00000025
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixMmio64Translation|0x0|UINT64|0x00000026
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseAddress|0x62000000|UINT32|0x00000027
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixRootPortConfigBaseSize|0x00001000|UINT32|0x00000028
+  gArmNeoverseN1SocTokenSpaceGuid.PcdCcixSegmentNumber|1|UINT32|0x00000029
 
-  gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace|0x40000000000|UINT64|0x00000029
+  gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace|0x40000000000|UINT64|0x00000030
 
   # Remote Chip PCIe
-  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieIoTranslation|0x40075200000|UINT64|0x0000004A
-  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio32Translation|0x40000000000|UINT64|0x0000004B
-  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio64Translation|0x40000000000|UINT64|0x0000004C
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBaseAddress|0x40070000000|UINT64|0x0000004A
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusBaseNumber|0|UINT32|0x0000004B
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusMax|17|UINT32|0x0000004C
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieBusMin|0|UINT32|0x0000004D
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieIoTranslation|0x40075200000|UINT64|0x0000004E
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio32Translation|0x40000000000|UINT64|0x0000004F
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio64Translation|0x40000000000|UINT64|0x00000050
+  gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieSegmentNumber|2|UINT32|0x00000051

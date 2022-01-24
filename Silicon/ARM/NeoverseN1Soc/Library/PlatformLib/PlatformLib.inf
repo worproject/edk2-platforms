@@ -43,6 +43,7 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdExtMemorySpace
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMax
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieBusMin
+  gArmNeoverseN1SocTokenSpaceGuid.PcdPcieExpressBaseAddress
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio32Base
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio32Size
   gArmNeoverseN1SocTokenSpaceGuid.PcdPcieMmio64Base

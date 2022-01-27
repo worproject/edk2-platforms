@@ -671,7 +671,10 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   INF  BoardModulePkg/LegacySioDxe/LegacySioDxe.inf
   INF  MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 
+!if $(CPUTARGET) == "ICX"
   INF  RuleOverride = ACPITABLE WhitleyOpenBoardPkg/Features/Acpi/AcpiTables/AcpiTables10nm.inf
+  INF  WhitleyOpenBoardPkg/Features/Acpi/AcpiPlatform/AcpiPlatform.inf
+!endif
   INF  WhitleyOpenBoardPkg/Features/AcpiVtd/AcpiVtd.inf
   INF  MinPlatformPkg/Acpi/AcpiSmm/AcpiSmm.inf
 

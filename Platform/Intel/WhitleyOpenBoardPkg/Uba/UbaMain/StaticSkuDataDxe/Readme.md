@@ -16,4 +16,5 @@ The AmlOffsetTable.c file is generated in two key steps:
 
 Common Issues:
 * The same iasl compiler version must be used to build the AML offset table and to build the DSDT.
+* The same iasl compiler version must be used to build the AML offset table and to build the DSDT.  With the addition of -so for building the AML offset table.
 * The Board/*AmlOffsets*.dsc file name, Board/*AmlOffsets* directory name, Board/AmlOffsets/*AmlOffsets*.inf file name, and the BASE_NAME in *AmlOffsets*.inf must all match exactly.

@@ -23,4 +23,4 @@
 
 [BuildOptions]
   # add -vr and -so to generate offset.h
-  *_*_*_ASL_FLAGS = -oi -vr -so
+  *_*_*_ASL_FLAGS = -so

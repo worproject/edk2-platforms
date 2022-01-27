@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2018-2021, ARM Limited. All rights reserved.
+*  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -54,8 +54,9 @@
 #define MULTI_CHIP_MODE_DISABLED                  0x0
 #define MULTI_CHIP_MODE_ENABLED                   0x1
 
-// Remote chip address offset (4TB per chip)
-#define SGI_REMOTE_CHIP_MEM_OFFSET(n)             ((1ULL << 42) * (n))
+// Remote chip address offset
+#define SGI_REMOTE_CHIP_MEM_OFFSET(n) \
+          ((1ULL <<  FixedPcdGet64 (PcdMaxAddressBitsPerChip)) * (n))
 
 // Base address of the DRAM1 block in a remote chip
 #define SYSTEM_MEMORY_BASE_REMOTE(ChipId) \

@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2020 - 2022, ARM Limited. All rights reserved.
+#  Copyright (c) 2020 - 2022, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -44,6 +44,9 @@
   gArmTokenSpaceGuid.PcdPciMmio64Base|0x4000000000
   gArmTokenSpaceGuid.PcdPciMmio64Size|0x4000000000
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x1010000000
+
+  # Address bus width - 64TB address space
+  gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|46
 
   # Timer & Watchdog interrupts
   gArmSgiTokenSpaceGuid.PcdGtFrame0Gsiv|109

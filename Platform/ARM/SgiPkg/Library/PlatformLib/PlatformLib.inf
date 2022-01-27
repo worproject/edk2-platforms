@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018-2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -41,6 +41,7 @@
   gArmPlatformTokenSpaceGuid.PcdCoreCount
   gArmPlatformTokenSpaceGuid.PcdArmHdLcdBase
 
+  gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
   gArmSgiTokenSpaceGuid.PcdDramBlock2Base
   gArmSgiTokenSpaceGuid.PcdDramBlock2Size
   gArmSgiTokenSpaceGuid.PcdGicSize

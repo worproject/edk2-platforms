@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018-2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -89,6 +89,9 @@
   # ACPI platform wide _OSC
   gArmSgiTokenSpaceGuid.PcdOscLpiEnable|0|UINT32|0x00000025
   gArmSgiTokenSpaceGuid.PcdOscCppcEnable|0|UINT32|0x00000026
+
+  # Address bus width
+  gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|0x0|UINT64|0x00000027
 
 [Ppis]
   gNtFwConfigDtInfoPpiGuid     = { 0x6f606eb3, 0x9123, 0x4e15, { 0xa8, 0x9b, 0x0f, 0xac, 0x66, 0xef, 0xd0, 0x17 } }

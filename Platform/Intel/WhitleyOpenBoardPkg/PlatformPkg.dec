@@ -16,8 +16,8 @@
   PACKAGE_VERSION                = 0.91
 
 [Includes]
- Include
- Include/Protocol
+  Include
+  Include/Protocol
 
 #TODO: Move these generated temp files into include.
   Uba/BoardInit/Dxe
@@ -159,8 +159,7 @@
 
 [PcdsFixedAtBuild]
 
-#SKX_TODO: add a new GUID, and replace the 'gPlatformTokenSpaceGuid' used here to it, or move these values to the SocketPkg where the GUID is defined
-#          Using a GUID defined in another .DEC file is a violation of the UEFI packaging standards.
+  gPlatformTokenSpaceGuid.PcdEfiAcpiPm1aEvtBlkAddress|0x00000500|UINT32|0x00000031
 
   gCpPlatFlashTokenSpaceGuid.PcdFlashBase|0x00000000 |UINT32|0x3000000E
   gCpPlatFlashTokenSpaceGuid.PcdFlashSize|0x00000000 |UINT32|0x3000000F

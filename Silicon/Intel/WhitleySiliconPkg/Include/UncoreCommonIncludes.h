@@ -80,6 +80,8 @@
 #define MC_MAX_NODE                   (MAX_SOCKET * MAX_IMC)  // Max number of memory nodes
 #endif
 
+#define MAX_CRS_ENTRIES_PER_NODE      8                       // Max number of ranges allowed on a memory node
+
 #ifndef TOTAL_CB3_DEVICES
 #define TOTAL_CB3_DEVICES             64   // IOAT_TOTAL_FUNCS * MAX_SOCKET. Note: this covers up to 8S.
 #endif
@@ -107,5 +109,11 @@
 #ifndef MAX_B2P_MAILBOX_GROUPS
 #define MAX_B2P_MAILBOX_GROUPS    32
 #endif // !MAX_B2P_MAILBOX_GROUPS
+
+//
+// ACPI table information used to initialize tables.
+//
+#define EFI_ACPI_CREATOR_ID       0x4C544E49          // "INTL"
+#define EFI_ACPI_CREATOR_REVISION 0x20091013          // Oct 13 2009
 
 #endif

@@ -264,6 +264,13 @@
 #
 ################################################################################
 
+[PcdsDynamicHii.common.DEFAULT]
+  # Possible values are:
+  #  0: Connect Minimal Devices
+  #  1: Connect Network Devices
+  #  2: Connect All Devices
+  gEfiMdeModulePkgTokenSpaceGuid.PcdBootDiscoveryPolicy|L"BootDiscoveryPolicy"|gBootDiscoveryPolicyMgrFormsetGuid|0|0
+
 [PcdsFeatureFlag.common]
   gEfiMdePkgTokenSpaceGuid.PcdComponentNameDisable|TRUE
   gEfiMdePkgTokenSpaceGuid.PcdDriverDiagnosticsDisable|TRUE

@@ -143,6 +143,7 @@ READ_LOCK_STATUS   = TRUE
   INF Platform/ARM/Morello/Drivers/PlatformDxe/PlatformDxeFvp.inf
 
   # Bds
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
   INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
   INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf

@@ -451,6 +451,8 @@ DEFINE X64EMU_ENABLE  = FALSE
   gAmdModulePkgTokenSpaceGuid.PcdPort0NetSpeed|1
   gAmdModulePkgTokenSpaceGuid.PcdPort1NetSpeed|1
 
+  gEfiMdeModulePkgTokenSpaceGuid.PcdPcieResizableBarSupport|TRUE
+
 [PcdsDynamicDefault.common]
   gAmdStyxTokenSpaceGuid.PcdEthMacA|{0x2,0xA1,0xA2,0xA3,0xA4,0xA5}
   gAmdStyxTokenSpaceGuid.PcdEthMacB|{0x2,0xB1,0xB2,0xB3,0xB4,0xB5}

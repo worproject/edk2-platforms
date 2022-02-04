@@ -621,6 +621,7 @@
   CrcLib|WhitleyOpenBoardPkg/Library/BaseCrcLib/BaseCrcLib.inf
   PlatformSpecificAcpiTableLib|WhitleyOpenBoardPkg/Library/PlatformSpecificAcpiTableLibNull/PlatformSpecificAcpiTableLibNull.inf
   BuildAcpiTablesLib|WhitleyOpenBoardPkg/Library/BuildAcpiTablesLib/DxeBuildAcpiTablesLib.inf
+  AcpiPlatformTableLib|WhitleyOpenBoardPkg/Library/AcpiPlatformTableLib/AcpiPlatformLib.inf
 
 [LibraryClasses.Common.SEC, LibraryClasses.Common.PEI_CORE, LibraryClasses.Common.PEIM]
   FspWrapperApiLib|IntelFsp2WrapperPkg/Library/BaseFspWrapperApiLib/BaseFspWrapperApiLib.inf

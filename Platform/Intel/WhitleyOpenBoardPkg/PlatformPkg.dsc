@@ -805,6 +805,7 @@
 
   $(RP_PKG)/Features/Pci/Dxe/PciPlatform/PciPlatform.inf
 
+  $(RP_PKG)/Features/Acpi/AcpiTables/AcpiTables10nm.inf
   $(RP_PKG)/Features/AcpiVtd/AcpiVtd.inf
 
   $(PLATFORM_PKG)/Acpi/AcpiSmm/AcpiSmm.inf

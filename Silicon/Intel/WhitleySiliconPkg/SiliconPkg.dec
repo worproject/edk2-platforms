@@ -19,6 +19,7 @@
   Security/Include
   Pch/SouthClusterLbg
   Pch/SouthClusterLbg/Include
+  Pch/SouthClusterLbg/AcpiTables/Dsdt
 
   Cpu/Include
 

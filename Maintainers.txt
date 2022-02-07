@@ -68,7 +68,7 @@ F: */
 EDK II Platforms maintainers
 ----------------------------
 F: *
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 M: Michael D Kinney <michael.d.kinney@intel.com>
 
 Responsible Disclosure, Reporting Security Issues
@@ -81,7 +81,7 @@ EDK II Platforms Packages:
 96Boards
 F: Platform/96Boards/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 AMD Seattle
 F: Platform/AMD/OverdriveBoard/
@@ -89,7 +89,7 @@ F: Platform/LeMaker/CelloBoard/
 F: Platform/SoftIron/
 F: Silicon/AMD/Styx/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 Ampere Computing
 F: Platform/Ampere
@@ -98,7 +98,7 @@ R: Nhi Pham <nhi@os.amperecomputing.com>
 R: Vu Nguyen <vunguyen@os.amperecomputing.com>
 R: Thang Nguyen <thang@os.amperecomputing.com>
 R: Chuong Tran <chuong@os.amperecomputing.com>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 ARM
 F: Platform/ARM/
@@ -111,12 +111,12 @@ BeagleBoard:
 F: Platform/BeagleBoard/
 F: Silicon/TexasInstruments/
 R: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 Comcast
 F: Platform/Comcast/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 OptionRomPkg
 F: Drivers/OptionRomPkg/
@@ -130,14 +130,14 @@ M: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
 DisplayLink
 F: Drivers/DisplayLink/
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 R: Andy Hayes <andy.hayes@displaylink.com>
 
 HiSilicon
 F: Platform/Hisilicon/
 F: Silicon/Hisilicon/
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Ard Biesheuvel <ardb+tianocore@kernel.org>
 R: Wenyi Xie <xiewenyi2@huawei.com>
 
@@ -320,26 +320,26 @@ F: Platform/Marvell/
 F: Platform/SolidRun/Armada80x0McBin/
 F: Silicon/Marvell/
 R: Marcin Wojtas <mw@semihalf.com>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 Miscellaneous drivers
 F: Silicon/Atmel/
 F: Silicon/Openmoko/
 F: Silicon/Synopsys/DesignWare/
 R: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 NXP platforms and silicon
 F: Platform/NXP/
 F: Silicon/NXP/
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
 
 QEMU sbsa-ref platform
 F: Platform/Qemu/SbsaQemu/
 F: Silicon/Qemu/SbsaQemu/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Graeme Gregory <graeme@nuviainc.com>
 R: Radoslaw Biernacki <rad@semihalf.com>
 
@@ -347,7 +347,7 @@ Raspberry Pi platforms and silicon
 F: Platform/RaspberryPi/
 F: Silicon/Broadcom/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Jeremy Linton <jeremy.linton@arm.com>
 
 RPMB driver for OP-TEE
@@ -360,7 +360,7 @@ F: Platform/Socionext/
 F: Silicon/NXP/Library/Pcf8563RealTimeClockLib/
 F: Silicon/Socionext/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Masami Hiramatsu <masami.hiramatsu@linaro.org>
 
 Silicon/RISC-V/ProcessorPkg
@@ -378,7 +378,7 @@ R: Daniel Schaefer <daniel.schaefer@hpe.com>
 Phytium platforms and silicon
 F: Platform/Phytium/
 F: Silicon/silicon/
-M: Leif Lindholm <leif@nuviainc.com>
+M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Peng Xie <xiepeng@phytium.com.cn>
 R: Ling Jia <jialing@phytium.com.cn>
 R: Yiqi Shu <shuyiqi@phytium.com.cn>

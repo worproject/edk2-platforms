@@ -580,6 +580,11 @@
   #
   gRaspberryPiTokenSpaceGuid.PcdUartInUse|0
 
+  #
+  # Mini-UART clock rate
+  #
+  gRaspberryPiTokenSpaceGuid.PcdMiniUartClockRate|500000000
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform

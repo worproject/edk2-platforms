@@ -77,6 +77,20 @@ Device (URTM)
     MEMORY32SETBASE (RBUF, RMEM, RBAS, BCM2836_MINI_UART_OFFSET)
     Return (^RBUF)
   }
+
+  //
+  // Mini Uart Clock Rate will be dynamically updated during boot
+  // 0x4D 0x55 0x43 0x52 0xC 0x1000000 (Value must be > 16777215)
+  //
+  Name (MUCR, 0x1000000)
+
+  Name (_DSD, Package ()
+  {
+    ToUUID ("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"), Package ()
+    {
+      Package (2) { "clock-frequency", MUCR },
+    }
+  })
 }
 
 //

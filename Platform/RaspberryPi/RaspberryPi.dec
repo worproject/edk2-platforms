@@ -72,3 +72,4 @@
   gRaspberryPiTokenSpaceGuid.PcdMmcEnableDma|0|UINT32|0x0000001F
   gRaspberryPiTokenSpaceGuid.PcdUartInUse|1|UINT32|0x00000021
   gRaspberryPiTokenSpaceGuid.PcdXhciPci|0|UINT32|0x00000022
+  gRaspberryPiTokenSpaceGuid.PcdMiniUartClockRate|0|UINT32|0x00000023

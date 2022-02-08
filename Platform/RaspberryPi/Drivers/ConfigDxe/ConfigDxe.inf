@@ -95,6 +95,7 @@
   gRaspberryPiTokenSpaceGuid.PcdFanTemp
   gRaspberryPiTokenSpaceGuid.PcdUartInUse
   gRaspberryPiTokenSpaceGuid.PcdXhciPci
+  gRaspberryPiTokenSpaceGuid.PcdMiniUartClockRate
 
 [Depex]
   gPcdProtocolGuid AND gRaspberryPiFirmwareProtocolGuid

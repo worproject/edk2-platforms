@@ -44,6 +44,7 @@ STATIC RASPBERRY_PI_FIRMWARE_PROTOCOL *mFwProtocol;
 STATIC UINT32 mModelFamily = 0;
 STATIC UINT32 mModelInstalledMB = 0;
 STATIC UINT32 mModelRevision = 0;
+STATIC UINT32 mCoreClockRate = 0;
 
 STATIC EFI_MAC_ADDRESS  mMacAddress;
 
@@ -798,6 +799,7 @@ STATIC CONST AML_NAME_OP_REPLACE SsdtEmmcNameOpReplace[] = {
 
 STATIC CONST AML_NAME_OP_REPLACE DsdtNameOpReplace[] = {
   { "URIU", PcdToken (PcdUartInUse) },
+  { "MUCR", PcdToken (PcdMiniUartClockRate) },
   { }
 };
 
@@ -942,6 +944,13 @@ ConfigInitialize (
     DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi revision: %r\n", Status));
   } else {
     DEBUG ((DEBUG_INFO, "Current Raspberry Pi revision %x\n", mModelRevision));
+  }
+
+  Status = mFwProtocol->GetClockRate (RPI_MBOX_CLOCK_RATE_CORE, &mCoreClockRate);
+  if (Status != EFI_SUCCESS) {
+    DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi core clock rate: %r\n", Status));
+  } else {
+    PcdSet32S (PcdMiniUartClockRate, mCoreClockRate);
   }
 
   Status = SetupVariables ();

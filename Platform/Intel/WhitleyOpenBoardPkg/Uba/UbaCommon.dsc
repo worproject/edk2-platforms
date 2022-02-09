@@ -11,6 +11,9 @@
   UbaPlatLib|$(RP_PKG)/Library/PeiUbaPlatLib/PeiUbaPlatLib.inf
   UbaGpioInitLib|$(RP_PKG)/Library/UbaGpioInitLib/UbaGpioInitLib.inf
 
+[LibraryClasses.X64]
+  UbaPlatLib|$(RP_PKG)/Library/UbaPlatLib/UbaPlatLib.inf
+
 [Components.IA32]
   $(RP_PKG)/Uba/CfgDb/Pei/CfgDbPei.inf
   $(RP_PKG)/Uba/UbaUpdatePcds/Pei/UpdatePcdsPei.inf

@@ -224,6 +224,8 @@
 
 #define PCH_TCO_BASE_ADDRESS            PcdGet16 (PcdTcoBaseAddress)
 
+#define PM_BASE_ADDRESS                 PCH_ACPI_BASE_ADDRESS
+
 #define SIO_GPIO_BASE_ADDRESS           0x0800
 
 //
@@ -240,6 +242,8 @@
 #define CMOS_PLATFORM_ID_LO             0x18            // Second bank CMOS location of Platform ID
 #define CMOS_PLATFORM_ID_HI             0x19            //
 
+#define HPET_BLOCK_ADDRESS                            0x0FED00000
+
 #define PCI_BUS_NUMBER_PCH_HPET                       0x0
 #define PCI_DEVICE_NUMBER_PCH_HPET                    0x1F
 
@@ -249,6 +253,9 @@
 #define PCI_DEVICE_NUMBER_PCH_IOAPIC                  0x1E
 
 #define PCI_FUNCTION_NUMBER_PCH_IOAPIC                0x0
+
+#define SW_SMI_OS_REQUEST      0x83  // OS transition request.
+#define MEM_ADDR_SHFT_VAL         26    // For 64 MB granularity
 
 //
 // AHCI port offset values

@@ -999,7 +999,7 @@ struct memSetup {
   /// @brief
   /// Pirnt length of SPD data.<BR>
   /// @details
-  ///   0 - AUTO(512 for DDR4, 1024 for DDR5).<BR>
+  ///   0 - AUTO(512 for DDR4).<BR>
   ///   256.<BR>
   ///   512.<BR>
   ///

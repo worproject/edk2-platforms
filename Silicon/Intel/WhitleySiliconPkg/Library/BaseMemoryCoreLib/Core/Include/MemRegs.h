@@ -10,6 +10,8 @@
 #ifndef _memregs_h
 #define _memregs_h
 
+#define SPD_TYPE_DDR4         0x0C  // DDR4 SDRAM
+
 //
 // NVM DIMM Reg Structs
 //

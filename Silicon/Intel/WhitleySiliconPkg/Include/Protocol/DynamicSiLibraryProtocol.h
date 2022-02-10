@@ -1,5 +1,5 @@
 /** @file
-  Dynamic link silicon library service access Protocol
+  Dynamic link silicon library service access Protocol for earlier boot functions
 
   This protocol abstracts silicon static library accesses via a protocol
 
@@ -19,6 +19,9 @@
 #include <Library/CpuEarlyDataLib.h>
 #include <UsraAccessType.h>
 #include <IioUniversalData.h>
+#include <Protocol/IioUds.h>
+#include <Protocol/CpuCsrAccess.h>
+#include <GpioConfig.h>
 
 #define DYNAMIC_SI_LIBARY_PROTOCOL_GUID \
   { 0xb235fbed, 0x3b25, 0x4cb3, { 0x98, 0x9c, 0x8c, 0xe7, 0xec, 0x49, 0x8b, 0x7e } }
@@ -29,13 +32,6 @@
 //
 // Functions
 //
-
-typedef
-EFI_STATUS
-(EFIAPI *DXE_SET_GPIO_OUTPUT_VALUE) (
-  IN  UINT32                              GPioPad,
-  IN  UINT32                              Value
-  );
 
 typedef
 BOOLEAN
@@ -77,6 +73,27 @@ VOID
   IN  UINT8          Device,
   IN  UINT8          Function,
   IN  UINT32         DidVid
+  );
+
+typedef
+EFI_STATUS
+(EFIAPI *DXE_GpioGetInputValue) (
+  IN GPIO_PAD                  GpioPad,
+  OUT UINT32                   *InputVal
+  );
+
+typedef
+EFI_STATUS
+(EFIAPI *DXE_SET_GPIO_OUTPUT_VALUE) (
+  IN  UINT32                              GPioPad,
+  IN  UINT32                              Value
+  );
+
+typedef
+EFI_STATUS
+(EFIAPI *DXE_GpioSetPadConfig) (
+  IN GPIO_PAD                  GpioPad,
+  IN GPIO_CONFIG               *GpioData
   );
 
 typedef
@@ -210,6 +227,13 @@ UINT32
   VOID
   );
 
+typedef
+VOID
+(EFIAPI *DXE_WriteScratchpad5) (
+  UINT8   Socket,
+  UINT32  Value
+  );
+
 //
 // UBA specific silicon abstraction protocol
 //
@@ -223,7 +247,9 @@ typedef struct {
   DXE_MmPciBase                           MmPciBase;
   DXE_GetSysCpuCsrAccessVar               GetSysCpuCsrAccessVar;
   DXE_IioPciHookBeforeEnumeration         IioPciHookBeforeEnumeration;
+  DXE_GpioGetInputValue                   GpioGetInputValue;
   DXE_SET_GPIO_OUTPUT_VALUE               GpioSetOutputValue;
+  DXE_GpioSetPadConfig                    GpioSetPadConfig;
   DXE_PchGetSeriesStr                     PchGetSeriesStr;
   DXE_PchGetSteppingStr                   PchGetSteppingStr;
   DXE_PchGetSkuStr                        PchGetSkuStr;
@@ -245,6 +271,7 @@ typedef struct {
   DXE_ProgramImr2Regs                     ProgramImr2Regs;
   DXE_CheckAndPopulateIedTraceMemory      CheckAndPopulateIedTraceMemory;
   DXE_ReadScratchpad7                     ReadScratchpad7;
+  DXE_WriteScratchpad5                    WriteScratchpad5;
 } DYNAMIC_SI_LIBARY_PROTOCOL;
 
 extern EFI_GUID gDynamicSiLibraryProtocolGuid;

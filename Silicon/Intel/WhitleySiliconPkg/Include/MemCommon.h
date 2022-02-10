@@ -38,4 +38,11 @@ typedef enum {
   TYPE_MAX_MMIO_BAR
 } MMIO_BARS;
 
+//
+// Memory parameters and SPD JEDEC definitions
+//
+#define MAX_SPD_BYTE_DDR4 512 // Number of bytes in Serial EEPROM on DDR4
+
+#define MAX_SPD_BYTE_DDR MAX_SPD_BYTE_DDR4
+
 #endif //#ifndef __MEM_COMMON_H__

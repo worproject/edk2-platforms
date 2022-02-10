@@ -17,6 +17,13 @@
 #define SMB_CLK_700K       2
 #define SMB_CLK_1M         3
 
+//
+// Volatile Memory Mode
+//
+#define VOL_MEM_MODE_1LM            0
+#define VOL_MEM_MODE_2LM            1
+#define VOL_MEM_MODE_MIX_1LM2LM     2
+
 #define MAX_PARTIAL_MIRROR      4  //Maximum number of partial mirror regions that can be created
 
 //

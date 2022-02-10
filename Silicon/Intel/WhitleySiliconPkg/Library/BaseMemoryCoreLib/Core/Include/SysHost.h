@@ -27,39 +27,7 @@ typedef struct sysHost SYSHOST, *PSYSHOST;
 #include "PlatformHost.h"
 #include "MemHost.h"
 #include <Ppi/MemoryPolicyPpi.h>
-
-///
-/// Enhanced Warning Log Header
-///
-typedef struct {
-  EFI_GUID  EwlGuid;      /// GUID that uniquely identifies the EWL revision
-  UINT32    Size;         /// Total size in bytes including the header and buffer
-  UINT32    FreeOffset;   /// Offset of the beginning of the free space from byte 0
-                          /// of the buffer immediately following this structure
-                          /// Can be used to determine if buffer has sufficient space for next entry
-  UINT32    Crc;          /// 32-bit CRC generated over the whole size minus this crc field
-                          /// Note: UEFI 32-bit CRC implementation (CalculateCrc32) (References [7])
-                          /// Consumers can ignore CRC check if not needed.
-  UINT32    Reserved;     /// Reserved for future use, must be initialized to 0
-} EWL_HEADER;
-
-///
-/// Enhanced Warning Log Spec defined data log structure
-///
-typedef struct {
-  EWL_HEADER Header;          /// The size will vary by implementation and should not be assumed
-  UINT8      Buffer[4 * 1024];  /// The spec requirement is that the buffer follow the header
-} EWL_PUBLIC_DATA;
-
-///
-/// EWL private data structure.  This is going to be implementation dependent
-///   When we separate OEM hooks via a PPI, we can remove this
-///
-typedef struct {
-  UINT32            bufSizeOverflow;  // Number of bytes that could not be added to buffer
-  UINT32            numEntries;       // Number of entries currently logged
-  EWL_PUBLIC_DATA   status;           // Spec defined EWL
-} EWL_PRIVATE_DATA;
+#include <Library/EnhancedWarningLogLib.h>
 
 #pragma pack(1)
 

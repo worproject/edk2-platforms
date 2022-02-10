@@ -12,6 +12,9 @@
 
 #define R_ACPI_LV2                          0x14
 
+#define R_IOPORT_CMOS_STANDARD_INDEX            0x70
+#define R_IOPORT_CMOS_STANDARD_DATA             0x71
+
 #define R_IOPORT_CMOS_UPPER_INDEX               0x72
 #define R_IOPORT_CMOS_UPPER_DATA                0x73
 

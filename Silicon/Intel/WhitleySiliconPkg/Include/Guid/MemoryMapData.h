@@ -13,6 +13,8 @@
 #include "SysHost.h"
 #include "PartialMirrorGuid.h"
 
+#define MEM_IMCCH_TO_SKTCH(Imc, Ch) ((Imc) * MAX_MC_CH + (Ch))
+
 #define RESERVED_2    2
 #define RESERVED_4    4
 

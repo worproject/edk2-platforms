@@ -24,4 +24,11 @@
 //
 #define CONFIG_TDP_TOTAL_LEVEL  5
 
+typedef struct {
+  UINT32  RegEax;
+  UINT32  RegEbx;
+  UINT32  RegEcx;
+  UINT32  RegEdx;
+} EFI_CPUID_REGISTER;
+
 #endif

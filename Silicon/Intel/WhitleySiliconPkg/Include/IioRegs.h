@@ -124,32 +124,54 @@
 //-----------------------------------------------------------------------------------
 // Port Index definition for ICX-SP
 //------------------------------------------------------------------------------------
+#define PCIE_PORT_0_DEV_0     0x03
+#define PCIE_PORT_0_FUNC_0    0x00
 
-// IOU0
-#define PORT_1A_INDEX_1           1
-#define PORT_1B_INDEX_1           2
-#define PORT_1C_INDEX_1           3
-#define PORT_1D_INDEX_1           4
-// IOU1
-#define PORT_2A_INDEX_2           5
-#define PORT_2B_INDEX_2           6
-#define PORT_2C_INDEX_2           7
-#define PORT_2D_INDEX_2           8
-// IOU2
-#define PORT_3A_INDEX_3           9
-#define PORT_3B_INDEX_3           10
-#define PORT_3C_INDEX_3           11
-#define PORT_3D_INDEX_3           12
-// IOU3
-#define PORT_4A_INDEX_4           13
-#define PORT_4B_INDEX_4           14
-#define PORT_4C_INDEX_4           15
-#define PORT_4D_INDEX_4           16
-// IOU4
-#define PORT_5A_INDEX_5           17
-#define PORT_5B_INDEX_5           18
-#define PORT_5C_INDEX_5           19
-#define PORT_5D_INDEX_5           20
+#define PCIE_PORT_1A_DEV_1    0x02
+#define PCIE_PORT_1A_FUNC_1   0x00
+#define PCIE_PORT_1B_DEV_1    0x03
+#define PCIE_PORT_1C_DEV_1    0x04
+#define PCIE_PORT_1D_DEV_1    0x05
+#define PCIE_PORT_1A_FUNC_1   0x00
+#define PCIE_PORT_1B_FUNC_1   0x00
+#define PCIE_PORT_1C_FUNC_1   0x00
+#define PCIE_PORT_1D_FUNC_1   0x00
+
+#define PCIE_PORT_2A_DEV_2    0x02
+#define PCIE_PORT_2B_DEV_2    0x03
+#define PCIE_PORT_2C_DEV_2    0x04
+#define PCIE_PORT_2D_DEV_2    0x05
+#define PCIE_PORT_2A_FUNC_2   0x00
+#define PCIE_PORT_2B_FUNC_2   0x00
+#define PCIE_PORT_2C_FUNC_2   0x00
+#define PCIE_PORT_2D_FUNC_2   0x00
+
+#define PCIE_PORT_3A_DEV_3    0x02
+#define PCIE_PORT_3B_DEV_3    0x03
+#define PCIE_PORT_3C_DEV_3    0x04
+#define PCIE_PORT_3D_DEV_3    0x05
+#define PCIE_PORT_3A_FUNC_3   0x00
+#define PCIE_PORT_3B_FUNC_3   0x00
+#define PCIE_PORT_3C_FUNC_3   0x00
+#define PCIE_PORT_3D_FUNC_3   0x00
+
+#define PCIE_PORT_4A_DEV_4    0x02
+#define PCIE_PORT_4B_DEV_4    0x03
+#define PCIE_PORT_4C_DEV_4    0x04
+#define PCIE_PORT_4D_DEV_4    0x05
+#define PCIE_PORT_4A_FUNC_4   0x00
+#define PCIE_PORT_4B_FUNC_4   0x00
+#define PCIE_PORT_4C_FUNC_4   0x00
+#define PCIE_PORT_4D_FUNC_4   0x00
+
+#define PCIE_PORT_5A_DEV_5    0x02
+#define PCIE_PORT_5B_DEV_5    0x03
+#define PCIE_PORT_5C_DEV_5    0x04
+#define PCIE_PORT_5D_DEV_5    0x05
+#define PCIE_PORT_5A_FUNC_5   0x00
+#define PCIE_PORT_5B_FUNC_5   0x00
+#define PCIE_PORT_5C_FUNC_5   0x00
+#define PCIE_PORT_5D_FUNC_5   0x00
 
 //
 // Port Config Mode
@@ -157,6 +179,8 @@
 #define REGULAR_PCIE_OWNERSHIP        0
 #define VMD_OWNERSHIP                 3
 #define PCIEAIC_OCL_OWNERSHIP         4
+
+#define DMI_BUS_NUM                   0
 
 #define NUMBER_TRACE_HUB_PER_SOCKET                           1
 

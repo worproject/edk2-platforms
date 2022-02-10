@@ -22,7 +22,32 @@ typedef struct {
 } MRC_MSM;
 
 typedef enum {
+  DdrLevel = 0,                         ///< Refers to frontside of DIMM
+  LrbufLevel = 1,                         ///< Refers to data level at backside of LRDIMM or NVMDIMM buffer
+  RegALevel = 2,                         ///< Refers to cmd level at backside of register, side A
+  RegBLevel = 3,                         ///< Refers to cmd level at backside of register, side B
+  HbmLevel = 4,                         ///< Refers to HBM
+  MrcLtMax,
+  MrcLtDelim = MAX_INT32
+  } MRC_LT;
+
+///
+/// Memory training margin group selectors.
+///
+typedef enum {
+  MrcGtMax = 224,
+  MrcGtDelim = MAX_INT32
+  } MRC_GT;
+
+typedef enum {
   MrcTtDelim = MAX_INT32
 } MRC_TT;
+
+///
+/// External signal names
+///
+typedef enum {
+  gsmCsnDelim = MAX_INT32
+} GSM_CSN;
 
 #endif // _MrcCommonTypes_h_

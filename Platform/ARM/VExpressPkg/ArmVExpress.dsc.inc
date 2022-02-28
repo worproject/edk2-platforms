@@ -1,21 +1,33 @@
 #
-#  Copyright (c) 2011-2020, Arm Limited. All rights reserved.
+#  Copyright (c) 2011-2022, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 #
 
 [Defines]
+!ifndef SECURE_BOOT_ENABLE
   SECURE_BOOT_ENABLE    = FALSE
+!endif
+!ifndef INCLUDE_TFTP_COMMAND
   INCLUDE_TFTP_COMMAND  = TRUE
+!endif
 
   #
   # Network definition
   #
+!ifndef NETWORK_SNP_ENABLE
   DEFINE NETWORK_SNP_ENABLE             = FALSE
+!endif
+!ifndef NETWORK_IP6_ENABLE
   DEFINE NETWORK_IP6_ENABLE             = FALSE
+!endif
+!ifndef NETWORK_TLS_ENABLE
   DEFINE NETWORK_TLS_ENABLE             = FALSE
+!endif
+!ifndef NETWORK_HTTP_BOOT_ENABLE
   DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
+!endif
 
 [BuildOptions.common]
   *_*_*_CC_FLAGS = -DDISABLE_NEW_DEPRECATED_INTERFACES

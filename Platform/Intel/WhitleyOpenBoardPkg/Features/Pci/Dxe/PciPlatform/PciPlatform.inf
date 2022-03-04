@@ -32,6 +32,7 @@
   WhitleySiliconPkg/CpRcPkg.dec
   WhitleySiliconPkg/Cpu/CpuRcPkg.dec
   WhitleyOpenBoardPkg/PlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
 
 [LibraryClasses]
   UefiDriverEntryPoint

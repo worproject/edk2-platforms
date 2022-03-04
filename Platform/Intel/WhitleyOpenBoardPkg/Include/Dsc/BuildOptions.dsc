@@ -134,8 +134,12 @@ DEFINE EDKII_DSC_FEATURE_BUILD_OPTIONS = $(EDKII_DSC_FEATURE_BUILD_OPTIONS) $(ME
 #
 # Override the VFR compile flags to speed the build time
 #
-
 *_*_*_VFR_FLAGS                     ==  -n
+
+#
+# Disable remarks, enable warnings as errors, disable integer optimization,
+#
+  *_*_*_ASL_FLAGS = -vr -we -oi
 
 #
 # add to the build options for DXE/SMM drivers to remove the log message:

@@ -27,6 +27,7 @@
   WhitleySiliconPkg/SiliconPkg.dec
   WhitleySiliconPkg/CpRcPkg.dec
   WhitleyOpenBoardPkg/PlatformPkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
 
 [LibraryClasses]
   IoLib

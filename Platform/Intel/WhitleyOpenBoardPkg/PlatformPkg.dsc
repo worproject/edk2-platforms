@@ -620,6 +620,7 @@
   VmgExitLib|UefiCpuPkg/Library/VmgExitLibNull/VmgExitLibNull.inf
   CrcLib|WhitleyOpenBoardPkg/Library/BaseCrcLib/BaseCrcLib.inf
   PlatformSpecificAcpiTableLib|WhitleyOpenBoardPkg/Library/PlatformSpecificAcpiTableLibNull/PlatformSpecificAcpiTableLibNull.inf
+  BuildAcpiTablesLib|WhitleyOpenBoardPkg/Library/BuildAcpiTablesLib/DxeBuildAcpiTablesLib.inf
 
 [LibraryClasses.Common.SEC, LibraryClasses.Common.PEI_CORE, LibraryClasses.Common.PEIM]
   FspWrapperApiLib|IntelFsp2WrapperPkg/Library/BaseFspWrapperApiLib/BaseFspWrapperApiLib.inf

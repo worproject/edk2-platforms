@@ -618,6 +618,7 @@
   PciSegmentInfoLib|$(PLATFORM_PKG)/Pci/Library/PciSegmentInfoLibSimple/PciSegmentInfoLibSimple.inf
   PlatformOpromPolicyLib|$(RP_PKG)/Library/PlatformOpromPolicyLibNull/PlatformOpromPolicyLibNull.inf
   VmgExitLib|UefiCpuPkg/Library/VmgExitLibNull/VmgExitLibNull.inf
+  CrcLib|WhitleyOpenBoardPkg/Library/BaseCrcLib/BaseCrcLib.inf
 
 [LibraryClasses.Common.SEC, LibraryClasses.Common.PEI_CORE, LibraryClasses.Common.PEIM]
   FspWrapperApiLib|IntelFsp2WrapperPkg/Library/BaseFspWrapperApiLib/BaseFspWrapperApiLib.inf

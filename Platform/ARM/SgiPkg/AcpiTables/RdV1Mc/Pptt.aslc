@@ -1,29 +1,27 @@
 /** @file
-* Processor Properties Topology Table (PPTT) for RD-V1 quad-chip platform
-*
-* This file describes the topological structure of the processor block on the
-* RD-V1 quad-chip platform in the form as defined by ACPI PPTT table. The RD-V1
-* quad-chip platform is composed of four identical chips connected over cache
-* coherent interconnect. Each of the chip on the platform includes four single
-* thread CPUS. Each of the CPUs include 64KB L1 Data cache, 64KB L1 Instruction
-* cache and 1MB L2 cache. The platform also includes a system level cache of
-* 16MB per chip.
-*
-* Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
-*
-* SPDX-License-Identifier: BSD-2-Clause-Patent
-*
-* @par Specification Reference:
-*   - ACPI 6.3, Chapter 5, Section 5.2.29, Processor Properties Topology Table
+  Processor Properties Topology Table (PPTT) for RD-V1 quad-chip platform
+
+  This file describes the topological structure of the processor block on the
+  RD-V1 quad-chip platform in the form as defined by ACPI PPTT table. The RD-V1
+  quad-chip platform is composed of four identical chips connected over cache
+  coherent interconnect. Each of the chip on the platform includes four single
+  thread CPUS. Each of the CPUs include 64KB L1 Data cache, 64KB L1 Instruction
+  cache and 1MB L2 cache. The platform also includes a system level cache of
+  16MB per chip.
+
+  Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+  @par Specification Reference:
+    - ACPI 6.4, Chapter 5, Section 5.2.29, Processor Properties Topology Table
 **/
 
-#include <IndustryStandard/Acpi.h>
 #include <Library/AcpiLib.h>
 #include <Library/ArmLib.h>
 #include <Library/PcdLib.h>
-
-#include "SgiPlatform.h"
 #include "SgiAcpiHeader.h"
+#include "SgiPlatform.h"
 
 #define CHIP_COUNT      FixedPcdGet32 (PcdChipCount)
 
@@ -36,10 +34,10 @@
 #define PPTT_CORE_INIT(PackageId, ClusterId, CpuId)                            \
   {                                                                            \
     /* Parameters for CPU Core */                                              \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
       OFFSET_OF (RD_PPTT_CORE, DCache),     /* Length */                       \
       PPTT_PROCESSOR_CORE_FLAGS,            /* Flag */                         \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId].Cluster[ClusterId]), /* Parent */                   \
       ((PackageId << 2) | ClusterId),       /* ACPI Id */                      \
       2                                     /* Num of private resource */      \
@@ -47,47 +45,53 @@
                                                                                \
     /* Offsets of the private resources */                                     \
     {                                                                          \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId].Cluster[ClusterId].Core[CpuId].DCache),             \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId].Cluster[ClusterId].Core[CpuId].ICache)              \
     },                                                                         \
                                                                                \
     /* L1 data cache parameters */                                             \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (                                   \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE_INIT (                                   \
       PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId].Cluster[ClusterId].Core[CpuId].L2Cache),            \
                                             /* Next level of cache */          \
       SIZE_64KB,                            /* Size */                         \
       256,                                  /* Num of sets */                  \
       4,                                    /* Associativity */                \
       PPTT_DATA_CACHE_ATTR,                 /* Attributes */                   \
-      64                                    /* Line size */                    \
+      64,                                   /* Line size */                    \
+      RD_PPTT_CACHE_ID(PackageId, ClusterId, CpuId, L1DataCache)               \
+                                            /* Cache id */                     \
     ),                                                                         \
                                                                                \
     /* L1 instruction cache parameters */                                      \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (                                   \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE_INIT (                                   \
       PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId].Cluster[ClusterId].Core[CpuId].L2Cache),            \
                                             /* Next level of cache */          \
       SIZE_64KB,                            /* Size */                         \
       256,                                  /* Num of sets */                  \
       4,                                    /* Associativity */                \
       PPTT_INST_CACHE_ATTR,                 /* Attributes */                   \
-      64                                    /* Line size */                    \
+      64,                                   /* Line size */                    \
+      RD_PPTT_CACHE_ID(PackageId, ClusterId, CpuId, L1InstructionCache)        \
+                                            /* Cache id */                     \
     ),                                                                         \
                                                                                \
     /* L2 cache parameters */                                                  \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (                                   \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_CACHE_INIT (                                   \
       PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */                         \
       0,                                    /* Next level of cache */          \
       SIZE_1MB,                             /* Size */                         \
       2048,                                 /* Num of sets */                  \
       8,                                    /* Associativity */                \
       PPTT_UNIFIED_CACHE_ATTR,              /* Attributes */                   \
-      64                                    /* Line size */                    \
+      64,                                   /* Line size */                    \
+      RD_PPTT_CACHE_ID(PackageId, ClusterId, CpuId, L2Cache)                   \
+                                            /* Cache id */                     \
     ),                                                                         \
   }
 
@@ -99,10 +103,10 @@
 #define PPTT_CLUSTER_INIT(PackageId, ClusterId)                                \
   {                                                                            \
     /* Parameters for Cluster */                                               \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
       OFFSET_OF (RD_PPTT_MINIMAL_CLUSTER, Core),  /* Length */                 \
       PPTT_PROCESSOR_CLUSTER_FLAGS,         /* Flag */                         \
-      OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
+      OFFSET_OF (EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,             \
         Package[PackageId]),                /* Parent */                       \
       ((PackageId << 2) | ClusterId),       /* ACPI Id */                      \
       0                                     /* Num of private resource */      \
@@ -120,7 +124,7 @@
 **/
 #define PPTT_PACKAGE_INIT(PackageId)                                           \
   {                                                                            \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
+    EFI_ACPI_6_4_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
       OFFSET_OF (RD_PPTT_PACKAGE, Cluster[0]),  /* Length */                   \
       PPTT_PROCESSOR_PACKAGE_FLAGS,         /* Flag */                         \
       0,                                    /* Parent */                       \
@@ -140,17 +144,17 @@
  * Processor Properties Topology Table
  */
 typedef struct {
-  EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_HEADER  Header;
+  EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_HEADER  Header;
   RD_PPTT_PACKAGE                                          Package[CHIP_COUNT];
-} EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE;
+} EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE;
 #pragma pack ()
 
-STATIC EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE Pptt = {
+STATIC EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE Pptt = {
   {
     ARM_ACPI_HEADER (
-      EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,
-      EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,
-      EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_REVISION
+      EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_STRUCTURE_SIGNATURE,
+      EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,
+      EFI_ACPI_6_4_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_REVISION
     )
   },
 

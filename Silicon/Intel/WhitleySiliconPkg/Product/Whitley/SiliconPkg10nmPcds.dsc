@@ -52,7 +52,7 @@
   # for 10nm
   #
 
-!if $(CPU_SKX_ONLY_SUPPORT) == TRUE
+!if $(CPUTARGET) == "CPX"
 
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcBdatDefault|FALSE
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcWritePreambleTclkDefault|0x0

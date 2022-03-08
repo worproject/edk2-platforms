@@ -169,7 +169,7 @@
   ## This PCD specifies whether FPGA routine will be active
   gSocketPkgFpgaGuid.PcdSktFpgaActive|TRUE
 
-!if $(CPU_SKX_ONLY_SUPPORT) == TRUE
+!if $(CPUTARGET) == "CPX"
   gEfiCpRcPkgTokenSpaceGuid.PerBitMargin|FALSE
   gEfiCpRcPkgTokenSpaceGuid.PcdSeparateCwlAdj|TRUE
 !endif
@@ -343,7 +343,7 @@
   # Disable Fast Warm Boot for Whitley Openboard Package
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcFastBootDefault|FALSE
 
-!if $(CPU_SKX_ONLY_SUPPORT) == FALSE
+!if $(CPUTARGET) == "ICX"
   gCpuUncoreTokenSpaceGuid.PcdWaSerializationEn|FALSE
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcCmdVrefCenteringTrainingEnable|FALSE
 !endif
@@ -426,7 +426,7 @@
   #
 
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07         # Enable status codes for debug, progress, and errors
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000042           # Displayed messages:  Error, Info, warn
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000047           # Displayed messages:  Error, Info, warn
 
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0x80000000
   gUefiCpuPkgTokenSpaceGuid.PcdCpuNumberOfReservedVariableMtrrs|0
@@ -856,7 +856,7 @@
   DEFINE CPU_CPX_SUPPORT                     = FALSE
 !endif
 [PcdsFixedAtBuild]
-!if ($(CPU_SKX_ONLY_SUPPORT) == TRUE)
+!if $(CPUTARGET) == "CPX"
   gSiPkgTokenSpaceGuid.PcdPostedCsrAccessSupported         |FALSE
 !endif
 [LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.UEFI_APPLICATION]

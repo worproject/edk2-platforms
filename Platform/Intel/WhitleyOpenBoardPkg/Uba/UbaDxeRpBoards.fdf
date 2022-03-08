@@ -8,9 +8,11 @@
 ##
 
 #
-# Currently shared by all platforms
+# Currently shared by all ICX platforms
 #
-INF  $(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+!if $(CPUTARGET) == "ICX"
+  INF  $(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+!endif
 
 #
 # Platform TypeWilsonCityRP

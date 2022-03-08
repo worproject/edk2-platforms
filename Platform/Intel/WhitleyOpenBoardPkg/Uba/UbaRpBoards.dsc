@@ -31,9 +31,11 @@ $(RP_PKG)/Uba/BoardInit/Pei/BoardInitPei.inf {
 
 [Components.X64]
 #
-# Currently shared by all platforms
+# Currently shared by all ICX platforms
 #
-$(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+!if $(CPUTARGET) == "ICX"
+  $(RP_PKG)/Uba/UbaMain/StaticSkuDataDxe/StaticSkuDataDxe.inf
+!endif
 
 #
 # Platform TypeWilsonCityRP

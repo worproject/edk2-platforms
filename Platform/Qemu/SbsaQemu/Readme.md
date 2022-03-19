@@ -27,7 +27,7 @@ Flash1 contains EFI code and EFI variables.
 
 Create a directory $WORKSPACE that would hold source code of the components.
 
-  1. [qemu](https://github.com/qemu/qemu.git)
+  1. [qemu](https://gitlab.com/qemu-project/qemu.git)
   2. [edk2](https://github.com/tianocore/edk2)
   3. [edk2-platforms](https://github.com/tianocore/edk2-platforms)
   4. [edk2-non-osi](https://github.com/tianocore/edk2-non-osi)

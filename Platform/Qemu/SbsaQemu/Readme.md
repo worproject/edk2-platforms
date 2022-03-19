@@ -56,7 +56,7 @@ Create a directory $WORKSPACE that would hold source code of the components.
 
 2. Compile TF-A
 
-  This step is only needed if users want to compile a custom ATF binary.
+  This step is only needed if users want to compile a custom TF-A binary.
   Else, the edk2-non-osi directory contains prebuilt bl1.bin and fip.bin
   binaries which will be automatically used in the build process.
 
@@ -65,7 +65,7 @@ Create a directory $WORKSPACE that would hold source code of the components.
   `bl1.bin` and `fip.bin`. Follow the instructions below to get those artifacts.
 
   ```
-  cd $WORKSPACE/atf
+  cd $WORKSPACE/trusted-firmware-a
   make PLAT=sbsa all fip
   ```
   Then copy `bl1.bin` and `fip.bin` to the the edk2-non-osi directory:

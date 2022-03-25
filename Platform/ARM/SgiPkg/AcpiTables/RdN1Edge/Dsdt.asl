@@ -58,7 +58,7 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         1150,                 // Wake latency (uS)
         1,                    // Flags
         1,                    // Arch Context Flags
-        100,                  // Residency Counter Frequency
+        0,                    // Residency Counter Frequency
         0,                    // No Parent State
         0x00000020,           // Integer Entry method
         ResourceTemplate () { // Null Residency Counter
@@ -73,14 +73,14 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
 
     Name (PLPI, Package () {  /* LPI for Processor, support 2 LPI states */
       0,                      // Version
-      1,                      // Level Index
+      0,                      // Level Index
       2,                      // Count
       Package () {            // WFI for CPU
         1,                    // Min residency (uS)
         1,                    // Wake latency (uS)
         1,                    // Flags
         0,                    // Arch Context lost Flags (no loss)
-        100,                  // Residency Counter Frequency
+        0,                    // Residency Counter Frequency
         0,                    // No parent state
         ResourceTemplate () { // Register Entry method
           Register (FFixedHW,
@@ -103,7 +103,7 @@ DefinitionBlock ("DsdtTable.aml", "DSDT", 2, "ARMLTD", "ARMSGI",
         350,                  // Wake latency (uS)
         1,                    // Flags
         1,                    // Arch Context lost Flags (Core context lost)
-        100,                  // Residency Counter Frequency
+        0,                    // Residency Counter Frequency
         1,                    // Parent node can be in any shallower state
         ResourceTemplate () { // Register Entry method
           Register (FFixedHW,

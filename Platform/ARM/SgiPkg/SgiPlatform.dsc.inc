@@ -32,11 +32,11 @@
   ArmPlatformSysConfigLib|Platform/ARM/VExpressPkg/Library/ArmVExpressSysConfigLib/ArmVExpressSysConfigLib.inf
   ArmPlatformLib|Platform/ARM/SgiPkg/Library/PlatformLib/PlatformLib.inf
   BasePathLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
-  EfiResetSystemLib|ArmPkg/Library/ArmPsciResetSystemLib/ArmPsciResetSystemLib.inf
   LcdHwLib|ArmPlatformPkg/Library/HdLcd/HdLcd.inf
   LcdPlatformLib|Platform/ARM/SgiPkg/Library/HdLcdArmSgiLib/HdLcdArmSgiLib.inf
   NorFlashPlatformLib|Platform/ARM/SgiPkg/Library/NorFlashLib/NorFlashLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
+  ResetSystemLib|ArmPkg/Library/ArmSmcPsciResetSystemLib/ArmSmcPsciResetSystemLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
 !if $(SECURE_BOOT_ENABLE) == TRUE
   MmUnblockMemoryLib|MdePkg/Library/MmUnblockMemoryLib/MmUnblockMemoryLibNull.inf
@@ -259,10 +259,10 @@
   ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
   EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
-  EmbeddedPkg/ResetRuntimeDxe/ResetRuntimeDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
 !if $(SECURE_BOOT_ENABLE) == TRUE
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf {
     <LibraryClasses>

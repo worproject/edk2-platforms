@@ -1,7 +1,7 @@
 /** @file
   Common header for the driver
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2022 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -927,38 +927,6 @@ Ext4InitExtentsMap (
 VOID
 Ext4FreeExtentsMap (
   IN EXT4_FILE  *File
-  );
-
-/**
-   Calculates the CRC32c checksum of the given buffer.
-
-   @param[in]      Buffer        Pointer to the buffer.
-   @param[in]      Length        Length of the buffer, in bytes.
-   @param[in]      InitialValue  Initial value of the CRC.
-
-   @return The CRC32c checksum.
-**/
-UINT32
-CalculateCrc32c (
-  IN CONST VOID  *Buffer,
-  IN UINTN       Length,
-  IN UINT32      InitialValue
-  );
-
-/**
-   Calculates the CRC16 checksum of the given buffer.
-
-   @param[in]      Buffer        Pointer to the buffer.
-   @param[in]      Length        Length of the buffer, in bytes.
-   @param[in]      InitialValue  Initial value of the CRC.
-
-   @return The CRC16 checksum.
-**/
-UINT16
-CalculateCrc16 (
-  IN CONST VOID  *Buffer,
-  IN UINTN       Length,
-  IN UINT16      InitialValue
   );
 
 /**

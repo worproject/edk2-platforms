@@ -109,8 +109,6 @@
   Extents.c
   File.c
   Collation.c
-  Crc32c.c
-  Crc16.c
   Ext4Disk.h
   Ext4Dxe.h
 

@@ -85,7 +85,7 @@ Ext4SuperblockValidate (
     return FALSE;
   }
 
-  if (Sb->s_rev_level != EXT4_DYNAMIC_REV && Sb->s_rev_level != EXT4_GOOD_OLD_REV) {
+  if ((Sb->s_rev_level != EXT4_DYNAMIC_REV) && (Sb->s_rev_level != EXT4_GOOD_OLD_REV)) {
     return FALSE;
   }
 
@@ -188,11 +188,11 @@ Ext4OpenSuperblock (
     Partition->FeaturesCompat   = Sb->s_feature_compat;
     Partition->FeaturesIncompat = Sb->s_feature_incompat;
     Partition->FeaturesRoCompat = Sb->s_feature_ro_compat;
-    Partition->InodeSize = Sb->s_inode_size;
+    Partition->InodeSize        = Sb->s_inode_size;
   } else {
     // GOOD_OLD_REV
     Partition->FeaturesCompat = Partition->FeaturesIncompat = Partition->FeaturesRoCompat = 0;
-    Partition->InodeSize = EXT4_GOOD_OLD_INODE_SIZE;
+    Partition->InodeSize      = EXT4_GOOD_OLD_INODE_SIZE;
   }
 
   // Now, check for the feature set of the filesystem
@@ -220,7 +220,8 @@ Ext4OpenSuperblock (
 
   // At the time of writing, it's the only supported checksum.
   if (Partition->FeaturesCompat & EXT4_FEATURE_RO_COMPAT_METADATA_CSUM &&
-      Sb->s_checksum_type != EXT4_CHECKSUM_CRC32C) {
+      (Sb->s_checksum_type != EXT4_CHECKSUM_CRC32C))
+  {
     return EFI_UNSUPPORTED;
   }
 
@@ -250,7 +251,7 @@ Ext4OpenSuperblock (
     return EFI_UNSUPPORTED;
   }
 
-  Partition->NumberBlocks = EXT4_BLOCK_NR_FROM_HALFS (Partition, Sb->s_blocks_count, Sb->s_blocks_count_hi);
+  Partition->NumberBlocks      = EXT4_BLOCK_NR_FROM_HALFS (Partition, Sb->s_blocks_count, Sb->s_blocks_count_hi);
   Partition->NumberBlockGroups = DivU64x32 (Partition->NumberBlocks, Sb->s_blocks_per_group);
 
   DEBUG ((
@@ -266,7 +267,7 @@ Ext4OpenSuperblock (
     Partition->DescSize = EXT4_OLD_BLOCK_DESC_SIZE;
   }
 
-  if (Partition->DescSize < EXT4_64BIT_BLOCK_DESC_SIZE && EXT4_IS_64_BIT (Partition)) {
+  if ((Partition->DescSize < EXT4_64BIT_BLOCK_DESC_SIZE) && EXT4_IS_64_BIT (Partition)) {
     // 64 bit filesystems need DescSize to be 64 bytes
     return EFI_VOLUME_CORRUPTED;
   }

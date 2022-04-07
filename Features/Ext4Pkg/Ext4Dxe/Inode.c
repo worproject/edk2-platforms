@@ -50,7 +50,7 @@ Ext4CalculateInodeChecksum (
 
   Crc = Ext4CalculateChecksum (Partition, &Dummy, sizeof (Dummy), Crc);
 
-  RestOfInode = &Inode->i_osd2.data_linux.l_i_reserved;
+  RestOfInode       = &Inode->i_osd2.data_linux.l_i_reserved;
   RestOfInodeLength = Partition->InodeSize - OFFSET_OF (EXT4_INODE, i_osd2.data_linux.l_i_reserved);
 
   if (HasSecondChecksumField) {
@@ -61,7 +61,7 @@ Ext4CalculateInodeChecksum (
 
     // 4 is the size of the i_extra_size field + the size of i_checksum_hi
     RestOfInodeLength = Partition->InodeSize - EXT4_GOOD_OLD_INODE_SIZE - 4;
-    RestOfInode = &Inode->i_ctime_extra;
+    RestOfInode       = &Inode->i_ctime_extra;
   }
 
   Crc = Ext4CalculateChecksum (Partition, RestOfInode, RestOfInodeLength, Crc);
@@ -138,14 +138,13 @@ Ext4Read (
                &Extent
                );
 
-    if (Status != EFI_SUCCESS && Status != EFI_NO_MAPPING) {
+    if ((Status != EFI_SUCCESS) && (Status != EFI_NO_MAPPING)) {
       return Status;
     }
 
     HasBackingExtent = Status != EFI_NO_MAPPING;
 
     if (!HasBackingExtent || EXT4_EXTENT_IS_UNINITIALIZED (&Extent)) {
-
       HoleOff = BlockOff;
 
       if (!HasBackingExtent) {
@@ -167,8 +166,8 @@ Ext4Read (
                            );
       ExtentLengthBytes  = Extent.ee_len * Partition->BlockSize;
       ExtentLogicalBytes = (UINT64)Extent.ee_block * Partition->BlockSize;
-      ExtentOffset  = CurrentSeek - ExtentLogicalBytes;
-      ExtentMayRead = (UINTN)(ExtentLengthBytes - ExtentOffset);
+      ExtentOffset       = CurrentSeek - ExtentLogicalBytes;
+      ExtentMayRead      = (UINTN)(ExtentLengthBytes - ExtentOffset);
 
       WasRead = ExtentMayRead > RemainingRead ? RemainingRead : ExtentMayRead;
 
@@ -187,9 +186,9 @@ Ext4Read (
     }
 
     RemainingRead -= WasRead;
-    Buffer       = (VOID *)((CHAR8 *)Buffer + WasRead);
-    BeenRead    += WasRead;
-    CurrentSeek += WasRead;
+    Buffer         = (VOID *)((CHAR8 *)Buffer + WasRead);
+    BeenRead      += WasRead;
+    CurrentSeek   += WasRead;
   }
 
   *Length = BeenRead;
@@ -214,7 +213,7 @@ Ext4AllocateInode (
   EXT4_INODE  *Inode;
 
   NeedsToZeroRest = FALSE;
-  InodeSize = Partition->InodeSize;
+  InodeSize       = Partition->InodeSize;
 
   // We allocate a structure of at least sizeof(EXT4_INODE), but in the future, when
   // write support is added and we need to flush inodes to disk, we could have a bit better
@@ -224,7 +223,7 @@ Ext4AllocateInode (
   // is 160 bytes).
 
   if (InodeSize < sizeof (EXT4_INODE)) {
-    InodeSize = sizeof (EXT4_INODE);
+    InodeSize       = sizeof (EXT4_INODE);
     NeedsToZeroRest = TRUE;
   }
 
@@ -409,7 +408,8 @@ EXT4_FILE_GET_TIME_GENERIC (MTime, i_mtime);
 **/
 STATIC
 EXT4_FILE_GET_TIME_GENERIC (
-  CrTime, i_crtime
+  CrTime,
+  i_crtime
   );
 
 /**

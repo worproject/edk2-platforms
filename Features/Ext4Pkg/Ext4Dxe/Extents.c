@@ -249,7 +249,7 @@ Ext4GetExtent (
   }
 
   // ext4 does not have support for logical block numbers bigger than UINT32_MAX
-  if (LogicalBlock > (UINT32)- 1) {
+  if (LogicalBlock > (UINT32)-1) {
     return EFI_NO_MAPPING;
   }
 
@@ -332,7 +332,7 @@ Ext4GetExtent (
     return EFI_NO_MAPPING;
   }
 
-  if (!(LogicalBlock >= Ext->ee_block && Ext->ee_block + Ext4GetExtentLength (Ext) > LogicalBlock)) {
+  if (!((LogicalBlock >= Ext->ee_block) && (Ext->ee_block + Ext4GetExtentLength (Ext) > LogicalBlock))) {
     // This extent does not cover the block
     if (Buffer != NULL) {
       FreePool (Buffer);
@@ -378,7 +378,7 @@ Ext4ExtentsMapStructCompare (
   Extent1 = UserStruct1;
   Extent2 = UserStruct2;
 
-  return Extent1->ee_block < Extent2->ee_block ? - 1 :
+  return Extent1->ee_block < Extent2->ee_block ? -1 :
          Extent1->ee_block > Extent2->ee_block ? 1 : 0;
 }
 
@@ -413,11 +413,11 @@ Ext4ExtentsMapKeyCompare (
   Extent = UserStruct;
   Block  = (UINT32)(UINTN)StandaloneKey;
 
-  if (Block >= Extent->ee_block && Block < Extent->ee_block + Ext4GetExtentLength (Extent)) {
+  if ((Block >= Extent->ee_block) && (Block < Extent->ee_block + Ext4GetExtentLength (Extent))) {
     return 0;
   }
 
-  return Block < Extent->ee_block ? - 1 :
+  return Block < Extent->ee_block ? -1 :
          Block > Extent->ee_block ? 1 : 0;
 }
 

@@ -1151,4 +1151,22 @@ Ext4GetExtentLength (
   IN CONST EXT4_EXTENT  *Extent
   );
 
+/**
+   Retrieves an extent from an EXT2/3 inode (with a blockmap).
+   @param[in]      Partition     Pointer to the opened EXT4 partition.
+   @param[in]      File          Pointer to the opened file.
+   @param[in]      LogicalBlock  Block number which the returned extent must cover.
+   @param[out]     Extent        Pointer to the output buffer, where the extent will be copied to.
+
+   @retval EFI_SUCCESS        Retrieval was succesful.
+   @retval EFI_NO_MAPPING     Block has no mapping.
+**/
+EFI_STATUS
+Ext4GetBlocks (
+  IN  EXT4_PARTITION  *Partition,
+  IN  EXT4_FILE       *File,
+  IN  EXT4_BLOCK_NR   LogicalBlock,
+  OUT EXT4_EXTENT     *Extent
+  );
+
 #endif

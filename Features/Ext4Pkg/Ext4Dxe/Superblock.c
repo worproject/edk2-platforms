@@ -1,7 +1,7 @@
 /** @file
   Superblock managing routines
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2022 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -205,11 +205,6 @@ Ext4OpenSuperblock (
       "[ext4] Unsupported features %lx\n",
       Partition->FeaturesIncompat & ~gSupportedIncompatFeat
       ));
-    return EFI_UNSUPPORTED;
-  }
-
-  // This should be removed once we add ext2/3 support in the future.
-  if ((Partition->FeaturesIncompat & EXT4_FEATURE_INCOMPAT_EXTENTS) == 0) {
     return EFI_UNSUPPORTED;
   }
 

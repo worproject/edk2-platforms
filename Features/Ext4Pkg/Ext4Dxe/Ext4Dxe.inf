@@ -111,6 +111,7 @@
   Collation.c
   Ext4Disk.h
   Ext4Dxe.h
+  BlockMap.c
 
 [Packages]
   MdePkg/MdePkg.dec

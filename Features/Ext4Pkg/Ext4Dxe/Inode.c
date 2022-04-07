@@ -1,7 +1,7 @@
 /** @file
   Inode related routines
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2022 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
   EpochToEfiTime copied from EmbeddedPkg/Library/TimeBaseLib.c
@@ -150,8 +150,9 @@ Ext4Read (
       if (!HasBackingExtent) {
         HoleLen = Partition->BlockSize - HoleOff;
       } else {
-        // Uninitialized extents behave exactly the same as file holes.
-        HoleLen = Ext4GetExtentLength (&Extent) - HoleOff;
+        // Uninitialized extents behave exactly the same as file holes, except they have
+        // blocks already allocated to them.
+        HoleLen = (Ext4GetExtentLength (&Extent) * Partition->BlockSize) - HoleOff;
       }
 
       WasRead = HoleLen > RemainingRead ? RemainingRead : HoleLen;
@@ -176,7 +177,7 @@ Ext4Read (
       if (EFI_ERROR (Status)) {
         DEBUG ((
           DEBUG_ERROR,
-          "[ext4] Error %x reading [%lu, %lu]\n",
+          "[ext4] Error %r reading [%lu, %lu]\n",
           Status,
           ExtentStartBytes + ExtentOffset,
           ExtentStartBytes + ExtentOffset + WasRead - 1

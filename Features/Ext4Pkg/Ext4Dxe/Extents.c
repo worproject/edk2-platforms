@@ -1,7 +1,7 @@
 /** @file
   Extent related routines
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2022 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -244,10 +244,6 @@ Ext4GetExtent (
 
   DEBUG ((DEBUG_FS, "[ext4] Looking up extent for block %lu\n", LogicalBlock));
 
-  if (!(Inode->i_flags & EXT4_EXTENTS_FL)) {
-    return EFI_UNSUPPORTED;
-  }
-
   // ext4 does not have support for logical block numbers bigger than UINT32_MAX
   if (LogicalBlock > (UINT32)-1) {
     return EFI_NO_MAPPING;
@@ -259,6 +255,17 @@ Ext4GetExtent (
     *Extent = *Ext;
 
     return EFI_SUCCESS;
+  }
+
+  if (!(Inode->i_flags & EXT4_EXTENTS_FL)) {
+    // If this is an older ext2/ext3 filesystem, emulate Ext4GetExtent using the block map
+    Status = Ext4GetBlocks (Partition, File, LogicalBlock, Extent);
+
+    if (!EFI_ERROR (Status)) {
+      Ext4CacheExtents (File, Extent, 1);
+    }
+
+    return Status;
   }
 
   // Slow path, we'll need to read from disk and (try to) cache those extents.

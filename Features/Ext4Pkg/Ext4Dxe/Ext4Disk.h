@@ -468,4 +468,6 @@ typedef UINT32  EXT4_INO_NR;
 // 2 is always the root inode number in ext4
 #define EXT4_ROOT_INODE_NR  2
 
+#define EXT4_BLOCK_FILE_HOLE  0
+
 #endif

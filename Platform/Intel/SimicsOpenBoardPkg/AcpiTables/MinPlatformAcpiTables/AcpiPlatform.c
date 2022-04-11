@@ -1328,6 +1328,9 @@ PlatformUpdateTables (
       FadtHeader->XGpe1Blk.AccessSize = 0;
     }
 
+    FadtHeader->DutyOffset = PcdGet8 (PcdFadtDutyOffset);
+    FadtHeader->DutyWidth = PcdGet8 (PcdFadtDutyWidth);
+
     DEBUG(( EFI_D_ERROR, "ACPI FADT table @ address 0x%x\n", Table ));
     DEBUG(( EFI_D_ERROR, "  IaPcBootArch 0x%x\n", FadtHeader->IaPcBootArch ));
     DEBUG(( EFI_D_ERROR, "  Flags 0x%x\n", FadtHeader->Flags ));

@@ -10,7 +10,7 @@
 * cluster includes a 2MB L3 cache. Each instance of the chip includes a system
 * level cache of 8MB.
 *
-* Copyright (c) 2021, ARM Limited. All rights reserved.
+* Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
 *
 * SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -140,26 +140,11 @@
 #define PPTT_PACKAGE_INIT(PackageId)                                           \
   {                                                                            \
     EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (                               \
-      OFFSET_OF (RDN1EDGEX2_PPTT_PACKAGE , Slc),  /* Length */                 \
+      OFFSET_OF (RDN1EDGEX2_PPTT_PACKAGE , Cluster[0]),  /* Length */          \
       PPTT_PROCESSOR_PACKAGE_FLAGS,       /* Flag */                           \
       0,                                  /* Parent */                         \
       0,                                  /* ACPI Id */                        \
-      1                                   /* Num of private resource */        \
-    ),                                                                         \
-                                                                               \
-    /* Offsets of the private resources */                                     \
-    OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,               \
-               Package[PackageId].Slc),                                        \
-                                                                               \
-    /* SLC parameters */                                                       \
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (                                   \
-      PPTT_CACHE_STRUCTURE_FLAGS,         /* Flag */                           \
-      0,                                  /* Next level of cache */            \
-      SIZE_8MB,                           /* Size */                           \
-      8192,                               /* Num of sets */                    \
-      16,                                 /* Associativity */                  \
-      PPTT_UNIFIED_CACHE_ATTR,            /* Attributes */                     \
-      64                                  /* Line size */                      \
+      0                                   /* Num of private resource */        \
     ),                                                                         \
                                                                                \
     {                                                                          \
@@ -171,8 +156,6 @@
 #pragma pack(1)
 typedef struct {
   EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Package;
-  UINT32                                 Offset;
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      Slc;
   RD_PPTT_CLUSTER                        Cluster[CLUSTER_COUNT];
 } RDN1EDGEX2_PPTT_PACKAGE;
 

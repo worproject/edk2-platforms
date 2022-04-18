@@ -7,7 +7,7 @@
 * cache, 64KB L1 Instruction cache and 1MB L2 cache. The platform also includes
 * system level cache of 32MB.
 *
-* Copyright (c) 2021, ARM Limited. All rights reserved.
+* Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
 *
 * SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -116,7 +116,7 @@
  */
 typedef struct {
   EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_HEADER  Header;
-  RD_PPTT_SLC_PACKAGE                                      Package;
+  RD_PPTT_PACKAGE                                          Package;
 } EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE;
 #pragma pack ()
 
@@ -131,21 +131,8 @@ STATIC EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE Pptt = {
 
   {
     EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (
-      OFFSET_OF (RD_PPTT_SLC_PACKAGE, Slc),
-      PPTT_PROCESSOR_PACKAGE_FLAGS, 0, 0, 1),
-
-    OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,
-               Package.Slc),
-
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (
-      PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */
-      0,                                    /* Next level of cache */
-      SIZE_32MB,                            /* Size */
-      32768,                                /* Num of sets */
-      16,                                   /* Associativity */
-      PPTT_UNIFIED_CACHE_ATTR,              /* Attributes */
-      64                                    /* Line size */
-    ),
+      OFFSET_OF (RD_PPTT_PACKAGE, Cluster[0]),
+      PPTT_PROCESSOR_PACKAGE_FLAGS, 0, 0, 0),
 
     {
       PPTT_CLUSTER_INIT (0, 0),

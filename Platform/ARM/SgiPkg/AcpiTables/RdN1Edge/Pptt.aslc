@@ -8,7 +8,7 @@
 * cache. Each cluster includes a 2MB L3 cache. The platform also includes a
 * system level cache of 8MB.
 *
-* Copyright (c) 2021, ARM Limited. All rights reserved.
+* Copyright (c) 2021 - 2022, Arm Limited. All rights reserved.
 *
 * SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -132,8 +132,6 @@
 #pragma pack(1)
 typedef struct {
   EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR  Package;
-  UINT32                                 Offset;
-  EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE      Slc;
   RD_PPTT_CLUSTER                        Cluster[CLUSTER_COUNT];
 } RDN1EDGE_PPTT_PACKAGE ;
 
@@ -157,21 +155,9 @@ STATIC EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE Pptt = {
 
   {
     EFI_ACPI_6_3_PPTT_STRUCTURE_PROCESSOR_INIT (
-      OFFSET_OF (RDN1EDGE_PPTT_PACKAGE , Slc),
-      PPTT_PROCESSOR_PACKAGE_FLAGS, 0, 0, 1),
+      OFFSET_OF (RDN1EDGE_PPTT_PACKAGE , Cluster[0]),
+      PPTT_PROCESSOR_PACKAGE_FLAGS, 0, 0, 0),
 
-    OFFSET_OF (EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE,
-               Package.Slc),
-
-    EFI_ACPI_6_3_PPTT_STRUCTURE_CACHE_INIT (
-      PPTT_CACHE_STRUCTURE_FLAGS,           /* Flag */
-      0,                                    /* Next level of cache */
-      SIZE_8MB,                             /* Size */
-      8192,                                 /* Num of sets */
-      16,                                   /* Associativity */
-      PPTT_UNIFIED_CACHE_ATTR,              /* Attributes */
-      64                                    /* Line size */
-    ),
     {
       PPTT_CLUSTER_INIT (0, 0),
       PPTT_CLUSTER_INIT (0, 1),

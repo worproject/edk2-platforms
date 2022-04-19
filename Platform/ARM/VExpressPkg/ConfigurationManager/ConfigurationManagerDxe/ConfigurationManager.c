@@ -312,7 +312,9 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     // ATS attributes
     EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,
     // PCI segment number
-    0
+    0,
+    // Memory Address Size Limit
+    64
   },
 
   // Array of Device ID mappings

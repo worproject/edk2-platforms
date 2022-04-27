@@ -24,7 +24,6 @@
   ConfigurationManager.c
   AslTables/Dsdt.asl
   AslTables/SsdtJunoUsb.asl
-  AslTables/SsdtPci.asl
 
 [Packages]
   ArmPkg/ArmPkg.dec

@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2017 - 2021, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2022, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -89,6 +89,14 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       EFI_ACPI_6_3_PROCESSOR_PROPERTIES_TOPOLOGY_TABLE_REVISION,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdPptt),
       NULL
+    },
+    // SSDT Table (Cpu topology)
+    {
+      EFI_ACPI_6_3_SECONDARY_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+      0, // Unused
+      CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdSsdtCpuTopology),
+      NULL,
+      SIGNATURE_64 ('C','P','U','-','T','O','P','O')
     },
     /* PCI MCFG Table
        PCIe is only available on Juno R1 and R2.
@@ -277,6 +285,8 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       0,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
+      CM_NULL_TOKEN,
+      // CM_OBJECT_TOKEN  LpiToken
       CM_NULL_TOKEN
     },
     // 'big' cluster
@@ -298,7 +308,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       BIG_CLUSTER_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (BigClusterResources)
+      REFERENCE_TOKEN (BigClusterResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
     },
     // 'LITTLE' cluster
     {
@@ -319,7 +331,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       LITTLE_CLUSTER_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (LittleClusterResources)
+      REFERENCE_TOKEN (LittleClusterResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (ClustersLpiRef)
     },
     // Two 'big' cores
     {
@@ -340,7 +354,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       BIG_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (BigCoreResources)
+      REFERENCE_TOKEN (BigCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -360,7 +376,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       BIG_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (BigCoreResources)
+      REFERENCE_TOKEN (BigCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     // Four 'LITTLE' cores
     {
@@ -381,7 +399,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (LittleCoreResources)
+      REFERENCE_TOKEN (LittleCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -401,7 +421,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (LittleCoreResources)
+      REFERENCE_TOKEN (LittleCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -421,7 +443,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (LittleCoreResources)
+      REFERENCE_TOKEN (LittleCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     },
     {
       // CM_OBJECT_TOKEN  Token
@@ -441,7 +465,9 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
       // UINT32  NoOfPrivateResources
       LITTLE_CORE_RESOURCE_COUNT,
       // CM_OBJECT_TOKEN  PrivateResourcesArrayToken
-      REFERENCE_TOKEN (LittleCoreResources)
+      REFERENCE_TOKEN (LittleCoreResources),
+      // CM_OBJECT_TOKEN  LpiToken
+      REFERENCE_TOKEN (CoresLpiRef)
     }
   },
 
@@ -549,6 +575,84 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
   {
     { REFERENCE_TOKEN (CacheInfo[4]) }, // -> 'LITTLE' core's L1 I-cache
     { REFERENCE_TOKEN (CacheInfo[5]) }  // -> 'LITTLE' core's L1 D-cache
+  },
+
+  // Low Power Idle state information (LPI) for all cores/clusters
+  {
+    { // LpiInfo[0] -> Clusters CluPwrDn
+      2500,         // MinResidency
+      1150,         // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      100,          // ResCntFreq
+      0,            // EnableParentState
+      TRUE,         // IsInteger
+      0x01000000,   // IntegerEntryMethod
+      // RegisterEntryMethod (NULL, use IntegerEntryMethod)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "CluPwrDn" // StateName
+    },
+    // LpiInfo[1] -> Cores WFI
+    {
+      1,            // MinResidency
+      1,            // WorstCaseWakeLatency
+      1,            // Flags
+      0,            // ArchFlags
+      100,          // ResCntFreq
+      0,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+        EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+        0x20, // RegisterBitWidth
+        0x00, // RegisterBitOffset
+        0x03, // AccessSize
+        0xFFFFFFFF // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "WFI" // StateName
+    },
+    // LpiInfo[2] -> Cores CorePwrDn
+    {
+      150,          // MinResidency
+      350,          // WorstCaseWakeLatency
+      1,            // Flags
+      1,            // ArchFlags
+      100,          // ResCntFreq
+      1,            // EnableParentState
+      FALSE,        // IsInteger
+      0,            // IntegerEntryMethod (0, use RegisterEntryMethod)
+      // RegisterEntryMethod
+      {
+          EFI_ACPI_6_3_FUNCTIONAL_FIXED_HARDWARE, // AddressSpaceId
+          0x20, // RegisterBitWidth
+          0x00, // RegisterBitOffset
+          0x03, // AccessSize
+          0x00010000 // Address
+      },
+      // ResidencyCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      // UsageCounterRegister (NULL)
+      { EFI_ACPI_6_3_SYSTEM_MEMORY, 0, 0, 0, 0 },
+      "CorePwrDn" // StateName
+    },
+  },
+  // Cluster Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[0]) }
+  },
+  // Cores Low Power Idle state references (LPI)
+  {
+    { REFERENCE_TOKEN (LpiInfo[1]) },
+    { REFERENCE_TOKEN (LpiInfo[2]) },
   }
 };
 
@@ -809,6 +913,55 @@ GetGicCInfo (
   return EFI_NOT_FOUND;
 }
 
+/** Return Lpi State Infor.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARM_LPI_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetLpiInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->LpiInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->LpiInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->LpiInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->LpiInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
 /** Return a list of Configuration Manager object references pointed to by the
     given input token.
 
@@ -864,6 +1017,18 @@ GetCmObjRefs (
     CmObject->Size = sizeof (PlatformRepo->LittleCoreResources);
     CmObject->Data = (VOID*)&PlatformRepo->LittleCoreResources;
     CmObject->Count = ARRAY_SIZE (PlatformRepo->LittleCoreResources);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->ClustersLpiRef) {
+    CmObject->Size = sizeof (PlatformRepo->ClustersLpiRef);
+    CmObject->Data = (VOID*)&PlatformRepo->ClustersLpiRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->ClustersLpiRef);
+    return EFI_SUCCESS;
+  }
+  if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->CoresLpiRef) {
+    CmObject->Size = sizeof (PlatformRepo->CoresLpiRef);
+    CmObject->Data = (VOID*)&PlatformRepo->CoresLpiRef;
+    CmObject->Count = ARRAY_SIZE (PlatformRepo->CoresLpiRef);
     return EFI_SUCCESS;
   }
 
@@ -1140,6 +1305,19 @@ GetArmNameSpaceObject (
         // No PCIe on Juno R0.
         Status = EFI_NOT_FOUND;
       }
+      break;
+
+    case EArmObjLpiInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 NULL,
+                 0,
+                 0,
+                 Token,
+                 GetLpiInfo,
+                 CmObject
+                 );
       break;
 
     default: {

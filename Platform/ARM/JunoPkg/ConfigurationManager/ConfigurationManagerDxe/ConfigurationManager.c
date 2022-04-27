@@ -790,8 +790,8 @@ HandleCmObjectSearchPlatformRepo (
   DEBUG ((
     DEBUG_INFO,
     "INFO: Token = 0x%p, CmObjectId = %x, Ptr = 0x%p, Size = %d, Count = %d\n",
-    CmObjectId,
     (VOID*)Token,
+    CmObjectId,
     CmObjectDesc->Data,
     CmObjectDesc->Size,
     CmObjectDesc->Count

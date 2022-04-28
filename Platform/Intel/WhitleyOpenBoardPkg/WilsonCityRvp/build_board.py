@@ -60,7 +60,8 @@ def pre_build_ex(config, functions):
 
     execute_script = functions.get("execute_script")
 
-    command = ["build", "-D", "MAX_SOCKET=" + config["MAX_SOCKET"]]
+    # AML offset arch is X64, not sure if it matters.
+    command = ["build", "-a", "X64", "-t", config["TOOL_CHAIN_TAG"], "-D", "MAX_SOCKET=" + config["MAX_SOCKET"]]
 
     if config["EXT_BUILD_FLAGS"] and config["EXT_BUILD_FLAGS"] != "":
         ext_build_flags = config["EXT_BUILD_FLAGS"].split(" ")
@@ -77,7 +78,11 @@ def pre_build_ex(config, functions):
     command.append(os.path.join(config["WORKSPACE"], "PreBuildReport.txt"))
     command.append("--log=" + os.path.join(config["WORKSPACE"], "PreBuild.log"))
 
-    _, _, _, code = execute_script(command, config)
+    shell = True
+    if os.name == "posix":  # linux
+        shell = False
+
+    _, _, _, code = execute_script(command, config, shell=shell)
     if code != 0:
         print(" ".join(command))
         print("Error re-generating PlatformOffset header files")
@@ -107,7 +112,7 @@ def pre_build_ex(config, functions):
                os.path.join(config["BUILD_X64"], aml_offsets_split[0], aml_offsets_split[1], aml_offsets_split[1], "OUTPUT", os.path.dirname(relative_dsdt_file_path), dsdt_file_root_ext[0] + ".offset.h")]
 
     # execute the command
-    _, _, _, code = execute_script(command, config)
+    _, _, _, code = execute_script(command, config, shell=shell)
     if code != 0:
         print(" ".join(command))
         print("Error re-generating PlatformOffset header files")

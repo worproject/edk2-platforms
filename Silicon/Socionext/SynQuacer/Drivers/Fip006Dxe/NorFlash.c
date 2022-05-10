@@ -51,12 +51,10 @@ STATIC CONST CSDC_DEFINITION mN25qCSDCDefTable[] = {
   { SPINOR_OP_READ_4B,  TRUE,  TRUE,  FALSE, FALSE, CS_CFG_MBM_SINGLE,
                         CSDC_TRP_SINGLE },
   // Write Operations
-  { SPINOR_OP_PP,       TRUE,  FALSE, FALSE, TRUE,  CS_CFG_MBM_SINGLE,
-                        CSDC_TRP_SINGLE },
-  { SPINOR_OP_PP_1_1_4, TRUE,  FALSE, FALSE, TRUE,  CS_CFG_MBM_QUAD,
+  { SPINOR_OP_PP_4B,    TRUE,  TRUE,  FALSE, TRUE,  CS_CFG_MBM_SINGLE,
                         CSDC_TRP_SINGLE },
   // Erase Operations
-  { SPINOR_OP_SE,       FALSE, FALSE, FALSE, TRUE,  CS_CFG_MBM_SINGLE,
+  { SPINOR_OP_BE_4B,    FALSE, FALSE, FALSE, TRUE,  CS_CFG_MBM_SINGLE,
                         CSDC_TRP_SINGLE },
 };
 
@@ -446,9 +444,8 @@ NorFlashEraseSingleBlock (
   BlockAddress -= Instance->RegionBaseAddress;
   BlockAddress += Instance->OffsetLba * Instance->BlockSize;
 
-  NorFlashSetHostCSDC (Instance, TRUE, mFip006NullCmdSeq);
-  MmioWrite32 (Instance->DeviceBaseAddress,
-               SwapBytes32 (BlockAddress & 0x00FFFFFF) | SPINOR_OP_SE);
+  NorFlashSetHostCommand (Instance, SPINOR_OP_BE_4B);
+  MmioWrite32 (Instance->DeviceBaseAddress, SwapBytes32 (BlockAddress));
   NorFlashWaitProgramErase (Instance);
   NorFlashSetHostCSDC (Instance, TRUE, mFip006NullCmdSeq);
 
@@ -515,7 +512,7 @@ NorFlashWriteSingleWord (
   if (EFI_ERROR (NorFlashEnableWrite (Instance))) {
     return EFI_DEVICE_ERROR;
   }
-  NorFlashSetHostCommand (Instance, SPINOR_OP_PP);
+  NorFlashSetHostCommand (Instance, SPINOR_OP_PP_4B);
   MmioWrite32 (WordAddress, WriteData);
   NorFlashWaitProgramErase (Instance);
 

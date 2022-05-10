@@ -313,7 +313,7 @@ NorFlashReadID (
 #define SPINOR_OP_BE_4K_PMC           0xd7  // Erase 4KiB block on PMC chips
 #define SPINOR_OP_BE_32K              0x52  // Erase 32KiB block
 #define SPINOR_OP_CHIP_ERASE          0xc7  // Erase whole flash chip
-#define SPINOR_OP_SE                  0xd8  // Sector erase (usually 64KiB)
+#define SPINOR_OP_BE                  0xd8  // Block erase (usually 64KiB)
 #define SPINOR_OP_RDID                0x9f  // Read JEDEC ID
 #define SPINOR_OP_RDSFDP              0x5a  // Read SFDP
 #define SPINOR_OP_RDCR                0x35  // Read configuration register
@@ -329,7 +329,7 @@ NorFlashReadID (
 #define SPINOR_OP_PP_1_4_4_4B         0x3e  // Quad page program
 #define SPINOR_OP_BE_4K_4B            0x21  // Erase 4KiB block
 #define SPINOR_OP_BE_32K_4B           0x5c  // Erase 32KiB block
-#define SPINOR_OP_SE_4B               0xdc  // Sector erase (usually 64KiB)
+#define SPINOR_OP_BE_4B               0xdc  // Block erase (usually 64KiB)
 #define SPINOR_OP_RD_ARRAY            0xe8  // Read array
 #define SPINOR_OP_RD_NVCFG            0xb5  // Read non-volatile config register
 #define SPINOR_OP_RD_VCR              0x85  // Read VCR register

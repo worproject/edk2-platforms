@@ -5262,26 +5262,26 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[82]|0x0                    
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PEXPHIDE[83]|0x0                                       # Hide Port?
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Pci64BitResourceAllocation|0x1                         # PCI 64-Bit Resource Allocation
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.Pcie10bitTag|0x2                                       # PCIe 10-bit Tag Enable
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[0]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack1
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[1]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack2
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[2]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack3
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[3]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack4
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[4]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack5
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[5]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack1
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[6]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack2
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[7]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack3
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[8]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack4
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[9]|0x0                                  # Intel� AIC Retimer/AIC SSD HW at Stack5
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[10]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack1
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[11]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack2
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[12]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack3
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[13]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack4
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[14]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack5
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[15]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack1
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[16]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack2
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[17]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack3
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[18]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack4
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[19]|0x0                                 # Intel� AIC Retimer/AIC SSD HW at Stack5
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[0]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack1
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[1]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[2]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack3
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[3]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack4
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[4]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack5
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[5]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack1
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[6]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[7]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack3
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[8]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack4
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[9]|0x0                                  # Intel AIC Retimer/AIC SSD HW at Stack5
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[10]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack1
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[11]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[12]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack3
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[13]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack4
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[14]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack5
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[15]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack1
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[16]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[17]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack3
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[18]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack4
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICEnabled[19]|0x0                                 # Intel AIC Retimer/AIC SSD HW at Stack5
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICHotPlugEnable[0]|0x0                            # Hot Plug Capable
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICHotPlugEnable[1]|0x0                            # Hot Plug Capable
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieAICHotPlugEnable[2]|0x0                            # Hot Plug Capable
@@ -7394,11 +7394,11 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VMDPortEnable[92]|0x0               
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VMDPortEnable[93]|0x0                                  # VMD port B
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VMDPortEnable[94]|0x0                                  # VMD port C
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VMDPortEnable[95]|0x0                                  # VMD port D
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VTdSupport|0x1                                         # Intel� VT for Directed I/O
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[0]|0x0                              # Intel� VT-d Disable Mask
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[1]|0x0                              # Intel� VT-d Disable Mask
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[2]|0x0                              # Intel� VT-d Disable Mask
-gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[3]|0x0                              # Intel� VT-d Disable Mask
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VTdSupport|0x1                                         # Intel VT for Directed I/O
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[0]|0x0                              # Intel VT-d Disable Mask
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[1]|0x0                              # Intel VT-d Disable Mask
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[2]|0x0                              # Intel VT-d Disable Mask
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdDisabledBitmask[3]|0x0                              # Intel VT-d Disable Mask
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdPciAcsCtlBit0|0x0                                   # Source Validation
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdPciAcsCtlBit1|0x0                                   # Translation Blocking
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.VtdPciAcsCtlBit2|0x1                                   # P2P Request Redirect
@@ -8635,4 +8635,3 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.MemHotOuputAssertThreshold|0x0   
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.PCIeDownStreamPECIWrite|0x1                  # Down Stream PECI
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.ProcessorMsrLockControl|0x0                  # MSR Lock Control
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.ProcessorVmxEnable|0x0                       # VMX
-

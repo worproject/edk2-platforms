@@ -54,6 +54,7 @@
 [Ppis]
   gUbaConfigDatabasePpiGuid
   gDynamicSiLibraryPpiGuid             ## ALWAYS_CONSUMES
+  gEfiPeiSmbus2PpiGuid                 ## ALWAYS_CONSUMES
 
 [Depex]
   gUbaConfigDatabasePpiGuid AND

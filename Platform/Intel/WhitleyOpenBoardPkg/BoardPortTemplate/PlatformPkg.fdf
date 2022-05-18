@@ -449,7 +449,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
 
   INF WhitleyOpenBoardPkg/Universal/PeiInterposerToSvidMap/PeiInterposerToSvidMap.inf
 
-  INF  UefiCpuPkg/CpuMpPei/CpuMpPei.inf
+  INF  RuleOverride = LzmaCompress UefiCpuPkg/CpuMpPei/CpuMpPei.inf
 
   !if $(FSP_MODE) == 0
     FILE PEIM = 8F7F3D20-9823-42DD-9FF7-53DAC93EF407 {

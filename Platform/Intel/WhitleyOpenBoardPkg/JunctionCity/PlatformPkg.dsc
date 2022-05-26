@@ -3,7 +3,7 @@
 #
 # @copyright
 # Copyright 2008 - 2021 Intel Corporation. <BR>
-# Copyright (c) 2021, American Megatrends International LLC. <BR>
+# Copyright (c) 2021 - 2022, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -17,7 +17,7 @@
   PEI_ARCH                            = IA32
   DXE_ARCH                            = X64
 
-  !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
+  !include WhitleyOpenBoardPkg/PlatformPkg.dsc
 
 [PcdsFixedAtBuild]
   gMinPlatformPkgTokenSpaceGuid.PcdBootStage|6
@@ -32,7 +32,6 @@
 !endif
 
   !include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
-  !include WhitleyOpenBoardPkg/PlatformPkg.dsc
 
 [Defines]
   BOARD_NAME                = JunctionCity

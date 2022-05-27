@@ -183,6 +183,7 @@ R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 Platform/Intel/BoardModulePkg
 F: Platform/Intel/BoardModulePkg/
 M: Eric Dong <eric.dong@intel.com>
+M: Isaac Oram <isaac.w.oram@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 
 Platform/Intel/KabylakeOpenBoardPkg
@@ -202,6 +203,7 @@ Platform/Intel/MinPlatformPkg
 F: Platform/Intel/MinPlatformPkg/
 M: Chasel Chiu <chasel.chiu@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
+M: Isaac Oram <isaac.w.oram@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 R: Eric Dong <eric.dong@intel.com>
 
@@ -261,6 +263,7 @@ Silicon/Intel/IntelSiliconPkg
 F: Silicon/Intel/IntelSiliconPkg/
 M: Ray Ni <ray.ni@intel.com>
 M: Rangasai V Chaganty <rangasai.v.chaganty@intel.com>
+M: Isaac Oram <isaac.w.oram@intel.com>
 
 Silicon/Intel/QuarkSocPkg
 F: Silicon/Intel/QuarkSocPkg/

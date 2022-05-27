@@ -348,6 +348,12 @@ F: Silicon/NXP/
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
 
+QEMU EDK II Minimum Platform Specification implementation
+F: Platform/Qemu/QemuOpenBoardPkg/
+M: Isaac Oram <isaac.w.oram@intel.com>
+M: Pedro Falcato <pedro.falcato@gmail.com>
+R: Theo Jehl <theojehl76@gmail.com>
+
 QEMU sbsa-ref platform
 F: Platform/Qemu/SbsaQemu/
 F: Silicon/Qemu/SbsaQemu/

@@ -1351,7 +1351,9 @@ typedef struct {
   **/
   UINT32     DmiAspm           :  1;
   UINT32     PwrOptEnable      :  1;    ///< <b>0: Disable</b>; 1: Enable DMI Power Optimizer on PCH side.
-  BOOLEAN    DmiStopAndScreamEnable : 1;
+  UINT32     Rsvdbits1         : 30;
+  UINT8      DmiStopAndScreamEnable : 1;
+  UINT8      Rsvdbits2              : 7;
   UINT32     DmiLinkDownHangBypass  : 1;
   UINT32     Rsvdbits               : 29;
   UINT32     Rsvd0[6];                  ///< Reserved bytes
@@ -1447,6 +1449,7 @@ typedef struct {
   TRACE_HUB_CONFIG            TraceHub;
   UINT32                      AetEnableMode      :  2;
   UINT32                      PchTraceHubHide    :  1;
+  UINT32                      Rsvdbits           : 29;
 } PCH_TRACE_HUB_CONFIG;
 
 

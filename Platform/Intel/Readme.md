@@ -96,6 +96,7 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 
 | Machine Name                          | Supported Chipsets                         | BoardPkg                     | Board Name         |
 ----------------------------------------|--------------------------------------------|------------------------------|--------------------|
+| Aowanda                               | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | Aowanda            |
 | Junction City                         | IceLake-SP (Xeon Scalable)                 | WhitleyOpenBoardPkg          | JunctionCity       |
 | Mt. Olympus                           | Purley                                     | PurleyOpenBoardPkg           | BoardMtOlympus     |
 | TiogaPass                             | Purley                                     | PurleyOpenBoardPkg           | BoardTiogaPass     |
@@ -276,6 +277,11 @@ return back to the minimum platform caller.
           |       |        |                                     build settings, environment variables.
           |       |        |
           |       |        |------WhitleyOpenBoardPkg
+          |       |        |       |------Aowanda
+          |       |        |       |       |---build_config.cfg: Aowanda  specific build
+          |       |        |       |       |                     settings environment variables.
+          |       |        |       |       |---build_board.py: Board-specific pre-build,
+          |       |        |       |                           build, post-build and clean functions.
           |       |        |       |------CooperCityRvp
           |       |        |       |       |---build_config.cfg: CooperCityRvp specific build
           |       |        |       |       |                     settings environment variables.
@@ -405,6 +411,16 @@ For PurleyOpenBoardPkg (TiogaPass)
 4. Booted to Ubuntu 18.04,Windows 2019, RHEL 8.3 using SATA HDD
 5. Connected PCIE Network card and made sure PCIE card detected in POST and in OS
 6. Verified TPM offboard chip detection
+
+**Aowanda**
+1. This firmware project has been tested booting to UEFI shell
+2. Installed and booted to RHEL 8.3 using M2 SSD disk
+3. Installed and booted to Windows 2019 using M2 SSD disk
+4. Verified TPM chip detection
+
+Note:
+For the network boot using the onboard Intel network card, please download the UEFI UNDI driver (E9712X3.efi) from https://www.intel.com/content/www/us/en/download/15755/intel-ethernet-connections-boot-utility-preboot-images-and-efi-drivers.html
+and include it in PlatformPkg.fdf.
 
 ### **Package Builds**
 

@@ -3,7 +3,7 @@
 
   @copyright
   Copyright 2014 - 2021 Intel Corporation.
-  Copyright (c) 2021, American Megatrends International LLC. <BR>
+  Copyright (c) 2021 - 2022, American Megatrends International LLC. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -98,6 +98,16 @@ BoardInitDxeDriverEntry (
         );
       ASSERT_EFI_ERROR (Status);
       break;
+
+   case TypeAowanda:
+        Status = gBS->InstallProtocolInterface (
+          &Handle,
+          &gEfiPlatformTypeAowandaProtocolGuid,
+          EFI_NATIVE_INTERFACE,
+          NULL
+          );
+        ASSERT_EFI_ERROR (Status);
+        break;
 
     default:
       // CAN'T GO TO HERE.

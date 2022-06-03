@@ -2,7 +2,7 @@
 
   @copyright
   Copyright 2020 - 2021 Intel Corporation. <BR>
-  Copyright (c) 2021, American Megatrends International LLC. <BR>
+  Copyright (c) 2021 - 2022, American Megatrends International LLC. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -65,6 +65,7 @@ typedef enum {
   TypeBigPineKey,
   TypeExperWorkStationRP,
   TypeJunctionCity,
+  TypeAowanda,
   EndOfEfiPlatformTypeEnum,
   //
   // Vendor board range currently starts at 0x80

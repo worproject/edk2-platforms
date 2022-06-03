@@ -3,6 +3,7 @@
 #
 # @copyright
 # Copyright 2018 - 2022 Intel Corporation. <BR>
+# Copyright (c) 2022, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -56,4 +57,5 @@
 [Depex]
   gEfiPlatformTypeWilsonCitySMTProtocolGuid OR
   gEfiPlatformTypeWilsonCityRPProtocolGuid  OR
-  gEfiPlatformTypeJunctionCityProtocolGuid
+  gEfiPlatformTypeJunctionCityProtocolGuid  OR
+  gEfiPlatformTypeAowandaProtocolGuid

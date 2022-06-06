@@ -41,6 +41,26 @@
   gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode|TRUE
 
   #
+  # FALSE: The PEI Main included in FvPreMemory is used to dispatch all PEIMs
+  #        (both inside FSP and outside FSP).
+  #        Pros:
+  #          * PEI Main is re-built from source and is always the latest version
+  #          * Platform code can link any desired LibraryClass to PEI Main
+  #            (Ex: Custom DebugLib instance, SerialPortLib, etc.)
+  #        Cons:
+  #          * The PEI Main being used to execute FSP PEIMs is not the PEI Main
+  #            that the FSP PEIMs were tested with, adding risk of breakage.
+  #          * Two copies of PEI Main will exist in the final binary,
+  #            #1 in FSP-M, #2 in FvPreMemory. The copy in FSP-M is never
+  #            executed, wasting space.
+  #
+  # <b>TRUE</b>:  The PEI Main included in FSP is used to dispatch all PEIMs
+  #        (both inside FSP and outside FSP). PEI Main will not be included in
+  #        FvPreMemory. This is the default and is the recommended choice.
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFspDispatchModeUseFspPeiMain|TRUE
+
+  #
   # FSP Base address PCD will be updated in FDF basing on flash map.
   #
   gIntelFsp2WrapperTokenSpaceGuid.PcdFsptBaseAddress|0
@@ -52,6 +72,7 @@
   gSiPkgTokenSpaceGuid.PcdTemporaryRamSize|0x00040000
   gSiPkgTokenSpaceGuid.PcdTsegSize|0x1000000
 
+!if gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection == 1
   #
   # FSP API mode does not share stack with the boot loader,
   # so FSP needs more temporary memory for FSP heap + stack size.
@@ -63,6 +84,24 @@
   # since the stacks are separate.
   #
   gSiPkgTokenSpaceGuid.PcdPeiTemporaryRamStackSize|0x20000
+!else
+  #
+  # In FSP Dispatch mode boot loader stack size must be large
+  # enough for executing both boot loader and FSP.
+  #
+  gSiPkgTokenSpaceGuid.PcdPeiTemporaryRamStackSize|0x40000
+!endif
+
+!if (gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode == FALSE) || (gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection == 1)
+  gSiPkgTokenSpaceGuid.PcdSiPciExpressBaseAddress|gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
+  gSiPkgTokenSpaceGuid.PcdSiPciExpressRegionLength|gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength
+!else
+  #
+  # FSP Dispatch mode requires more platform memory as boot loader and FSP sharing the same
+  # platform memory.
+  #
+  gSiPkgTokenSpaceGuid.PcdPeiMinMemorySize|0x5500000
+!endif
 
 [PcdsFeatureFlag.common]
   ######################################
@@ -222,7 +261,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuApInitTimeOutInMicroSeconds|1000
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmApSyncTimeout|10000
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmStackSize|0x20000
-
+!if (gMinPlatformPkgTokenSpaceGuid.PcdFspWrapperBootMode == FALSE) || (gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection == 1)
   #
   # In non-FSP build (EDK2 build) or FSP API mode below PCD are FixedAtBuild
   # (They will be DynamicEx in FSP Dispatch mode)
@@ -242,6 +281,7 @@
   #  3: Place AP in the Run-Loop state.
   # @Prompt The AP wait loop state.
   gUefiCpuPkgTokenSpaceGuid.PcdCpuApLoopMode|2
+!endif
 
   ######################################
   # Silicon Configuration
@@ -257,8 +297,6 @@
   #
   gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
   gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
-  gSiPkgTokenSpaceGuid.PcdSiPciExpressBaseAddress|gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
-  gSiPkgTokenSpaceGuid.PcdSiPciExpressRegionLength|gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength
 
   ######################################
   # Platform Configuration

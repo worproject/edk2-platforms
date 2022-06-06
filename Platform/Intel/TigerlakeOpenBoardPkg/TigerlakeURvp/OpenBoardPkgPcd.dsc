@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the TigerlakeURvp board.
 #
-#  Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2022, Intel Corporation. All rights reserved.<BR>
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -118,6 +118,14 @@
   gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000
 #!endif
   gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreMaxPeiStackSize|0x40000
+
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
+
 [PcdsFeatureFlag.common]
   ######################################
   # Edk2 Configuration

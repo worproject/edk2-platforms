@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the GalagoPro3 board.
 #
-# Copyright (c) 2019 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -251,6 +251,12 @@
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature1|0xF2
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature2|0x07
 
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
   gSiPkgTokenSpaceGuid.PcdSiPciExpressBaseAddress|gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
   gSiPkgTokenSpaceGuid.PcdSiPciExpressRegionLength|gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength
 

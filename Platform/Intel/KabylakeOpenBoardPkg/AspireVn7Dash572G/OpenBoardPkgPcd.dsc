@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the Aspire VN7-572G board.
 #
-# Copyright (c) 2017 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -345,6 +345,13 @@
   # Refer to HstiFeatureBit.h for bit definitions
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature1|0xF2  # FIXME: Boot Guard and BIOS Guard not present, measured boot enforcement checking code not present
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature2|0x07
+
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
 
   ######################################
   # Platform Configuration

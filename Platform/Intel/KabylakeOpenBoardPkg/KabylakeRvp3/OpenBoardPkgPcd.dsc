@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the KabylakeRvp3 board.
 #
-# Copyright (c) 2017 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -78,6 +78,7 @@
   # so FSP needs more temporary memory for FSP heap + stack size.
   #
   gIntelFsp2PkgTokenSpaceGuid.PcdFspTemporaryRamSize|0x26000
+
   #
   # FSP API mode does not need to enlarge the boot loader stack size
   # since the stacks are separate.
@@ -290,6 +291,13 @@
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature1|0xF2
   gSiPkgTokenSpaceGuid.PcdHstiIhvFeature2|0x07
 
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
+
   ######################################
   # Platform Configuration
   ######################################
@@ -345,7 +353,6 @@
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 6
   gMinPlatformPkgTokenSpaceGuid.PcdTestPointIbvPlatformFeature|{0x03, 0x0F, 0x07, 0x1F, 0x1F, 0x0F, 0x0F, 0x07, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 !endif
-
 
   ######################################
   # Board Configuration

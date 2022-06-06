@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the UpXtreme board.
 #
-# Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2020 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -258,6 +258,13 @@
 !endif
   gSiPkgTokenSpaceGuid.PcdSerialIoUartNumber|2
   gSiPkgTokenSpaceGuid.PcdPciExpressRegionLength|gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength
+
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
 
   ######################################
   # Platform Configuration

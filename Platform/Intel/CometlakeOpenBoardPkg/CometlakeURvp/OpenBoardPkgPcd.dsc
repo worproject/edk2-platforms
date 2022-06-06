@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the CometlakeURvp board.
 #
-# Copyright (c) 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2020 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -252,6 +252,13 @@
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuSocketCount|1
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuCoreCount|8
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuThreadCount|2
+
+  #
+  # Set the location of the DUTY_CYCLE field in the P_CNT register
+  # and indicate the width of the clock duty cycle to OS power management
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyOffset|0x1
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtDutyWidth|0x3
 
   #
   # The PCDs are used to control the Windows SMM Security Mitigations Table - Protection Flags

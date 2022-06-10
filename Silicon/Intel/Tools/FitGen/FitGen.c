@@ -345,6 +345,7 @@ Returns:
           "\t[-M <MicrocodeAddress MicrocodeSize>] [-M ...]|[-U <MicrocodeFv MicrocodeBase>|<MicrocodeRegionOffset MicrocodeRegionSize>|<MicrocodeGuid>] [-V <MicrocodeVersion>]\n"
           "\t[-O RecordType <RecordDataAddress RecordDataSize>|<RESERVE RecordDataSize>|<RecordDataGuid>|<RecordBinFile>|<CseRecordSubType RecordBinFile> [-V <RecordVersion>]] [-O ... [-V ...]]\n"
           "\t[-P RecordType <IndexPort DataPort Width Bit Index> [-V <RecordVersion>]] [-P ... [-V ...]]\n"
+          "\t[-T <FixedFitLocation>]\n"
           , UTILITY_NAME);
   printf ("  Where:\n");
   printf ("\t-D                     - It is FD file instead of FV file. (The tool will search FV file)\n");
@@ -388,6 +389,7 @@ Returns:
   printf ("\tWidth                  - The Width of the port.\n");
   printf ("\tBit                    - The Bit Number of the port.\n");
   printf ("\tIndex                  - The Index Number of the port.\n");
+  printf ("\tFixedFitLocation       - Fixed FIT location in flash address. FIT table will be generated at this location and Option Modules will be directly put right before it.\n");
   printf ("\nUsage (view): %s [-view] InputFile -F <FitTablePointerOffset>\n", UTILITY_NAME);
   printf ("  Where:\n");
   printf ("\tInputFile              - Name of the input file.\n");
@@ -443,6 +445,46 @@ CheckPath (
     StrPtr++;
   }
   return TRUE;
+}
+
+UINT32
+GetFixedFitLocation (
+  IN INTN   argc,
+  IN CHAR8  **argv
+  )
+/*++
+
+Routine Description:
+
+  Get fixed FIT location from argument
+
+Arguments:
+
+  argc           - Number of command line parameters.
+  argv           - Array of pointers to parameter strings.
+
+Returns:
+
+  FitLocation - The FIT location specified by Argument
+  0           - Argument parse fail
+
+*/
+{
+  UINT32                      FitLocation;
+  INTN                        Index;
+
+  FitLocation = 0;
+
+  for (Index = 0; Index + 1 < argc; Index ++) {
+
+    if ((strcmp (argv[Index], "-T") == 0) ||
+        (strcmp (argv[Index], "-t") == 0) ) {
+      FitLocation =  xtoi (argv[Index + 1]);
+      break;
+    }
+  }
+
+  return FitLocation;
 }
 
 STATUS
@@ -1909,10 +1951,11 @@ Returns:
 }
 
 VOID *
-GetFreeSpaceFromFv (
+GetFreeSpaceForFit (
   IN UINT8     *FvBuffer,
   IN UINT32    FvSize,
-  IN UINT32    FitEntryNumber
+  IN UINT32    FitTableSize,
+  IN UINT32    FixedFitLocation
   )
 /*++
 
@@ -1922,9 +1965,10 @@ Routine Description:
 
 Arguments:
 
-  FvBuffer       - FvRecovery binary buffer
-  FvSize         - FvRecovery size
-  FitEntryNumber - The FIT entry number
+  FvBuffer         - FvRecovery binary buffer
+  FvSize           - FvRecovery size
+  FitTableSize     - The FIT table size
+  FixedFitLocation - Fixed FIT location provided by argument
 
 Returns:
 
@@ -1939,7 +1983,6 @@ Returns:
   UINT8       *OptionalModuleAddress;
   EFI_GUID    VTFGuid = EFI_FFS_VOLUME_TOP_FILE_GUID;
   UINT32      AlignedSize;
-  UINT32      FitTableSize;
 
   EFI_FIRMWARE_VOLUME_HEADER  *FvHeader;
   EFI_FFS_FILE_HEADER         *FileHeader;
@@ -1966,45 +2009,62 @@ Returns:
     }
   }
 
-  //
-  // Get EFI_FFS_VOLUME_TOP_FILE_GUID location
-  //
-  FitTableOffset = NULL;
+  if (FixedFitLocation != 0) {
+    //
+    // Get Free space from fixed location
+    //
+    FitTableOffset = (UINT8 *) FLASH_TO_MEMORY (FixedFitLocation, FvBuffer, FvSize);
+  } else {
+    //
+    // Get Free Space from FvRecovery
+    //
+    FitTableOffset = NULL;
 
-  FvHeader         = (EFI_FIRMWARE_VOLUME_HEADER *)FvBuffer;
-  FvLength         = FvHeader->FvLength;
-  FileHeader       = (EFI_FFS_FILE_HEADER *)(FvBuffer + FvHeader->HeaderLength);
-  Offset           = (UINTN)FileHeader - (UINTN)FvBuffer;
+    FvHeader         = (EFI_FIRMWARE_VOLUME_HEADER *)FvBuffer;
+    FvLength         = FvHeader->FvLength;
+    FileHeader       = (EFI_FFS_FILE_HEADER *)(FvBuffer + FvHeader->HeaderLength);
+    Offset           = (UINTN)FileHeader - (UINTN)FvBuffer;
 
-  while (Offset < FvLength) {
-    FileLength = (*(UINT32 *)(FileHeader->Size)) & 0x00FFFFFF;
-    FileOccupiedSize = GETOCCUPIEDSIZE(FileLength, 8);
-    if ((CompareGuid (&(FileHeader->Name), &VTFGuid)) == 0) {
-      // find it
-      FitTableOffset = (UINT8 *)FileHeader;
-      break;
+    //
+    // Get EFI_FFS_VOLUME_TOP_FILE_GUID location
+    //
+    while (Offset < FvLength) {
+      FileLength = (*(UINT32 *)(FileHeader->Size)) & 0x00FFFFFF;
+      FileOccupiedSize = GETOCCUPIEDSIZE(FileLength, 8);
+      if ((CompareGuid (&(FileHeader->Name), &VTFGuid)) == 0) {
+        // find it
+        FitTableOffset = (UINT8 *)FileHeader;
+        break;
+      }
+      FileHeader = (EFI_FFS_FILE_HEADER *)((UINTN)FileHeader + FileOccupiedSize);
+      Offset = (UINTN)FileHeader - (UINTN)FvBuffer;
     }
-    FileHeader = (EFI_FFS_FILE_HEADER *)((UINTN)FileHeader + FileOccupiedSize);
-    Offset = (UINTN)FileHeader - (UINTN)FvBuffer;
+
+    if (FitTableOffset == NULL) {
+      Error (NULL, 0, 0, "EFI_FFS_VOLUME_TOP_FILE_GUID not found!", NULL);
+      return NULL;
+    }
+
+    FitTableOffset = (UINT8 *)((UINTN)FitTableOffset & ~FIT_ALIGNMENT);
+    FitTableOffset = (UINT8 *)(FitTableOffset - FitTableSize);
   }
-
-  if (FitTableOffset == NULL) {
-    Error (NULL, 0, 0, "EFI_FFS_VOLUME_TOP_FILE_GUID not found!", NULL);
-    return NULL;
-  }
-
-  FitTableSize = FitEntryNumber * sizeof(FIRMWARE_INTERFACE_TABLE_ENTRY);
-  FitTableSize += FIT_ALIGNMENT;
-  FitTableSize &= ~FIT_ALIGNMENT;
-
-  FitTableOffset = (UINT8 *)((UINTN)FitTableOffset & ~FIT_ALIGNMENT);
-  FitTableOffset = (UINT8 *)(FitTableOffset - FitTableSize);
 
   //
-  // Check it
+  // Check the target space for FIT table
+  //
+  // 1. If FIT table has a fixed location, we assume users can provide an empty space for FIT table
+  // and Option Modules.
+  // 2. If FIT table location is dynamicly calculated in FvRecovery, we give a last chance to skip
+  // space for AP Vector.
   //
   for (Index = 0; Index < (INTN)(FitTableSize); Index ++) {
     if (FitTableOffset[Index] != 0xFF) {
+
+      if (FixedFitLocation != 0) {
+        Error (NULL, 0, 0, "Reserved space for FIT table is not empty!", NULL);
+        return NULL;
+      }
+
       //
       // No enough space - it might happen that it is occupied by AP wake vector.
       // Last chance - skip this and search again.
@@ -2054,6 +2114,12 @@ Returns:
 
       for (SubIndex = 0; SubIndex < (INTN)(AlignedSize); SubIndex ++) {
         if (OptionalModuleAddress[SubIndex] != 0xFF) {
+
+          if (FixedFitLocation != 0) {
+            Error (NULL, 0, 0, "No enough space for Option Modules!", NULL);
+            return NULL;
+          }
+
           //
           // No enough space - it might happen that it is occupied by AP wake vector.
           // Last chance - skip this and search again.
@@ -3166,6 +3232,7 @@ Returns:
   UINT32                      FdFileSize;
 
   UINT8                       *AcmBuffer;
+  UINT32                      FixedFitLocation;
 
   FileBufferRaw = NULL;
   //
@@ -3226,17 +3293,27 @@ Returns:
     // Add 1 more FitEntry as place holder, because we need exclude FIT table itself
     //
     FitEntryNumber++;
-
-    //
-    // Step 3: Get enough space in FvRecovery.fv
-    //
-    FitTableOffset = GetFreeSpaceFromFv (FileBuffer, FvRecoveryFileSize, FitEntryNumber);
-    if (FitTableOffset == NULL) {
-      return STATUS_ERROR;
-    }
     FitTableSize = FitEntryNumber * sizeof(FIRMWARE_INTERFACE_TABLE_ENTRY);
     FitTableSize += FIT_ALIGNMENT;
     FitTableSize &= ~FIT_ALIGNMENT;
+
+    //
+    // Step 3: Get enough space for FIT
+    //
+    FixedFitLocation = GetFixedFitLocation (argc, argv);
+    if (FixedFitLocation != 0 &&
+      (FixedFitLocation < TOP_FLASH_ADDRESS - FdFileSize || FixedFitLocation + FitTableSize > TOP_FLASH_ADDRESS)) {
+      //
+      // FixedFitLocation is out of the input FD region, still find space from FvRecovery
+      //
+      FixedFitLocation = 0;
+      printf ("The fixed FIT location is not in valid flash region, find space from FvRecovery ...\n");
+    }
+
+    FitTableOffset = GetFreeSpaceForFit (FileBuffer, FvRecoveryFileSize, FitTableSize, FixedFitLocation);
+    if (FitTableOffset == NULL) {
+      return STATUS_ERROR;
+    }
 
     CheckOverlap (
       MEMORY_TO_FLASH (FitTableOffset, FdFileBuffer, FdFileSize),

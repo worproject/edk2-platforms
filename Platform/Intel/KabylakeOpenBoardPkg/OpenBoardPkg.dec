@@ -76,6 +76,24 @@ gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageBase|0x00000000|UINT32
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageSize|0x00000000|UINT32|0x90000031
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageOffset|0x00000000|UINT32|0x90000032
 
+## Enable usage the HDMI DDC channel as a debug port - Causes the BIOS debug log
+#  to be written to the HDMI DDC channel.
+#  The value is defined as below.
+#  FALSE: Do NOT use the HDMI DDC channel as a debug port
+#  TRUE:  Use the HDMI DDC channel as a debug port
+# @Prompt Enable usage the HDMI DDC channel as a debug port
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable|FALSE|BOOLEAN|0x90000033
+
+## Enable usage the HDMI DDC channel as a serial terminal - Enables usage of the
+#  HDMI DDC channel to display BIOS Setup, UEFI Shell, etc. using a terminal
+#  emulator. Useful for cases where video is not operating correctly.
+#
+#  The value is defined as below.
+#  FALSE: Do NOT use the HDMI DDC channel as a debug port
+#  TRUE:  Use the HDMI DDC channel as a debug port
+# @Prompt Enable usage the HDMI DDC channel as a debug port
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortSerialTerminalEnable|FALSE|BOOLEAN|0x90000034
+
 ## Specifies the DDC I2C channel to claim as the HDMI debug port
 #  The value is defined as below.
 #  2: DDC channel B

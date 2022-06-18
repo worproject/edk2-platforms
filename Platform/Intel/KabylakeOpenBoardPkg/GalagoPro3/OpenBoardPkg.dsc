@@ -153,8 +153,13 @@
   #######################################
   # Platform Package
   #######################################
-  SecBoardInitLib|$(PLATFORM_PACKAGE)/PlatformInit/Library/SecBoardInitLibNull/SecBoardInitLibNull.inf
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SecTestPointCheckLib.inf
+  SiliconPolicyUpdateLib|$(PLATFORM_PACKAGE)/PlatformInit/Library/SiliconPolicyUpdateLibNull/SiliconPolicyUpdateLibNull.inf
+
+  #######################################
+  # Board-specific
+  #######################################
+  SecBoardInitLib|$(PLATFORM_BOARD_PACKAGE)/Library/SecBoardInitLib/SecBoardInitLib.inf
 
 [LibraryClasses.common.PEIM]
   #######################################

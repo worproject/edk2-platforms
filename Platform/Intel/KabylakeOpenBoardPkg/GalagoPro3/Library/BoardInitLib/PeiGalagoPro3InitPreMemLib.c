@@ -1,7 +1,7 @@
 /** @file
   System 76 GalagoPro3 board pre-memory initialization.
 
-Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2019 - 2022, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -167,9 +167,9 @@ SioInit (
 }
 
 /**
-  Configues the IC2 Controller on which GPIO Expander Communicates.
-  This Function is to enable the I2CGPIOExapanderLib to programm the Gpios
-  Complete intilization will be done in later Stage
+  Configures the IC2 Controller on which GPIO Expander Communicates.
+  This Function is to enable the I2CGPIOExapanderLib to program the Gpios
+  Complete initialization will be done in later Stage
 
 **/
 VOID
@@ -227,10 +227,6 @@ GalagoPro3BoardDebugInit (
   VOID
   )
 {
-  ///
-  /// Do Early PCH init
-  ///
-  EarlySiliconInit ();
   return EFI_SUCCESS;
 }
 
@@ -242,4 +238,3 @@ GalagoPro3BoardBootModeDetect (
 {
   return BOOT_WITH_FULL_CONFIGURATION;
 }
-

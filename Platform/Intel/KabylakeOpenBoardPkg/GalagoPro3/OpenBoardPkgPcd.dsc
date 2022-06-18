@@ -334,6 +334,37 @@
   gBoardModulePkgTokenSpaceGuid.PcdSuperIoPciIsaBridgeDevice|{0x00, 0x00, 0x1F, 0x00}
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGttMmAddress|0xDF000000
 
+  ## Enable usage the HDMI DDC channel as a debug port - Causes the BIOS debug log
+  #  to be written to the HDMI DDC channel.
+  #  The value is defined as below.
+  #  FALSE: Do NOT use the HDMI DDC channel as a debug port
+  #  TRUE:  Use the HDMI DDC channel as a debug port
+  # @Prompt Enable usage the HDMI DDC channel as a debug port
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable|FALSE
+
+  ## Enable usage the HDMI DDC channel as a serial terminal - Enables usage of the
+  #  HDMI DDC channel to display BIOS Setup, UEFI Shell, etc. using a terminal
+  #  emulator. Useful for cases where video is not operating correctly.
+  #
+  #  The value is defined as below.
+  #  FALSE: Do NOT use the HDMI DDC channel as a debug port
+  #  TRUE:  Use the HDMI DDC channel as a debug port
+  # @Prompt Enable usage the HDMI DDC channel as a debug port
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortSerialTerminalEnable|FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortSerialTerminalEnable
+
+  ## Indicates the type of terminal to use.
+  #  If PcdI2cHdmiDebugPortSerialTerminalEnable is TRUE, this PCD will be used
+  #  to determine which terminal protocol to use.
+  #  0 - PCANSI
+  #  1 - VT100
+  #  2 - VT100+
+  #  3 - UTF8
+  #  4 - TTYTERM
+  # @Prompt Default Terminal Type.
+  # @ValidRange 0x80000001 | 0 - 4
+  gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|3
+
   ## Specifies the DDC I2C channel to claim as the HDMI debug port
   #  The value is defined as below.
   #  2: DDC channel B

@@ -143,6 +143,12 @@
   PlatformHookLib|$(PROJECT)/Library/BasePlatformHookLib/BasePlatformHookLib.inf
   SiliconPolicyUpdateLib|$(PROJECT)/FspWrapper/Library/PeiSiliconPolicyUpdateLibFsp/PeiSiliconPolicyUpdateLibFsp.inf
 
+[LibraryClasses.common.PEI_CORE]
+!if $(TARGET) == DEBUG && gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/PeiI2cHdmiDebugSerialPortLib.inf
+!endif
+
 [LibraryClasses.IA32.SEC]
   #######################################
   # Edk2 Packages
@@ -165,9 +171,10 @@
   #######################################
   # Edk2 Packages
   #######################################
+!if $(TARGET) == DEBUG
   DebugLib|MdeModulePkg/Library/PeiDxeDebugLibReportStatusCode/PeiDxeDebugLibReportStatusCode.inf
+!endif
   SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
-  SetCacheMtrrLib|$(PLATFORM_PACKAGE)/Library/SetCacheMtrrLib/SetCacheMtrrLibNull.inf
 
   #######################################
   # Silicon Package
@@ -184,6 +191,7 @@
 !if $(TARGET) == DEBUG
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/PeiTestPointCheckLib.inf
 !endif
+  SetCacheMtrrLib|$(PLATFORM_PACKAGE)/Library/SetCacheMtrrLib/SetCacheMtrrLibNull.inf
 
   #######################################
   # Board Package
@@ -194,7 +202,19 @@
   PeiTbtPolicyLib|$(PLATFORM_BOARD_PACKAGE)/Features/Tbt/Library/PeiTbtPolicyLib/PeiTbtPolicyLib.inf
 !endif
 
+[LibraryClasses.common.DXE_CORE]
+!if $(TARGET) == DEBUG
+  DebugLib|MdeModulePkg/Library/PeiDxeDebugLibReportStatusCode/PeiDxeDebugLibReportStatusCode.inf
+!endif
+
 [LibraryClasses.common.DXE_DRIVER]
+  #######################################
+  # Edk2 Packages
+  #######################################
+!if $(TARGET) == DEBUG
+  DebugLib|MdeModulePkg/Library/PeiDxeDebugLibReportStatusCode/PeiDxeDebugLibReportStatusCode.inf
+!endif
+
   #######################################
   # Silicon Initialization Package
   #######################################
@@ -227,9 +247,22 @@
 
 [LibraryClasses.X64.DXE_RUNTIME_DRIVER]
   #######################################
+  # Edk2 Packages
+  #######################################
+!if $(TARGET) == DEBUG
+  DebugLib|MdeModulePkg/Library/PeiDxeDebugLibReportStatusCode/PeiDxeDebugLibReportStatusCode.inf
+!endif
+
+  #######################################
   # Silicon Initialization Package
   #######################################
   ResetSystemLib|$(PLATFORM_SI_PACKAGE)/Pch/Library/DxeRuntimeResetSystemLib/DxeRuntimeResetSystemLib.inf
+
+[LibraryClasses.common.SMM_CORE]
+!if $(TARGET) == DEBUG && gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/SmmI2cHdmiDebugSerialPortLib.inf
+!endif
 
 [LibraryClasses.X64.DXE_SMM_DRIVER]
   #######################################
@@ -245,6 +278,7 @@
   TestPointLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointLib/SmmTestPointLib.inf
 !if $(TARGET) == DEBUG
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
+  DebugLib|MdeModulePkg/Library/PeiDxeDebugLibReportStatusCode/PeiDxeDebugLibReportStatusCode.inf
 !endif
 
 #######################################
@@ -264,6 +298,9 @@
   MdeModulePkg/Universal/StatusCodeHandler/Pei/StatusCodeHandlerPei.inf {
     <LibraryClasses>
       DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+!if $(TARGET) == DEBUG  && gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+      SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/PeiI2cHdmiDebugSerialPortLib.inf
+!endif
   }
 
   IntelFsp2WrapperPkg/FspmWrapperPeim/FspmWrapperPeim.inf {
@@ -334,6 +371,26 @@
   #######################################
   # Edk2 Packages
   #######################################
+  !if $(TARGET) == DEBUG
+  MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf {
+    <LibraryClasses>
+      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+      !if gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+        SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/DxeI2cHdmiDebugSerialPortLib.inf
+      !endif
+  }
+    MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf {
+      <LibraryClasses>
+        DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+    }
+  MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf {
+      <LibraryClasses>
+        DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+        !if gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+          SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/SmmI2cHdmiDebugSerialPortLib.inf
+        !endif
+    }
+  !endif
   IntelFsp2WrapperPkg/FspWrapperNotifyDxe/FspWrapperNotifyDxe.inf
   MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
   MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
@@ -342,9 +399,12 @@
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
   MdeModulePkg/Universal/Console/GraphicsOutputDxe/GraphicsOutputDxe.inf
   MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
-  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf{
+  MdeModulePkg/Universal/BdsDxe/BdsDxe.inf {
     <LibraryClasses>
       NULL|BoardModulePkg/Library/BdsPs2KbcLib/BdsPs2KbcLib.inf
+!if gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable == TRUE
+      NULL|MinPlatformPkg/Library/SerialPortTerminalLib/SerialPortTerminalLib.inf
+!endif
   }
   UefiCpuPkg/CpuDxe/CpuDxe.inf
 
@@ -374,7 +434,17 @@
     <LibraryClasses>
       !if $(TARGET) == DEBUG
         DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+        !if gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortEnable == TRUE
+          SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/SmmI2cHdmiDebugSerialPortLib.inf
+        !endif
       !endif
+  }
+!endif
+!if gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortSerialTerminalEnable == TRUE
+  MdeModulePkg/Universal/SerialDxe/SerialDxe.inf {
+    <LibraryClasses>
+      DebugLib|MdePkg/Library/BaseDebugLibNull/BaseDebugLibNull.inf
+      SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/DxeI2cHdmiDebugSerialPortLib.inf
   }
 !endif
 

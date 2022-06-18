@@ -1,7 +1,7 @@
 ## @file
 #  The main build description file for the Aspire VN7-572G board.
 #
-# Copyright (c) 2017 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -184,6 +184,7 @@
   GpioExpanderLib|$(PLATFORM_BOARD_PACKAGE)/Library/BaseGpioExpanderLib/BaseGpioExpanderLib.inf
   I2cAccessLib|$(PLATFORM_BOARD_PACKAGE)/Library/PeiI2cAccessLib/PeiI2cAccessLib.inf
   PlatformSecLib|$(PLATFORM_PACKAGE)/FspWrapper/Library/SecFspWrapperPlatformSecLib/SecFspWrapperPlatformSecLib.inf
+  HdmiDebugGpioInitLib|$(PLATFORM_BOARD_PACKAGE)/Library/HdmiDebugGpioInitLib/HdmiDebugGpioInitLib.inf
   HdmiDebugPchDetectionLib|$(PLATFORM_BOARD_PACKAGE)/Library/HdmiDebugPchDetectionLib/HdmiDebugPchDetectionLib.inf
 
   # Thunderbolt

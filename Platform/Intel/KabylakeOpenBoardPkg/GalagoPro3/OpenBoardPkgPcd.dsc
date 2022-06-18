@@ -332,6 +332,15 @@
   ######################################
   gBoardModulePkgTokenSpaceGuid.PcdPs2KbMsEnable|1
   gBoardModulePkgTokenSpaceGuid.PcdSuperIoPciIsaBridgeDevice|{0x00, 0x00, 0x1F, 0x00}
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGttMmAddress|0xDF000000
+
+  ## Specifies the DDC I2C channel to claim as the HDMI debug port
+  #  The value is defined as below.
+  #  2: DDC channel B
+  #  3: DDC channel C
+  #  4: DDC channel D
+  # @Prompt DDC I2C channel to claim as the HDMI debug port
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortDdcI2cChannel|0x03
 
 [PcdsFixedAtBuild.IA32]
   ######################################

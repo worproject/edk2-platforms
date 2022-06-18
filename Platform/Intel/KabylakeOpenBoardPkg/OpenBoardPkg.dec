@@ -5,7 +5,7 @@
 # INF files to generate AutoGen.c and AutoGen.h files
 # for the build infrastructure.
 #
-# Copyright (c) 2017 - 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2017 - 2022, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -35,7 +35,7 @@ gSpiFlashDebugHobGuid                 =  {0xcaaaf418, 0x38a5, 0x4d49, {0xbe, 0x7
 
 gTbtInfoHobGuid                       =  {0x74a81eaa, 0x033c, 0x4783, {0xbe, 0x2b, 0x84, 0x85, 0x74, 0xa6, 0x97, 0xb7}}
 
-gPlatformModuleTokenSpaceGuid         =  {0x69d13bf0, 0xaf91, 0x4d96, {0xaa, 0x9f, 0x21, 0x84, 0xc5, 0xce, 0x3b, 0xc0}}
+gI2cHdmiDebugHobGuid                  =  {0x93a54938, 0x3a3e, 0x48cf, {0x9f, 0x0a, 0xaf, 0x6e, 0x0a, 0xa7, 0xc6, 0x44}}
 
 
 [Protocols]
@@ -52,8 +52,11 @@ gPeiTbtPolicyBoardInitDonePpiGuid     =  {0x970f9c60, 0x8547, 0x49d7, { 0xa4, 0x
 
 [PcdsFixedAtBuild]
 
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGttMmAddress|0x00000000|UINT32|0x9000000F
+
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcIoDecodeRange|0x0010|UINT16|0x10001004
 gKabylakeOpenBoardPkgTokenSpaceGuid.PchLpcIoEnableDecoding|0x3c03|UINT16|0x10001005
+
 
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioIndexPort|0x4e|UINT16|0x90000018
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioDataPort|0x4f|UINT16|0x9000001F
@@ -72,6 +75,14 @@ gKabylakeOpenBoardPkgTokenSpaceGuid.PcdSmcExtSmiBitPosition|0x01|UINT8|0x9000001
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageBase|0x00000000|UINT32|0x90000030
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageSize|0x00000000|UINT32|0x90000031
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdFlashNvDebugMessageOffset|0x00000000|UINT32|0x90000032
+
+## Specifies the DDC I2C channel to claim as the HDMI debug port
+#  The value is defined as below.
+#  2: DDC channel B
+#  3: DDC channel C
+#  4: DDC channel D
+# @Prompt DDC I2C channel to claim as the HDMI debug port
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortDdcI2cChannel|0x00000000|UINT32|0x90000035
 
 [PcdsDynamic]
 

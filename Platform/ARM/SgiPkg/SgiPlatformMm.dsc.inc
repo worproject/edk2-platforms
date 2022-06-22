@@ -1,7 +1,7 @@
 ## @file
 #  StandaloneMM platform description include file for all supported platforms.
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.
+#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -84,6 +84,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x0f
 
   ## PL011 - Serial Terminal
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x2A410000
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
 
   gEfiMdePkgTokenSpaceGuid.PcdMaximumGuidedExtractHandler|0x2

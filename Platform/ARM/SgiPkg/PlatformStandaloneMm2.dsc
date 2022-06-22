@@ -1,7 +1,7 @@
 ## @file
 #  StandaloneMM platform description file for RD-N2 platforms.
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.
+#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -36,8 +36,6 @@
 #
 ################################################################################
 [PcdsFixedAtBuild]
-  ## PL011 - Serial Terminal
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0EF80000
 
 !if $(SECURE_STORAGE_ENABLE) == TRUE
   ##Secure NOR Flash 2

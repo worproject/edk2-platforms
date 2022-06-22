@@ -2,7 +2,7 @@
 #  StandaloneMM platform description file for SGI-575, RD-N1-Edge, RD-E1-Edge
 #  and RD-V1 platforms.
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.
+#  Copyright (c) 2021 - 2022, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
@@ -37,8 +37,6 @@
 #
 ################################################################################
 [PcdsFixedAtBuild]
-  ## PL011 - Serial Terminal
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x7FF70000
 
 !if $(SECURE_STORAGE_ENABLE) == TRUE
   ##Secure NOR Flash 2

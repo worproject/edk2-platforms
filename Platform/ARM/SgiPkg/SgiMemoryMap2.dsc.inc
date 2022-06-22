@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2020, ARM Limited. All rights reserved.
+#  Copyright (c) 2020 - 2022, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -17,14 +17,14 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|0x1052800000
 
   # PL011 - Serial Terminal
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x0EF70000
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|112
 
   # PL370 - HDLCD1
   gArmPlatformTokenSpaceGuid.PcdArmHdLcdBase|0x0EF60000
 
   # PL011 - Serial Debug UART
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase|0x0EF70000
-  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|403
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgInterrupt|403
 
   # PL031 RealTimeClock
   gArmPlatformTokenSpaceGuid.PcdPL031RtcBase|0x0C170000

@@ -440,13 +440,13 @@ AcpiVtdIntRemappingEnable (
 
   DYNAMIC_SI_LIBARY_PROTOCOL2  *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
   }
 
-  Status = gBS->LocateProtocol (&gDmaRemapProtocolGuid, NULL, &DmaRemap);
+  Status = gBS->LocateProtocol (&gDmaRemapProtocolGuid, NULL, (VOID **) &DmaRemap);
   if (EFI_ERROR (Status) || !DmaRemap->VTdSupport || !DmaRemap->InterruptRemap) {
 
     DEBUG ((DEBUG_INFO, "[VTD] %a disabled\n",
@@ -472,7 +472,7 @@ AcpiVtdIntRemappingEnable (
   //
   // Allocate 4K alligned space for IRTE entries  Added extra space of 500 bytes.
   //
-  Status = gBS->AllocatePool (EfiACPIReclaimMemory, IRTECount + 0x1500, &xApicAddr);
+  Status = gBS->AllocatePool (EfiACPIReclaimMemory, IRTECount + 0x1500, (VOID **) &xApicAddr);
   ASSERT_EFI_ERROR (Status);
 
   //
@@ -527,7 +527,7 @@ AcpiVtdIntRemappingEnable (
         //
         // Allocate memory for the queued invalidation.
         //
-        Status = gBS->AllocatePool (EfiACPIReclaimMemory, 0x1000 + 0x1000, &Addr);
+        Status = gBS->AllocatePool (EfiACPIReclaimMemory, 0x1000 + 0x1000, (VOID **) &Addr);
         if (EFI_ERROR (Status)) {
           ASSERT (FALSE);
           return;
@@ -722,7 +722,7 @@ BuildDRHDForStack (
   DMAR_ATSR                   *pAtsr = NULL;
   DYNAMIC_SI_LIBARY_PROTOCOL2  *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return EFI_NOT_FOUND;
@@ -914,7 +914,7 @@ ReportDmar (
   EFI_HANDLE                      *HandleBuffer;
   DYNAMIC_SI_LIBARY_PROTOCOL2     *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return FALSE;
@@ -971,7 +971,7 @@ ReportDmar (
     Status = gBS->HandleProtocol (
                   HandleBuffer[Index],
                   &gEfiPciRootBridgeIoProtocolGuid,
-                  &PciRootBridgePtr
+                  (VOID **) &PciRootBridgePtr
                   );
 
     ASSERT_EFI_ERROR (Status);
@@ -983,10 +983,10 @@ ReportDmar (
   //
   // Allocate memory to DevScope structures
   //
-  Status = gBS->AllocatePool (EfiACPIMemoryNVS, MEMORY_SIZE * sizeof (DEVICE_SCOPE), &DevScope);
+  Status = gBS->AllocatePool (EfiACPIMemoryNVS, MEMORY_SIZE * sizeof (DEVICE_SCOPE), (VOID **) &DevScope);
   ASSERT_EFI_ERROR (Status);
 
-  Status = gBS->AllocatePool (EfiACPIMemoryNVS, MEMORY_SIZE * sizeof (PCI_NODE), &PciNode);
+  Status = gBS->AllocatePool (EfiACPIMemoryNVS, MEMORY_SIZE * sizeof (PCI_NODE), (VOID **) &PciNode);
   ASSERT_EFI_ERROR (Status);
 
   for (Index = 1; Index <= MAX_SOCKET; Index++) {
@@ -1385,7 +1385,7 @@ AcpiVtdTablesInstall (
 
   DYNAMIC_SI_LIBARY_PROTOCOL  *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return EFI_NOT_FOUND;
@@ -1422,7 +1422,7 @@ AcpiVtdTablesInstall (
 
   for (Index = 0; Index < HandleCount; Index ++) {
 
-    gBS->HandleProtocol (HandleBuffer[Index], &gEfiPciIoProtocolGuid, &PciIo);
+    gBS->HandleProtocol (HandleBuffer[Index], &gEfiPciIoProtocolGuid, (VOID **) &PciIo);
     PciIo->Pci.Read (PciIo, EfiPciIoWidthUint32, 0, sizeof(PciConfigHeader) / sizeof(UINT32), &PciConfigHeader);
     if ((PciConfigHeader.Hdr.ClassCode[0] == 0x00 || PciConfigHeader.Hdr.ClassCode[0] == 0x01) && PciConfigHeader.Hdr.ClassCode[1] == 0x04 && PciConfigHeader.Hdr.ClassCode[2] == 0x06) {
       //
@@ -1520,18 +1520,18 @@ AcpiVtdTablesInstall (
   //
   // Find the AcpiSupport protocol
   //
-  Status = LocateSupportProtocol (&gEfiAcpiTableProtocolGuid, gEfiAcpiTableStorageGuid, &AcpiTable, FALSE);
+  Status = LocateSupportProtocol (&gEfiAcpiTableProtocolGuid, gEfiAcpiTableStorageGuid, (VOID **) &AcpiTable, FALSE);
   ASSERT_EFI_ERROR (Status);
 
   TableVersion = EFI_ACPI_TABLE_VERSION_2_0;
 
-  Status = gBS->LocateProtocol (&gDmaRemapProtocolGuid, NULL, &DmaRemap);
+  Status = gBS->LocateProtocol (&gDmaRemapProtocolGuid, NULL, (VOID **) &DmaRemap);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[ACPI](DMAR) ERROR: Cannot locate gDmaRemapProtocolGuid (%r)\n", Status));
   } else {
     if (DmaRemap->VTdSupport) {
       ReportDmar (DmaRemap);
-      Status = DmaRemap->GetDmarTable (DmaRemap, &CurrentTable);
+      Status = DmaRemap->GetDmarTable (DmaRemap, (VOID **) &CurrentTable);
 
       if (EFI_ERROR (Status)) {
         ASSERT_EFI_ERROR (Status);
@@ -1700,7 +1700,7 @@ DisableAriForwarding (
     gBS->HandleProtocol (
           HandleBuffer[Index],
           &gEfiPciIoProtocolGuid,
-          &PciIo
+          (VOID **) &PciIo
           );
     PciIo->Pci.Read (
                 PciIo,

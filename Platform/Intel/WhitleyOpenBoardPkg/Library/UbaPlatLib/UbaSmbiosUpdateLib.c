@@ -48,7 +48,7 @@ PlatformRegisterSmbiosUpdate (
     Status = gBS->LocateProtocol (
                     &gUbaConfigDatabaseProtocolGuid,
                     NULL,
-                    &UbaConfigProtocol
+                    (VOID **) &UbaConfigProtocol
                     );
     if (EFI_ERROR (Status)) {
       return Status;
@@ -254,7 +254,7 @@ PlatformSmbiosAddNew (
   EFI_SMBIOS_HANDLE                   SmbiosHandle;
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -290,7 +290,7 @@ PlatformSmbiosGetInstanceCount (
   UINTN                               Count = 0;
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -354,7 +354,7 @@ PlatformSmbiosGetInstance (
   }
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -452,7 +452,7 @@ PlatformSmbiosUpdateInstalledString (
   UINTN                               StringSize = 0;
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -494,7 +494,7 @@ PlatformSmbiosRemoveType (
   EFI_SMBIOS_HANDLE                   SmbiosHandle;
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -561,7 +561,7 @@ PlatformSmbiosUpdateType (
   EFI_SMBIOS_HANDLE                   SmbiosHandle;
 
   if (Smbios == NULL) {
-    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+    Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
     if (EFI_ERROR (Status)) {
       return Status;
     }
@@ -607,7 +607,7 @@ DispatchSmbiosDynamicUpdate (
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,
-                  &UbaConfigProtocol
+                  (VOID **) &UbaConfigProtocol
                   );
   if (EFI_ERROR (Status)) {
     return Status;

@@ -83,7 +83,7 @@ GpioConfigForBoardId (
   PadConfig.LockConfig       = mBoardAndRevIdConfig.LockConfig;
   PadConfig.OtherSettings    = mBoardAndRevIdConfig.OtherSettings;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -116,7 +116,7 @@ GpioConfigForBoardRevId (
   PadConfig.LockConfig       = mBoardAndRevIdConfig.LockConfig;
   PadConfig.OtherSettings    = mBoardAndRevIdConfig.OtherSettings;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -150,7 +150,7 @@ GpioGetBoardId (
     return EFI_UNSUPPORTED;
   }
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -198,7 +198,7 @@ GpioGetBoardRevId (
     return EFI_UNSUPPORTED;
   }
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -389,7 +389,7 @@ PdrGetPlatformInfo (
                     &gPchSpiPpiGuid,
                     0,
                     NULL,
-                    &SpiPpi
+                    (VOID** ) &SpiPpi
                     );
 
   if (EFI_ERROR (Status)) {
@@ -456,7 +456,7 @@ GatherQATInfo(OUT EFI_PLATFORM_INFO   *PlatformInfoHob)
   PadConfig.LockConfig       = GpioPadConfigLock;
   PadConfig.OtherSettings    = 00;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -653,11 +653,11 @@ PlatformInfoInit (
   //
   // Locate Variable PPI
   //
-  Status = PeiServicesLocatePpi (&gEfiPeiReadOnlyVariable2PpiGuid, 0, NULL, &PeiVariable);
+  Status = PeiServicesLocatePpi (&gEfiPeiReadOnlyVariable2PpiGuid, 0, NULL, (VOID **) &PeiVariable);
 
   (*PeiServices)->SetMem (&PlatformInfoHob, sizeof (PlatformInfoHob), 0);
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;

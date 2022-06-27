@@ -34,7 +34,7 @@ PlatformPchLanConfig (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -75,7 +75,7 @@ PlatformInitLateHook (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -104,5 +104,3 @@ PlatformInitLateHook (
 
   return Status;
 }
-
-

@@ -322,7 +322,7 @@ UpdateSmbiosHandles(
   UINT8                               SlotsPerImc = MAX_DIMM * MAX_MC_CH;
   UINT8                               DimmsPerImc = 0;
 
-  Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, &Smbios);
+  Status = gBS->LocateProtocol (&gEfiSmbiosProtocolGuid, NULL, (VOID **) &Smbios);
   if (EFI_ERROR (Status)) {
     return ;
   }
@@ -423,7 +423,7 @@ GetMemoryDomains (
   EFI_STATUS                  Status = EFI_SUCCESS;
   DYNAMIC_SI_LIBARY_PROTOCOL2 *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -677,7 +677,7 @@ GetProcessorDomains (
   EFI_STATUS                  Status = EFI_SUCCESS;
   DYNAMIC_SI_LIBARY_PROTOCOL2 *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -835,7 +835,7 @@ PatchHmatMsars (
   EFI_STATUS                  Status = EFI_SUCCESS;
   DYNAMIC_SI_LIBARY_PROTOCOL2 *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;

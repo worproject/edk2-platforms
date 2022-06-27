@@ -542,7 +542,7 @@ GetBw5Bifurcation (
     return IIO_BIFURCATE_xxxxxxxx;
   }
 
-  Status = PeiServicesLocatePpi (&gEfiPeiSmbus2PpiGuid, 0, NULL, &SmbPpi);
+  Status = PeiServicesLocatePpi (&gEfiPeiSmbus2PpiGuid, 0, NULL, (VOID **) &SmbPpi);
 
   // Initialize Bw5Id to not present
 
@@ -854,13 +854,13 @@ IioPortBifurcationInitCallback (
   //
   // Locate PLATFORM_IIO_CONFIG_UPDATE_TABLE_EX
   //
-  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, &UbaConfigPpi);
+  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, (VOID **) &UbaConfigPpi);
   if (EFI_ERROR (Status)) {
     ASSERT (FALSE);
     return;
   }
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -910,4 +910,3 @@ InstallIioPortBifurcationInitData (
            sizeof (IioPortBifurcationInitTable)
            );
 }
-

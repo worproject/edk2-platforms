@@ -43,7 +43,7 @@ SpiMemorySpaceCheckandEnable(
   EFI_STATUS                        Status = EFI_SUCCESS;
   DYNAMIC_SI_LIBARY_SMM_PROTOCOL    *DynamicSiLibrarySmmProtocol = NULL;
 
-  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, &DynamicSiLibrarySmmProtocol);
+  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, (VOID**) &DynamicSiLibrarySmmProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -234,4 +234,3 @@ SpiFlashBlockErase (
                            );
   return Status;
 }
-

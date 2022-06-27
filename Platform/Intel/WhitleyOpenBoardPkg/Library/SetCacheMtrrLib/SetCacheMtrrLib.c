@@ -278,7 +278,7 @@ PkgMpEnableMcaOnCacheableMmio(
   EFI_STATUS                Status;
   DYNAMIC_SI_LIBARY_PPI     *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -642,7 +642,7 @@ SetCacheMtrrAfterEndOfPei (
     MemoryBase = BASE_1MB;
     MemoryLength = LowUncableBase;
 
-    Status = (*PeiServices)->GetHobList (PeiServices, &Hob.Raw);
+    Status = PeiServicesGetHobList ((VOID **) &Hob.Raw);
     while (!END_OF_HOB_LIST (Hob)) {
       if (Hob.Header->HobType == EFI_HOB_TYPE_RESOURCE_DESCRIPTOR) {
         if ((Hob.ResourceDescriptor->ResourceType == EFI_RESOURCE_SYSTEM_MEMORY) ||
@@ -841,7 +841,7 @@ SetCacheMtrrAfterEndOfPei (
                     &gEfiPeiMpServicesPpiGuid,
                     0,
                     NULL,
-                    &mPeiMpServices
+                    (VOID** ) &mPeiMpServices
                     );
 
   if (BootMode != BOOT_ON_S3_RESUME) {
@@ -855,7 +855,7 @@ SetCacheMtrrAfterEndOfPei (
                     (EFI_AP_PROCEDURE)SetAllMtrrs,
                     FALSE,
                     0,
-                    (VOID*)&MtrrSettings
+                    (VOID*) &MtrrSettings
                     );
     }
   }

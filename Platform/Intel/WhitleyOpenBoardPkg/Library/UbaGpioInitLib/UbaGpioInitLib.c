@@ -74,12 +74,12 @@ PlatformInitGpios (
   VOID                                  *HobPtr;
   DYNAMIC_SI_LIBARY_PPI                 *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, &UbaConfigPpi);
+  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, (VOID **) &UbaConfigPpi);
   if (EFI_ERROR (Status)) {
     return Status;
   }
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -87,7 +87,7 @@ PlatformInitGpios (
 
   TableSize = PcdGet32(PcdOemSku_GPIO_TABLE_SIZE);
   DEBUG ((DEBUG_INFO, "UBA:Size of GpioTable 0x%X, blocks: 0x%X.\n", TableSize, (TableSize/sizeof (GPIO_INIT_CONFIG)) ));
-  Status = PeiServicesAllocatePool (TableSize, &GpioTable);
+  Status = PeiServicesAllocatePool (TableSize, (VOID** ) &GpioTable);
   if (EFI_ERROR(Status)) {
    return Status;
   }

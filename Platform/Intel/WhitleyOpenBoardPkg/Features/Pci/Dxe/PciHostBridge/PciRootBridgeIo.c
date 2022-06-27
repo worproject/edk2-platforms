@@ -131,11 +131,11 @@ SimpleIioRootBridgeConstructor (
   Status = gBS->LocateProtocol (
                   &gEfiCpuIo2ProtocolGuid,
                   NULL,
-                  &mCpuIo
+                  (VOID **) &mCpuIo
                   );
   ASSERT_EFI_ERROR (Status);
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &mDynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &mDynamicSiLibraryProtocol);
   ASSERT_EFI_ERROR (Status);
 
   return EFI_SUCCESS;
@@ -1661,4 +1661,3 @@ RootBridgeIoConfiguration (
   *Resources = RootBridge->ConfigBuffer;
   return EFI_SUCCESS;
 }
-

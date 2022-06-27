@@ -28,8 +28,9 @@
   @retval     EFI_SUCCESS       The function completed successfully.
 **/
 EFI_STATUS
+EFIAPI
 MapInterposerToSvid (
-  IN CONST EFI_PEI_SERVICES     **PeiServices,
+  IN EFI_PEI_SERVICES           **PeiServices,
   IN EFI_PEI_NOTIFY_DESCRIPTOR  *NotifyDescriptor,
   IN VOID                       *Ppi
   )
@@ -50,7 +51,7 @@ MapInterposerToSvid (
 
   DEBUG ((EFI_D_INFO, "MapInterposerToSvid   Entry\n"));
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -67,7 +68,7 @@ MapInterposerToSvid (
     }
     Size = sizeof (MEM_SVID_MAP);
     DEBUG ((EFI_D_INFO, "Allocate memory for MemSvidMap PCD\n"));
-    Status = (*PeiServices)->AllocatePool (PeiServices, Size, &MemSvidMap);
+    Status = PeiServicesAllocatePool (Size, (VOID **) &MemSvidMap);
     ASSERT_EFI_ERROR (Status);
     ZeroMem (MemSvidMap, Size);
 

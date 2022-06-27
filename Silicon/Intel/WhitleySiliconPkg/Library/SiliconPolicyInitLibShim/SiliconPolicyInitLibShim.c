@@ -20,7 +20,7 @@ SiliconPolicyInitPreMem (
   RETURN_STATUS                   Status = RETURN_SUCCESS;
   SILICON_POLICY_INIT_LIB_PPI     *SiliconPolicyInitLibPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, &SiliconPolicyInitLibPpi);
+  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, (VOID **) &SiliconPolicyInitLibPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return NULL;
@@ -38,7 +38,7 @@ SiliconPolicyDonePreMem (
   RETURN_STATUS                   Status = RETURN_SUCCESS;
   SILICON_POLICY_INIT_LIB_PPI     *SiliconPolicyInitLibPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, &SiliconPolicyInitLibPpi);
+  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, (VOID **) &SiliconPolicyInitLibPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -56,7 +56,7 @@ SiliconPolicyInitPostMem (
   RETURN_STATUS                   Status = RETURN_SUCCESS;
   SILICON_POLICY_INIT_LIB_PPI     *SiliconPolicyInitLibPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, &SiliconPolicyInitLibPpi);
+  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, (VOID **) &SiliconPolicyInitLibPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return NULL;
@@ -74,7 +74,7 @@ SiliconPolicyDonePostMem (
   RETURN_STATUS                   Status = RETURN_SUCCESS;
   SILICON_POLICY_INIT_LIB_PPI     *SiliconPolicyInitLibPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, &SiliconPolicyInitLibPpi);
+  Status = PeiServicesLocatePpi (&gSiliconPolicyInitLibInterfaceGuid, 0, NULL, (VOID **) &SiliconPolicyInitLibPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;

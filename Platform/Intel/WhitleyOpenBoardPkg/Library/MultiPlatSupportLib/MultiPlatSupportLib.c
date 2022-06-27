@@ -14,6 +14,7 @@
 #include <Library/ReadFfsLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Guid/AuthenticatedVariableFormat.h>
+#include <Library/PeiServicesLib.h>
 
 
 //notes
@@ -47,7 +48,8 @@ VOID * FindDefaultHobinFfs (
 {
   EFI_PEI_SERVICES           **PeiServices;
   UINTN                      FvInstance;
-  EFI_FIRMWARE_VOLUME_HEADER *FvHeader;
+  EFI_PEI_FV_HANDLE          FvHandle;
+  EFI_PEI_FILE_HANDLE        *FfsHandle;
   EFI_FFS_FILE_HEADER        *FfsHeader;
   UINT32                     FileSize;
   EFI_COMMON_SECTION_HEADER  *Section;
@@ -58,25 +60,18 @@ VOID * FindDefaultHobinFfs (
   VARIABLE_STORE_HEADER      *VarStoreHeader;
   UINT32                      FFSSize = 0;
 
-
-
-  //
-  // Get PeiService pointer
-  //
-  PeiServices = (EFI_PEI_SERVICES **)GetPeiServicesTablePointer ();
-
   //
   // Find the FFS file that stores all default data.
   //
   DefaultFileIsFound = FALSE;
   FvInstance         = 0;
-  FfsHeader          = NULL;
-  while (((*PeiServices)->FfsFindNextVolume (PeiServices, FvInstance, &FvHeader) == EFI_SUCCESS) &&
-         (!DefaultFileIsFound)) {
-    FfsHeader = NULL;
-    while ((*PeiServices)->FfsFindNextFile (PeiServices, EFI_FV_FILETYPE_FREEFORM, FvHeader, &FfsHeader) == EFI_SUCCESS) {
-      if (CompareGuid ((EFI_GUID *) FfsHeader, &gDefaultDataFileGuid)) {
+  FfsHandle          = NULL;
+  while ((PeiServicesFfsFindNextVolume (FvInstance, &FvHandle) == EFI_SUCCESS) && (!DefaultFileIsFound)) {
+    FfsHandle = NULL;
+    while (PeiServicesFfsFindNextFile (EFI_FV_FILETYPE_FREEFORM, FvHandle, FfsHandle) == EFI_SUCCESS) {
+      if (CompareGuid ((EFI_GUID *) FfsHandle, &gDefaultDataFileGuid)) {
         DefaultFileIsFound = TRUE;
+        FfsHeader = (EFI_FFS_FILE_HEADER *) FfsHandle;
         break;
       }
     }
@@ -87,17 +82,18 @@ VOID * FindDefaultHobinFfs (
   // FFS file is not found.
   //
   if (!DefaultFileIsFound) {
-
-    if(PcdGet32(PcdFailSafeVarFfsSize)!=0 ){
-      //try to search other FVS
-      FfsHeader = (EFI_FFS_FILE_HEADER *) AllocatePool(PcdGet32(PcdFailSafeVarFfsSize) );
-      if(FfsHeader == NULL) {
+    if (PcdGet32 (PcdFailSafeVarFfsSize) != 0 ){
+      //
+      // try to search other FVS
+      //
+      FfsHeader = (EFI_FFS_FILE_HEADER *) AllocatePool (PcdGet32 (PcdFailSafeVarFfsSize));
+      if (FfsHeader == NULL) {
         return NULL;
       }
-      if(EFI_SUCCESS != ReadFFSFile( (EFI_FIRMWARE_VOLUME_HEADER *) PcdGet32(PcdFailSafeVarFvBase), gDefaultDataFileGuid, 0, FfsHeader, &FFSSize, FALSE)) {
+      if (EFI_SUCCESS != ReadFFSFile ((EFI_FIRMWARE_VOLUME_HEADER *) PcdGet32 (PcdFailSafeVarFvBase), gDefaultDataFileGuid, 0, FfsHeader, &FFSSize, FALSE)) {
         return NULL;
       }
-      ASSERT(PcdGet32(PcdFailSafeVarFfsSize) <FFSSize);
+      ASSERT (PcdGet32 (PcdFailSafeVarFfsSize) <FFSSize);
     } else {
       return NULL;
     }
@@ -109,7 +105,7 @@ VOID * FindDefaultHobinFfs (
   //
   VarStoreHeader = NULL;
   Section  = (EFI_COMMON_SECTION_HEADER *)(FfsHeader + 1);
-  FileSize = *(UINT32 *)(FfsHeader->Size) & 0x00FFFFFF;
+  FileSize = *(UINT32 *) (FfsHeader->Size) & 0x00FFFFFF;
   while (((UINTN) Section < (UINTN) FfsHeader + FileSize) && (VarStoreHeader == NULL)) {
     DefaultData = (DEFAULT_DATA *) (Section + 1);
     DefaultInfo = &(DefaultData->DefaultInfo[0]);
@@ -251,5 +247,3 @@ Returns:
 
   return EFI_SUCCESS;
 }
-
-

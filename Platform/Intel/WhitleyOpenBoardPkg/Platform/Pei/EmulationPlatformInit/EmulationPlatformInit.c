@@ -70,7 +70,7 @@ EmulationPlatformInitEntry (
                   &gEfiPeiReadOnlyVariable2PpiGuid,
                   0,
                   NULL,
-                  &PeiVariable
+                  (VOID** ) &PeiVariable
                   );
 
   Status = PeiVariable->GetVariable (PeiVariable, EMULATION_DFX_CONFIGURATION_NAME, &gEmulationDfxVariableGuid, NULL, &BufferSize, &EmulationVariable);

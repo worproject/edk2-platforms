@@ -43,7 +43,7 @@ PlatformUpdateClockgen (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -53,7 +53,7 @@ PlatformUpdateClockgen (
               &gEfiPeiSmbus2PpiGuid,
               0,
               NULL,
-              &SmbusPpi
+              (VOID **) &SmbusPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -130,5 +130,3 @@ PlatformUpdateClockgen (
 
   return Status;
 }
-
-

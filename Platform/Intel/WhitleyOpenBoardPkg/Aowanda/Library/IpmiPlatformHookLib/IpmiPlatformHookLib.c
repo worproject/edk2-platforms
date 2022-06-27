@@ -35,7 +35,7 @@ PlatformIpmiIoRangeSet (
 
   DEBUG ((DEBUG_INFO, "PlatformIpmiIoRangeSet IpmiIoBase %x\n", IpmiIoBase));
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "PeiServicesLocatePpi for gDynamicSiLibraryPpiGuid failed. Status %r\n", Status));
     ASSERT_EFI_ERROR (Status);

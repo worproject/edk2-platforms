@@ -33,7 +33,7 @@ PlatformIioConfigInit (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -81,7 +81,7 @@ PlatformIioConfigInit2 (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -147,7 +147,7 @@ PlatformUpdateIioConfig (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -190,7 +190,7 @@ PlatformUpdateIioConfig_EX (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;

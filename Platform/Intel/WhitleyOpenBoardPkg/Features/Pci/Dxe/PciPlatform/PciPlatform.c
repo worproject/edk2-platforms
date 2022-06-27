@@ -41,7 +41,7 @@ InternalPlatformCheckPcieRootPort (
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,
-                  &UbaConfigProtocol
+                  (VOID **) &UbaConfigProtocol
                   );
   if (EFI_ERROR(Status)) {
     DEBUG ((DEBUG_INFO," InternalPlatformCheckPcieRootPort fail!\n"));
@@ -80,7 +80,7 @@ InternalGetSystemBoardInfo (
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,
-                  &UbaConfigProtocol
+                  (VOID **) &UbaConfigProtocol
                   );
 
   if (EFI_ERROR(Status)) {
@@ -148,11 +148,12 @@ GetPlatformPolicy (
 
 **/
 EFI_STATUS
-GetRawImage(
-   IN     EFI_GUID                       *NameGuid,
-   IN OUT VOID                           **Buffer,
-   IN OUT UINTN                          *Size
-   ) {
+GetRawImage (
+  IN     EFI_GUID                       *NameGuid,
+  IN OUT VOID                           **Buffer,
+  IN OUT UINTN                          *Size
+  )
+{
   EFI_STATUS                    Status;
   EFI_HANDLE                    *HandleBuffer;
   UINTN                         HandleCount;
@@ -160,26 +161,26 @@ GetRawImage(
   EFI_FIRMWARE_VOLUME2_PROTOCOL *Fv;
   UINT32                        AuthenticationStatus;
 
-  Status = gBS->LocateHandleBuffer(
+  Status = gBS->LocateHandleBuffer (
      ByProtocol,
      &gEfiFirmwareVolume2ProtocolGuid,
      NULL,
      &HandleCount,
      &HandleBuffer
      );
-  if (EFI_ERROR(Status) || HandleCount == 0) {
+  if (EFI_ERROR (Status) || HandleCount == 0) {
     return EFI_NOT_FOUND;
   }
   //
   // Find desired image in all Fvs
   //
   for (Index = 0; Index < HandleCount; Index++) {
-    Status = gBS->HandleProtocol(
+    Status = gBS->HandleProtocol (
        HandleBuffer[Index],
        &gEfiFirmwareVolume2ProtocolGuid,
-       &Fv
+       (VOID **) &Fv
        );
-    if (EFI_ERROR(Status)) {
+    if (EFI_ERROR (Status)) {
       return EFI_LOAD_ERROR;
     }
     //
@@ -187,7 +188,7 @@ GetRawImage(
     //
     *Buffer = NULL;
     *Size   = 0;
-    Status = Fv->ReadSection(
+    Status = Fv->ReadSection (
          Fv,
          NameGuid,
          EFI_SECTION_RAW,
@@ -196,8 +197,8 @@ GetRawImage(
          Size,
          &AuthenticationStatus
          );
-    if (!EFI_ERROR(Status)) {
-      DEBUG((EFI_D_INFO, "Read the OROM successfully!\n"));
+    if (!EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_INFO, "Read the OROM successfully!\n"));
       break;
     }
   }
@@ -255,7 +256,7 @@ GetPciRom (
   OpRomBase = NULL;
   OpRomSize = 0;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -323,8 +324,6 @@ GetPciRom (
 
   PciIo->Pci.Read (PciIo, EfiPciIoWidthUint16, PCI_VENDOR_ID_OFFSET, 1, &VendorId);
   PciIo->Pci.Read (PciIo, EfiPciIoWidthUint16, PCI_DEVICE_ID_OFFSET, 1, &DeviceId);
-
-  //DEBUG ((EFI_D_INFO, "GetPciRom - VenID:DevID: %04x:%04x\n", (UINTN)VendorId, (UINTN)DeviceId));
 
   //
   // Fix MS-HD5770 video adapter can not work:

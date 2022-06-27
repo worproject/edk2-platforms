@@ -32,7 +32,7 @@ BoardEnableAcpi (
   EFI_STATUS                       Status;
   DYNAMIC_SI_LIBARY_SMM_PROTOCOL   *DynamicSiLibrarySmmProtocol = NULL;
 
-  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, &DynamicSiLibrarySmmProtocol);
+  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, (VOID**) &DynamicSiLibrarySmmProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -85,7 +85,7 @@ BoardDisableAcpi (
   EFI_STATUS                       Status;
   DYNAMIC_SI_LIBARY_SMM_PROTOCOL   *DynamicSiLibrarySmmProtocol = NULL;
 
-  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, &DynamicSiLibrarySmmProtocol);
+  Status = gSmst->SmmLocateProtocol (&gDynamicSiLibrarySmmProtocolGuid, NULL, (VOID**) &DynamicSiLibrarySmmProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -108,5 +108,3 @@ BoardDisableAcpi (
 
   return EFI_SUCCESS;
 }
-
-

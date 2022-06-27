@@ -31,7 +31,7 @@ UpdatePcatTable (
   EFI_STATUS                      Status;
   DYNAMIC_SI_LIBARY_PROTOCOL2     *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;

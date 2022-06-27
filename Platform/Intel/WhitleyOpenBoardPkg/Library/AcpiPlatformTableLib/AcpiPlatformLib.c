@@ -70,7 +70,7 @@ AcpiPlatformLibConstructor (
     return RETURN_NOT_FOUND;
   }
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -86,13 +86,13 @@ AcpiPlatformLibConstructor (
   //
   // Locate the IIO Protocol Interface
   //
-  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid,NULL,&mIioUds);
+  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, (VOID **) &mIioUds);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
   }
 
-  Status = gBS->LocateProtocol (&gEfiCpuCsrAccessGuid, NULL, &mCpuCsrAccess);
+  Status = gBS->LocateProtocol (&gEfiCpuCsrAccessGuid, NULL, (VOID **) &mCpuCsrAccess);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -104,7 +104,7 @@ AcpiPlatformLibConstructor (
 
   mMpService = NULL;
 
-  Status = gBS->LocateProtocol (&gEfiMpServiceProtocolGuid, NULL, &mMpService);
+  Status = gBS->LocateProtocol (&gEfiMpServiceProtocolGuid, NULL, (VOID **) &mMpService);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -123,7 +123,7 @@ AcpiPlatformLibConstructor (
     mNumberOfCPUs = MAX_CPU_NUM;
   }
 
-  Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, &mAcpiTable);
+  Status = gBS->LocateProtocol (&gEfiAcpiTableProtocolGuid, NULL, (VOID **) &mAcpiTable);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -211,7 +211,7 @@ AcpiPlatformHooksIsActiveTable (
   }
 
   if (TableHeader->Signature == NVDIMM_FW_INTERFACE_TABLE_SIGNATURE) {
-    Status = gBS->LocateProtocol (&gEfiNfitTableUpdateProtocolGuid, NULL, &NfitTableUpdateProtocol);
+    Status = gBS->LocateProtocol (&gEfiNfitTableUpdateProtocolGuid, NULL, (VOID **) &NfitTableUpdateProtocol);
     if (EFI_ERROR (Status)){
       // If NfitTableUpdateProtocol is not found we assume no NVDIMM is present - it means don't publish NFIT
       DEBUG ((DEBUG_ERROR, "NfitTableUpdateProtocol is not installed.\n"));
@@ -253,7 +253,7 @@ AcpiPlatformHooksIsActiveTable (
       return EFI_UNSUPPORTED;
     }
     if ( (0 == CompareMem (&(TableHeader->OemTableId), OemSkuAcpiName, 8)) ) {
-      Status = PlatformGetAcpiFixTableDataPointer (&mAmlOffsetTablePointer);
+      Status = PlatformGetAcpiFixTableDataPointer ((VOID ** ) &mAmlOffsetTablePointer);
       if (!EFI_ERROR(Status)) {
         DEBUG((DEBUG_INFO, "[ACPI] Platform DSDT Fixup table found\n"));
         DEBUG((DEBUG_INFO, "[ACPI] Platform SRP: Using %a DSDT\n", OemSkuAcpiName));
@@ -311,7 +311,7 @@ PlatformUpdateTables (
 
   DYNAMIC_SI_LIBARY_PROTOCOL2  *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;

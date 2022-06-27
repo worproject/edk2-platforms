@@ -578,7 +578,7 @@ InstallMadtFromScratch (
   // Build IOAPIC Structures
   //
   if (mIioUds == NULL) {
-    Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid,NULL,&mIioUds);
+    Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, (VOID **) &mIioUds);
     ASSERT_EFI_ERROR (Status);
     if (EFI_ERROR (Status)) {
       goto Done;

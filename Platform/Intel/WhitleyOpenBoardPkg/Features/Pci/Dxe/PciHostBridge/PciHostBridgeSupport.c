@@ -47,7 +47,7 @@ ChipsetPreprocessController (
     //
     // Get root bridge in the system.
     //
-    Status = gBS->HandleProtocol (RootBridgeHandle, &gEfiPciRootBridgeIoProtocolGuid, &mPciRootBridgeIo);
+    Status = gBS->HandleProtocol (RootBridgeHandle, &gEfiPciRootBridgeIoProtocolGuid, (VOID **) &mPciRootBridgeIo);
     ASSERT_EFI_ERROR (Status);
   }
 

@@ -48,7 +48,7 @@ AcpiOnPciEnumCmplCallback (
 {
   EFI_STATUS    Status;
 
-  Status = gBS->LocateProtocol (&gEfiPciEnumerationCompleteProtocolGuid, NULL, &Context);
+  Status = gBS->LocateProtocol (&gEfiPciEnumerationCompleteProtocolGuid, NULL, (VOID **) &Context);
   if (EFI_ERROR (Status)) {
     //
     // Skip the first dummy event signal.
@@ -202,7 +202,7 @@ AcpiOnReadyToBootCallback (
 
   DYNAMIC_SI_LIBARY_PROTOCOL  *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -332,7 +332,7 @@ AcpiOnReadyToBootCallback (
   Status = LocateSupportProtocol (
             &gEfiAcpiTableProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &AcpiTable,
+            (VOID **) &AcpiTable,
             FALSE
             );
 
@@ -411,7 +411,7 @@ AcpiPlatformEarlyAcpiTablesInstall (
   Status = LocateSupportProtocol (
             &gEfiAcpiTableProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &AcpiTable,
+            (VOID **) &AcpiTable,
             FALSE
             );
 
@@ -423,7 +423,7 @@ AcpiPlatformEarlyAcpiTablesInstall (
   Status = LocateSupportProtocol (
             &gEfiFirmwareVolume2ProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &FwVol,
+            (VOID **) &FwVol,
             TRUE
             );
   ASSERT_EFI_ERROR (Status);
@@ -442,7 +442,7 @@ AcpiPlatformEarlyAcpiTablesInstall (
                       &gEfiAcpiTableStorageGuid,
                       EFI_SECTION_RAW,
                       Instance,
-                      &CurrentTable,
+                      (VOID **) &CurrentTable,
                       (UINTN *) &Size,
                       &FvStatus
                       );
@@ -557,7 +557,7 @@ PmSsdtEarlyAcpiTablesInstall (
   Status = LocateSupportProtocol (
             &gEfiAcpiTableProtocolGuid,
             gEfiPmSsdtTableStorageGuid,
-            &AcpiTable,
+            (VOID **) &AcpiTable,
             FALSE
             );
 
@@ -569,7 +569,7 @@ PmSsdtEarlyAcpiTablesInstall (
   Status = LocateSupportProtocol (
             &gEfiFirmwareVolume2ProtocolGuid,
             gEfiPmSsdtTableStorageGuid,
-            &FwVol,
+            (VOID **) &FwVol,
             TRUE
             );
   ASSERT_EFI_ERROR (Status);
@@ -588,7 +588,7 @@ PmSsdtEarlyAcpiTablesInstall (
                       &gEfiPmSsdtTableStorageGuid,
                       EFI_SECTION_RAW,
                       Instance,
-                      &CurrentTable,
+                      (VOID **) &CurrentTable,
                       (UINTN *) &Size,
                       &FvStatus
                       );
@@ -658,7 +658,7 @@ AcpiPlatformEntryPoint (
 
   DYNAMIC_SI_LIBARY_PROTOCOL  *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -673,7 +673,7 @@ AcpiPlatformEntryPoint (
     (EFI_SOFTWARE_DXE_CORE | EFI_SW_DXE_BS_ACPI_INIT)
     );
 
-  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, &mIioUds2);
+  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, (VOID **) &mIioUds2);
   if (EFI_ERROR (Status)) {
 
     ASSERT_EFI_ERROR (Status);

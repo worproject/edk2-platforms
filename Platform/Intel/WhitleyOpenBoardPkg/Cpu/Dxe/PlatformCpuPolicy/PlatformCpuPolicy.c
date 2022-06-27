@@ -206,7 +206,7 @@ PlatformCpuPolicyEntryPoint (
   CPU_VAR_DATA                     *CpuVarDataPtr = NULL;
   DYNAMIC_SI_LIBARY_PROTOCOL       *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -666,7 +666,7 @@ PlatformCpuPolicyEntryPoint (
   Status = gBS->LocateProtocol (
                   &gEfiPlatformTypeProtocolGuid,
                   NULL,
-                  &PlatformType
+                  (VOID **) &PlatformType
                   );
   ASSERT_EFI_ERROR (Status);
 

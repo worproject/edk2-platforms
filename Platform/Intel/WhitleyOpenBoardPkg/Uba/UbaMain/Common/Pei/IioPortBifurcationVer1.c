@@ -106,7 +106,7 @@ GetBw5Id (
                               &gEfiPeiSmbus2PpiGuid,
                               0,
                               NULL,
-                              &Smbus
+                              (VOID** ) &Smbus
                               );
 
   // Initialize Bw5Id to not present
@@ -198,7 +198,7 @@ InternalPlatformGetSlotTableData2 (
     &gUbaConfigDatabasePpiGuid,
     0,
     NULL,
-    &UbaConfigPpi
+    (VOID **) &UbaConfigPpi
     );
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
@@ -254,7 +254,7 @@ InternalPlatformIioConfigInit2 (
     &gUbaConfigDatabasePpiGuid,
     0,
     NULL,
-    &UbaConfigPpi
+    (VOID **) &UbaConfigPpi
     );
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
@@ -772,7 +772,7 @@ PlatformUpdateIioConfig (
     &gUbaConfigDatabasePpiGuid,
     0,
     NULL,
-    &UbaConfigPpi
+    (VOID **) &UbaConfigPpi
     );
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
@@ -836,7 +836,7 @@ OverrideDefaultBifSlots_SKX (
   //
   // Purley platforms need to read the QAT bit
   //
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -1352,5 +1352,3 @@ IioPortBifurcationInitVer1 (
     }
   }
 }
-
-

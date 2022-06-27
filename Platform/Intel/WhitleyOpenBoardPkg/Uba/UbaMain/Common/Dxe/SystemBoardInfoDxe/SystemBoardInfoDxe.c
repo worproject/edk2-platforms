@@ -185,7 +185,7 @@ SystemBoardInfoEntry (
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,
-                  &UbaConfigProtocol
+                  (VOID **) &UbaConfigProtocol
                   );
   if (EFI_ERROR(Status)) {
     return Status;

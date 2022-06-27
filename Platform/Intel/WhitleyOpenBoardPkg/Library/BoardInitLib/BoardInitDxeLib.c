@@ -126,7 +126,7 @@ EnableAntiFlashWearout (
   SYSTEM_CONFIGURATION          SetupData;
   DYNAMIC_SI_LIBARY_PROTOCOL    *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -185,7 +185,7 @@ BdsBoardBeforeConsoleAfterTrustedConsoleCallback (
   Status = gBS->LocateProtocol (
                   &gEfiPciEnumerationCompleteProtocolGuid,
                   NULL,
-                  &Interface
+                  (VOID **) &Interface
                   );
   if (EFI_ERROR (Status)) {
     ConnectRootBridge (FALSE);
@@ -209,7 +209,7 @@ BoardNotificationInit (
   EFI_EVENT                    BeforeConsoleAfterTrustedConsoleEvent;
   DYNAMIC_SI_LIBARY_PROTOCOL   *DynamicSiLibraryProtocol = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;

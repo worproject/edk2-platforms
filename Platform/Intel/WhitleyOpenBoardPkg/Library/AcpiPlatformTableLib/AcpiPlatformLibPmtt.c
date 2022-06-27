@@ -58,7 +58,7 @@ PatchPlatformMemoryTopologyTable (
 
   DYNAMIC_SI_LIBARY_PROTOCOL2         *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -69,7 +69,7 @@ PatchPlatformMemoryTopologyTable (
 
   ASSERT (PmttTable->Header.Signature == ACPI_PMTT_TABLE_SIGNATURE);
 
-  Status = gBS->LocateProtocol (&gSmbiosMemInfoProtocolGuid, NULL, (VOID**)&SmbiosInfoProtocol);
+  Status = gBS->LocateProtocol (&gSmbiosMemInfoProtocolGuid, NULL, (VOID**) &SmbiosInfoProtocol);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "[ACPI] (PMTT) Cannot locate SmbiosMemInfoProtocol! (%r)\n", Status));
     ASSERT_EFI_ERROR (Status);

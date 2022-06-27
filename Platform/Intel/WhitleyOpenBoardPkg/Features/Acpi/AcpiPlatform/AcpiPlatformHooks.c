@@ -190,7 +190,7 @@ InstallAndPatchAcpiTable (
   Status = LocateSupportProtocol (
             &gEfiAcpiTableProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &AcpiTable,
+            (VOID **) &AcpiTable,
             FALSE
             );
   ASSERT_EFI_ERROR (Status);
@@ -198,7 +198,7 @@ InstallAndPatchAcpiTable (
   Status = LocateSupportProtocol (
             &gEfiFirmwareVolume2ProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &FwVol,
+            (VOID **) &FwVol,
             TRUE
             );
   ASSERT_EFI_ERROR (Status);
@@ -210,7 +210,7 @@ InstallAndPatchAcpiTable (
                       &gEfiAcpiTableStorageGuid,
                       EFI_SECTION_RAW,
                       Instance,
-                      &CurrentTable,
+                      (VOID **) &CurrentTable,
                       (UINTN *) &Size,
                       &FvStatus
                       );
@@ -294,7 +294,7 @@ InstallXhciAcpiTable (
   Status = LocateSupportProtocol (
             &gEfiAcpiTableProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &AcpiTable,
+            (VOID **) &AcpiTable,
             FALSE
             );
 
@@ -306,7 +306,7 @@ InstallXhciAcpiTable (
   Status = LocateSupportProtocol (
             &gEfiFirmwareVolume2ProtocolGuid,
             gEfiAcpiTableStorageGuid,
-            &FwVol,
+            (VOID **) &FwVol,
             TRUE
             );
 
@@ -321,7 +321,7 @@ InstallXhciAcpiTable (
                       &gEfiAcpiTableStorageGuid,
                       EFI_SECTION_RAW,
                       Instance,
-                      &CurrentTable,
+                      (VOID **) &CurrentTable,
                       &Size,
                       &FvStatus
                       );
@@ -374,7 +374,7 @@ DetectHwpFeature (
   EFI_STATUS                       Status;
   DYNAMIC_SI_LIBARY_PROTOCOL2      *DynamicSiLibraryProtocol2 = NULL;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, &DynamicSiLibraryProtocol2);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocol2Guid, NULL, (VOID **) &DynamicSiLibraryProtocol2);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return FALSE;

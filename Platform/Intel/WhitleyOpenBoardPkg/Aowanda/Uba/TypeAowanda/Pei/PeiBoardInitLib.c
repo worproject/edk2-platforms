@@ -72,7 +72,7 @@ TypeAowandaPeiBoardInitLibConstructor (
                &gUbaConfigDatabasePpiGuid,
                0,
                NULL,
-               &UbaConfigPpi
+               (VOID **) &UbaConfigPpi
                );
     if (EFI_ERROR(Status)) {
       return Status;

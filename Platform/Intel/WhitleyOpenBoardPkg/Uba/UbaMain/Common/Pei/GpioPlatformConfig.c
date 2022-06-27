@@ -137,7 +137,7 @@ InstallGpioPlatformData (
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -162,5 +162,3 @@ InstallGpioPlatformData (
 
   return Status;
 }
-
-

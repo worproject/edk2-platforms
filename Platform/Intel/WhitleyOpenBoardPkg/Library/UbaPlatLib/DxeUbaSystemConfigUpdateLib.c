@@ -31,7 +31,7 @@ UpdateIioDefaultConfig (
   Status = gBS->LocateProtocol (
                   &gUbaConfigDatabaseProtocolGuid,
                   NULL,
-                  &UbaConfigProtocol
+                  (VOID **) &UbaConfigProtocol
                   );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR," [UpdateIioDefaultConfig] Locate UbaConfigProtocol fail!\n"));

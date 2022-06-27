@@ -152,7 +152,7 @@ For Watson Creek we set this to 0 and then dynamically update this to 1 in the D
 // Information
 //
 #define EFI_ACPI_GPE0_BLK_ADDRESS_SPACE_ID  EFI_ACPI_6_2_SYSTEM_IO
-#define EFI_ACPI_GPE0_BLK_BIT_WIDTH         0x100  // size of R_PCH_ACPI_GPE0_STS_127_96 + R_PCH_ACPI_GPE0_EN_127_96 (2*0x80 = 0x100)
+#define EFI_ACPI_GPE0_BLK_BIT_WIDTH         0 // size of R_PCH_ACPI_GPE0_STS_127_96 + R_PCH_ACPI_GPE0_EN_127_96
 #define EFI_ACPI_GPE0_BLK_BIT_OFFSET        0x00
 #define EFI_ACPI_GPE0_BLK_ADDRESS           (EFI_ACPI_PM1A_EVT_BLK_ADDRESS + 0x80)
 

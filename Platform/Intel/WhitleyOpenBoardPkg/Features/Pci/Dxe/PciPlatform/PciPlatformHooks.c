@@ -245,7 +245,7 @@ PciPlatformInitPciIovData (
   Status = gBS->LocateProtocol (
              &gEfiPciIovPlatformProtocolGuid,
              NULL,
-             &gPciIovPlatformProtocol
+             (VOID **) &gPciIovPlatformProtocol
              );
   if (!EFI_ERROR (Status)) {
     Status = gPciIovPlatformProtocol->GetSystemLowestPageSize (
@@ -363,7 +363,7 @@ AttemptToSetXhciMse (
   DYNAMIC_SI_LIBARY_PROTOCOL        *DynamicSiLibraryProtocol = NULL;
   EFI_STATUS                        Status;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return;
@@ -419,7 +419,7 @@ PciPlatformPostInit (
   // Program all the IOAPIC in system
   //
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -660,7 +660,7 @@ PlatformPrepController (
                     );
   ASSERT_EFI_ERROR (Status);
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -788,7 +788,7 @@ PhaseNotify (
     DEBUG ((DEBUG_ERROR, "[PCI] ERROR: Unknown phase %d notified (execution %d)\n", Phase, ChipsetPhase));
   }
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &DynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &DynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -813,14 +813,14 @@ PhaseNotify (
     Status = gBS->LocateProtocol (
                     &gEfiIioUdsProtocolGuid,
                     NULL,
-                    &mIioUds
+                    (VOID **) &mIioUds
                     );
     ASSERT_EFI_ERROR (Status);
 
     Status = gBS->LocateProtocol (
                     &gEfiCpuIo2ProtocolGuid,
                     NULL,
-                    &mPciPrivateData.CpuIo
+                    (VOID **) &mPciPrivateData.CpuIo
                     );
     ASSERT_EFI_ERROR (Status);
 
@@ -834,7 +834,7 @@ PhaseNotify (
     Status = gBS->LocateProtocol (
                     &gEfiPciHostBridgeResourceAllocationProtocolGuid,
                     NULL,
-                    &HostResAllocPtr
+                    (VOID **) &HostResAllocPtr
                     );
     ASSERT_EFI_ERROR (Status);
 

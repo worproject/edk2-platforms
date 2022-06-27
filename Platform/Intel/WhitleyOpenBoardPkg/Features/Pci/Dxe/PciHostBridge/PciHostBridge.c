@@ -86,7 +86,7 @@ IoMmuProtocolCallback (
 {
   EFI_STATUS   Status;
 
-  Status = gBS->LocateProtocol (&gEdkiiIoMmuProtocolGuid, NULL, (VOID **)&mIoMmu);
+  Status = gBS->LocateProtocol (&gEdkiiIoMmuProtocolGuid, NULL, (VOID **) &mIoMmu);
   if (!EFI_ERROR(Status)) {
     gBS->CloseEvent (mIoMmuEvent);
   }
@@ -127,7 +127,7 @@ InitializePciHostBridge (
   //
   // Located the IIO Protocol Interface
   //
-  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, &mIioUds);
+  Status = gBS->LocateProtocol (&gEfiIioUdsProtocolGuid, NULL, (VOID **) &mIioUds);
   ASSERT_EFI_ERROR (Status);
 
   //
@@ -1631,4 +1631,3 @@ Power2MaxMemory (
 
   return Result;
 }
-

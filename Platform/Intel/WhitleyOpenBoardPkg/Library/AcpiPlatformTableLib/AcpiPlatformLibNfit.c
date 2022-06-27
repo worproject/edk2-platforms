@@ -32,7 +32,7 @@ UpdateNfitTable (
   EFI_NFIT_TABLE_UPDATE_PROTOCOL    *NfitTableUpdateProtocol = NULL;
   EFI_STATUS                        Status;
 
-  Status = gBS->LocateProtocol (&gEfiNfitTableUpdateProtocolGuid, NULL, &NfitTableUpdateProtocol);
+  Status = gBS->LocateProtocol (&gEfiNfitTableUpdateProtocolGuid, NULL, (VOID **) &NfitTableUpdateProtocol);
 
   if (!EFI_ERROR (Status)) {
     Status = NfitTableUpdateProtocol->UpdateAcpiTable ((UINT64*) Table);

@@ -48,7 +48,7 @@ InitializeDxeUbaPlatLib (
   UBA_CONFIG_DATABASE_PROTOCOL          *UbaConfigProtocol = NULL;
   UINTN                                 TableSize;
 
-  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, &mDynamicSiLibraryProtocol);
+  Status = gBS->LocateProtocol (&gDynamicSiLibraryProtocolGuid, NULL, (VOID **) &mDynamicSiLibraryProtocol);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return EFI_NOT_FOUND;
@@ -57,7 +57,7 @@ InitializeDxeUbaPlatLib (
     Status = gBS->LocateProtocol (
                     &gUbaConfigDatabaseProtocolGuid,
                     NULL,
-                    &UbaConfigProtocol
+                    (VOID **) &UbaConfigProtocol
                     );
     if (EFI_ERROR (Status)) {
       return Status;

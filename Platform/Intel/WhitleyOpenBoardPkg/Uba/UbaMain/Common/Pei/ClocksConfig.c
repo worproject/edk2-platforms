@@ -14,6 +14,7 @@
 #include <Library/PchInfoLib.h>
 #include <Ppi/PchPolicy.h>
 #include <Ppi/DynamicSiLibraryPpi.h>
+#include <Library/PeiServicesLib.h>
 
 //
 // Table providing details on clocks supported by this library
@@ -78,7 +79,7 @@ PlatformClocksConfigCallback (
   UINT8                                 ClockGeneratorAddress = 0;
   DYNAMIC_SI_LIBARY_PPI                 *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR(Status)) {
     DEBUG ((DEBUG_ERROR, "ConfigurePlatformClocks. Can not read gDynamicSiLibraryPpiGuid\n"));
     return Status;
@@ -123,12 +124,7 @@ PlatformClocksConfigCallback (
       Length = sizeof (ConfigurationTablePlatformSRP);
       ClockType = ClockGeneratorCk420;
     }
-    Status = (*PeiServices)->LocatePpi (PeiServices,
-                                        &gPchPlatformPolicyPpiGuid,
-                                        0,
-                                        NULL,
-                                        (VOID **)&PchPolicyPpi
-                                       );
+    Status = PeiServicesLocatePpi (&gPchPlatformPolicyPpiGuid, 0, NULL, (VOID **) &PchPolicyPpi);
     ASSERT_EFI_ERROR (Status);
     EnableSpreadSpectrum = (BOOLEAN) PchPolicyPpi->PchConfig.EnableClockSpreadSpec;
     if (1 == EnableSpreadSpectrum) {
@@ -174,4 +170,3 @@ InstallPlatformClocksConfigData (
 
   return Status;
 }
-

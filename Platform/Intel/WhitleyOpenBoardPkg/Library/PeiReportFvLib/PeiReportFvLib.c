@@ -32,7 +32,7 @@ ReportPreMemFv (
 
   DEBUG_CODE (
     for (Index = 0; Status == EFI_SUCCESS; Index++) {
-      Status = PeiServicesLocatePpi (&gEfiPeiFirmwareVolumeInfo2PpiGuid, Index, &Descriptor, &Ppi);
+      Status = PeiServicesLocatePpi (&gEfiPeiFirmwareVolumeInfo2PpiGuid, Index, &Descriptor, (VOID**) &Ppi);
       if (!EFI_ERROR (Status)) {
         FvHeader = (EFI_FIRMWARE_VOLUME_HEADER*) Ppi->FvInfo;
         DEBUG ((DEBUG_INFO, "Found FV at 0x%x, size 0x%x\n", FvHeader, FvHeader->FvLength));
@@ -141,7 +141,7 @@ ReportPostMemFv (
 
   DEBUG_CODE (
     for (Index = 0; Status == EFI_SUCCESS; Index++) {
-      Status = PeiServicesLocatePpi (&gEfiPeiFirmwareVolumeInfo2PpiGuid, Index, &Descriptor, &Ppi);
+      Status = PeiServicesLocatePpi (&gEfiPeiFirmwareVolumeInfo2PpiGuid, Index, &Descriptor, (VOID**) &Ppi);
       if (!EFI_ERROR (Status)) {
         FvHeader = (EFI_FIRMWARE_VOLUME_HEADER*) Ppi->FvInfo;
         DEBUG ((DEBUG_INFO, "Found FV at 0x%x, size 0x%x\n", FvHeader, FvHeader->FvLength));

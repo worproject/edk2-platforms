@@ -32,7 +32,7 @@ PlatformGetSlotTableData (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -78,7 +78,7 @@ PlatformGetSlotTableData2 (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              &UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;
@@ -129,7 +129,7 @@ PlatformPchGetPciSlotImplementedTableData (
               &gUbaConfigDatabasePpiGuid,
               0,
               NULL,
-              (VOID **)&UbaConfigPpi
+              (VOID **) &UbaConfigPpi
               );
   if (EFI_ERROR(Status)) {
     return Status;

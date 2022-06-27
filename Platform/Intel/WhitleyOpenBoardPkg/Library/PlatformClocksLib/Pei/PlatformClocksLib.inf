@@ -27,6 +27,7 @@
 [LibraryClasses]
   DebugLib
   HobLib
+  PeiServicesLib
 
 [Protocols]
 
@@ -37,4 +38,3 @@
 
 [FixedPcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdMaxCpuSocketCount
-

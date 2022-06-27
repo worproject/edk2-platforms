@@ -43,7 +43,7 @@ PlatformGetGpioPlatformMappings (
   UBA_CONFIG_DATABASE_PPI               *UbaConfigPpi = NULL;
   UINTN                                 TableSize;
 
-  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, &UbaConfigPpi);
+  Status = PeiServicesLocatePpi (&gUbaConfigDatabasePpiGuid, 0, NULL, (VOID **) &UbaConfigPpi);
   if (EFI_ERROR (Status)) {
     return Status;
   }
@@ -78,7 +78,7 @@ GpioGetFlashSecOvrdVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -117,7 +117,7 @@ GpioGetRcvPadVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -155,7 +155,7 @@ GpioGetFmAdrTriggerPadVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -193,7 +193,7 @@ GpioSetAdrEnablePadOutVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -235,7 +235,7 @@ GpioGetForcetoS1ConfigModePadVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -272,7 +272,7 @@ GpioGetQATPadVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -403,7 +403,7 @@ GpioGetBoardId0PadVal (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -441,7 +441,7 @@ GpioConfigForMFGMode (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return Status;
@@ -487,7 +487,7 @@ IsManufacturingMode (
   PLATFORM_GPIO_CONFIG_TABLE  GpioPlatformConfig;
   DYNAMIC_SI_LIBARY_PPI       *DynamicSiLibraryPpi = NULL;
 
-  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, &DynamicSiLibraryPpi);
+  Status = PeiServicesLocatePpi (&gDynamicSiLibraryPpiGuid, 0, NULL, (VOID **) &DynamicSiLibraryPpi);
   if (EFI_ERROR (Status)) {
     ASSERT_EFI_ERROR (Status);
     return FALSE;
@@ -514,5 +514,3 @@ IsManufacturingMode (
   return ManufacturingMode;
 
 }
-
-

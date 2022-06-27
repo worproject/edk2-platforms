@@ -17,6 +17,7 @@
 #include <Library/HobLib.h>
 #include <Platform.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/PeiServicesLib.h>
 
 #define MAX_SMBUS_RETRIES        10
 
@@ -70,13 +71,7 @@ ConfigureClockGenerator (
   //
   // Locate SmBus Ppi
   //
-  Status = (**PeiServices).LocatePpi (
-                            PeiServices,
-                            &gEfiPeiSmbus2PpiGuid,
-                            0,
-                            NULL,
-                            &SmbusPpi
-                            );
+  Status = PeiServicesLocatePpi (&gEfiPeiSmbus2PpiGuid, 0, NULL, (VOID** ) &SmbusPpi);
   ASSERT_EFI_ERROR (Status);
 
   //
@@ -264,13 +259,7 @@ ConfigureClockGeneratorOnSecondarySmbus (
   //
   // Locate Stall PPI
   //
-  Status = (**PeiServices).LocatePpi (
-                            PeiServices,
-                            &gEfiPeiStallPpiGuid,
-                            0,
-                            NULL,
-                            &StallPpi
-                            );
+  Status = PeiServicesLocatePpi (&gEfiPeiStallPpiGuid, 0, NULL, (VOID** ) &StallPpi);
   ASSERT_EFI_ERROR (Status);
 
   //

@@ -16,6 +16,9 @@
             Name (_PRS, ResourceTemplate() {                                   \
                 Interrupt (ResourceProducer, Level, ActiveHigh, Exclusive) { Irq } \
             })                                                                 \
+            Method (_STA) {                                                    \
+              Return (0xF)                                                     \
+            }                                                                  \
             Method (_CRS, 0) { Return (_PRS) }                                 \
             Method (_SRS, 1) { }                                               \
             Method (_DIS) { }                                                  \
@@ -40,6 +43,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                        0x00001000)
         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 33 }
       })
+      Method (_STA) {
+        Return (0xF)
+      }
     }
 
     // AHCI Host Controller
@@ -57,13 +63,18 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                        FixedPcdGet32 (PcdPlatformAhciSize))
         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 42 }
       })
+      Method (_STA) {
+        Return (0xF)
+      }
     }
 
     // USB EHCI Host Controller
     Device (USB0) {
         Name (_HID, "LNRO0D20")
         Name (_CID, "PNP0D20")
-
+        Method (_STA) {
+          Return (0xF)
+        }
         Method (_CRS, 0x0, Serialized) {
             Name (RBUF, ResourceTemplate() {
                 Memory32Fixed (ReadWrite,
@@ -77,6 +88,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
         // Root Hub
         Device (RHUB) {
             Name (_ADR, 0x00000000)  // Address of Root Hub should be 0 as per ACPI 5.0 spec
+            Method (_STA) {
+              Return (0xF)
+            }
 
             // Ports connected to Root Hub
             Device (HUB1) {
@@ -87,6 +101,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                     0x00000000, // Reserved 0 must be zero
                     0x00000000  // Reserved 1 must be zero
                 })
+                Method (_STA) {
+                  Return (0xF)
+                }
 
                 Device (PRT1) {
                     Name (_ADR, 0x00000001)
@@ -102,6 +119,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                             0x31, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
                         }
                     })
+                    Method (_STA) {
+                      Return (0xF)
+                    }
                 } // USB0_RHUB_HUB1_PRT1
                 Device (PRT2) {
                     Name (_ADR, 0x00000002)
@@ -117,6 +137,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                             0x31, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
                         }
                     })
+                    Method (_STA) {
+                      Return (0xF)
+                    }
                 } // USB0_RHUB_HUB1_PRT2
 
                 Device (PRT3) {
@@ -133,6 +156,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                             0x31, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
                         }
                     })
+                    Method (_STA) {
+                      Return (0xF)
+                    }
                 } // USB0_RHUB_HUB1_PRT3
 
                 Device (PRT4) {
@@ -149,6 +175,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                             0x31, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
                         }
                     })
+                    Method (_STA) {
+                      Return (0xF)
+                    }
                 } // USB0_RHUB_HUB1_PRT4
             } // USB0_RHUB_HUB1
         } // USB0_RHUB
@@ -163,6 +192,10 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
       Name (_ADR, Zero)
       Name (_UID, "PCI0")
       Name (_CCA, One)    // Initially mark the PCI coherent (for JunoR1)
+
+      Method (_STA) {
+        Return (0xF)
+      }
 
       Method (_CBA, 0, NotSerialized) {
           return (FixedPcdGet32 (PcdPciExpressBaseAddress))
@@ -402,6 +435,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
            FixedPcdGet64 (PcdPciExpressBarSize),     // Length
            ,, , AddressRangeMemory, TypeStatic)
         })
+        Method (_STA) {
+          Return (0xF)
+        }
       }
 
       // OS Control Handoff

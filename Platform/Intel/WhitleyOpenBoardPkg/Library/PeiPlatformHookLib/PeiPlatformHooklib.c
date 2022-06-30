@@ -22,10 +22,8 @@ VOID
 GpioInit (
 )
 {
-  EFI_STATUS                  Status;
-  Status = PlatformInitGpios();
+  PlatformInitGpios ();
 }
-
 
 /**
   Configure GPIO and SIO
@@ -37,7 +35,7 @@ BoardInit (
   )
 {
 
-  GpioInit();
+  GpioInit ();
 
   return EFI_SUCCESS;
 }

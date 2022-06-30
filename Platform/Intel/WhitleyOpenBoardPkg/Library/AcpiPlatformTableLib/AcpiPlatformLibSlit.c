@@ -568,7 +568,6 @@ ProcessSocketsLinks (
   ACPI_SYSTEM_LOCALITY_INFORMATION_TABLE  *SlitAcpiTable;
   UINT8                                   SourceNode;
   UINT8                                   SourceSocket;
-  UINT8                                   SourceCluster;
   UINT8                                   TargetSocket;
 
   if (NULL == Table) {
@@ -582,7 +581,6 @@ ProcessSocketsLinks (
 
   for (SourceNode = 0; SourceNode < (NodeCount - PmemNodeCount - FpgaCount); SourceNode++) {
     SourceSocket = SourceNode / NumClusters;
-    SourceCluster = SourceNode % NumClusters;
     for (TargetSocket = 0; TargetSocket < NumCpus; TargetSocket++) {
       if (SocketsLinked (GetSocketPhysicalId (SourceSocket), GetSocketPhysicalId (TargetSocket))) {
         SetMem (&SlitAcpiTable->NumSlit[(SourceNode * NodeCount) + (TargetSocket * NumClusters)].Entry,
@@ -622,7 +620,6 @@ ProcessMixedModeSocketsLinks (
   UINT16                                  EntryIdx2LM;
   UINT8                                   SourceNode;
   UINT8                                   SourceSocket;
-  UINT8                                   SourceCluster;
   UINT8                                   TargetSocket;
   UINT8                                   TargetCluster;
   BOOLEAN                                 Is2LM;
@@ -639,7 +636,6 @@ ProcessMixedModeSocketsLinks (
   for (SourceNode = 0; SourceNode < (NodeCount - PmemNodeCount - FpgaCount); SourceNode++) {
     Is2LM = (SourceNode >= NumCpus * NumClusters) ? TRUE : FALSE;
     SourceSocket = (SourceNode - NumCpus * NumClusters * (Is2LM ? 1 : 0)) / NumClusters;
-    SourceCluster = (SourceNode - NumCpus * NumClusters * (Is2LM ? 1 : 0)) % NumClusters;
 
     for (TargetSocket = 0; TargetSocket < NumCpus; TargetSocket++) {
       if (SocketsLinked (GetSocketPhysicalId (SourceSocket), GetSocketPhysicalId (TargetSocket))) {
@@ -1103,11 +1099,8 @@ InstallSlitTable (
 {
   ACPI_SYSTEM_LOCALITY_INFORMATION_TABLE *Table;
   UINTN                                  TableSize;
-  UINT8                                  NumClusters;
   UINTN                                  TableHandle = 0;
   EFI_STATUS                             Status;
-
-  NumClusters = GetNumClusters ();
 
   TableSize = sizeof (EFI_ACPI_6_2_SYSTEM_LOCALITY_DISTANCE_INFORMATION_TABLE_HEADER) +
               sizeof (ACPI_SYSTEM_LOCALITIES_STRUCTURE) * EFI_ACPI_SYSTEM_LOCALITIES_ENTRY_COUNT;

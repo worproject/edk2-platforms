@@ -716,7 +716,6 @@ BuildDRHDForStack (
   UINT8                       PortIndex;
   UINT8                       MaxPortNumberPerSocket;
   UINT8                       CBIndex;
-  UINT64                      VtdMmioExtCap;
   UINT32                      VtdBase;
   UINT32                      VidDid;
   DMAR_ATSR                   *pAtsr = NULL;
@@ -745,7 +744,6 @@ BuildDRHDForStack (
     return EFI_UNSUPPORTED;
   }
 
-  VtdMmioExtCap = *(volatile UINT64*)((UINTN)VtdBase + R_VTD_EXT_CAP_LOW);
   mDrhd.RegisterBase = VtdBase;
 
   DevIndex                      = 00;
@@ -882,7 +880,7 @@ ReportDmar (
   )
 {
   EFI_STATUS                      Status = EFI_SUCCESS;
-  UINT8                           SocketIndex, IioBusBase, Bus;
+  UINT8                           SocketIndex, Bus;
   UINT8                           Dev, Func;
   UINT8                           DevIndex;
   UINT8                           PciNodeIndex;
@@ -1067,7 +1065,6 @@ ReportDmar (
       ZeroMem (DevScope, MEMORY_SIZE * sizeof (DEVICE_SCOPE));
       ZeroMem (PciNode, MEMORY_SIZE * sizeof (PCI_NODE));
 
-      IioBusBase = mCpuCsrAccessVarPtr ->StackBus[SocketIndex][Stack]; // Stack 0
       mDrhd.Flags = 1;
 
       DEBUG ((DEBUG_INFO, "[ACPI](DMAR) InterruptRemap is %aabled (%d & %d)\n",
@@ -1190,8 +1187,6 @@ ReportDmar (
       if (!DynamicSiLibraryProtocol2->SocketPresent (SocketIndex)) {
         continue;
       }
-
-      IioBusBase = mIioUds2->IioUdsPtr->PlatformData.IIO_resource[SocketIndex].BusBase;
 
       if (mIioUds2->IioUdsPtr->PlatformData.CpuQpiInfo[SocketIndex].PcieSegment >= MAX_SOCKET) {
         return EFI_INVALID_PARAMETER;

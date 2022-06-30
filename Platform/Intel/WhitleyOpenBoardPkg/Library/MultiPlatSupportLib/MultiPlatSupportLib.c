@@ -197,14 +197,8 @@ Returns:
   UINT8                      *VarPtr;
   UINT32                     VarDataOffset;
   UINT32                     VarHobDataOffset;
-  EFI_PEI_SERVICES           **PeiServices;
 
-  //
-  // Get PeiService pointer
-  //
-  PeiServices = (EFI_PEI_SERVICES **)GetPeiServicesTablePointer ();
-
-  VarStoreHeader = (VARIABLE_STORE_HEADER*)FindDefaultHobinFfs( DefaultId, BoardId);
+  VarStoreHeader = (VARIABLE_STORE_HEADER*)FindDefaultHobinFfs (DefaultId, BoardId);
 
   //
   // Matched default data is not found.

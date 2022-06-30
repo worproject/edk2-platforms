@@ -27,7 +27,6 @@ TypeAowandaPlatformUpdateAcpiTablePcds (
   EFI_STATUS  Status;
 
   EFI_HOB_GUID_TYPE  *GuidHob;
-  EFI_PLATFORM_INFO  *PlatformInfo;
 
   DEBUG ((DEBUG_INFO, "Uba Callback: PlatformAowandaUpdateAcpiTablePcds entered\n"));
 
@@ -37,7 +36,6 @@ TypeAowandaPlatformUpdateAcpiTablePcds (
     return EFI_NOT_FOUND;
   }
 
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
   // #
   // #ACPI items
   // #

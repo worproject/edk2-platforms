@@ -29,7 +29,6 @@ InstallAcpiFixupTableData (
 {
   EFI_STATUS                            Status = EFI_SUCCESS;
   EFI_HOB_GUID_TYPE                     *GuidHob;
-  EFI_PLATFORM_INFO                     *PlatformInfo;
   ACPI_FIX_UPDATE_TABLE                 *PtrTable;
   UINT32                                TableSize;
 
@@ -38,7 +37,6 @@ InstallAcpiFixupTableData (
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
 
   PtrTable = &FixupTableUpdate10nm;
   TableSize = sizeof(FixupTableUpdate10nm);

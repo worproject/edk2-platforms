@@ -77,8 +77,6 @@ EarlyPlatformPchInit (
 {
   UINT16                          Data16;
   UINT8                           Data8;
-  UINTN                           LpcBaseAddress;
-  UINT8                           TcoRebootHappened;
   UINTN                           SpiBaseAddress;
   UINTN                           P2sbBase;
   EFI_STATUS                      Status = EFI_SUCCESS;
@@ -92,11 +90,6 @@ EarlyPlatformPchInit (
     return;
   }
 
-  LpcBaseAddress = DynamicSiLibraryPpi->MmPciBase (
-                     DEFAULT_PCI_BUS_NUMBER_PCH,
-                     PCI_DEVICE_NUMBER_PCH_LPC,
-                     PCI_FUNCTION_NUMBER_PCH_LPC
-                     );
   SpiBaseAddress = DynamicSiLibraryPpi->MmPciBase (
                      DEFAULT_PCI_BUS_NUMBER_PCH,
                      PCI_DEVICE_NUMBER_PCH_SPI,
@@ -157,10 +150,7 @@ EarlyPlatformPchInit (
   //
   Data8 = IoRead8 (PCH_TCO_BASE_ADDRESS + R_TCO_IO_TCO2_STS);
   if ((Data8 & B_TCO_IO_TCO2_STS_SECOND_TO) == B_TCO_IO_TCO2_STS_SECOND_TO) {
-    TcoRebootHappened = 1;
     DEBUG ((EFI_D_INFO, "EarlyPlatformPchInit - TCO Second TO status bit is set. This might be a TCO reboot\n"));
-  } else {
-    TcoRebootHappened = 0;
   }
 
   //

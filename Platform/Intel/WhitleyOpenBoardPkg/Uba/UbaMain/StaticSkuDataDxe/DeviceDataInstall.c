@@ -36,14 +36,12 @@ InstallPirqData (
   PLATFORM_PIRQ_UPDATE_TABLE            *PtrTable;
   UINT32                                TableSize;
   EFI_HOB_GUID_TYPE                     *GuidHob;
-  EFI_PLATFORM_INFO                     *PlatformInfo;
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
 
   PtrTable = &PirqUpdate10nm;
   TableSize = sizeof(PirqUpdate10nm);
@@ -76,14 +74,12 @@ InstallMpTableData (
   PLATFORM_MP_UPDATE_TABLE              *PtrTable;
   UINT32                                TableSize;
   EFI_HOB_GUID_TYPE                     *GuidHob;
-  EFI_PLATFORM_INFO                     *PlatformInfo;
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
 
   PtrTable = &MpTableUpdate10nm;
   TableSize = sizeof(MpTableUpdate10nm);

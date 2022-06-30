@@ -255,7 +255,6 @@ InstallXhciAcpiTable (
   VOID
   )
 {
-  EFI_HANDLE                    *HandleBuffer;
   EFI_STATUS                    Status;
   EFI_FIRMWARE_VOLUME2_PROTOCOL *FwVol;
   EFI_ACPI_COMMON_HEADER        *CurrentTable;
@@ -269,7 +268,6 @@ InstallXhciAcpiTable (
   UINT64                        *XhciAcpiTablePtr;
   UINT64                        TempOemTableId;
 
-  HandleBuffer  = 0;
   Instance      = 0;
   TableHandle   = 0;
   CurrentTable  = NULL;

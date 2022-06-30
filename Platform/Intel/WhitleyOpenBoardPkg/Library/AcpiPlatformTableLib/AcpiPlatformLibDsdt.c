@@ -191,7 +191,6 @@ PatchDsdtTable (
   EFI_STATUS Status;
   UINT8                         *DsdtPointer;
   UINT32                        *Signature;
-  UINT32                        *Signature2;
   UINT32                        Fixes;
   UINT32                        NodeIndex;
   UINT8                         Counter;
@@ -322,7 +321,6 @@ PatchDsdtTable (
       // Last 4 chars of AmlOffsetTable.Pathname has FIX tag.
       //
       Signature = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 4);
-      Signature2 = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 9);
       switch (*Signature) {
         //
         // "FIX1" BUS resource for PCXX in Acpi\AcpiTables\Dsdt\SysBus.asi and PCXX.asi
@@ -451,7 +449,6 @@ PatchDsdtTable (
       // Last 4 chars of AmlOffsetTable.Pathname has FIX tag.
       //
       Signature = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 4);
-      Signature2 = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 9);
       switch (*Signature) {
         //
         // "FIX3" PCI32 resource for PCXX in Acpi\AcpiTables\Dsdt\SysBus.asi and PCXX.asi
@@ -515,7 +512,6 @@ PatchDsdtTable (
       // Last 4 chars of AmlOffsetTable.Pathname has FIX tag.
       //
       Signature = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 4);
-      Signature2 = (UINT32 *) (mAmlOffsetTablePointer[i].Pathname + AsciiStrLen(mAmlOffsetTablePointer[i].Pathname) - 9);
       switch (*Signature) {
         //
         // "FIX4" PCI64 resource for PCXX in Acpi\AcpiTables\Dsdt\SysBus.asi and PCXX.asi

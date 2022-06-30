@@ -395,7 +395,6 @@ AcpiPlatformEarlyAcpiTablesInstall (
 {
   EFI_STATUS                    Status;
   EFI_STATUS                    AcpiStatus;
-  BOOLEAN                       Installed;
   EFI_ACPI_TABLE_PROTOCOL       *AcpiTable;
   EFI_FIRMWARE_VOLUME2_PROTOCOL  *FwVol;
   INTN                          Instance = 0;
@@ -435,7 +434,6 @@ AcpiPlatformEarlyAcpiTablesInstall (
     CurrentTable = NULL;
     TableVersion = EFI_ACPI_TABLE_VERSION_NONE;
     TableHandle = 0;
-    Installed = FALSE;
 
     Status = FwVol->ReadSection (
                       FwVol,
@@ -478,9 +476,9 @@ AcpiPlatformEarlyAcpiTablesInstall (
               //
               AcpiStatus = AcpiTable->InstallAcpiTable (AcpiTable, CurrentTable, CurrentTable->Length, &TableHandle);
               if (!EFI_ERROR (AcpiStatus)) {
-                Installed = TRUE;
+                ASSERT_EFI_ERROR (AcpiStatus);
+                return AcpiStatus;
               }
-              ASSERT_EFI_ERROR (AcpiStatus);
             }
           }
         }
@@ -541,7 +539,6 @@ PmSsdtEarlyAcpiTablesInstall (
 {
   EFI_STATUS                    Status;
   EFI_STATUS                    AcpiStatus;
-  BOOLEAN                       Installed;
   EFI_ACPI_TABLE_PROTOCOL       *AcpiTable;
   EFI_FIRMWARE_VOLUME2_PROTOCOL *FwVol;
   INTN                          Instance = 0;
@@ -581,7 +578,6 @@ PmSsdtEarlyAcpiTablesInstall (
     CurrentTable = NULL;
     TableVersion = EFI_ACPI_TABLE_VERSION_NONE;
     TableHandle = 0;
-    Installed = FALSE;
 
     Status = FwVol->ReadSection (
                       FwVol,
@@ -617,9 +613,9 @@ PmSsdtEarlyAcpiTablesInstall (
               //
               AcpiStatus = AcpiTable->InstallAcpiTable (AcpiTable, CurrentTable, CurrentTable->Length, &TableHandle);
               if (!EFI_ERROR (AcpiStatus)) {
-                Installed = TRUE;
+                ASSERT_EFI_ERROR (AcpiStatus);
+                return AcpiStatus;
               }
-              ASSERT_EFI_ERROR (AcpiStatus);
             }
           }
         }

@@ -183,7 +183,6 @@ SortCpuLocalApicInTable (
 {
   EFI_STATUS                                Status;
   EFI_PROCESSOR_INFORMATION                 ProcessorInfoBuffer;
-  UINTN                                     BufferSize;
   UINT32                                    Index;
   UINT32                                    Socket;
   UINT32                                    CurrProcessor;
@@ -197,7 +196,6 @@ SortCpuLocalApicInTable (
   CPU_ID_ORDER_MAP                          TempEntry;
   BOOLEAN                                   SecondThreadExistent;
 
-  BufferSize = 0;
   Index      = 0;
   Status     = EFI_SUCCESS;
 

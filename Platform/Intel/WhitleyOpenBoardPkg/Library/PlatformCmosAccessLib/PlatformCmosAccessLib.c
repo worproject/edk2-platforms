@@ -47,9 +47,7 @@ PlatformCmosGetNmiState (
   VOID
  )
 {
-  volatile UINT32           Data32;
   BOOLEAN                   Nmi;
-  Data32                    = 0;
   EFI_STATUS                Status = EFI_SUCCESS;
   DYNAMIC_SI_LIBARY_PPI     *DynamicSiLibraryPpi = NULL;
 

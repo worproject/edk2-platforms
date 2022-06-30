@@ -106,7 +106,6 @@ IsAspeedPresent (
  )
 {
  BOOLEAN PresenceStatus = FALSE;
- UINT32 DeviceID;
 
  //
  //ASPEED AST2500/AST2600
@@ -120,13 +119,8 @@ IsAspeedPresent (
   // In ESPI mode, assume this SIO logic device always present.
   //
 #ifdef ESPI_ENABLE
-  DeviceID = 0;
   PresenceStatus = TRUE;
 #else
-  //
-  //right now, maybe it is ASPEED. to detect the  device ID.
-  //
-  DeviceID = ReadAHBDword (SCU7C);
   //
   //There is a Aspeed card need to support as well. it's type is AST2500 A1 EVB.
   //
@@ -147,7 +141,7 @@ IsAspeedPresent (
   //AST2520-A1 0x04010203
   //AST2530-A1 0x04010403
   //
-  if ((DeviceID & 0xff0000ff) == 0x04000003) {
+  if ((ReadAHBDword (SCU7C) & 0xff0000ff) == 0x04000003) {
    PresenceStatus = TRUE;
   }
 #endif

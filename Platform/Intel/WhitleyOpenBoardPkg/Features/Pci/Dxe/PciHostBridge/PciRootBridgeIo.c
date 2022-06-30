@@ -911,9 +911,6 @@ RootBridgeIoPciRead (
   UINT32                    PciExtReg;
   USRA_ADDRESS              EndPointPciAddress;
   UINT8                     *pData8 = Buffer;
-  UINT8                     Size;
-
-  Size = 1 << (Width & 0x3);
 
   if (Buffer == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -978,9 +975,6 @@ RootBridgeIoPciWrite (
   UINT32                    PciExtReg;
   USRA_ADDRESS              EndPointPciAddress;
   UINT8                     *pData8 = Buffer;
-  UINT8                     Size;
-
-  Size = 1 << (Width & 0x3);
 
   if (Buffer == NULL) {
     return EFI_INVALID_PARAMETER;

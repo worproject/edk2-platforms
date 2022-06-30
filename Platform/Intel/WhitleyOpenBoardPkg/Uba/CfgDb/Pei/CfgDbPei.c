@@ -546,9 +546,7 @@ PeiUbaGetData (
   )
 {
   EFI_STATUS                            Status;
-  UBA_PEIM_PRIVATE_DATA                 *UbaPeimPrivate;
   UBA_BOARD_NODE                        *SkuNode;
-  UbaPeimPrivate = NULL;
   SkuNode = NULL;
 
   if ((ResId == NULL) || (Data == NULL) || (DataSize == NULL)) {
@@ -556,8 +554,6 @@ PeiUbaGetData (
   }
 
   PeiCheckPointerRelocated (This);
-
-  UbaPeimPrivate = PRIVATE_DATA_FROM_PPI (This);
 
   Status = InternalGetSkuNode (This, &SkuNode);
   if (EFI_ERROR (Status)) {
@@ -800,4 +796,3 @@ UbaConfigDatabasePeimEntry (
 
   return Status;
 }
-

@@ -26,14 +26,13 @@ TypeWilsonCitySMTPlatformUpdateAcpiTablePcds (
   EFI_STATUS Status;
 
   EFI_HOB_GUID_TYPE                     *GuidHob;
-  EFI_PLATFORM_INFO                     *PlatformInfo;
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
+
   //#
   //#ACPI items
   //#
@@ -48,4 +47,3 @@ TypeWilsonCitySMTPlatformUpdateAcpiTablePcds (
 
   return Status;
 }
-

@@ -496,7 +496,6 @@ PatchOem1SsdtTable (
   UINT32                      GpssFixes;
   UINT32                      CpuSkt;
   UINT32                      CpuIndex;
-  UINT32                      ThreadIndex;
   UINT32                      PackageSize;
   UINT32                      NewPackageSize;
   UINT32                      AdjustSize;
@@ -516,7 +515,7 @@ PatchOem1SsdtTable (
   CpuFixes  = 0;
   CpuSkt    = 0;
   CpuIndex  = 0;
-  ThreadIndex  = 0;
+
   CurrPtr = (UINT8 *) Table;
   EndPtr  = (CurrPtr + ((EFI_ACPI_COMMON_HEADER *) CurrPtr)->Length);
   CpuMiscData = NULL;
@@ -579,7 +578,6 @@ PatchOem1SsdtTable (
         }
 
         CpuIndex += AdjustSize;
-        ThreadIndex  = CpuIndex;
 
         ++CpuFixes;
         CpuMiscData = NULL;

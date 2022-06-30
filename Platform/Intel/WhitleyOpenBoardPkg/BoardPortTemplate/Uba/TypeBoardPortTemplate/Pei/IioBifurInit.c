@@ -182,11 +182,10 @@ TypeBoardPortTemplateIioPortBifurcationInit (
   IN UBA_CONFIG_DATABASE_PPI    *UbaConfigPpi
 )
 {
-  EFI_STATUS                         Status;
-  EFI_HOB_GUID_TYPE                  *GuidHob;
-  EFI_PLATFORM_INFO                  *PlatformInfo;
+  EFI_STATUS                            Status;
+  EFI_HOB_GUID_TYPE                     *GuidHob;
   PLATFORM_IIO_CONFIG_UPDATE_TABLE_EX   *PlatformIioInfoPtr;
-  UINTN                              PlatformIioInfoSize;
+  UINTN                                 PlatformIioInfoSize;
 
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
@@ -194,7 +193,6 @@ TypeBoardPortTemplateIioPortBifurcationInit (
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
 
   //
   // This is config for ICX

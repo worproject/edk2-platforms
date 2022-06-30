@@ -249,7 +249,6 @@ Returns:
 --*/
 {
   UINT8                           Index;
-  UINTN                           LpcBaseAddress;
   UINT8                           MaxSataPorts;
   UINT8                           BmcRootPort;
   UINT8                           *SmBusReservedTable;
@@ -273,12 +272,6 @@ Returns:
 
   SetupVariables = PcdGetPtr(PcdSetup);
   PchRcVariables = PcdGetPtr(PcdPchSetup);
-
-  LpcBaseAddress = DynamicSiLibraryPpi->MmPciBase (
-                    DEFAULT_PCI_BUS_NUMBER_PCH,
-                    PCI_DEVICE_NUMBER_PCH_LPC,
-                    PCI_FUNCTION_NUMBER_PCH_LPC
-                    );
 
   PchPolicy->Port80Route          = PchRcVariables->IchPort80Route;
 

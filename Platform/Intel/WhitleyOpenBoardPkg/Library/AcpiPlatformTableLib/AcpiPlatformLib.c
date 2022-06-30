@@ -305,7 +305,6 @@ PlatformUpdateTables (
 {
   EFI_ACPI_DESCRIPTION_HEADER               *TableHeader;
   EFI_STATUS                                Status;
-  ACPI_APIC_STRUCTURE_PTR                   *ProcessorLocalApicEntry;
   UINT64                                    TempOemTableId;
   UINT32                                    Data32;
 
@@ -318,8 +317,6 @@ PlatformUpdateTables (
   }
 
   TableHeader             = NULL;
-
-  ProcessorLocalApicEntry = NULL;
   Status = EFI_SUCCESS;
 
   //

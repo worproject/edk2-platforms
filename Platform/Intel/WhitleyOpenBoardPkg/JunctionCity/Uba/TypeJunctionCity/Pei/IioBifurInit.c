@@ -180,17 +180,14 @@ TypeJunctionCityIioPortBifurcationInit (
 {
   EFI_STATUS                         Status;
   EFI_HOB_GUID_TYPE                  *GuidHob;
-  EFI_PLATFORM_INFO                  *PlatformInfo;
   PLATFORM_IIO_CONFIG_UPDATE_TABLE_EX   *PlatformIioInfoPtr;
   UINTN                              PlatformIioInfoSize;
-
 
   GuidHob = GetFirstGuidHob (&gEfiPlatformInfoGuid);
   ASSERT (GuidHob != NULL);
   if (GuidHob == NULL) {
     return EFI_NOT_FOUND;
   }
-  PlatformInfo = GET_GUID_HOB_DATA (GuidHob);
 
   //
   // This is config for ICX

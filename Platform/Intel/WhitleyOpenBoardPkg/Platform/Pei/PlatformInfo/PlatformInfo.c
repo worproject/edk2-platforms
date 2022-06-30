@@ -637,7 +637,6 @@ PlatformInfoInit (
   EFI_PEI_READ_ONLY_VARIABLE2_PPI       *PeiVariable;
   EFI_PLATFORM_INFO       PlatformInfoHob;
   EFI_PLATFORM_INFO       tempPlatformInfoHob;
-  UINT8                   ChipId;
   UINT32                  Delay;
   UINT32                  CpuType;
   UINT8                   CpuStepping;
@@ -673,7 +672,7 @@ PlatformInfoInit (
   for (Delay = 0; Delay < 40; Delay++) IoRead8  (0x61);
   IoWrite8 (PILOTIV_SIO_INDEX_PORT, PILOTIV_CHIP_ID_REG);
   for (Delay = 0; Delay < 40; Delay++) IoRead8  (0x61);
-  ChipId = IoRead8  (PILOTIV_SIO_DATA_PORT);
+  IoRead8  (PILOTIV_SIO_DATA_PORT);
   for (Delay = 0; Delay < 40; Delay++) IoRead8  (0x61);
   IoWrite8 (PILOTIV_SIO_INDEX_PORT, PILOTIV_SIO_LOCK);
   for (Delay = 0; Delay < 40; Delay++) IoRead8  (0x61);

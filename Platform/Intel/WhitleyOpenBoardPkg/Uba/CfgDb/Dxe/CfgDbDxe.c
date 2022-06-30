@@ -360,17 +360,12 @@ DxeUbaGetData (
   )
 {
   EFI_STATUS                      Status;
-  UBA_DXE_PRIVATE_DATA            *UbaDxePrivate;
   UBA_BOARD_NODE                  *SkuNode;
-  UbaDxePrivate = NULL;
   SkuNode = NULL;
 
   if ((ResId == NULL) || (Data == NULL) || (DataSize == NULL)) {
     return EFI_INVALID_PARAMETER;
   }
-
-  UbaDxePrivate = PRIVATE_DATA_FROM_PROTOCOL (This);
-
 
   Status = InternalGetSkuNode (This, &SkuNode);
   if (EFI_ERROR (Status)) {
@@ -406,14 +401,10 @@ InternalGetConfigDataFromHob (
   UBA_CONFIG_HOB_HEADER                 *HobHeader;
   UBA_CONFIG_HOB_FIELD                  *HobDataFieldStart;
   UINTN                                 Index;
-  UBA_DXE_PRIVATE_DATA                  *UbaDxePrivate;
   UBA_BOARD_NODE                        *SkuNode;
   HobHeader = NULL;
   HobDataFieldStart = NULL;
-  UbaDxePrivate = NULL;
   SkuNode = NULL;
-
-  UbaDxePrivate = PRIVATE_DATA_FROM_PROTOCOL (This);
 
   Hob.Raw = GetFirstGuidHob (&gUbaCurrentConfigHobGuid);
   ASSERT (Hob.Raw != NULL);
@@ -515,4 +506,3 @@ UbaConfigDatabaseEntry (
 
   return Status;
 }
-

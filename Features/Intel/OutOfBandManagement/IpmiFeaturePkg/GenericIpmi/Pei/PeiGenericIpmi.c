@@ -167,13 +167,12 @@ PeimIpmiInterfaceInit (
 {
   EFI_STATUS  Status;
 
-
   //
   // Performing Ipmi KCS physical layer initialization
   //
   Status = PeiInitializeIpmiKcsPhysicalLayer (PeiServices);
 
-  return EFI_SUCCESS;
+  return Status;
 } // PeimIpmiInterfaceInit()
 
 

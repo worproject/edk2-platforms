@@ -46,7 +46,4 @@ InstallPlatformHsioPtssTable (
   IN OUT      PCH_POLICY_PPI               *PchPolicy
 );
 
-STATIC  EFI_GUID gPlatformHsioPtssTableGuid = PLATFORM_HSIO_PTSS_TABLE_GUID;
-
 #endif //_UBA_HSIO_PTSS_TABLE_CONFIG_LIB_H
-

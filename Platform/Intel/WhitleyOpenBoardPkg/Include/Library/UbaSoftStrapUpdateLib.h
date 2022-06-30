@@ -21,8 +21,6 @@
 #define   PLATFORM_PCH_SOFTSTRAP_CONFIG_DATA_GUID \
 { 0xf06383fe, 0x54bd, 0x4ae1, { 0x9c, 0x99, 0x1d, 0xc8, 0x3b, 0x6a, 0x72, 0x77 } }
 
-STATIC  EFI_GUID gPlatformPchSoftStrapConfigDataGuid = PLATFORM_PCH_SOFTSTRAP_CONFIG_DATA_GUID;
-
 typedef struct _PLATFORM_PCH_SOFTSTRAP_FIXUP_ENTRY {
   UINT8  SoftStrapNumber;
   UINT8  BitfieldOffset;

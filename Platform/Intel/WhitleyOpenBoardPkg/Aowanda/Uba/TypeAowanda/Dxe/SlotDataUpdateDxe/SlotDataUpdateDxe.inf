@@ -38,6 +38,7 @@
   WhitleyOpenBoardPkg/PlatformPkg.dec
 
 [Guids]
+  gPlatformSlotDataDxeGuid
 
 [FixedPcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdMaxCpuSocketCount
@@ -46,4 +47,4 @@
   gUbaConfigDatabaseProtocolGuid
 
 [Depex]
-  gEfiPlatformTypeAowandaProtocolGuid
+  gEfiPlatformTypeAowandaProtocolGuid

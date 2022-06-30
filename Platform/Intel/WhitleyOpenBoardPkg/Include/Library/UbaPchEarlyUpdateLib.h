@@ -57,7 +57,4 @@ PlatformInitLateHook (
   IN SYSTEM_CONFIGURATION         *SystemConfig
 );
 
-
-STATIC  EFI_GUID gPlatformPchEarlyConfigDataGuid = PLATFORM_PCH_EARLY_CONFIG_DATA_GUID;
-
 #endif //_PLATFORM_PCH_EARLY_UPDATE_LIB_H

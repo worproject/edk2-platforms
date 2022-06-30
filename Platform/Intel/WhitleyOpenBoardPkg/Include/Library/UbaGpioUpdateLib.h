@@ -46,6 +46,4 @@ PlatformUpdateGpios (
   VOID
 );
 
-STATIC  EFI_GUID gPlatformGpioConfigDataGuid = PLATFORM_GPIO_CONFIG_DATA_GUID;
-
 #endif //_UBA_GPIO_UPDATE_LIB_H

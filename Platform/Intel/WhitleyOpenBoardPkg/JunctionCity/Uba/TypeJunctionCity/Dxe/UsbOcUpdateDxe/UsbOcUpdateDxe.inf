@@ -37,9 +37,10 @@
   WhitleyOpenBoardPkg/PlatformPkg.dec
 
 [Guids]
+  gDxePlatformUbaOcConfigDataGuid
 
 [Protocols]
   gUbaConfigDatabaseProtocolGuid
 
 [Depex]
-  gEfiPlatformTypeJunctionCityProtocolGuid
+  gEfiPlatformTypeJunctionCityProtocolGuid

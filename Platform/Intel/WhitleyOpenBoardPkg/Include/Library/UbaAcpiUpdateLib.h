@@ -33,6 +33,4 @@ PlatformGetAcpiFixTableDataPointer (
   IN  VOID                          **TablePtr
 );
 
-STATIC  EFI_GUID gPlatformAcpiFixTableGuid = PLATFORM_ACPI_FIX_TABLE_GUID;
-
 #endif //_PLATFORM_ACPI_UPDATE_LIB_H

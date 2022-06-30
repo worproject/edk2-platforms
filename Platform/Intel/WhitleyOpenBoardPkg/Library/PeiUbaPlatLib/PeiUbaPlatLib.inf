@@ -56,6 +56,27 @@
   gDynamicSiLibraryPpiGuid             ## ALWAYS_CONSUMES
   gEfiPeiSmbus2PpiGuid                 ## ALWAYS_CONSUMES
 
+[Guids]
+  gPlatformClockgenConfigDataGuid
+  gPlatformGpioConfigDataGuid
+  gPlatformHsioPtssTableGuid
+  gPlatformIioConfigDataGuid
+  gPlatformIioConfigDataGuid_1
+  gPlatformIioConfigDataGuid_2
+  gPlatformIioConfigDataGuid_3
+  gPlatformPcdConfigDataGuid
+  gPlatformPchEarlyConfigDataGuid
+  gPlatformPchEarlyConfigDataGuid
+  gPlatformSlotDataGuid
+  gPlatformSlotDataGuid2
+  gPlatformSlotDataGuid2_1
+  gPlatformPciSlotImplementedGuid
+  gPlatformPchSoftStrapConfigDataGuid
+  gPlatformPchSoftStrapConfigDataGuid
+  gPeiPlatformUbaOcConfigDataGuid
+  gIioPortBifurcationInitDataGuid
+  gPlatformGpioPlatformConfigDataGuid
+
 [Depex]
   gUbaConfigDatabasePpiGuid AND
   gDynamicSiLibraryPpiGuid

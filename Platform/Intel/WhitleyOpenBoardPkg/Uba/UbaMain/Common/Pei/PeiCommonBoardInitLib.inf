@@ -60,6 +60,15 @@
 [Guids]
   gPlatformKtiEparamUpdateDataGuid
   gEfiPlatformInfoGuid
+  gPlatformHsioPtssTableGuid
+  gPlatformIioConfigDataGuid
+  gPlatformIioConfigDataGuid_1
+  gPlatformIioConfigDataGuid_2
+  gPlatformIioConfigDataGuid_3
+  gPlatformSlotDataGuid2
+  gPlatformSlotDataGuid2_1
+  gIioPortBifurcationInitDataGuid
+  gPlatformGpioPlatformConfigDataGuid
 
 [Ppis]
   gPchPlatformPolicyPpiGuid

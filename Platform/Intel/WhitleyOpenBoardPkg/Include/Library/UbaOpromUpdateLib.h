@@ -20,12 +20,6 @@
 #define PLATFORM_OPTION_ROM_UPDATE_SIGNATURE  SIGNATURE_32 ('P', 'B', 'D', 'S')
 #define PLATFORM_OPTION_ROM_UPDATE_VERSION    01
 
-
-// {371BD79C-DE79-4c5f-AA2B-BC9EBEFA988F}
-STATIC EFI_GUID  gPlatformOptionRomUpdateConfigDataGuid =
-{ 0x371bd79c, 0xde79, 0x4c5f, { 0xaa, 0x2b, 0xbc, 0x9e, 0xbe, 0xfa, 0x98, 0x8f } };
-
-
 typedef struct {
   EFI_GUID  FileName;
   UINTN     Segment;

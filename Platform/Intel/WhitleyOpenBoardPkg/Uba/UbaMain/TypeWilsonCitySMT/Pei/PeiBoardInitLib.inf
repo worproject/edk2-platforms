@@ -161,6 +161,18 @@
 
 [Guids]
   gPlatformGpioInitDataGuid
+  gPlatformIioConfigDataGuid
+  gPlatformIioConfigDataGuid_1
+  gPlatformIioConfigDataGuid_2
+  gPlatformIioConfigDataGuid_3
+  gPlatformPcdConfigDataGuid
+  gPlatformPcdConfigDataGuid
+  gPlatformPchEarlyConfigDataGuid
+  gPlatformSlotDataGuid
+  gPlatformSlotDataGuid2
+  gPlatformPciSlotImplementedGuid
+  gPlatformPchSoftStrapConfigDataGuid
+  gPeiPlatformUbaOcConfigDataGuid
 
 [Depex]
   gDynamicSiLibraryPpiGuid

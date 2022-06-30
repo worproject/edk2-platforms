@@ -109,16 +109,4 @@ PlatformPchGetPciSlotImplementedTableData (
   IN OUT UINT8                            **SlotImplementedTable
 );
 
-STATIC  EFI_GUID gPlatformSlotDataGuid = PLATFORM_SLOT_DATA_GUID;
-STATIC  EFI_GUID gPlatformSlotDataGuid2 = PLATFORM_SLOT_DATA_GUID2;
-STATIC  EFI_GUID gPlatformSlotDataGuid2_1 = PLATFORM_SLOT_DATA_GUID2_1;
-
-
-STATIC  EFI_GUID gPlatformSlotDataDxeGuid = PLATFORM_SLOT_DATA_DXE_GUID;
-STATIC  EFI_GUID gPlatformSlotDataDxeGuid2 = PLATFORM_SLOT_DATA_DXE_GUID2;
-STATIC  EFI_GUID gPlatformSlotDataDxeGuid2_1 = PLATFORM_SLOT_DATA_DXE_GUID2_1;
-
-STATIC  EFI_GUID gPlatformPciSlotImplementedGuid = PLATFORM_PCI_SLOT_IMPLEMENTED_GUID;
-
-
 #endif //_UBA_SLOT_UPDATE_LIB_H

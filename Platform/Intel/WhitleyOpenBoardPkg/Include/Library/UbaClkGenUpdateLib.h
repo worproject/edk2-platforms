@@ -44,6 +44,4 @@ PlatformUpdateClockgen (
   IN  BOOLEAN     EnableSpreadSpectrum
 );
 
-STATIC  EFI_GUID gPlatformClockgenConfigDataGuid = PLATFORM_CLOCKGEN_CONFIG_DATA_GUID;
-
 #endif //_UBA_CLOCKGEN_UPDATE_LIB_H

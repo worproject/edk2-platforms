@@ -37,6 +37,8 @@
   WhitleyOpenBoardPkg/PlatformPkg.dec
 
 [Guids]
+  gPlatformSlotDataDxeGuid
+  gPlatformSlotDataGuid2
 
 [FixedPcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdMaxCpuSocketCount

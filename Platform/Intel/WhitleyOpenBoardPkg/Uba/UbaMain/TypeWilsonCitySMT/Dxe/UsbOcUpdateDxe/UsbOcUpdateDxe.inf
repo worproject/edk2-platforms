@@ -36,6 +36,7 @@
   WhitleyOpenBoardPkg/PlatformPkg.dec
 
 [Guids]
+  gDxePlatformUbaOcConfigDataGuid
 
 [Protocols]
   gUbaConfigDatabaseProtocolGuid

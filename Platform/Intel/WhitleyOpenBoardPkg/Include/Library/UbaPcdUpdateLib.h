@@ -39,6 +39,4 @@ PlatformUpdatePcds (
   VOID
 );
 
-STATIC  EFI_GUID gPlatformPcdConfigDataGuid = PLATFORM_PCD_CONFIG_DATA_GUID;
-
 #endif //_UBA_PCD_UPDATE_LIB_H

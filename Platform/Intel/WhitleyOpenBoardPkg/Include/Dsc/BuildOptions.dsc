@@ -145,7 +145,7 @@ DEFINE EDKII_DSC_FEATURE_BUILD_OPTIONS = $(EDKII_DSC_FEATURE_BUILD_OPTIONS) $(ME
    MSFT:*_*_*_DLINK_FLAGS = /ALIGN:4096
 
 [BuildOptions]
-  GCC:*_GCC5_*_CC_FLAGS = -Wno-discarded-qualifiers -Wno-unused-variable -Wno-unused-but-set-variable -mabi=ms
+  GCC:*_GCC5_*_CC_FLAGS = -Wno-unused-but-set-variable -mabi=ms
   GCC:*_GCC5_IA32_DLINK_FLAGS = -z common-page-size=0x20 -z muldefs
   GCC:*_GCC5_X64_DLINK_FLAGS  = -z common-page-size=0x20 -z muldefs
   MSFT:*_*_*_CC_FLAGS = /FAsc

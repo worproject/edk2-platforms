@@ -37,6 +37,7 @@
 
 [Guids]
   gEfiPlatformInfoGuid
+  gSystemConfigUpdateDataGuid
 
 [Pcd]
   gOemSkuTokenSpaceGuid.PcdOemSkuSubBoardID

@@ -38,6 +38,10 @@
   WhitleyOpenBoardPkg/PlatformPkg.dec
 
 [Guids]
+  gPlatformIioConfigDataDxeGuid
+  gPlatformIioConfigDataDxeGuid_1
+  gPlatformIioConfigDataDxeGuid_2
+  gPlatformIioConfigDataDxeGuid_3
 
 [FixedPcd]
   gEfiCpRcPkgTokenSpaceGuid.PcdMaxCpuSocketCount
@@ -46,4 +50,4 @@
   gUbaConfigDatabaseProtocolGuid
 
 [Depex]
-  gEfiPlatformTypeAowandaProtocolGuid
+  gEfiPlatformTypeAowandaProtocolGuid

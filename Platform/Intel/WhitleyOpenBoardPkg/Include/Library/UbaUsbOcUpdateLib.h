@@ -45,7 +45,5 @@ PlatformGetUsbOcMappings (
   IN OUT   USB_OVERCURRENT_PIN   **Usb30OverCurrentMappings,
   IN OUT   USB2_PHY_PARAMETERS        **Usb20AfeParams
 );
-STATIC  EFI_GUID gPeiPlatformUbaOcConfigDataGuid = PEI_PLATFORM_USBOC_CONFIG_DATA_GUID;
-STATIC  EFI_GUID gDxePlatformUbaOcConfigDataGuid = DXE_PLATFORM_USBOC_CONFIG_DATA_GUID;
 
 #endif //_UBA_USBOC_UPDATE_LIB_H

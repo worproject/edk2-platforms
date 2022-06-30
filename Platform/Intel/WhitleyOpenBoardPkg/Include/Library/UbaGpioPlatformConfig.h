@@ -252,8 +252,4 @@ IsManufacturingMode (
   VOID
 );
 
-
-STATIC  EFI_GUID gPlatformGpioPlatformConfigDataGuid = PLATFORM_GPIO_PLATFORM_CONFIG_DATA_GUID;
-
 #endif //_UBA_GPIO_PLATFORM_CONFIG_LIB_H
-

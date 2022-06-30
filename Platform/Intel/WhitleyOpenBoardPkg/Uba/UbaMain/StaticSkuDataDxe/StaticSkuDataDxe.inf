@@ -50,6 +50,7 @@
 
 [Guids]
   gEfiPlatformInfoGuid
+  gPlatformAcpiFixTableGuid
 
 [Protocols]
   gUbaConfigDatabaseProtocolGuid

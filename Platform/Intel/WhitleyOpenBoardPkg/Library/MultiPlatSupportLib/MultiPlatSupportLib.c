@@ -46,7 +46,6 @@ VOID * FindDefaultHobinFfs (
   IN UINT16   BoardId
   )
 {
-  EFI_PEI_SERVICES           **PeiServices;
   UINTN                      FvInstance;
   EFI_PEI_FV_HANDLE          FvHandle;
   EFI_PEI_FILE_HANDLE        *FfsHandle;

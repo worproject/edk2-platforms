@@ -22,6 +22,12 @@
 #include <Library/PchMultiPchBase.h>
 #include <Ppi/DynamicSiLibraryPpi.h>
 
+STATIC CHAR8 *PlatformCapabilitiesStr[] = {
+  "Unknown",    // PLATFORM_CAPABILITY_UNDEFINED
+  "2-Socket",   // PLATFORM_CAPABILITY_2_SOCKET
+  "4-Socket",   // PLATFORM_CAPABILITY_4_SOCKET
+  "8-Socket"    // PLATFORM_CAPABILITY_8_SOCKET
+};
 
 /**
 

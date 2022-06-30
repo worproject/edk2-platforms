@@ -41,7 +41,4 @@ IioPortBifurcationInit (
   IN IIO_GLOBALS *IioGlobalData
 );
 
-STATIC  EFI_GUID gIioPortBifurcationInitDataGuid = IIO_PORT_BIFURCATION_INIT_GUID;
-
 #endif //_UBA_IIO_PORT_BIFURCATION_INIT_LIB_H
-

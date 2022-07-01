@@ -146,6 +146,5 @@ DEFINE EDKII_DSC_FEATURE_BUILD_OPTIONS = $(EDKII_DSC_FEATURE_BUILD_OPTIONS) $(ME
 
 [BuildOptions]
   GCC:*_GCC5_*_CC_FLAGS = -mabi=ms
-  GCC:*_GCC5_IA32_DLINK_FLAGS = -z common-page-size=0x20 -z muldefs
-  GCC:*_GCC5_X64_DLINK_FLAGS  = -z common-page-size=0x20 -z muldefs
+  GCC:*_GCC5_*_DLINK_FLAGS = -z common-page-size=0x20 -z muldefs
   MSFT:*_*_*_CC_FLAGS = /FAsc

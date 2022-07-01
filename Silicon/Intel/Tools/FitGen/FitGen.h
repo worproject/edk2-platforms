@@ -1,7 +1,7 @@
 /**@file
 Definitions for the FitGen utility.
 
-Copyright (c) 2010-2020, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2010-2022, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -31,7 +31,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 // Utility version information
 //
 #define UTILITY_MAJOR_VERSION 0
-#define UTILITY_MINOR_VERSION 64
+#define UTILITY_MINOR_VERSION 65
 #define UTILITY_DATE          __DATE__
 
 //

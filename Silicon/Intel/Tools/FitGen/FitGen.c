@@ -2,7 +2,7 @@
 This utility is part of build process for IA32/X64 FD.
 It generates FIT table.
 
-Copyright (c) 2010-2021, Intel Corporation. All rights reserved.<BR>
+Copyright (c) 2010-2022, Intel Corporation. All rights reserved.<BR>
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -204,6 +204,7 @@ typedef struct {
 
 #define MAX_BIOS_MODULE_ENTRY  0x20
 #define MAX_MICROCODE_ENTRY    0x20
+#define MAX_STARTUP_ACM_ENTRY  0x20
 #define MAX_OPTIONAL_ENTRY     0x20
 #define MAX_PORT_ENTRY         0x20
 
@@ -255,11 +256,12 @@ typedef struct {
   UINT32                     FitEntryNumber;
   UINT32                     BiosModuleNumber;
   UINT32                     MicrocodeNumber;
+  UINT32                     StartupAcmNumber;
   UINT32                     OptionalModuleNumber;
   UINT32                     PortModuleNumber;
   UINT32                     GlobalVersion;
   UINT32                     FitHeaderVersion;
-  FIT_TABLE_CONTEXT_ENTRY    StartupAcm;
+  FIT_TABLE_CONTEXT_ENTRY    StartupAcm[MAX_STARTUP_ACM_ENTRY];
   UINT32                     StartupAcmVersion;
   FIT_TABLE_CONTEXT_ENTRY    DiagnstAcm;
   UINT32                     DiagnstAcmVersion;
@@ -1149,14 +1151,15 @@ Returns:
           Error (NULL, 0, 0, "-I Parameter incorrect, Header Type unsupported!", NULL);
           return 0;
         case FIT_TABLE_TYPE_STARTUP_ACM:
-          if (gFitTableContext.StartupAcm.Type != 0) {
-            Error (NULL, 0, 0, "-I Parameter incorrect, Duplicated StartupAcm!", NULL);
+          if (gFitTableContext.StartupAcmNumber >= MAX_STARTUP_ACM_ENTRY) {
+            Error (NULL, 0, 0, "-I Parameter incorrect, too many StartupAcm!", NULL);
             return 0;
           }
-          gFitTableContext.StartupAcm.Type    = FIT_TABLE_TYPE_STARTUP_ACM;
-          gFitTableContext.StartupAcm.Address = (UINT32)BiosInfoStruct[BiosInfoIndex].Address;
-          gFitTableContext.StartupAcm.Size    = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
-          gFitTableContext.StartupAcmVersion  = BiosInfoStruct[BiosInfoIndex].Version;
+          gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Type    = FIT_TABLE_TYPE_STARTUP_ACM;
+          gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32)BiosInfoStruct[BiosInfoIndex].Address;
+          gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size    = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
+          gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Version = BiosInfoStruct[BiosInfoIndex].Version;
+          gFitTableContext.StartupAcmNumber ++;
           gFitTableContext.FitEntryNumber ++;
           break;
         case FIT_TABLE_TYPE_DIAGNST_ACM:
@@ -1351,16 +1354,15 @@ Returns:
   //
   // 1. StartupAcm
   //
-  do {
+  while (TRUE) {
     if ((Index + 1 >= argc) ||
         ((strcmp (argv[Index], "-S") != 0) &&
          (strcmp (argv[Index], "-s") != 0)) ) {
-      if (BiosInfoExist && (gFitTableContext.StartupAcm.Type == FIT_TABLE_TYPE_STARTUP_ACM)) {
-        break;
+      if (gFitTableContext.StartupAcmNumber == 0) {
+        printf ("-S not found. WARNING!\n");
       }
 //      Error (NULL, 0, 0, "-S Parameter incorrect, expect -S!", NULL);
 //      return 0;
-      printf ("-S not found. WARNING!\n");
       break;
     }
     if (IsGuidData (argv[Index + 1], &Guid)) {
@@ -1381,14 +1383,13 @@ Returns:
       FileSize = xtoi (argv[Index + 2]);
       Index += 3;
     }
-    if (gFitTableContext.StartupAcm.Type != 0) {
-      Error (NULL, 0, 0, "-S Parameter incorrect, Duplicated StartupAcm!", NULL);
+    if (gFitTableContext.StartupAcmNumber >= MAX_STARTUP_ACM_ENTRY) {
+      Error (NULL, 0, 0, "-S Parameter incorrect, too many StartupAcm!", NULL);
       return 0;
     }
-    gFitTableContext.StartupAcm.Type = FIT_TABLE_TYPE_STARTUP_ACM;
-    gFitTableContext.StartupAcm.Address = (UINT32) (UINTN) FileBuffer;
-    gFitTableContext.StartupAcm.Size = FileSize;
-    gFitTableContext.FitEntryNumber ++;
+    gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Type = FIT_TABLE_TYPE_STARTUP_ACM;
+    gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32) (UINTN) FileBuffer;
+    gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size = FileSize;
 
     //
     // 1.1 StartupAcm version
@@ -1407,7 +1408,10 @@ Returns:
       gFitTableContext.StartupAcmVersion = xtoi (argv[Index + 1]);
       Index += 2;
     }
-  } while (FALSE);
+
+    gFitTableContext.StartupAcmNumber ++;
+    gFitTableContext.FitEntryNumber ++;
+  }
 
   //
   // 1.5. DiagnosticsAcm
@@ -1890,7 +1894,9 @@ Returns:
   //
   // Final: Check StartupAcm in BiosModule.
   //
-  CheckOverlap (gFitTableContext.StartupAcm.Address, gFitTableContext.StartupAcm.Size);
+  for (Index = 0; Index < (INTN)gFitTableContext.StartupAcmNumber; Index++) {
+    CheckOverlap (gFitTableContext.StartupAcm[Index].Address, gFitTableContext.StartupAcm[Index].Size);
+  }
   FitEntryNumber = gFitTableContext.FitEntryNumber;
   for (Index = 0; Index < (INTN)gFitTableContext.OptionalModuleNumber; Index++) {
     if ((gFitTableContext.OptionalModule[Index].Type == FIT_TABLE_TYPE_BIOS_POLICY) ||
@@ -2178,8 +2184,8 @@ Returns:
   }
   printf ("Total FIT Entry number: 0x%x\n", gFitTableContext.FitEntryNumber);
   printf ("FitHeader version: 0x%04x\n", gFitTableContext.FitHeaderVersion);
-  if (gFitTableContext.StartupAcm.Address != 0) {
-    printf ("StartupAcm - (0x%08x, 0x%08x, 0x%04x)\n", gFitTableContext.StartupAcm.Address, gFitTableContext.StartupAcm.Size, gFitTableContext.StartupAcmVersion);
+  for (Index = 0; Index < gFitTableContext.StartupAcmNumber; Index++) {
+    printf ("StartupAcm[%d] - (0x%08x, 0x%08x, 0x%04x)\n", Index, gFitTableContext.StartupAcm[Index].Address, gFitTableContext.StartupAcm[Index].Size, gFitTableContext.StartupAcmVersion);
   }
   if (gFitTableContext.DiagnstAcm.Address != 0) {
     printf ("DiagnosticAcm - (0x%08x, 0x%08x, 0x%04x)\n", gFitTableContext.DiagnstAcm.Address, gFitTableContext.DiagnstAcm.Size, gFitTableContext.DiagnstAcmVersion);
@@ -2809,8 +2815,8 @@ Returns:
   //
   // 4. StartupAcm
   //
-  if (gFitTableContext.StartupAcm.Address != 0) {
-    FitEntry[FitIndex].Address             = gFitTableContext.StartupAcm.Address;
+  for (Index = 0; Index < gFitTableContext.StartupAcmNumber; Index++) {
+    FitEntry[FitIndex].Address             = gFitTableContext.StartupAcm[Index].Address;
     *(UINT32 *)&FitEntry[FitIndex].Size[0] = 0; //gFitTableContext.StartupAcm.Size / 16;
     FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.StartupAcmVersion;
     FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_STARTUP_ACM;
@@ -3110,7 +3116,7 @@ GetFitEntryInfo (
 
 Routine Description:
 
-  Fill the FIT table information to Fvrecovery
+  Get the FIT table information from Fvrecovery
 
 Arguments:
 
@@ -3164,8 +3170,8 @@ Returns:
       gFitTableContext.MicrocodeNumber ++;
       break;
     case FIT_TABLE_TYPE_STARTUP_ACM:
-      gFitTableContext.StartupAcm.Address = (UINT32)FitEntry[FitIndex].Address;
-      gFitTableContext.StartupAcmVersion  = FitEntry[FitIndex].Version;
+      gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32)FitEntry[FitIndex].Address;
+      gFitTableContext.StartupAcmVersion                                     = FitEntry[FitIndex].Version;
       break;
     case FIT_TABLE_TYPE_BIOS_MODULE:
       gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Address = (UINT32)FitEntry[FitIndex].Address;
@@ -3232,6 +3238,7 @@ Returns:
   UINT32                      FdFileSize;
 
   UINT8                       *AcmBuffer;
+  INTN                        Index;
   UINT32                      FixedFitLocation;
 
   FileBufferRaw = NULL;
@@ -3323,22 +3330,23 @@ Returns:
     //
     // Get ACM buffer
     //
-    if (gFitTableContext.StartupAcm.Address != 0) {
-      AcmBuffer = FLASH_TO_MEMORY(gFitTableContext.StartupAcm.Address, FdFileBuffer, FdFileSize);
-      if ((AcmBuffer < FdFileBuffer) || (AcmBuffer + gFitTableContext.StartupAcm.Size > FdFileBuffer + FdFileSize)) {
-        printf ("ACM out of range - can not validate it\n");
-        AcmBuffer = NULL;
-      }
+    for (Index = 0; Index < (INTN)gFitTableContext.StartupAcmNumber; Index ++) {
+      if (gFitTableContext.StartupAcm[Index].Address != 0) {
+        AcmBuffer = FLASH_TO_MEMORY(gFitTableContext.StartupAcm[Index].Address, FdFileBuffer, FdFileSize);
+        if ((AcmBuffer < FdFileBuffer) || (AcmBuffer + gFitTableContext.StartupAcm[Index].Size > FdFileBuffer + FdFileSize)) {
+          printf ("ACM out of range - can not validate it\n");
+          AcmBuffer = NULL;
+        }
 
-      if (AcmBuffer != NULL) {
-        if (CheckAcm ((ACM_FORMAT *)AcmBuffer, gFitTableContext.StartupAcm.Size)) {
-          DumpAcm ((ACM_FORMAT *)AcmBuffer);
-        } else {
-          Status = STATUS_ERROR;
-          goto exitFunc;
+        if (AcmBuffer != NULL) {
+          if (CheckAcm ((ACM_FORMAT *)AcmBuffer, gFitTableContext.StartupAcm[Index].Size)) {
+            DumpAcm ((ACM_FORMAT *)AcmBuffer);
+          } else {
+            Status = STATUS_ERROR;
+            goto exitFunc;
+          }
         }
       }
-
     }
 
     //
@@ -3576,4 +3584,3 @@ Returns:
 
   return u;
 }
-

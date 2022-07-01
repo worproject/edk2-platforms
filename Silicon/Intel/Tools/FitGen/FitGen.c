@@ -55,6 +55,7 @@ typedef struct {
 #define ACM_MODULE_FLAG_PREPRODUCTION                   0x4000
 #define ACM_MODULE_FLAG_DEBUG_SIGN                      0x8000
 
+#define NIBBLES_TO_BYTE(A, B)  (UINT8)(((A & (0x0F)) << 4) | (B & 0x0F))
 
 typedef struct {
   UINT16     ModuleType;
@@ -149,6 +150,20 @@ typedef struct {
   ACM_PROCESSOR_ID ProcessorID[1];
 } PROCESSOR_ID_LIST;
 
+typedef union {
+  struct {
+    UINT32  Stepping      : 4;
+    UINT32  Model         : 4;
+    UINT32  Family        : 4;
+    UINT32  Type          : 2;
+    UINT32  Reserved1     : 2;
+    UINT32  ExtendedModel : 4;
+    UINT32  ExtendedFamily: 8;
+    UINT32  Reserved2     : 4;
+  } Bits;
+  UINT32  Uint32;
+} PROCESSOR_ID;
+
 #pragma pack ()
 
 
@@ -210,6 +225,7 @@ typedef struct {
 
 #define DEFAULT_FIT_TABLE_POINTER_OFFSET  0x40
 #define DEFAULT_FIT_ENTRY_VERSION         0x0100
+#define STARTUP_ACM_FIT_ENTRY_200_VERSION 0x0200
 
 #define TOP_FLASH_ADDRESS  (gFitTableContext.TopFlashAddressRemapValue)
 
@@ -247,6 +263,8 @@ typedef struct {
   UINT8   *Buffer; // Used by OptionalModule only
   UINT32  Size;
   UINT32  Version; // Used by OptionalModule and PortModule only
+  UINT32  FMS;     // Used by Entry Type 02 (ACM) Ver. 0x200 only
+  UINT32  FMSMask; // Used by Entry Type 02 (ACM) Ver. 0x200 only
 } FIT_TABLE_CONTEXT_ENTRY;
 
 typedef struct {
@@ -262,7 +280,7 @@ typedef struct {
   UINT32                     GlobalVersion;
   UINT32                     FitHeaderVersion;
   FIT_TABLE_CONTEXT_ENTRY    StartupAcm[MAX_STARTUP_ACM_ENTRY];
-  UINT32                     StartupAcmVersion;
+  UINT32                     StartupAcmVersion[MAX_STARTUP_ACM_ENTRY];
   FIT_TABLE_CONTEXT_ENTRY    DiagnstAcm;
   UINT32                     DiagnstAcmVersion;
   FIT_TABLE_CONTEXT_ENTRY    BiosModule[MAX_BIOS_MODULE_ENTRY];
@@ -341,7 +359,7 @@ Returns:
           "\t[-L <MicrocodeSlotSize> <MicrocodeFfsGuid>]\n"
           "\t[-LF <MicrocodeSlotSize>]\n"
           "\t[-I <BiosInfoGuid>]\n"
-          "\t[-S <StartupAcmAddress StartupAcmSize>|<StartupAcmGuid>] [-V <StartupAcmVersion>]\n"
+          "\t[-S <StartupAcmAddress StartupAcmSize>|<StartupAcmGuid>] [-I <StartupAcmFMS StartupAcmFMSMask>] [-V <StartupAcmVersion>]\n"
           "\t[-U <DiagnstAcmAddress>|<DiagnstAcmGuid>]\n"
           "\t[-B <BiosModuleAddress BiosModuleSize>] [-B ...] [-V <BiosModuleVersion>]\n"
           "\t[-M <MicrocodeAddress MicrocodeSize>] [-M ...]|[-U <MicrocodeFv MicrocodeBase>|<MicrocodeRegionOffset MicrocodeRegionSize>|<MicrocodeGuid>] [-V <MicrocodeVersion>]\n"
@@ -356,8 +374,11 @@ Returns:
   printf ("\tFitTablePointerOffset  - FIT table pointer offset. 0x%x as default. 0x18 for current soon to be obsoleted CPUs. User can set both.\n", DEFAULT_FIT_TABLE_POINTER_OFFSET);
   printf ("\tBiosInfoGuid           - Guid of BiosInfo Module. If this module exists, StartupAcm/Bios/Microcode can be optional.\n");
   printf ("\tStartupAcmAddress      - Address of StartupAcm.\n");
-  printf ("\tStartupAcmSize         - Size of StartupAcm.\n");
+  printf ("\tStartupAcmSize         - The maximum size value that could place the StartupAcm in.\n");
   printf ("\tStartupAcmGuid         - Guid of StartupAcm Module, if StartupAcm is in a BiosModule, it will be excluded form that.\n");
+  printf ("\tStartupAcmFMS          - Value of PROCESSOR ID (Family/Model/Stepping value called \"FMS\") - see detail on FIT spec (1.3).\n");
+  printf ("\tStartupAcmFMSMask      - Value use for uCode (if it recognizes 0x200 Type2 entry) to do bitmask logic operation with CPU processor ID.\n");
+  printf ("\t                         If the result match to StartupAcmFMS, corresponding ACM will be loaded - see detail on FIT spec (1.3).\n");
   printf ("\tDiagnstAcmAddress      - Address of DiagnstAcm.\n");
   printf ("\tDiagnstAcmGuid         - Guid of DiagnstAcm Module, if DiagnstAcm is in a BiosModule, it will be excluded from that.\n");
   printf ("\tBiosModuleAddress      - Address of BiosModule. User should ensure there is no overlap.\n");
@@ -1155,6 +1176,9 @@ Returns:
             Error (NULL, 0, 0, "-I Parameter incorrect, too many StartupAcm!", NULL);
             return 0;
           }
+          //
+          // NOTE: BIOS INFO structure only support the default FIT entry format.
+          //
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Type    = FIT_TABLE_TYPE_STARTUP_ACM;
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32)BiosInfoStruct[BiosInfoIndex].Address;
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size    = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
@@ -1392,7 +1416,37 @@ Returns:
     gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size = FileSize;
 
     //
-    // 1.1 StartupAcm version
+    // 1.1 Support 0x200 StartupAcm Information
+    //     With the -I parameter should assign the type 2 entry with 0x200 version format
+    //
+    if ((Index + 1 >= argc) ||
+        ((strcmp (argv[Index], "-I") != 0) &&
+         (strcmp (argv[Index], "-i") != 0)) ) {
+      //
+      // Bypass
+      //
+      gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber] = gFitTableContext.GlobalVersion;
+    } else {
+      if (Index + 2 >= argc) {
+        //
+        // Should get two input value, but not sufficient
+        //
+        Error (NULL, 0, 0, "-I Parameter incorrect, Require two inputs value!", NULL);
+        return 0;
+      } else {
+        //
+        // With the -I parameter should assign the type 2 entry version as 0x200 format
+        //
+        gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber] = STARTUP_ACM_FIT_ENTRY_200_VERSION;
+        gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].FMS = (UINT32)xtoi (argv[Index + 1]);
+        gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].FMSMask = (UINT32)xtoi (argv[Index + 2]);
+
+        Index += 3;
+      }
+    }
+
+    //
+    // 1.2 StartupAcm version
     //
     if ((Index + 1 >= argc) ||
         ((strcmp (argv[Index], "-V") != 0) &&
@@ -1400,18 +1454,17 @@ Returns:
       //
       // Bypass
       //
-      gFitTableContext.StartupAcmVersion = gFitTableContext.GlobalVersion;
     } else {
       //
       // Get offset from parameter
       //
-      gFitTableContext.StartupAcmVersion = xtoi (argv[Index + 1]);
+      gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber] = xtoi (argv[Index + 1]);
       Index += 2;
     }
 
     gFitTableContext.StartupAcmNumber ++;
     gFitTableContext.FitEntryNumber ++;
-  }
+  };
 
   //
   // 1.5. DiagnosticsAcm
@@ -2185,7 +2238,7 @@ Returns:
   printf ("Total FIT Entry number: 0x%x\n", gFitTableContext.FitEntryNumber);
   printf ("FitHeader version: 0x%04x\n", gFitTableContext.FitHeaderVersion);
   for (Index = 0; Index < gFitTableContext.StartupAcmNumber; Index++) {
-    printf ("StartupAcm[%d] - (0x%08x, 0x%08x, 0x%04x)\n", Index, gFitTableContext.StartupAcm[Index].Address, gFitTableContext.StartupAcm[Index].Size, gFitTableContext.StartupAcmVersion);
+    printf ("StartupAcm[%d] - (0x%08x, 0x%08x, 0x%04x)\n", Index, gFitTableContext.StartupAcm[Index].Address, gFitTableContext.StartupAcm[Index].Size, gFitTableContext.StartupAcmVersion[Index]);
   }
   if (gFitTableContext.DiagnstAcm.Address != 0) {
     printf ("DiagnosticAcm - (0x%08x, 0x%08x, 0x%04x)\n", gFitTableContext.DiagnstAcm.Address, gFitTableContext.DiagnstAcm.Size, gFitTableContext.DiagnstAcmVersion);
@@ -2774,6 +2827,8 @@ Returns:
   UINTN                           SubIndex;
   FIT_TABLE_CONTEXT_ENTRY         TempContextEntry;
   FIRMWARE_INTERFACE_TABLE_ENTRY  TempTableEntry;
+  PROCESSOR_ID                    FMS;
+  PROCESSOR_ID                    FMSMask;
 
   //
   // 1. FitPointer
@@ -2825,16 +2880,30 @@ Returns:
   // 4. StartupAcm
   //
   for (Index = 0; Index < gFitTableContext.StartupAcmNumber; Index++) {
-    FitEntrySizeValue           = 0; // gFitTableContext.StartupAcm.Size / 16
-    FitEntry[FitIndex].Address  = gFitTableContext.StartupAcm[Index].Address;
-    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
-    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
-    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
-    FitEntry[FitIndex].Rsvd     = 0;
-    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.StartupAcmVersion;
-    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_STARTUP_ACM;
-    FitEntry[FitIndex].C_V      = 0;
-    FitEntry[FitIndex].Checksum = 0;
+    if (gFitTableContext.StartupAcmVersion[Index] == STARTUP_ACM_FIT_ENTRY_200_VERSION) {
+      FMS.Uint32 = gFitTableContext.StartupAcm[Index].FMS;
+      FMSMask.Uint32 = gFitTableContext.StartupAcm[Index].FMSMask;
+      FitEntry[FitIndex].Address  = gFitTableContext.StartupAcm[Index].Address;
+      FitEntry[FitIndex].Size[0]  = NIBBLES_TO_BYTE (FMS.Bits.Family, FMS.Bits.Model);
+      FitEntry[FitIndex].Size[1]  = NIBBLES_TO_BYTE (FMS.Bits.ExtendedModel, FMS.Bits.Type);
+      FitEntry[FitIndex].Size[2]  = NIBBLES_TO_BYTE (FMSMask.Bits.Family, FMSMask.Bits.Model);
+      FitEntry[FitIndex].Rsvd     = NIBBLES_TO_BYTE (FMSMask.Bits.ExtendedModel, FMSMask.Bits.Type);
+      FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.StartupAcmVersion[Index];
+      FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_STARTUP_ACM;
+      FitEntry[FitIndex].C_V      = 0;
+      FitEntry[FitIndex].Checksum = NIBBLES_TO_BYTE (FMSMask.Bits.ExtendedFamily, FMS.Bits.ExtendedFamily);
+    } else {
+      FitEntrySizeValue           = 0; // gFitTableContext.StartupAcm.Size / 16
+      FitEntry[FitIndex].Address  = gFitTableContext.StartupAcm[Index].Address;
+      FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+      FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+      FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+      FitEntry[FitIndex].Rsvd     = 0;
+      FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.StartupAcmVersion[Index];
+      FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_STARTUP_ACM;
+      FitEntry[FitIndex].C_V      = 0;
+      FitEntry[FitIndex].Checksum = 0;
+    }
     FitIndex++;
   }
 
@@ -3135,6 +3204,69 @@ Returns:
   return FvRecoveryFileSize;
 }
 
+void
+GetFMSFromFitEntry (
+  IN      FIRMWARE_INTERFACE_TABLE_ENTRY   FitEntry,
+  IN OUT  PROCESSOR_ID                     *FMS,
+  IN OUT  PROCESSOR_ID                     *FMSMask
+  )
+/*++
+
+Routine Description:
+
+  Get FMS information from FIT Entry.
+
+  Note: Since FIT entry not record all the processor ID information.
+        The value would not the same as the real value.
+
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  |   Byte   |          15           |          14           |         13:12         |          11           |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  |Bit Fields|   [7:4]   |   [3:0]   |   [7:7]   |   [6:0]   |   [7:4]   |   [3:0]   |   [7:4]   |   [3:0]   |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  | Ver. 100 |       Checksum        |    C_V    |    Type   |        Version        |        Reserved       |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  | Ver. 200 |  FMSMask  |    FMS    |    C_V    |    Type   |        Version        |  FMSMask  |  FMSMask  |
+  |          | ExtFamily | ExtFamily |           |           |                       |  ExtModel |    Type   |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  |   Byte   |          10           |           9           |           8           |          7:0          |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  |Bit Fields|   [7:4]   |   [3:0]   |   [7:4]   |   [3:0]   |   [7:4]   |   [3:0]   |   [7:4]   |   [3:0]   |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  | Ver. 100 |        Size[2]        |        Size[1]        |        Size[0]        |        Address        |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+  | Ver. 200 |  FMSMask  |  FMSMask  |    FMS    |    FMS    |    FMS    |    FMS    |        Address        |
+  |          |   Family  |   Model   |  ExtModel |    Type   |   Family  |   Model   |                       |
+  +----------+-----------------------+-----------------------+-----------------------+-----------------------+
+
+
+Arguments:
+
+  FitEntry - FIT entry information.
+  FMS      - Processor ID information.
+  FMSMask  - Processor ID mask information.
+
+Returns:
+  None
+
+--*/
+{
+
+  FMS->Bits.Family         = (FitEntry.Size[0]  & 0xF0) >> 4;
+  FMS->Bits.Model          = (FitEntry.Size[0]  & 0x0F);
+  FMS->Bits.ExtendedModel  = (FitEntry.Size[1]  & 0xF0) >> 4;
+  FMS->Bits.Type           = (FitEntry.Size[1]  & 0x0F);
+  FMS->Bits.ExtendedFamily = (FitEntry.Checksum & 0x0F);
+
+  FMSMask->Bits.Family         = (FitEntry.Size[2]  & 0xF0) >> 4;
+  FMSMask->Bits.Model          = (FitEntry.Size[2]  & 0x0F);
+  FMSMask->Bits.ExtendedModel  = (FitEntry.Rsvd     & 0xF0) >> 4;
+  FMSMask->Bits.Type           = (FitEntry.Rsvd     & 0x0F);
+  FMSMask->Bits.ExtendedFamily = (FitEntry.Checksum & 0xF0) >> 4;
+}
+
 UINT32
 GetFitEntryInfo (
   IN UINT8     *FvBuffer,
@@ -3161,6 +3293,11 @@ Returns:
   UINT32                          FitEntrySizeValue;
   UINT32                          FitIndex;
   UINT32                          FitTableOffset;
+  PROCESSOR_ID                    FMS;
+  PROCESSOR_ID                    FMSMask;
+
+  FMS.Uint32     = 0;
+  FMSMask.Uint32 = 0;
 
   //
   // 1. FitPointer
@@ -3202,7 +3339,15 @@ Returns:
       break;
     case FIT_TABLE_TYPE_STARTUP_ACM:
       gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32)FitEntry[FitIndex].Address;
-      gFitTableContext.StartupAcmVersion                                     = FitEntry[FitIndex].Version;
+      gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size    = FitEntrySizeValue;
+      gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Type    = FitEntry[FitIndex].Type;
+      gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber]  = FitEntry[FitIndex].Version;
+      if (gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber] == STARTUP_ACM_FIT_ENTRY_200_VERSION) {
+        GetFMSFromFitEntry (FitEntry[FitIndex], &FMS, &FMSMask);
+        gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].FMS     = FMS.Uint32;
+        gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].FMSMask = FMSMask.Uint32;
+      }
+      gFitTableContext.StartupAcmNumber++;
       break;
     case FIT_TABLE_TYPE_BIOS_MODULE:
       gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Address = (UINT32)FitEntry[FitIndex].Address;

@@ -31,7 +31,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 // Utility version information
 //
 #define UTILITY_MAJOR_VERSION 0
-#define UTILITY_MINOR_VERSION 65
+#define UTILITY_MINOR_VERSION 66
 #define UTILITY_DATE          __DATE__
 
 //

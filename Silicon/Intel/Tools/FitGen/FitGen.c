@@ -2768,6 +2768,7 @@ Returns:
 {
   FIRMWARE_INTERFACE_TABLE_ENTRY *FitEntry;
   UINT32                          FitIndex;
+  UINT32                          FitEntrySizeValue;
   UINT32                          Index;
   UINT8                           Checksum;
   UINTN                           SubIndex;
@@ -2788,27 +2789,35 @@ Returns:
   //
   // 2. FitHeader
   //
-  FitEntry[FitIndex].Address             = *(UINT64 *)"_FIT_   ";
-  *(UINT32 *)&FitEntry[FitIndex].Size[0] = gFitTableContext.FitEntryNumber;
-  FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.FitHeaderVersion;
-  FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_HEADER;
-  FitEntry[FitIndex].C_V                 = 1;
+  FitEntrySizeValue           = gFitTableContext.FitEntryNumber;
+  FitEntry[FitIndex].Address  = *(UINT64 *)"_FIT_   ";
+  FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+  FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+  FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+  FitEntry[FitIndex].Rsvd     = 0;
+  FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.FitHeaderVersion;
+  FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_HEADER;
+  FitEntry[FitIndex].C_V      = 1;
   //
   // Checksum will be updated later...
   //
-  FitEntry[FitIndex].Checksum            = 0;
+  FitEntry[FitIndex].Checksum = 0;
 
   //
   // 3. Microcode
   //
   FitIndex++;
   for (Index = 0; Index < gFitTableContext.MicrocodeNumber; Index++) {
-    FitEntry[FitIndex].Address             = gFitTableContext.Microcode[Index].Address;
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = 0; //gFitTableContext.Microcode[Index].Size / 16;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.MicrocodeVersion;
-    FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_MICROCODE;
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntrySizeValue           = 0; // gFitTableContext.Microcode[Index].Size / 16
+    FitEntry[FitIndex].Address  = gFitTableContext.Microcode[Index].Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.MicrocodeVersion;
+    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_MICROCODE;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
 
@@ -2816,12 +2825,16 @@ Returns:
   // 4. StartupAcm
   //
   for (Index = 0; Index < gFitTableContext.StartupAcmNumber; Index++) {
-    FitEntry[FitIndex].Address             = gFitTableContext.StartupAcm[Index].Address;
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = 0; //gFitTableContext.StartupAcm.Size / 16;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.StartupAcmVersion;
-    FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_STARTUP_ACM;
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntrySizeValue           = 0; // gFitTableContext.StartupAcm.Size / 16
+    FitEntry[FitIndex].Address  = gFitTableContext.StartupAcm[Index].Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.StartupAcmVersion;
+    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_STARTUP_ACM;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
 
@@ -2829,19 +2842,23 @@ Returns:
   // 4.5. DiagnosticAcm
   //
   if (gFitTableContext.DiagnstAcm.Address != 0) {
-    FitEntry[FitIndex].Address             = gFitTableContext.DiagnstAcm.Address;
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = 0;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.DiagnstAcmVersion;
-    FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_DIAGNST_ACM;
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntrySizeValue           = 0; // gFitTableContext.DiagnstAcmVersion.Size / 16
+    FitEntry[FitIndex].Address  = gFitTableContext.DiagnstAcm.Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.DiagnstAcmVersion;
+    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_DIAGNST_ACM;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
   //
   // 5. BiosModule
   //
   //
-  // BiosModule segments order needs to be put from low addresss to high for Btg requirement
+  // BiosModule segments order needs to be put from low address to high for Btg requirement
   //
   if (gFitTableContext.BiosModuleNumber > 1) {
     for (Index = 0; Index < (UINTN)gFitTableContext.BiosModuleNumber - 1; Index++){
@@ -2855,12 +2872,16 @@ Returns:
     }
   }
   for (Index = 0; Index < gFitTableContext.BiosModuleNumber; Index++) {
-    FitEntry[FitIndex].Address             = gFitTableContext.BiosModule[Index].Address;
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = gFitTableContext.BiosModule[Index].Size / 16;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.BiosModuleVersion;
-    FitEntry[FitIndex].Type                = FIT_TABLE_TYPE_BIOS_MODULE;
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntrySizeValue           = gFitTableContext.BiosModule[Index].Size / 16;
+    FitEntry[FitIndex].Address  = gFitTableContext.BiosModule[Index].Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.BiosModuleVersion;
+    FitEntry[FitIndex].Type     = FIT_TABLE_TYPE_BIOS_MODULE;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
 
@@ -2868,15 +2889,18 @@ Returns:
   // 6. Optional module
   //
   for (Index = 0; Index < gFitTableContext.OptionalModuleNumber; Index++) {
-    FitEntry[FitIndex].Address             = gFitTableContext.OptionalModule[Index].Address;
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = gFitTableContext.OptionalModule[Index].Size;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.OptionalModule[Index].Version;
-    FitEntry[FitIndex].Type                = (UINT8)gFitTableContext.OptionalModule[Index].Type;
+    FitEntrySizeValue           = gFitTableContext.OptionalModule[Index].Size;
+    FitEntry[FitIndex].Address  = gFitTableContext.OptionalModule[Index].Address;
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.OptionalModule[Index].Version;
+    FitEntry[FitIndex].Type     = (UINT8)gFitTableContext.OptionalModule[Index].Type;
     if (FitEntry[FitIndex].Type == FIT_TABLE_TYPE_CSE_SECURE_BOOT) {
-      FitEntry[FitIndex].Rsvd              = (UINT8)gFitTableContext.OptionalModule[Index].SubType;
+      FitEntry[FitIndex].Rsvd   = (UINT8)gFitTableContext.OptionalModule[Index].SubType;
     }
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
 
@@ -2884,12 +2908,16 @@ Returns:
   // 7. Port module
   //
   for (Index = 0; Index < gFitTableContext.PortModuleNumber; Index++) {
-    FitEntry[FitIndex].Address             = gFitTableContext.PortModule[Index].Address + ((UINT64)gFitTableContext.PortModule[Index].Size << 32);
-    *(UINT32 *)&FitEntry[FitIndex].Size[0] = 0;
-    FitEntry[FitIndex].Version             = (UINT16)gFitTableContext.PortModule[Index].Version;
-    FitEntry[FitIndex].Type                = (UINT8)gFitTableContext.PortModule[Index].Type;
-    FitEntry[FitIndex].C_V                 = 0;
-    FitEntry[FitIndex].Checksum            = 0;
+    FitEntrySizeValue           = 0;
+    FitEntry[FitIndex].Address  = gFitTableContext.PortModule[Index].Address + ((UINT64)gFitTableContext.PortModule[Index].Size << 32);
+    FitEntry[FitIndex].Size[0]  = (UINT8)FitEntrySizeValue;
+    FitEntry[FitIndex].Size[1]  = (UINT8)(FitEntrySizeValue >> 8);
+    FitEntry[FitIndex].Size[2]  = (UINT8)(FitEntrySizeValue >> 16);
+    FitEntry[FitIndex].Rsvd     = 0;
+    FitEntry[FitIndex].Version  = (UINT16)gFitTableContext.PortModule[Index].Version;
+    FitEntry[FitIndex].Type     = (UINT8)gFitTableContext.PortModule[Index].Type;
+    FitEntry[FitIndex].C_V      = 0;
+    FitEntry[FitIndex].Checksum = 0;
     FitIndex++;
   }
 
@@ -3130,6 +3158,7 @@ Returns:
 --*/
 {
   FIRMWARE_INTERFACE_TABLE_ENTRY *FitEntry;
+  UINT32                          FitEntrySizeValue;
   UINT32                          FitIndex;
   UINT32                          FitTableOffset;
 
@@ -3155,7 +3184,8 @@ Returns:
   if (FitEntry[FitIndex].Type != FIT_TABLE_TYPE_HEADER) {
     return 0;
   }
-  gFitTableContext.FitEntryNumber = *(UINT32 *)&FitEntry[FitIndex].Size[0];
+  FitEntrySizeValue = (((UINT32)FitEntry[FitIndex].Size[2]) << 16) + (((UINT32)FitEntry[FitIndex].Size[1]) << 8) + ((UINT32)FitEntry[FitIndex].Size[0]);
+  gFitTableContext.FitEntryNumber = FitEntrySizeValue;
   gFitTableContext.FitHeaderVersion = FitEntry[FitIndex].Version;
 
   //
@@ -3163,6 +3193,7 @@ Returns:
   //
   FitIndex++;
   for (; FitIndex < gFitTableContext.FitEntryNumber; FitIndex++) {
+    FitEntrySizeValue = (((UINT32)FitEntry[FitIndex].Size[2]) << 16) + (((UINT32)FitEntry[FitIndex].Size[1]) << 8) + ((UINT32)FitEntry[FitIndex].Size[0]);
     switch (FitEntry[FitIndex].Type) {
     case FIT_TABLE_TYPE_MICROCODE:
       gFitTableContext.Microcode[gFitTableContext.MicrocodeNumber].Address = (UINT32)FitEntry[FitIndex].Address;
@@ -3175,7 +3206,7 @@ Returns:
       break;
     case FIT_TABLE_TYPE_BIOS_MODULE:
       gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Address = (UINT32)FitEntry[FitIndex].Address;
-      gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Size    = *(UINT32 *)&FitEntry[FitIndex].Size[0] * 16;
+      gFitTableContext.BiosModule[gFitTableContext.BiosModuleNumber].Size    = FitEntrySizeValue * 16;
       gFitTableContext.BiosModuleVersion                                     = FitEntry[FitIndex].Version;
       gFitTableContext.BiosModuleNumber ++;
       break;
@@ -3192,7 +3223,7 @@ Returns:
       // Not Port Configure, pass through
     default: // Others
       gFitTableContext.OptionalModule[gFitTableContext.OptionalModuleNumber].Address = (UINT32)FitEntry[FitIndex].Address;
-      gFitTableContext.OptionalModule[gFitTableContext.OptionalModuleNumber].Size    = *(UINT32 *)&FitEntry[FitIndex].Size[0];
+      gFitTableContext.OptionalModule[gFitTableContext.OptionalModuleNumber].Size    = FitEntrySizeValue;
       gFitTableContext.OptionalModule[gFitTableContext.OptionalModuleNumber].Version = FitEntry[FitIndex].Version;
       gFitTableContext.OptionalModule[gFitTableContext.OptionalModuleNumber].Type    = FitEntry[FitIndex].Type;
       gFitTableContext.OptionalModuleNumber ++;

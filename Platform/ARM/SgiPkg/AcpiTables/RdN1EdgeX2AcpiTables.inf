@@ -41,6 +41,7 @@
 [FixedPcd]
   gArmPlatformTokenSpaceGuid.PcdCoreCount
   gArmPlatformTokenSpaceGuid.PcdClusterCount
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgInterrupt
   gArmPlatformTokenSpaceGuid.PcdSerialDbgRegisterBase
   gArmPlatformTokenSpaceGuid.PL011UartInterrupt
 

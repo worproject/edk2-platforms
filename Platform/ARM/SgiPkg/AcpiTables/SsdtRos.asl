@@ -29,6 +29,21 @@ DefinitionBlock ("SsdtRosTable.aml", "SSDT", 2, "ARMLTD", "ARMSGI",
       })
     }
 
+    Device (COM1) {
+      Name (_HID, "ARMH0011")
+      Name (_CID, "ARMH0011")
+      Name (_UID, One)
+      Name (_STA, 0xF)
+      Name (_CRS, ResourceTemplate () {
+        Memory32Fixed (
+          ReadWrite,
+          FixedPcdGet64 (PcdSerialDbgRegisterBase),
+          0x1000
+          )
+        Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { FixedPcdGet32 (PcdSerialDbgInterrupt) }
+      })
+    }
+
     // VIRTIO DISK
     Device (VR00) {
       Name (_HID, "LNRO0005")

@@ -34,7 +34,7 @@ STATIC EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE Spcr = {
     EFI_ACPI_RESERVED_BYTE
   },
   // EFI_ACPI_6_4_GENERIC_ADDRESS_STRUCTURE  BaseAddress;
-  ARM_GAS32 (FixedPcdGet64 (PcdSerialDbgRegisterBase)),
+  ARM_GAS32 (FixedPcdGet64 (PcdSerialRegisterBase)),
   // UINT8                                   InterruptType;
   EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE_INTERRUPT_TYPE_GIC,
   // UINT8                                   Irq;

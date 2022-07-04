@@ -22,7 +22,7 @@ DefinitionBlock ("SsdtRosTable.aml", "SSDT", 2, "ARMLTD", "ARMSGI",
       Name (_CRS, ResourceTemplate () {
         Memory32Fixed (
           ReadWrite,
-          FixedPcdGet64 (PcdSerialDbgRegisterBase),
+          FixedPcdGet64 (PcdSerialRegisterBase),
           0x1000
           )
         Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { FixedPcdGet32 (PL011UartInterrupt) }

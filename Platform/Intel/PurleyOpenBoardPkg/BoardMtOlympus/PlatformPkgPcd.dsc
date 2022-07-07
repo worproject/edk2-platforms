@@ -254,10 +254,6 @@
   gEfiCpuTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable |TRUE
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmCodeAccessCheckEnable |TRUE
 
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x04
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0000
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
-
   gMinPlatformPkgTokenSpaceGuid.PcdAcpiEnableSwSmi|0xA0
   gMinPlatformPkgTokenSpaceGuid.PcdAcpiDisableSwSmi|0xA1
 
@@ -371,6 +367,10 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId|0x2046573030363253
 
   gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicEnable|0x0
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x04
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0000
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
 
 [PcdsDynamicExDefault.X64]
 

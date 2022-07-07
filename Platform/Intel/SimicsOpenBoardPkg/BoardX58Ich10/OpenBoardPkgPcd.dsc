@@ -186,9 +186,6 @@
   gMinPlatformPkgTokenSpaceGuid.PcdAcpiPm1BEventBlockAddress|0
   gMinPlatformPkgTokenSpaceGuid.PcdAcpiPm2ControlBlockAddress|0x450
   gMinPlatformPkgTokenSpaceGuid.PcdAcpiPmTimerBlockAddress|0x408
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0003
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x0
   gMinPlatformPkgTokenSpaceGuid.PcdLocalApicAddress|0xFEE00000
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuCoreCount|128
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuSocketCount|4
@@ -267,6 +264,13 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSystemPageSize|0x1F
   gUefiCpuPkgTokenSpaceGuid.PcdCpuApInitTimeOutInMicroSeconds|30000
   gUefiCpuPkgTokenSpaceGuid.PcdCpuS3DataAddress|0
+
+  ######################################
+  # Platform Configuration
+  ######################################
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0003
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x0
 
 [PcdsDynamicExDefault.X64]
   ######################################

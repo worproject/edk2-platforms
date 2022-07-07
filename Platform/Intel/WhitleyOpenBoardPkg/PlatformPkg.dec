@@ -237,17 +237,11 @@
   #  is large enough to meet PEI requirement in the S3 phase.
   # @Prompt Reserved S3 Boot ACPI Memory Size
   gPlatformModuleTokenSpaceGuid.PcdS3AcpiReservedMemorySize|0x8000|UINT32|0x90010039
-  gPlatformModuleTokenSpaceGuid.PcdAcpiEnableSwSmi|0xF0|UINT8|0x90000012
-  gPlatformModuleTokenSpaceGuid.PcdAcpiDisableSwSmi|0xF1|UINT8|0x90000013
   gPlatformModuleTokenSpaceGuid.PcdPcIoApicCount|0|UINT8|0x90000015
   gPlatformModuleTokenSpaceGuid.PcdPcIoApicIdBase|0x09|UINT8|0x90000016
   gPlatformModuleTokenSpaceGuid.PcdPcIoApicAddressBase|0xFEC01000|UINT32|0x90000017
   gPlatformModuleTokenSpaceGuid.PcdPcIoApicInterruptBase|24|UINT32|0x90000018
 
-
-  gPlatformModuleTokenSpaceGuid.PcdFadtPreferredPmProfile|0x02|UINT8|0x90000025
-  gPlatformModuleTokenSpaceGuid.PcdFadtIaPcBootArch|0x0001|UINT16|0x90000026
-  gPlatformModuleTokenSpaceGuid.PcdFadtFlags|0x000086A5|UINT32|0x90000027
   gPlatformModuleTokenSpaceGuid.PcdLocalApicAddress|0xFEE00000|UINT32|0x9000000B
   gPlatformModuleTokenSpaceGuid.PcdIoApicAddress|0xFEC00000|UINT32|0x9000000D
   gPlatformModuleTokenSpaceGuid.PcdIoApicId|0x02|UINT8|0x90000014
@@ -437,16 +431,6 @@
   #   //Header<BR>
   #      0x7F, 0xFF, 0x04, 0x00}<BR>
   gPlatformModuleTokenSpaceGuid.PcdTrustedConsoleOutputDevicePath|{0x02, 0x01, 0x0C, 0x00, 0xd0, 0x41, 0x03, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x06, 0x00,  0x00, 0x02, 0x7F, 0xFF, 0x04, 0x00}|VOID*|0x300000C
-
-
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPm1AEventBlockAddress|0x1800|UINT16|0x00010035
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPm1BEventBlockAddress|0x0000|UINT16|0x00010036
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPm1AControlBlockAddress|0x1804|UINT16|0x0001037
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPm1BControlBlockAddress|0x0000|UINT16|0x00010038
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPm2ControlBlockAddress|0x1850|UINT16|0x00010039
-  gPlatformModuleTokenSpaceGuid.PcdAcpiPmTimerBlockAddress|0x1808|UINT16|0x0001003A
-  gPlatformModuleTokenSpaceGuid.PcdAcpiGpe0BlockAddress|0x1880|UINT16|0x0001003B
-  gPlatformModuleTokenSpaceGuid.PcdAcpiGpe1BlockAddress|0x0000|UINT16|0x0001003C
 
 #
 # UBA_START

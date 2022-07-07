@@ -397,9 +397,6 @@
   gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicAddressBase|0xFEC01000
   gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicInterruptBase|24
 
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x04
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0000
-  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
   gMinPlatformPkgTokenSpaceGuid.PcdLocalApicAddress|0xFEE00000
   gMinPlatformPkgTokenSpaceGuid.PcdIoApicAddress|0xFEC00000
   gMinPlatformPkgTokenSpaceGuid.PcdIoApicId|0x08
@@ -509,6 +506,10 @@
   gPlatformTokenSpaceGuid.PcdBootDeviceListScanCode|0x0011
   gPlatformTokenSpaceGuid.PcdBootMenuFile|{ 0xdc, 0x5b, 0xc2, 0xee, 0xf2, 0x67, 0x95, 0x4d, 0xb1, 0xd5, 0xf8, 0x1b, 0x20, 0x39, 0xd1, 0x1d }
   gMinPlatformPkgTokenSpaceGuid.PcdPcIoApicEnable|0x0
+
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtPreferredPmProfile|0x04
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtIaPcBootArch|0x0000
+  gMinPlatformPkgTokenSpaceGuid.PcdFadtFlags|0x000004A5
 
 [PcdsDynamicExDefault.X64]
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200

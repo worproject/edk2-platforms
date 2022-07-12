@@ -144,6 +144,7 @@ R: Wenyi Xie <xiewenyi2@huawei.com>
 Features/Ext4Pkg
 F: Features/Ext4Pkg/
 M: Pedro Falcato <pedro.falcato@gmail.com>
+R: Marvin Häuser <mhaeuser@posteo.de>
 
 Features/Intel
 F: Features/Intel/

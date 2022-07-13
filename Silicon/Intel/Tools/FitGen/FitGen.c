@@ -1182,7 +1182,7 @@ Returns:
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Type    = FIT_TABLE_TYPE_STARTUP_ACM;
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Address = (UINT32)BiosInfoStruct[BiosInfoIndex].Address;
           gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Size    = (UINT32)BiosInfoStruct[BiosInfoIndex].Size;
-          gFitTableContext.StartupAcm[gFitTableContext.StartupAcmNumber].Version = BiosInfoStruct[BiosInfoIndex].Version;
+          gFitTableContext.StartupAcmVersion[gFitTableContext.StartupAcmNumber]  = BiosInfoStruct[BiosInfoIndex].Version;
           gFitTableContext.StartupAcmNumber ++;
           gFitTableContext.FitEntryNumber ++;
           break;

@@ -112,6 +112,7 @@
   NorFlashInfoLib|EmbeddedPkg/Library/NorFlashInfoLib/NorFlashInfoLib.inf
   NorFlashPlatformLib|Silicon/Socionext/SynQuacer/Library/NorFlashSynQuacerLib/NorFlashSynQuacerLib.inf
 
+  VariableFlashInfoLib|MdeModulePkg/Library/BaseVariableFlashInfoLib/BaseVariableFlashInfoLib.inf
   VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER, LibraryClasses.common.MM_STANDALONE]

@@ -139,7 +139,7 @@ STATIC STYX_IO_REMAPPING_STRUCTURE AcpiIort = {
   {
     AMD_ACPI_HEADER(EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
                     STYX_IO_REMAPPING_STRUCTURE,
-                    EFI_ACPI_IO_REMAPPING_TABLE_REVISION),
+                    EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00),
     11,                                             // NumNodes
     sizeof(EFI_ACPI_6_0_IO_REMAPPING_TABLE),        // NodeOffset
     0                                               // Reserved

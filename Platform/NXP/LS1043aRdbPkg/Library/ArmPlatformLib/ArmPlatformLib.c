@@ -94,7 +94,7 @@ ArmPlatformInitialize (
 ARM_CORE_INFO LS1043aMpCoreInfoCTA53x4[] = {
   {
     // Cluster 0, Core 0
-    0x0, 0x0,
+    0x0,
 
     // MP Core MailBox Set/Get/Clear Addresses and Clear Value
     (EFI_PHYSICAL_ADDRESS)0,

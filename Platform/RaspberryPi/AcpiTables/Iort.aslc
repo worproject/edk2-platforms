@@ -28,7 +28,7 @@ STATIC RPI4_IO_REMAPPING_STRUCTURE Iort = {
   {
     ACPI_HEADER (EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
                  RPI4_IO_REMAPPING_STRUCTURE,
-                 EFI_ACPI_IO_REMAPPING_TABLE_REVISION),
+                 EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00),
     3,                                              // NumNodes
     sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE),       // NodeOffset
     0                                               // Reserved

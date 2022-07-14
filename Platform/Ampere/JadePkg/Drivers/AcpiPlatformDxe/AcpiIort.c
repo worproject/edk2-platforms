@@ -87,7 +87,7 @@ EFI_ACPI_6_0_IO_REMAPPING_TABLE mIortHeader = {
   .Header = __ACPI_HEADER (
               EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
               AC01_IO_REMAPPING_STRUCTURE,
-              EFI_ACPI_IO_REMAPPING_TABLE_REVISION
+              EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00
               ),
   .NumNodes = 0,  // To be filled
   .NodeOffset = sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE),

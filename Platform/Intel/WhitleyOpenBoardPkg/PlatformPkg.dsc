@@ -59,57 +59,6 @@
 [PcdsFixedAtBuild]
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
 
-#
-# Feature enable/disable flags
-#
-[PcdsFeatureFlag]
-  #
-  # MinPlatform control flags
-  #
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit                       |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit                         |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                          |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                  |TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                        |TRUE
-
-  #
-  # Debugging features
-  #
-  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable              |FALSE
-  gBeepDebugFeaturePkgTokenSpaceGuid.PcdBeepDebugFeatureEnable              |FALSE
-  gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable      |FALSE
-  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable              |FALSE
-
-  #
-  # Network features
-  #
-  gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                  |FALSE
-
-  #
-  # OutOfBandManagement features
-  #
-  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |FALSE
-  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |FALSE
-
-  #
-  # PowerManagement features
-  #
-  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                            |FALSE
-
-  #
-  # SystemInformation features
-  #
-  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                    |FALSE
-
-  #
-  # UserInterface features
-  #
-  gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                        |FALSE
-  gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |FALSE
-  gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |FALSE
-
-!include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
-
   #
   # Platform On/Off features are defined here
   #

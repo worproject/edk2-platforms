@@ -15,6 +15,56 @@
 
 !include $(RP_PKG)/PlatformPkg.dsc
 
+#
+# Feature enable/disable flags
+#
+[PcdsFeatureFlag]
+  #
+  # MinPlatform control flags
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit                       |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit                         |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                          |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                        |TRUE
+
+  #
+  # Debugging features
+  #
+  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable              |FALSE
+  gBeepDebugFeaturePkgTokenSpaceGuid.PcdBeepDebugFeatureEnable              |FALSE
+  gPostCodeDebugFeaturePkgTokenSpaceGuid.PcdPostCodeDebugFeatureEnable      |FALSE
+  gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugFeatureEnable              |FALSE
+
+  #
+  # Network features
+  #
+  gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                  |FALSE
+
+  #
+  # OutOfBandManagement features
+  #
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |FALSE
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |FALSE
+
+  #
+  # PowerManagement features
+  #
+  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                            |FALSE
+
+  #
+  # SystemInformation features
+  #
+  gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                    |FALSE
+
+  #
+  # UserInterface features
+  #
+  gLogoFeaturePkgTokenSpaceGuid.PcdLogoFeatureEnable                        |FALSE
+  gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |FALSE
+  gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |FALSE
+
+!include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
+
 [Defines]
   DEFINE BOARD_NAME                   = BoardPortTemplate
   PLATFORM_GUID                       = f3518dd4-5dec-4d2c-9ac9-561121e2628b

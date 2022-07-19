@@ -759,7 +759,7 @@ VkApiStart (
 
   Status = gBS->CreateEvent (
                   EVT_TIMER | EVT_NOTIFY_SIGNAL,
-                  TPL_VK_SYNC,
+                  TPL_CALLBACK,
                   VkTimer,
                   (VOID *)VkContext,
                   &(VkContext->TimerEvent)

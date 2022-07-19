@@ -39,12 +39,39 @@
   DEFINE IIO_INSTANCE           = UnknownCpu
 !endif
 
+#
+# MinPlatform common include for required feature PCD
+# These PCD must be set before the core include files, CoreCommonLib,
+# CorePeiLib, and CoreDxeLib.
+# Optional MinPlatformPkg features should be enabled after this
+#
+!include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
+
+#
+# AdvancedFeature common include for feature enable/disable PCD
+#
+#
 !include AdvancedFeaturePkg/Include/AdvancedFeaturesPcd.dsc
 
+#
+# PCD required by advanced features
+#
 [PcdsFixedAtBuild]
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
 
+#
+# Feature enable/disable flags
+#
 [PcdsFeatureFlag]
+  #
+  # MinPlatform control flags
+  #
+  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit                       |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit                         |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly                          |FALSE
+  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                  |TRUE
+  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                        |TRUE
+
   #
   # Debugging features
   #
@@ -124,20 +151,16 @@
 # Pcd Section - list of all EDK II PCD Entries defined by this Platform
 #
 ################################################################################
+
 [PcdsFeatureFlag]
   #
-  # MinPlatform control flags
-  #
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit     |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit       |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly        |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable|TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable      |FALSE
-
   # don't degrade 64bit MMIO space to 32-bit
+  #
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDegradeResourceForOptionRom|FALSE
 
+  #
   # Server doesn't support capsule update on Reset.
+  #
   gEfiMdeModulePkgTokenSpaceGuid.PcdSupportUpdateCapsuleReset|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|TRUE
   gUefiCpuPkgTokenSpaceGuid.PcdCpuHotPlugSupport|FALSE
@@ -761,13 +784,13 @@
 
   UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf {
     <LibraryClasses>
-    !if $(PERFORMANCE_ENABLE) == TRUE
+    !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
       TimerLib|UefiCpuPkg/Library/SecPeiDxeTimerLibUefiCpu/SecPeiDxeTimerLibUefiCpu.inf
     !endif
   }
 
 [Components.X64]
-  !include WhitleyOpenBoardPkg/Include/Dsc/CoreDxeInclude.dsc
+  !include MinPlatformPkg/Include/Dsc/CoreDxeInclude.dsc
 
   $(RP_PKG)/Platform/Dxe/PlatformType/PlatformType.inf
 

@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
-!if $(PERFORMANCE_ENABLE) == TRUE
+!if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
 
 [PcdsFixedAtBuild]
   gEfiMdeModulePkgTokenSpaceGuid.PcdEdkiiFpdtStringRecordEnableOnly|TRUE
@@ -34,7 +34,6 @@
 [Components.X64]
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableDxe/FirmwarePerformanceDxe.inf
   MdeModulePkg/Universal/Acpi/FirmwarePerformanceDataTableSmm/FirmwarePerformanceSmm.inf
-  MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
-  ShellPkg/DynamicCommand/DpDynamicCommand/DpApp.inf
+  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
 
 !endif

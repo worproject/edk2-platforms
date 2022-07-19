@@ -15,8 +15,6 @@
 DEFINE CRB_FLAG_ENABLE                       = TRUE
 DEFINE DEBUG_FLAGS_ENABLE                    = FALSE
 
-DEFINE PERFORMANCE_ENABLE                    = TRUE
-
 DEFINE SERVER_BIOS_ENABLE                    = TRUE
 DEFINE PCH_SERVER_BIOS_ENABLE                = TRUE
 

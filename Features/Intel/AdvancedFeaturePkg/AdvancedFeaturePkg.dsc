@@ -94,13 +94,12 @@
 [PcdsFixedAtBuild]
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
 
-[PcdsFeatureFlag]
-  #
-  # MinPlatform common include currently required PCD
-  #
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
+#
+# MinPlatform common include for required feature PCD
+# These PCD must be set before the core include files, CoreCommonLib,
+# CorePeiLib, and CoreDxeLib.
+#
+!include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
 #
 # Include common libraries

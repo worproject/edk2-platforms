@@ -163,42 +163,18 @@
   ######################################
   # Platform Configuration
   ######################################
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|FALSE
+  #
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
+  #
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 1
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit|TRUE
-!endif
-
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 2
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterDebugInit|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit|TRUE
-!endif
-
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 3
-  gMinPlatformPkgTokenSpaceGuid.PcdStopAfterMemInit|FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly|TRUE
-!endif
-
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 4
-  gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly|FALSE
-!endif
-
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootStage >= 5
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable|TRUE
-  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable|TRUE
-!endif
-
-!if $(TARGET) == DEBUG
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable|TRUE
-!else
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable|FALSE
-!endif
+  #
+  # Commonly used MinPlatform feature configuration logic that maps functionity to stage
+  #
+  !include BoardModulePkg/Include/Dsc/CommonStageConfig.dsc.inc
 
   ######################################
   # Board Configuration
@@ -233,9 +209,6 @@
 !endif
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxVariableSize|0x5000
   gEfiMdeModulePkgTokenSpaceGuid.PcdReclaimVariableSpaceAtEndOfDxe|TRUE
-!if gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable == TRUE
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSmiHandlerProfilePropertyMask|0x1
-!endif
   gEfiMdeModulePkgTokenSpaceGuid.PcdSrIovSupport|FALSE
 !if $(TARGET) == DEBUG
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseHardwareFlowControl|FALSE

@@ -242,6 +242,7 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPkg/Universal/Smbios/ProcessorSubClassDxe/ProcessorSubClassDxe.inf
   INF ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuSmbiosDxe/SbsaQemuSmbiosDxe.inf
 
   #
   # PCI support

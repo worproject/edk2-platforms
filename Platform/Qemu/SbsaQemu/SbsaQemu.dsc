@@ -721,6 +721,7 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   ArmPkg/Universal/Smbios/SmbiosMiscDxe/SmbiosMiscDxe.inf
   EmbeddedPkg/Library/FdtLib/FdtLib.inf
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  Silicon/Qemu/SbsaQemu/Drivers/SbsaQemuSmbiosDxe/SbsaQemuSmbiosDxe.inf
 
   #
   # PCI support

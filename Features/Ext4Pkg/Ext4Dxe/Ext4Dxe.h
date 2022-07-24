@@ -31,8 +31,14 @@
 
 #include "Ext4Disk.h"
 
+#define SYMLOOP_MAX    8
 #define EXT4_NAME_MAX  255
-
+//
+// We need to specify path length limit for security purposes, to prevent possible
+// overflows and dead-loop conditions. Originally this limit is absent in FS design,
+// but present in UNIX distros and shell environments, which may varies from 1024 to 4096.
+//
+#define EXT4_EFI_PATH_MAX    4096
 #define EXT4_DRIVER_VERSION  0x0000
 
 /**
@@ -324,11 +330,11 @@ number of read bytes.
 **/
 EFI_STATUS
 Ext4Read (
-  IN EXT4_PARTITION  *Partition,
-  IN EXT4_FILE       *File,
-  OUT VOID           *Buffer,
-  IN UINT64          Offset,
-  IN OUT UINTN       *Length
+  IN     EXT4_PARTITION  *Partition,
+  IN     EXT4_FILE       *File,
+  OUT    VOID            *Buffer,
+  IN     UINT64          Offset,
+  IN OUT UINTN           *Length
   );
 
 /**
@@ -368,6 +374,7 @@ struct _Ext4File {
 
   UINT64                OpenMode;
   UINT64                Position;
+  UINT32                SymLoops;
 
   EXT4_PARTITION        *Partition;
 
@@ -495,6 +502,45 @@ VOID
 Ext4SetupFile (
   IN OUT EXT4_FILE   *File,
   IN EXT4_PARTITION  *Partition
+  );
+
+/**
+  Opens a new file relative to the source file's location.
+
+  @param[out] FoundFile  A pointer to the location to return the opened handle for the new
+                         file.
+  @param[in]  Source     A pointer to the EXT4_FILE instance that is the file
+                         handle to the source location. This would typically be an open
+                         handle to a directory.
+  @param[in]  FileName   The Null-terminated string of the name of the file to be opened.
+                         The file name may contain the following path modifiers: "\", ".",
+                         and "..".
+  @param[in]  OpenMode   The mode to open the file. The only valid combinations that the
+                         file may be opened with are: Read, Read/Write, or Create/Read/Write.
+  @param[in]  Attributes Only valid for EFI_FILE_MODE_CREATE, in which case these are the
+                         attribute bits for the newly created file.
+
+  @retval EFI_SUCCESS          The file was opened.
+  @retval EFI_NOT_FOUND        The specified file could not be found on the device.
+  @retval EFI_NO_MEDIA         The device has no medium.
+  @retval EFI_MEDIA_CHANGED    The device has a different medium in it or the medium is no
+                               longer supported.
+  @retval EFI_DEVICE_ERROR     The device reported an error.
+  @retval EFI_VOLUME_CORRUPTED The file system structures are corrupted.
+  @retval EFI_WRITE_PROTECTED  An attempt was made to create a file, or open a file for write
+                               when the media is write-protected.
+  @retval EFI_ACCESS_DENIED    The service denied access to the file.
+  @retval EFI_OUT_OF_RESOURCES Not enough resources were available to open the file.
+  @retval EFI_VOLUME_FULL      The volume is full.
+
+**/
+EFI_STATUS
+Ext4OpenInternal (
+  OUT EXT4_FILE  **FoundFile,
+  IN  EXT4_FILE  *Source,
+  IN  CHAR16     *FileName,
+  IN  UINT64     OpenMode,
+  IN  UINT64     Attributes
   );
 
 /**
@@ -775,6 +821,18 @@ Ext4FileIsDir (
   );
 
 /**
+   Checks if a file is a symlink.
+
+   @param[in]      File          Pointer to the opened file.
+
+   @return BOOLEAN         Whether file is a symlink
+**/
+BOOLEAN
+Ext4FileIsSymlink (
+  IN CONST EXT4_FILE  *File
+  );
+
+/**
    Checks if a file is a regular file.
    @param[in]      File          Pointer to the opened file.
 
@@ -797,7 +855,7 @@ Ext4FileIsReg (
            it's a regular file or a directory, since most other file types
            don't make sense under UEFI.
 **/
-#define Ext4FileIsOpenable(File)  (Ext4FileIsReg(File) || Ext4FileIsDir(File))
+#define Ext4FileIsOpenable(File)  (Ext4FileIsReg (File) || Ext4FileIsDir (File) || Ext4FileIsSymlink (File))
 
 #define EXT4_INODE_HAS_FIELD(Inode, Field)                                     \
   (Inode->i_extra_isize + EXT4_GOOD_OLD_INODE_SIZE >=                          \

@@ -483,6 +483,10 @@ InitializeAcpiDebugSmm (
   EFI_SMM_BASE2_PROTOCOL    *SmmBase2;
   BOOLEAN                   InSmm;
 
+  if (!PcdGetBool (PcdAcpiDebugFeatureActive)) {
+    return EFI_SUCCESS;
+  }
+
   Status = gBS->LocateProtocol (&gEfiSmmBase2ProtocolGuid, NULL, (VOID **) &SmmBase2);
   ASSERT_EFI_ERROR (Status);
   if (EFI_ERROR (Status)) {

@@ -54,5 +54,8 @@
   # in the package build.
 
   # Add components here that should be included in the package build.
+!if gAcpiDebugFeaturePkgTokenSpaceGuid.PcdUseSmmVersion == FALSE
   AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugDxe.inf
+!else
   AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugSmm.inf
+!endif

@@ -28,6 +28,7 @@
 
 [PcdsFeatureFlag]
   gAcpiDebugFeaturePkgTokenSpaceGuid.PcdAcpiDebugFeatureEnable|FALSE|BOOLEAN|0xA0000001
+  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdUseSmmVersion|FALSE|BOOLEAN|0xA0000002
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   ## This PCD specifies the ACPI debug message buffer size.

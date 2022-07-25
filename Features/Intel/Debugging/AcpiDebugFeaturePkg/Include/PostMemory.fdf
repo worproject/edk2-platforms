@@ -7,5 +7,8 @@
 #
 ##
 
-INF RuleOverride = DRIVER_ACPITABLE AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugDxe.inf
-INF RuleOverride = DRIVER_ACPITABLE AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugSmm.inf
+!if gAcpiDebugFeaturePkgTokenSpaceGuid.PcdUseSmmVersion == FALSE
+  INF RuleOverride = DRIVER_ACPITABLE AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugDxe.inf
+!else
+  INF RuleOverride = DRIVER_ACPITABLE AcpiDebugFeaturePkg/AcpiDebugDxeSmm/AcpiDebugSmm.inf
+!endif

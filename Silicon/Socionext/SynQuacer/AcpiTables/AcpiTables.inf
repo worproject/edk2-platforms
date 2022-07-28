@@ -19,6 +19,7 @@
 [Sources]
   AcpiTables.h
   AcpiSsdtRootPci.asl
+  Dbg2.aslc
   Dsdt.asl
   Fadt.aslc
   Gtdt.aslc

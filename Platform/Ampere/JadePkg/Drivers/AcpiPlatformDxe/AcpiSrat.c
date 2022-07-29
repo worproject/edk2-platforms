@@ -1,6 +1,7 @@
 /** @file
 
   Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2022, ARM Ltd. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -115,7 +116,8 @@ SratAddGiccAffinity (
   EFI_ACPI_6_3_GICC_AFFINITY_STRUCTURE *SratGiccAffinity
   )
 {
-  ARM_PROCESSOR_TABLE *ArmProcessorTable;
+  VOID                *Hob;
+  UINTN               NumberOfEntries;
   ARM_CORE_INFO       *ArmCoreInfoTable;
   UINTN               Count, NumNode, Idx;
   UINT32              AcpiProcessorUid;
@@ -123,22 +125,22 @@ SratAddGiccAffinity (
   UINT8               Core;
   UINT8               Cpm;
 
-  for (Idx = 0; Idx < gST->NumberOfTableEntries; Idx++) {
-    if (CompareGuid (&gArmMpCoreInfoGuid, &(gST->ConfigurationTable[Idx].VendorGuid))) {
-      ArmProcessorTable = (ARM_PROCESSOR_TABLE *)gST->ConfigurationTable[Idx].VendorTable;
-      ArmCoreInfoTable = ArmProcessorTable->ArmCpus;
-      break;
-    }
+  Hob = GetFirstGuidHob (&gArmMpCoreInfoGuid);
+  if (Hob == NULL) {
+    return EFI_NOT_FOUND;
   }
 
-  if (Idx == gST->NumberOfTableEntries) {
+  ArmCoreInfoTable = (ARM_CORE_INFO *)GET_GUID_HOB_DATA (Hob);
+  NumberOfEntries = GET_GUID_HOB_DATA_SIZE (Hob) / sizeof (ARM_CORE_INFO);
+
+  if (NumberOfEntries == 0) {
     return EFI_INVALID_PARAMETER;
   }
 
   Count = 0;
   NumNode = 0;
-  while (Count != ArmProcessorTable->NumberOfEntries) {
-    for (Idx = 0; Idx < ArmProcessorTable->NumberOfEntries; Idx++ ) {
+  while (Count != NumberOfEntries) {
+    for (Idx = 0; Idx < NumberOfEntries; Idx++ ) {
       Socket = GET_MPIDR_AFF1 (ArmCoreInfoTable[Idx].Mpidr);
       Core   = GET_MPIDR_AFF0 (ArmCoreInfoTable[Idx].Mpidr);
       Cpm = Core >> PLATFORM_CPM_UID_BIT_OFFSET;

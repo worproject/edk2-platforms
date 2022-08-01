@@ -373,6 +373,12 @@ struct _VK_CONTEXT {
   BOOLEAN                           IsRedrawUpdateUI;
   VK_PAGE_TYPE                      PageNumber;
   LIST_ENTRY                        NotifyList;
+
+  ///
+  /// Previous X and Y axis Buffer
+  ///
+  UINTN                             PreviousX;
+  UINTN                             PreviousY;
 };
 
 ///

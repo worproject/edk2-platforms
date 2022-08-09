@@ -19,7 +19,9 @@
     !error "DXE_ARCH must be specified to build this feature!"
   !endif
 
-  DEFINE SMM_VARIABLE                 = TRUE
+  !ifndef SMM_VARIABLE
+    DEFINE SMM_VARIABLE                 = TRUE
+  !endif
 
 
 ################################################################################
@@ -28,7 +30,7 @@
 #
 ################################################################################
 
-[PcdsPatchableInModule.X64]
+[PcdsPatchableInModule]
 !if $(SMM_VARIABLE) == TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|0
@@ -45,24 +47,11 @@
 #
 ################################################################################
 
-[LibraryClasses]
-  !if $(SMM_VARIABLE) == TRUE
-    PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
-    PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
-    # (Optional for variable modules debug output
-    PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
-    DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
-    PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
-    DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
-  !endif
-
 [LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.DXE_RUNTIME_DRIVER]
   !if $(SMM_VARIABLE) == TRUE
     SpiFlashLib|PlatformPayloadPkg/Library/SpiFlashLib/SpiFlashLib.inf
     FlashDeviceLib|PlatformPayloadPkg/Library/FlashDeviceLib/FlashDeviceLib.inf
     DxeHobListLib|UefiPayloadPkg/Library/DxeHobListLib/DxeHobListLib.inf
-    HobLib|UefiPayloadPkg/Library/DxeHobLib/DxeHobLib.inf
-    TimerLib|UefiCpuPkg/Library/CpuTimerLib/BaseCpuTimerLib.inf
   !endif
 
 ################################################################################
@@ -90,13 +79,20 @@
   # SMM Variable Support
   #
   !if $(SMM_VARIABLE) == TRUE
-    PlatformPayloadPkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf
-      PlatformPayloadPkg/Fvb/FvbSmm.inf {
-        <LibraryClasses>
-          NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
-      }
+    PlatformPayloadPkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf {
+      <LibraryClasses>
+        PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
+    }
+
+    PlatformPayloadPkg/Fvb/FvbSmm.inf {
+      <LibraryClasses>
+        PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
+        NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
+    }
+
     MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
       <LibraryClasses>
+        PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
         NULL|MdeModulePkg/Library/VarCheckUefiLib/VarCheckUefiLib.inf
         NULL|MdeModulePkg/Library/VarCheckHiiLib/VarCheckHiiLib.inf
         NULL|MdeModulePkg/Library/VarCheckPcdLib/VarCheckPcdLib.inf
@@ -106,7 +102,11 @@
 
     MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf {
       <LibraryClasses>
+        PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
         NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
     }
-    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf
+    MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf {
+      <LibraryClasses>
+        PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
+    }
   !endif

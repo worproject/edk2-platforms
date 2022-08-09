@@ -27,6 +27,10 @@
   PCD_DYNAMIC_AS_DYNAMICEX            = TRUE
   DXE_ARCH                            = X64
 
+  !ifndef SMM_VARIABLE
+    DEFINE SMM_VARIABLE                 = TRUE
+  !endif
+
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec
 
@@ -55,7 +59,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
 
-[PcdsPatchableInModule.X64]
+[PcdsPatchableInModule]
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x7
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x8000004F
 !if $(SOURCE_DEBUG_ENABLE)
@@ -89,6 +93,29 @@
 !include MinPlatformPkg/Include/Dsc/CoreCommonLib.dsc
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
+
+#
+# For standalone platform payload package build there are specific library requirements
+#
+
+[LibraryClasses]
+  !if $(SMM_VARIABLE) == TRUE
+    PciLib|MdePkg/Library/BasePciLibPciExpress/BasePciLibPciExpress.inf
+    PciExpressLib|MdePkg/Library/BasePciExpressLib/BasePciExpressLib.inf
+
+    #
+    # Optional for variable modules debug output
+    #
+    DebugPrintErrorLevelLib|MdePkg/Library/BaseDebugPrintErrorLevelLib/BaseDebugPrintErrorLevelLib.inf
+    PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf
+    DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  !endif
+
+[LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.DXE_RUNTIME_DRIVER]
+  !if $(SMM_VARIABLE) == TRUE
+    HobLib|UefiPayloadPkg/Library/DxeHobLib/DxeHobLib.inf
+    TimerLib|UefiCpuPkg/Library/CpuTimerLib/BaseCpuTimerLib.inf
+  !endif
 
 #
 # This package always builds the feature.

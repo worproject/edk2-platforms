@@ -81,5 +81,5 @@
 # Individual features
 #
 !if gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable == TRUE
-  !include PlatformPayloadPkg/Include/PostMemory.fdf
+  !include PlatformPayloadFeaturePkg/Include/PostMemory.fdf
 !endif

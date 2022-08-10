@@ -15,7 +15,7 @@ or bootloader dependency (only for coreboot). These modules would be located in
 edk2-platform repo.
 
 The generic UEFI payload could be built from EDK2 UefiPayloadPkg in ELF format following
-universal payload specification. And a Platform Payload could be built from PlatformPayloadPkg
+universal payload specification. And a Platform Payload could be built from PlatformPayloadFeaturePkg
 to provide Intel platform specific features (e.g. SPI module, PCH SMM) in FV/FD format.
 This platform payload could be inserted into universal UEFI payload as an ELF section
 to generate a full-feature payload.
@@ -32,11 +32,10 @@ set PACKAGES_PATH=%WORKSPACE%\edk2;%WORKSPACE%\edk2-platforms\Features\Intel;
 edk2\edksetup.bat
 
 ** Build universal UEFI payload with platform Payload
-python edk2-platforms\Features\Intel\PlatformPayloadPkg\PlatformPayloadPkg.py -t VS2019
-  -D SMM_SUPPORT=TRUE -DVARIABLE_SUPPORT=NONE -D SMM_VARIABLE=TRUE
+python edk2-platforms\Features\Intel\PlatformPayloadFeaturePkg\PlatformPayloadFeaturePkg.py -t VS2019 -D SMM_SUPPORT=TRUE -DVARIABLE_SUPPORT=NONE -D SMM_VARIABLE=TRUE
 or
 python edk2\UefiPayloadPkg\UniversalPayloadBuild.py -t VS2019 -D SMM_SUPPORT=TRUE -DVARIABLE_SUPPORT=NONE
-python edk2-platforms\Features\Intel\PlatformPayloadPkg\PlatformPayloadPkg.py -t VS2019 -D SMM_VARIABLE=TRUE -s
+python edk2-platforms\Features\Intel\PlatformPayloadFeaturePkg\PlatformPayloadFeaturePkg.py -t VS2019 -D SMM_VARIABLE=TRUE -s
 
   If build success, the final UEFI payload is at Build\UefiPayloadPkgX64\UniversalPayload.elf.
 
@@ -55,7 +54,7 @@ Several build macros are used as below for SMM variable feature modules.
 
 2. Data Flows
 SMM variable:
-The interface with bootloader are defined in PlatformPayloadPkg\Include\Guid
+The interface with bootloader are defined in PlatformPayloadFeaturePkg\Include\Guid
 SpiFlashInfoGuid.h    -- SPI related information for SPI flash operation.
 NvVariableInfoGuid.h  -- Variable related information for SPI NV variables.
 

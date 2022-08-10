@@ -49,8 +49,8 @@
 
 [LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.DXE_RUNTIME_DRIVER]
   !if $(SMM_VARIABLE) == TRUE
-    SpiFlashLib|PlatformPayloadPkg/Library/SpiFlashLib/SpiFlashLib.inf
-    FlashDeviceLib|PlatformPayloadPkg/Library/FlashDeviceLib/FlashDeviceLib.inf
+    SpiFlashLib|PlatformPayloadFeaturePkg/Library/SpiFlashLib/SpiFlashLib.inf
+    FlashDeviceLib|PlatformPayloadFeaturePkg/Library/FlashDeviceLib/FlashDeviceLib.inf
     DxeHobListLib|UefiPayloadPkg/Library/DxeHobListLib/DxeHobListLib.inf
   !endif
 
@@ -79,15 +79,15 @@
   # SMM Variable Support
   #
   !if $(SMM_VARIABLE) == TRUE
-    PlatformPayloadPkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf {
+    PlatformPayloadFeaturePkg/PchSmiDispatchSmm/PchSmiDispatchSmm.inf {
       <LibraryClasses>
         PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
     }
 
-    PlatformPayloadPkg/Fvb/FvbSmm.inf {
+    PlatformPayloadFeaturePkg/Fvb/FvbSmm.inf {
       <LibraryClasses>
         PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
-        NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
+        NULL|PlatformPayloadFeaturePkg/Library/PcdInitLib/PcdInitLib.inf
     }
 
     MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmm.inf {
@@ -97,13 +97,13 @@
         NULL|MdeModulePkg/Library/VarCheckHiiLib/VarCheckHiiLib.inf
         NULL|MdeModulePkg/Library/VarCheckPcdLib/VarCheckPcdLib.inf
         NULL|MdeModulePkg/Library/VarCheckPolicyLib/VarCheckPolicyLib.inf
-        NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
+        NULL|PlatformPayloadFeaturePkg/Library/PcdInitLib/PcdInitLib.inf
     }
 
     MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf {
       <LibraryClasses>
         PlatformHookLib|UefiPayloadPkg/Library/PlatformHookLib/PlatformHookLib.inf
-        NULL|PlatformPayloadPkg/Library/PcdInitLib/PcdInitLib.inf
+        NULL|PlatformPayloadFeaturePkg/Library/PcdInitLib/PcdInitLib.inf
     }
     MdeModulePkg/Universal/Variable/RuntimeDxe/VariableSmmRuntimeDxe.inf {
       <LibraryClasses>

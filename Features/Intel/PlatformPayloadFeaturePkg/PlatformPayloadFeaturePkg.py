@@ -45,11 +45,11 @@ def BuildUniversalPayload(Args, MacroList):
     if not os.path.exists (Edk2PayloadBuildScript):
         raise Exception("Could not find universal UEFI payload build script UniversalPayloadBuild.py")
 
-    PlatformFvDscPath      = os.path.normpath("PlatformPayloadPkg/PlatformPayloadPkg.dsc")
+    PlatformFvDscPath      = os.path.normpath("PlatformPayloadFeaturePkg/PlatformPayloadFeaturePkg.dsc")
     BuildDir               = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/UefiPayloadPkgX64"))
     PlatformFvReportPath   = os.path.join(BuildDir, "PlatformPayloadReport.txt")
     UniversalUefiPld       = os.path.join(BuildDir, 'UniversalPayload.elf')
-    PlatformFv             = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/PlatformPayloadPkg"), f"{BuildTarget}_{ToolChain}", os.path.normpath("FV/PlatformPayload.Fv"))
+    PlatformFv             = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/PlatformPayloadFeaturePkg"), f"{BuildTarget}_{ToolChain}", os.path.normpath("FV/PlatformPayload.Fv"))
 
     if "CLANG_BIN" in os.environ:
         LlvmObjcopyPath = os.path.join(os.environ["CLANG_BIN"], "llvm-objcopy")

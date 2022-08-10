@@ -30,7 +30,7 @@
 [Packages]
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  PlatformPayloadPkg/PlatformPayloadPkg.dec
+  PlatformPayloadFeaturePkg/PlatformPayloadFeaturePkg.dec
 
 [LibraryClasses]
   BaseLib

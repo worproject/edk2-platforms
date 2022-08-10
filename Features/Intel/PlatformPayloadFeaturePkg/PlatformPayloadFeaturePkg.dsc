@@ -15,7 +15,7 @@
 #
 ################################################################################
 [Defines]
-  PLATFORM_NAME                       = PlatformPayloadPkg
+  PLATFORM_NAME                       = PlatformPayloadFeaturePkg
   PLATFORM_GUID                       = D3C551BE-9BC6-48F5-AA8A-F49425C28CA9
   PLATFORM_VERSION                    = 0.1
   DSC_SPECIFICATION                   = 0x00010005
@@ -23,7 +23,7 @@
   BUILD_TARGETS                       = DEBUG|RELEASE|NOOPT
   SKUID_IDENTIFIER                    = DEFAULT
   OUTPUT_DIRECTORY                    = Build/$(PLATFORM_NAME)
-  FLASH_DEFINITION                    = $(PLATFORM_NAME)/PlatformPayloadPkg.fdf
+  FLASH_DEFINITION                    = $(PLATFORM_NAME)/PlatformPayloadFeaturePkg.fdf
   PCD_DYNAMIC_AS_DYNAMICEX            = TRUE
   DXE_ARCH                            = X64
 

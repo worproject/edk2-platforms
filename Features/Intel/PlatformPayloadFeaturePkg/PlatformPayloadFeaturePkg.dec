@@ -10,7 +10,7 @@
 
 [Defines]
   DEC_SPECIFICATION              = 0x00010005
-  PACKAGE_NAME                   = PlatformPayloadPkg
+  PACKAGE_NAME                   = PlatformPayloadFeaturePkg
   PACKAGE_GUID                   = 17F3ACAC-079D-4518-9EBF-E33289733E8C
   PACKAGE_VERSION                = 0.1
 

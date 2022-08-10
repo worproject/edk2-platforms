@@ -28,7 +28,7 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   UefiCpuPkg/UefiCpuPkg.dec
-  PlatformPayloadPkg/PlatformPayloadPkg.dec
+  PlatformPayloadFeaturePkg/PlatformPayloadFeaturePkg.dec
 
 [LibraryClasses]
   FlashDeviceLib

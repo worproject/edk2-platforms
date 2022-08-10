@@ -56,7 +56,7 @@
   #
   # Individual features
   #
-  PlatformPayloadPkg/PlatformPayloadPkg.dec
+  PlatformPayloadFeaturePkg/PlatformPayloadFeaturePkg.dec
 
 #
 # The section below sets all PCDs to FALSE in this DSC file so the feature is not enabled by default.

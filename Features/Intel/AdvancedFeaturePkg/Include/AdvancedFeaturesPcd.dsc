@@ -82,7 +82,7 @@
   gUserAuthFeaturePkgTokenSpaceGuid.PcdUserAuthenticationFeatureEnable      |FALSE
   gVirtualKeyboardFeaturePkgTokenSpaceGuid.PcdVirtualKeyboardFeatureEnable  |FALSE
 
-  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable          |FALSE
+  gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdPlatformPayloadFeatureEnable  |FALSE
 
 #
 # There seems to be some build parsing odd behavior that requires this PCD to be specified even though

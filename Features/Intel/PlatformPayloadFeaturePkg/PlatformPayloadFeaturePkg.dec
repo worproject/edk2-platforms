@@ -21,7 +21,7 @@
   #
   ## Defines the token space for the Payload platform Package PCDs.
   #
-  gPlatformPayloadPkgTokenSpaceGuid  = {0xa375ddc6, 0x74fb, 0x4de1, {0x82, 0x6d, 0xa3, 0x10, 0xa3, 0x3b, 0x89, 0x77}}
+  gPlatformPayloadFeaturePkgTokenSpaceGuid  = {0xa375ddc6, 0x74fb, 0x4de1, {0x82, 0x6d, 0xa3, 0x10, 0xa3, 0x3b, 0x89, 0x77}}
 
   #
   # SPI variable support
@@ -41,9 +41,9 @@
 [PcdsFeatureFlag]
   ## Feature enabling control
   # @Prompt Enable payload platform FV common for most Intel platforms
-  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable|FALSE|BOOLEAN|0x00000001
+  gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdPlatformPayloadFeatureEnable|FALSE|BOOLEAN|0x00000001
 
 [PcdsFixedAtBuild, PcdsPatchableInModule]
   ## FFS filename to find the default variable initial data file.
   # @Prompt FFS Name of variable initial data file
-  gPlatformPayloadPkgTokenSpaceGuid.PcdNvsDataFile |{ 0x1a, 0xf1, 0xb1, 0xae, 0x42, 0xcc, 0xcf, 0x4e, 0xac, 0x60, 0xdb, 0xab, 0xf6, 0xca, 0x69, 0xe6 }|VOID*|0x00000025
+  gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdNvsDataFile |{ 0x1a, 0xf1, 0xb1, 0xae, 0x42, 0xcc, 0xcf, 0x4e, 0xac, 0x60, 0xdb, 0xab, 0xf6, 0xca, 0x69, 0xe6 }|VOID*|0x00000025

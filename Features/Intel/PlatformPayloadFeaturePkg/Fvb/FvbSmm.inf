@@ -60,7 +60,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
-  gPlatformPayloadPkgTokenSpaceGuid.PcdNvsDataFile
+  gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdNvsDataFile
 
 [Depex]
   TRUE

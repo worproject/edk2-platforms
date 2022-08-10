@@ -84,7 +84,7 @@
   #
   # Individual features
   #
-  gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable          |TRUE
+  gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdPlatformPayloadFeatureEnable  |TRUE
 
 #
 # PCD that are required to be set by the build target should be configured here for test purposes

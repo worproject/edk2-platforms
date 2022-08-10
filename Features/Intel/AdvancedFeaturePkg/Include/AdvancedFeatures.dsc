@@ -79,6 +79,6 @@
 #
 # Individual features
 #
-!if gPlatformPayloadPkgTokenSpaceGuid.PcdPayloadPackageFeatureEnable == TRUE
+!if gPlatformPayloadFeaturePkgTokenSpaceGuid.PcdPlatformPayloadFeatureEnable == TRUE
   !include PlatformPayloadFeaturePkg/Include/PlatformPayloadFeature.dsc
 !endif

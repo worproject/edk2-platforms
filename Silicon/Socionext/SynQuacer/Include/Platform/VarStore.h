@@ -16,8 +16,8 @@
 #define PCIE_MAX_SPEED_UNLIMITED          0x0
 #define PCIE_MAX_SPEED_GEN1               0x1
 
-#define ACPIPREF_DT                       0x0
-#define ACPIPREF_ACPI                     0x1
+#define ACPIPREF_ACPI                     0x0
+#define ACPIPREF_DT                       0x1
 
 typedef struct {
   UINT8         EnableEmmc;

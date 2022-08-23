@@ -274,6 +274,7 @@ F: Silicon/Intel/IntelSiliconPkg/
 M: Ray Ni <ray.ni@intel.com>
 M: Rangasai V Chaganty <rangasai.v.chaganty@intel.com>
 M: Isaac Oram <isaac.w.oram@intel.com>
+R: Ashraf Ali S <ashraf.ali.s@intel.com>
 
 Silicon/Intel/QuarkSocPkg
 F: Silicon/Intel/QuarkSocPkg/

@@ -47,6 +47,10 @@
   !include SpcrFeaturePkg/Include/SpcrFeature.dsc
 !endif
 
+!if gAsfFeaturePkgTokenSpaceGuid.PcdAsfFeatureEnable == TRUE
+  !include AsfFeaturePkg/Include/AsfFeature.dsc
+!endif
+
 #
 # PowerManagement features
 #

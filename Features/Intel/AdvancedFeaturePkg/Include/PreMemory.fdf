@@ -48,6 +48,10 @@
   !include SpcrFeaturePkg/Include/PreMemory.fdf
 !endif
 
+!if gAsfFeaturePkgTokenSpaceGuid.PcdAsfFeatureEnable == TRUE
+  !include AsfFeaturePkg/Include/PreMemory.fdf
+!endif
+
 #
 # PowerManagement features
 #

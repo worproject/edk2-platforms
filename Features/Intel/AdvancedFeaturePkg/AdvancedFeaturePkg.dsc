@@ -63,6 +63,7 @@
   #
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |TRUE
   gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |TRUE
+  gAsfFeaturePkgTokenSpaceGuid.PcdAsfFeatureEnable                          |TRUE
 
   #
   # PowerManagement features

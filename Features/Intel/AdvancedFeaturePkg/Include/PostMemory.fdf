@@ -48,6 +48,10 @@
   !include SpcrFeaturePkg/Include/PostMemory.fdf
 !endif
 
+!if gAsfFeaturePkgTokenSpaceGuid.PcdAsfFeatureEnable == TRUE
+  !include AsfFeaturePkg/Include/PostMemory.fdf
+!endif
+
 #
 # PowerManagement features
 #

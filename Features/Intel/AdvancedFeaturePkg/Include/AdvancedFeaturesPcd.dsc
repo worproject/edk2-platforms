@@ -35,6 +35,7 @@
   #
   IpmiFeaturePkg/IpmiFeaturePkg.dec
   SpcrFeaturePkg/SpcrFeaturePkg.dec
+  AsfFeaturePkg/AsfFeaturePkg.dec
 
   #
   # PowerManagement features
@@ -73,6 +74,7 @@
 
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable                        |FALSE
   gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrFeatureEnable                        |FALSE
+  gAsfFeaturePkgTokenSpaceGuid.PcdAsfFeatureEnable                          |FALSE
 
   gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                            |FALSE
 

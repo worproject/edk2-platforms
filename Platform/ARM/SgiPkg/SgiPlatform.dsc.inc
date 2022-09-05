@@ -123,7 +123,7 @@
   gArmSgiTokenSpaceGuid.PcdOscCppcEnable|1
 !endif
 
-  # NV Storage PCDs. Use base of 0x08000000 for NOR0, 0xC0000000 for NOR 1
+  # NV Storage PCDs.
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize|0x01400000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize|0x01400000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize|0x01400000

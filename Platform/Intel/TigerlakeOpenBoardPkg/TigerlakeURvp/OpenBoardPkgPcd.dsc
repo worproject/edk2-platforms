@@ -117,6 +117,7 @@
 #!if gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection == 1
   gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000
 #!endif
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800
   gEfiMdeModulePkgTokenSpaceGuid.PcdPeiCoreMaxPeiStackSize|0x40000
 
   #

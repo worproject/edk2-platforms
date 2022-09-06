@@ -194,6 +194,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x07
 !endif
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0xE0000000
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800
 !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
   gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|0x1
 !endif

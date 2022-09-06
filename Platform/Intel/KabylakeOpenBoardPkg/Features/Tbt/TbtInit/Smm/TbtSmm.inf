@@ -46,7 +46,7 @@
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdSwSmiDTbtEnumerate ## CONSUMES
 
 [FixedPcd]
-  gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress       ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress         ## CONSUMES
 
 [Sources]
   TbtSmiHandler.h

@@ -35,7 +35,7 @@ KabylakeSiliconPkg/SiPkg.dec
 IntelSiliconPkg/IntelSiliconPkg.dec
 
 [Pcd]
-gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress
 gSiPkgTokenSpaceGuid.PcdSmbusBaseAddress
 gSiPkgTokenSpaceGuid.PcdSerialIoUartDebugEnable
 gSiPkgTokenSpaceGuid.PcdSerialIoUartNumber

@@ -39,7 +39,7 @@
   PeiSpiLib.c
 
 [Pcd]
-  gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress       ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress       ## CONSUMES
 
 [Ppis]
   gPchSpi2PpiGuid      ## PRODUCES

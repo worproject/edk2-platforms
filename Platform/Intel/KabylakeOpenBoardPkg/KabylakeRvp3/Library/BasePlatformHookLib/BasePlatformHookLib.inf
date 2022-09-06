@@ -35,7 +35,7 @@
   KabylakeSiliconPkg/SiPkg.dec
 
 [Pcd]
-  gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress                         ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress               ## CONSUMES
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioIndexPort          ## CONSUMES
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioDataPort           ## CONSUMES
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdLpcSioIndexDefaultPort   ## CONSUMES

@@ -32,11 +32,12 @@ BaseMemoryLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 CoffeelakeSiliconPkg/SiPkg.dec
 
 
 [Pcd]
-gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress
 
 
 [Sources]

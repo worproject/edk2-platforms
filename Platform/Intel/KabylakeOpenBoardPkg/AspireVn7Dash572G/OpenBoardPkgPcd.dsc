@@ -241,6 +241,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdMaxPeiPerformanceLogEntries|140
 !endif
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0xE0000000
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdAriSupport|FALSE
   gEfiMdeModulePkgTokenSpaceGuid.PcdBrowserFieldTextColor|0x01

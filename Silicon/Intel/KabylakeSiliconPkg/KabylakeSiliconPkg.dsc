@@ -48,6 +48,7 @@ gSiPkgTokenSpaceGuid.PcdSiCatalogDebugEnable         |FALSE
 [PcdsFixedAtBuild.common]
 gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress    |0xE0000000
 gSiPkgTokenSpaceGuid.PcdSiPciExpressRegionLength     |0x10000000
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress    |0x1800
 #
 # This DSC mainly for GreenH Silicon code build so PciExpressBaseAddress can be FixedAtBuild
 #

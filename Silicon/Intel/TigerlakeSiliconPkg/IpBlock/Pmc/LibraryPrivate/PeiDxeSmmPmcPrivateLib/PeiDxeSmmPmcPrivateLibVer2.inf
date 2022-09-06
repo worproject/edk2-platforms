@@ -27,11 +27,12 @@ PmcLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 TigerlakeSiliconPkg/SiPkg.dec
 
 
 [Pcd]
-gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress
 
 [FixedPcd]
 

@@ -60,6 +60,7 @@ gSiPkgTokenSpaceGuid.PcdSpaEnable                    |FALSE
 gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress       |0xC0000000
 gSiPkgTokenSpaceGuid.PcdSiPciExpressBaseAddress         |gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress
 gSiPkgTokenSpaceGuid.PcdTemporaryPciExpressRegionLength |0x10000000
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress       |0x1800
 
 [PcdsDynamicDefault.common]
 gSiPkgTokenSpaceGuid.PcdPciExpressRegionLength          |0x10000000

@@ -65,6 +65,7 @@
 
   gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress|0xE0000000
   gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800
   #
   # PCIe Reserved Memory Space Range
   #

@@ -42,6 +42,7 @@ gSiPkgTokenSpaceGuid.PcdSiCatalogDebugEnable         |FALSE
 [PcdsFixedAtBuild.common]
 gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress       |0xE0000000
 gSiPkgTokenSpaceGuid.PcdTemporaryPciExpressRegionLength |0x10000000
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress       |0x1800
 
   gSiPkgTokenSpaceGuid.PcdSiliconInitTempPciBusMin        |10
   gSiPkgTokenSpaceGuid.PcdSiliconInitTempPciBusMax        |18

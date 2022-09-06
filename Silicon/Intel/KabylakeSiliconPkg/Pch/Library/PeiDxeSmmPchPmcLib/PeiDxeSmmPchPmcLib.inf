@@ -30,11 +30,12 @@ PchCycleDecodingLib
 
 [Packages]
 MdePkg/MdePkg.dec
+IntelSiliconPkg/IntelSiliconPkg.dec
 KabylakeSiliconPkg/SiPkg.dec
 
 
 [Pcd]
-gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress
+gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress
 
 
 [Sources]

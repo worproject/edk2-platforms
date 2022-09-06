@@ -46,7 +46,7 @@
   SiliconInitPreMem.c
 
 [Pcd]
-  gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress                      ## CONSUMES
+  gIntelSiliconPkgTokenSpaceGuid.PcdAcpiBaseAddress            ## CONSUMES
   gSiPkgTokenSpaceGuid.PcdTcoBaseAddress                       ## CONSUMES
 
 

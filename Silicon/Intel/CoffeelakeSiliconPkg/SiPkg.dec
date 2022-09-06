@@ -516,7 +516,6 @@ gSiPkgTokenSpaceGuid.PcdMchBaseAddress|0xFED10000|UINT64|0x00010030
 ## This value is used to set the base address of PCH devices
 gSiPkgTokenSpaceGuid.PcdSmbusBaseAddress|0x0000EFA0|UINT16|0x00010031
 gSiPkgTokenSpaceGuid.PcdTcoBaseAddress|0x0400|UINT16|0x00010034
-gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800|UINT16|0x00010035
 
 ## 32KB window
 gSiPkgTokenSpaceGuid.PcdMchMmioSize|0x8000|UINT32|0x50000000

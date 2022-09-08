@@ -48,16 +48,13 @@
 #
 ################################################################################
 
-#
-# Since there are no 32b libraries or components in this package, these PCD are specified for 64b only
-#
-[PcdsFeatureFlag]
   #
-  # PCD needed for MinPlatform build includes
+  # MinPlatform common include for required feature PCD
+  # These PCD must be set before the core include files, CoreCommonLib,
+  # CorePeiLib, and CoreDxeLib.
+  # Optional MinPlatformPkg features should be enabled after this
   #
-  gMinPlatformPkgTokenSpaceGuid.PcdSmiHandlerProfileEnable                |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
-  gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
+  !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
 [PcdsPatchableInModule]
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x7

@@ -59,7 +59,7 @@
 #define CS_OUTPUT_PORT(_port, _rport, _rphandle)      \
     CS_PORT(_port, _rport, _rphandle, CS_LINK_MASTER)
 
-DefinitionBlock("Dsdt.aml", "DSDT", 1, "ARMLTD", "N1Sdp", EFI_ACPI_ARM_OEM_REVISION) {
+DefinitionBlock("Dsdt.aml", "DSDT", 2, "ARMLTD", "N1Sdp", EFI_ACPI_ARM_OEM_REVISION) {
   Scope(_SB) {
     Device(CP00) { // Ares-0: Cluster 0, Cpu 0
       Name(_HID, "ACPI0007")

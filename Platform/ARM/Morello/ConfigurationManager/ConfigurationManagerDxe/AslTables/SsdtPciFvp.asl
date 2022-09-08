@@ -30,7 +30,7 @@
 
 #define ROOT_PRT_ENTRY(Pin, Link)   PRT_ENTRY(0x0000FFFF, Pin, Link)  // Device 0 for Bridge.
 
-DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "MORELLO",
+DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "MORELLO",
                 CFG_MGR_OEM_REVISION)
 {
   Scope (_SB) {

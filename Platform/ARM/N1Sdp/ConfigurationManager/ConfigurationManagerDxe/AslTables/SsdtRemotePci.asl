@@ -61,7 +61,7 @@
 */
 #define ROOT_PRT_ENTRY(Pin, Link)   PRT_ENTRY(0x0000FFFF, Pin, Link)  // Device 0 for Bridge.
 
-DefinitionBlock("SsdtRemotePci.aml", "SSDT", 1, "ARMLTD", "N1Sdp",
+DefinitionBlock("SsdtRemotePci.aml", "SSDT", 2, "ARMLTD", "N1Sdp",
                 EFI_ACPI_ARM_OEM_REVISION)
 {
   Scope (_SB) {

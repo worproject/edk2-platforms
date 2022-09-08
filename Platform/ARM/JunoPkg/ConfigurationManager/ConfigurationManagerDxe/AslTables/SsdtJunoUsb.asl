@@ -8,7 +8,7 @@
 
 #include "ArmPlatform.h"
 
-DefinitionBlock("SsdtJunoUSB.aml", "SSDT", 1, "ARMLTD", "ARM-JUNO", EFI_ACPI_ARM_OEM_REVISION) {
+DefinitionBlock("SsdtJunoUSB.aml", "SSDT", 2, "ARMLTD", "ARM-JUNO", EFI_ACPI_ARM_OEM_REVISION) {
   Scope(_SB) {
     //
     // USB EHCI Host Controller

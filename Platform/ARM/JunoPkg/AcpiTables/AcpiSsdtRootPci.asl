@@ -57,7 +57,7 @@
                                                     // Device 0 for Bridge.
 
 
-DefinitionBlock("SsdtPci.aml", "SSDT", 1, "ARMLTD", "ARM-JUNO", EFI_ACPI_ARM_OEM_REVISION) {
+DefinitionBlock("SsdtPci.aml", "SSDT", 2, "ARMLTD", "ARM-JUNO", EFI_ACPI_ARM_OEM_REVISION) {
   Scope(_SB) {
     //
     // PCI Root Complex

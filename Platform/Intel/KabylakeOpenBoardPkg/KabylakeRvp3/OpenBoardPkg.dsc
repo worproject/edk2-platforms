@@ -171,6 +171,7 @@
   GpioExpanderLib|$(PLATFORM_BOARD_PACKAGE)/Library/BaseGpioExpanderLib/BaseGpioExpanderLib.inf
   I2cAccessLib|$(PLATFORM_BOARD_PACKAGE)/Library/PeiI2cAccessLib/PeiI2cAccessLib.inf
   PlatformSecLib|$(PLATFORM_PACKAGE)/FspWrapper/Library/SecFspWrapperPlatformSecLib/SecFspWrapperPlatformSecLib.inf
+  HdmiDebugPchDetectionLib|$(PLATFORM_BOARD_PACKAGE)/Library/HdmiDebugPchDetectionLib/HdmiDebugPchDetectionLib.inf
 
   # Thunderbolt
 !if gKabylakeOpenBoardPkgTokenSpaceGuid.PcdTbtEnable == TRUE

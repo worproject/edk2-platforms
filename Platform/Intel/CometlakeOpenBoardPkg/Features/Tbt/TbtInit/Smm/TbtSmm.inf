@@ -41,6 +41,7 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MinPlatformPkg/MinPlatformPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
   CometlakeOpenBoardPkg/OpenBoardPkg.dec
   CoffeelakeSiliconPkg/SiPkg.dec
 
@@ -77,4 +78,3 @@
   gEfiVariableWriteArchProtocolGuid   AND
   gEfiVariableArchProtocolGuid        AND
   gEfiSmmVariableProtocolGuid
-

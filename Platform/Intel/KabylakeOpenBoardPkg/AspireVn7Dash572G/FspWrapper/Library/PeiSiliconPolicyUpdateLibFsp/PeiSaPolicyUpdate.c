@@ -11,6 +11,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PeiSaPolicyLib.h>
 #include <Library/PeiLib.h>
+#include <Library/PeiServicesLib.h>
 
 /**
   Performs FSP SA PEI Policy initialization.
@@ -27,11 +28,16 @@ PeiFspSaPolicyUpdate (
   IN OUT FSPS_UPD    *FspsUpd
   )
 {
+  EFI_STATUS                      Status;
+  EFI_BOOT_MODE                   BootMode;
   VOID                            *Buffer;
   VOID                            *MemBuffer;
   UINT32                          Size;
 
   DEBUG((DEBUG_INFO, "\nUpdating SA Policy in Post Mem\n"));
+
+  Status = PeiServicesGetBootMode (&BootMode);
+  ASSERT_EFI_ERROR (Status);
 
     FspsUpd->FspsConfig.PeiGraphicsPeimInit = 1;
 
@@ -40,7 +46,11 @@ PeiFspSaPolicyUpdate (
     PeiGetSectionFromAnyFv (PcdGetPtr (PcdGraphicsVbtGuid), EFI_SECTION_RAW, 0, &Buffer, &Size);
     if (Buffer == NULL) {
       DEBUG((DEBUG_WARN, "Could not locate VBT\n"));
-    } else {
+    //
+    // Graphics initialization is unnecessary,
+    // OS has present framebuffer.
+    //
+    } else if (BootMode != BOOT_ON_S3_RESUME) {
       MemBuffer = (VOID *)AllocatePages (EFI_SIZE_TO_PAGES ((UINTN)Size));
       if ((MemBuffer != NULL) && (Buffer != NULL)) {
         CopyMem (MemBuffer, (VOID *)Buffer, (UINTN)Size);

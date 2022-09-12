@@ -25,6 +25,7 @@
   SiliconInitLib
   MultiBoardInitSupportLib
   PchResetLib
+  PchPmcLib
 
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec

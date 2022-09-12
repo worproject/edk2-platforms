@@ -20,6 +20,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 #include <Library/ConfigBlockLib.h>
 #include <Library/PeiLib.h>
+#include <Library/PeiServicesLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/CpuPlatformLib.h>
@@ -549,6 +550,7 @@ SiliconPolicyUpdatePostMem (
   )
 {
   EFI_STATUS                      Status;
+  EFI_BOOT_MODE                   BootMode;
   VOID                            *Buffer;
   VOID                            *MemBuffer;
   UINT32                          Size;
@@ -556,6 +558,9 @@ SiliconPolicyUpdatePostMem (
   CPU_CONFIG                      *CpuConfig;
 
   DEBUG((DEBUG_INFO, "\nUpdating Policy in Post Mem\n"));
+
+  Status = PeiServicesGetBootMode (&BootMode);
+  ASSERT_EFI_ERROR (Status);
 
   GtConfig = NULL;
   Status = GetConfigBlock ((VOID *) Policy, &gGraphicsPeiConfigGuid, (VOID *)&GtConfig);
@@ -571,7 +576,11 @@ SiliconPolicyUpdatePostMem (
     PeiGetSectionFromAnyFv (PcdGetPtr (PcdGraphicsVbtGuid), EFI_SECTION_RAW, 0, &Buffer, &Size);
     if (Buffer == NULL) {
       DEBUG((DEBUG_WARN, "Could not locate VBT\n"));
-    } else {
+    //
+    // Graphics initialization is unnecessary,
+    // OS has present framebuffer.
+    //
+    } else if (BootMode != BOOT_ON_S3_RESUME) {
       MemBuffer = (VOID *)AllocatePages (EFI_SIZE_TO_PAGES ((UINTN)Size));
       if ((MemBuffer != NULL) && (Buffer != NULL)) {
         CopyMem (MemBuffer, (VOID *)Buffer, (UINTN)Size);

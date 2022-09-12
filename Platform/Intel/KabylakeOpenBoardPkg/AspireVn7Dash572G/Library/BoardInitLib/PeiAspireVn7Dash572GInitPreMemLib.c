@@ -11,7 +11,9 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PchCycleDecodingLib.h>
+#include <Library/PchPmcLib.h>
 #include <Library/PchResetLib.h>
+#include <Library/PciLib.h>
 #include <Library/SiliconInitLib.h>
 #include <Library/TimerLib.h>
 #include <Library/PeiLib.h>
@@ -267,25 +269,31 @@ AspireVn7Dash572GBoardBootModeDetect (
   VOID
   )
 {
-  UINT16         ABase;
+  EFI_BOOT_MODE  BootMode;
   UINT32         SleepType;
 
   DEBUG ((DEBUG_INFO, "Performing boot mode detection\n"));
 
-  // TODO: Perform advanced detection (recovery/capsule)
-  // FIXME: This violates PI specification? But BOOT_WITH* would always take precedence
-  //        over BOOT_ON_S{4,5}...
-  PchAcpiBaseGet (&ABase);
-  SleepType = IoRead32 (ABase + R_PCH_ACPI_PM1_CNT) & B_PCH_ACPI_PM1_CNT_SLP_TYP;
+  // Known sane defaults; TODO: Consider "default"?
+  BootMode = BOOT_WITH_FULL_CONFIGURATION;
 
-  switch (SleepType) {
-    case V_PCH_ACPI_PM1_CNT_S3:
-      return BOOT_ON_S3_RESUME;
-    case V_PCH_ACPI_PM1_CNT_S4:
-      return BOOT_ON_S4_RESUME;
-//    case V_PCH_ACPI_PM1_CNT_S5:
-//      return BOOT_ON_S5_RESUME;
-    default:
-      return BOOT_WITH_FULL_CONFIGURATION;
+  // TODO: Perform advanced detection (capsule/recovery)
+  // TODO: Perform "IsFirstBoot" test with VariablePpi for "minimal"/"assume"
+  if (GetSleepTypeAfterWakeup (&SleepType)) {
+    switch (SleepType) {
+      case V_PCH_ACPI_PM1_CNT_S3:
+        BootMode = BOOT_ON_S3_RESUME;
+        break;
+      case V_PCH_ACPI_PM1_CNT_S4:
+        BootMode = BOOT_ON_S4_RESUME;
+        break;
+      case V_PCH_ACPI_PM1_CNT_S5:
+        BootMode = BOOT_ON_S5_RESUME;
+        break;
+    }
   }
+
+  DEBUG ((DEBUG_INFO, "BootMode is 0x%x\n", BootMode));
+
+  return BootMode;
 }

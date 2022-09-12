@@ -239,6 +239,7 @@
   # Silicon Package
   #######################################
   ReportCpuHobLib|IntelSiliconPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
+  SmmAccessLib|IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLibSmramc/PeiSmmAccessLib.inf
 
   #######################################
   # Platform Package
@@ -662,6 +663,26 @@
         NULL|$(PROJECT)/Library/BoardAcpiLib/DxeMultiBoardAcpiSupportLib.inf
       !endif
   }
+
+!if gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable == TRUE
+  MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf {
+    <LibraryClasses>
+      # On S3 resume, RSC is in end-of-BS state
+      # - Moreover: Library cannot effectively use some end-of-BS events
+      DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+      SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
+      # Reverse-ranked priority list
+# TODO: Requires testing
+# - Strongly suspect DebugLibSerialPort constructor presents PeiDxeSerialPortLibMem dependency on services as a bug
+!if FALSE  # $(USE_MEMORY_LOGGING) == TRUE
+      SerialPortLib|MdeModulePkg/Library/PeiDxeSerialPortLibMem/DxeSerialPortLibMem.inf
+!endif
+      # Also, can debug CpuExceptionHandlerLib
+!if $(USE_HDMI_DEBUG_PORT) == TRUE
+      SerialPortLib|$(PLATFORM_BOARD_PACKAGE)/Library/I2cHdmiDebugSerialPortLib/BootScriptExecutorDxeI2cHdmiDebugSerialPortLib.inf
+!endif
+  }
+!endif
 
 !endif
 

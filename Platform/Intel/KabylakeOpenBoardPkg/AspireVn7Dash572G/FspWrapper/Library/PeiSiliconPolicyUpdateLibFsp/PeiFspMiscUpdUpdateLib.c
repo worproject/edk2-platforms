@@ -11,6 +11,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/DebugLib.h>
 #include <Library/PciLib.h>
 #include <Library/PeiLib.h>
+#include <Library/PeiServicesLib.h>
+
 #include <FspEas.h>
 #include <FspmUpd.h>
 #include <FspsUpd.h>
@@ -32,10 +34,14 @@ PeiFspMiscUpdUpdatePreMem (
   )
 {
   EFI_STATUS                        Status;
+  EFI_BOOT_MODE                     BootMode;
   UINTN                             VariableSize;
   VOID                              *FspNvsBufferPtr;
   UINT8                             MorControl;
   VOID                              *MorControlPtr;
+
+  Status = PeiServicesGetBootMode (&BootMode);
+  ASSERT_EFI_ERROR (Status);
 
   //
   // Initialize S3 Data variable (S3DataPtr). It may be used for warm and fast boot paths.
@@ -70,7 +76,11 @@ PeiFspMiscUpdUpdatePreMem (
              &VariableSize
              );
   DEBUG ((DEBUG_INFO, "MorControl - 0x%x (%r)\n", MorControl, Status));
-  if (MOR_CLEAR_MEMORY_VALUE (MorControl)) {
+  //
+  // Do not set CleanMemory on S3 resume
+  // TODO: Handle advanced features later - capsule update is in-memory list
+  //
+  if (MOR_CLEAR_MEMORY_VALUE (MorControl) && BootMode != BOOT_ON_S3_RESUME) {
     FspmUpd->FspmConfig.CleanMemory = (BOOLEAN)(MorControl & MOR_CLEAR_MEMORY_BIT_MASK);
   }
 

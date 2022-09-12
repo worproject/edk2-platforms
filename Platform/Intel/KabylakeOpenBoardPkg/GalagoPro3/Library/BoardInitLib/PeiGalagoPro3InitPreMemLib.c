@@ -14,6 +14,7 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/HobLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PchCycleDecodingLib.h>
+#include <Library/PchPmcLib.h>
 #include <Library/PciLib.h>
 #include <Library/PcdLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -236,5 +237,29 @@ GalagoPro3BoardBootModeDetect (
   VOID
   )
 {
-  return BOOT_WITH_FULL_CONFIGURATION;
+  EFI_BOOT_MODE  BootMode;
+  UINT32         SleepType;
+
+  DEBUG ((DEBUG_INFO, "Performing boot mode detection\n"));
+
+  // Known sane defaults
+  BootMode = BOOT_WITH_FULL_CONFIGURATION;
+
+  if (GetSleepTypeAfterWakeup (&SleepType)) {
+    switch (SleepType) {
+      case V_PCH_ACPI_PM1_CNT_S3:
+        BootMode = BOOT_ON_S3_RESUME;
+        break;
+      case V_PCH_ACPI_PM1_CNT_S4:
+        BootMode = BOOT_ON_S4_RESUME;
+        break;
+      case V_PCH_ACPI_PM1_CNT_S5:
+        BootMode = BOOT_ON_S5_RESUME;
+        break;
+    }
+  }
+
+  DEBUG ((DEBUG_INFO, "BootMode is 0x%x\n", BootMode));
+
+  return BootMode;
 }

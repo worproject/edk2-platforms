@@ -202,6 +202,7 @@
   # Silicon Package
   #######################################
   ReportCpuHobLib|IntelSiliconPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
+  SmmAccessLib|IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLibSmramc/PeiSmmAccessLib.inf
 
   #######################################
   # Platform Package
@@ -505,6 +506,17 @@
         NULL|$(PROJECT)/Library/BoardAcpiLib/DxeMultiBoardAcpiSupportLib.inf
       !endif
   }
+
+!if gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable == TRUE
+  MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf {
+    <LibraryClasses>
+      # On S3 resume, RSC is in end-of-BS state
+      # - Moreover: Libraries cannot effectively use some end-of-BS events
+      DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+      SerialPortLib|MdePkg/Library/BaseSerialPortLibNull/BaseSerialPortLibNull.inf
+      # TODO: Insert a reverse-ranked priority list of compatible libraries here
+  }
+!endif
 
 !endif
 

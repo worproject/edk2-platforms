@@ -127,10 +127,7 @@
   # PcdIpmiFeatureEnable will not be enabled (no BMC)
   # TODO: Can be build-time (user) choice
   gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable                |FALSE
-  # TODO: Continue developing support. Broken at present.
-  # - PeiSmmAccessLib in IntelSiliconPkg seems like a stub
-  #   - May require a PeiSmmControlLib to SMM communicate
-  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                          |FALSE
+  gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable                          |TRUE
   # TODO: Definitions (now added SmbiosDxe)
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable                  |TRUE
   # Requires actual hook-up
@@ -333,6 +330,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuCoreCount|4
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuThreadCount|2
   gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000
+  gIntelFsp2WrapperTokenSpaceGuid.PcdPeiMinMemSize|0x3800000
 
   #
   # The PCDs are used to control the Windows SMM Security Mitigations Table - Protection Flags
@@ -358,13 +356,8 @@
   #      0x7F, 0xFF, 0x04, 0x00}<BR>
   gMinPlatformPkgTokenSpaceGuid.PcdTrustedConsoleInputDevicePath|{0x02, 0x01, 0x0C, 0x00,  0xd0, 0x41, 0x03, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x06, 0x00,  0x00, 0x1F, 0x02, 0x01, 0x0C, 0x00,  0xd0, 0x41, 0x03, 0x03, 0x00, 0x00, 0x00, 0x00, 0x7F, 0xFF, 0x04, 0x00}
 
-!if $(TARGET) == RELEASE
-  gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiReservedMemorySize|0x800
-!else
-  gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiReservedMemorySize|0x188B  # TODO
-!endif
-  # TODO: Consider using reserved space instead for debug log
-  gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiRtDataMemorySize|0x200
+  gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiAcpiNvsMemorySize|0x4800
+  gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiRtDataMemorySize|0x100
 !if $(TARGET) == RELEASE
   gMinPlatformPkgTokenSpaceGuid.PcdPlatformEfiRtCodeMemorySize|0x70
 !else
@@ -415,7 +408,6 @@
   # Edk2 Configuration
   ######################################
   gIntelFsp2PkgTokenSpaceGuid.PcdGlobalDataPointerAddress|0xFED00148
-  gIntelFsp2WrapperTokenSpaceGuid.PcdPeiMinMemSize|0x3800000
 
   ######################################
   # Platform Configuration

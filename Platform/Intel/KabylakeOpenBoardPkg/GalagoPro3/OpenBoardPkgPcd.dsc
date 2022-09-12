@@ -279,6 +279,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuCoreCount|8
   gMinPlatformPkgTokenSpaceGuid.PcdMaxCpuThreadCount|2
   gMinPlatformPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000
+  gIntelFsp2WrapperTokenSpaceGuid.PcdPeiMinMemSize|0x3800000
 
   #
   # The PCDs are used to control the Windows SMM Security Mitigations Table - Protection Flags
@@ -380,7 +381,6 @@
   ######################################
   gEfiMdeModulePkgTokenSpaceGuid.PcdVpdBaseAddress|0x0
   gIntelFsp2PkgTokenSpaceGuid.PcdGlobalDataPointerAddress|0xFED00148
-  gIntelFsp2WrapperTokenSpaceGuid.PcdPeiMinMemSize|0x3800000
 
   ######################################
   # Platform Configuration

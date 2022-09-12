@@ -25,11 +25,14 @@
   TimerLib
   PchCycleDecodingLib
   PchResetLib
+  PciLib
   IoLib
   EcLib
   BoardEcLib
   GpioLib
   PeiLib
+  PeiServicesLib
+  PchPmcLib
 
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec

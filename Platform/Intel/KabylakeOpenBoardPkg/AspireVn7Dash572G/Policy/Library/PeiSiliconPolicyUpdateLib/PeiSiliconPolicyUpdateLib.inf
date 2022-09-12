@@ -23,6 +23,7 @@
   BaseMemoryLib
   MemoryAllocationLib
   PeiLib
+  PeiServicesLib
   CpuPlatformLib
   PchPcieRpLib
   PchInfoLib

@@ -18,10 +18,13 @@
 [LibraryClasses]
   PeimEntryPoint
   PeiServicesLib
+  DebugLib
   SmmAccessLib
+  SmmControlLib
 
 [Packages]
   MdePkg/MdePkg.dec
+  IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
   IntelSiliconPkg/IntelSiliconPkg.dec
   S3FeaturePkg/S3FeaturePkg.dec
 
@@ -31,5 +34,8 @@
 [FeaturePcd]
   gS3FeaturePkgTokenSpaceGuid.PcdS3FeatureEnable
 
+[Ppis]
+  gFspSiliconInitDonePpiGuid
+
 [Depex]
-  gEfiPeiMemoryDiscoveredPpiGuid
+  TRUE

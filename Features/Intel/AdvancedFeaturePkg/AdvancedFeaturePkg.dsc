@@ -115,6 +115,9 @@
 [LibraryClasses.Common]
   PlatformHookLib|MdeModulePkg/Library/BasePlatformHookLibNull/BasePlatformHookLibNull.inf # Required by BeepDebugFeature
 
+[LibraryClasses.Common.PEIM]
+  SmmAccessLib|IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLib/PeiSmmAccessLib.inf # Required by S3Feature
+
 #
 # This package builds all advanced features.
 #

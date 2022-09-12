@@ -7,6 +7,7 @@
 # for the build infrastructure.
 #
 # Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2022, Baruch Binyamin Doron.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -25,6 +26,10 @@
     !error "DXE_ARCH must be specified to build this feature!"
   !endif
 
+[PcdsFixedAtBuild]
+  # Attempts to improve performance at the cost of more DRAM usage
+  gEfiMdeModulePkgTokenSpaceGuid.PcdShadowPeimOnS3Boot|TRUE
+
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this feature.
@@ -32,7 +37,13 @@
 ################################################################################
 
 [LibraryClasses.common.PEIM]
-  SmmAccessLib|IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLib/PeiSmmAccessLib.inf
+  SmmControlLib|IntelSiliconPkg/Feature/SmmControl/Library/PeiSmmControlLib/PeiSmmControlLib.inf
+
+[LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.DXE_SMM_DRIVER]
+  #######################################
+  # Edk2 Packages
+  #######################################
+  S3BootScriptLib|MdeModulePkg/Library/PiDxeS3BootScriptLib/DxeS3BootScriptLib.inf
 
 ################################################################################
 #
@@ -60,8 +71,25 @@
   # S3 Feature Package
   #####################################
 
-  # Add library instances here that are not included in package components and should be tested
-  # in the package build.
-
   # Add components here that should be included in the package build.
   S3FeaturePkg/S3Pei/S3Pei.inf
+  UefiCpuPkg/PiSmmCommunication/PiSmmCommunicationPei.inf
+  UefiCpuPkg/Universal/Acpi/S3Resume2Pei/S3Resume2Pei.inf
+
+#
+# Feature DXE Components
+#
+
+# @todo: Change below line to [Components.$(DXE_ARCH)] after https://bugzilla.tianocore.org/show_bug.cgi?id=2308
+#        is completed.
+[Components.X64]
+  #####################################
+  # S3 Feature Package
+  #####################################
+
+  # Add components here that should be included in the package build.
+  UefiCpuPkg/PiSmmCommunication/PiSmmCommunicationSmm.inf
+  S3FeaturePkg/S3Dxe/S3Dxe.inf
+  MdeModulePkg/Universal/Acpi/S3SaveStateDxe/S3SaveStateDxe.inf
+  UefiCpuPkg/CpuS3DataDxe/CpuS3DataDxe.inf
+  MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf

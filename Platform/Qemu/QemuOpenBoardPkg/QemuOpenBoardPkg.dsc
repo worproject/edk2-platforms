@@ -50,7 +50,7 @@
   # Stage 5 - boot to OS with security boot enabled
   # Stage 6 - boot with advanced features enabled
   #
-  gMinPlatformPkgTokenSpaceGuid.PcdBootStage | 3
+  gMinPlatformPkgTokenSpaceGuid.PcdBootStage | 4
 
 #
 # MinPlatform common include for required feature PCD
@@ -99,7 +99,7 @@
   gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable                 | TRUE
 
   !if $(SMM_REQUIRED) == TRUE
-    gUefiOvmfPkgTokenSpaceGuid.PcdSmmSmramRequire                       | FALSE
+    gUefiOvmfPkgTokenSpaceGuid.PcdSmmSmramRequire                       | TRUE
     gUefiCpuPkgTokenSpaceGuid.PcdCpuHotPlugSupport                      | FALSE
     gEfiMdeModulePkgTokenSpaceGuid.PcdEnableVariableRuntimeCache        | FALSE
   !endif
@@ -133,6 +133,7 @@
 !include QemuOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
 !include QemuOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
 !include QemuOpenBoardPkg/Include/Dsc/Stage3.dsc.inc
+!include QemuOpenBoardPkg/Include/Dsc/Stage4.dsc.inc
 
 [LibraryClasses.Common]
   QemuOpenFwCfgLib        | QemuOpenBoardPkg/Library/QemuOpenFwCfgLib/QemuOpenFwCfgLib.inf
@@ -157,3 +158,12 @@
   DebugLib                | OvmfPkg/Library/PlatformDebugLibIoPort/PlatformRomDebugLibIoPort.inf
 
 [Components.$(DXE_ARCH)]
+  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+  OvmfPkg/SataControllerDxe/SataControllerDxe.inf
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf

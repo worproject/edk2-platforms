@@ -237,9 +237,68 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x800000
 # Stage 4 Firmware Volumes
 #
 ###########################
+[FV.FvOsBootUncompressed]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = 4bb59c22-e1b8-414e-9de8-559db4054c4c
+
+  INF OvmfPkg/QemuVideoDxe/QemuVideoDxe.inf
+
+  INF PcAtChipsetPkg/Bus/Pci/IdeControllerDxe/IdeControllerDxe.inf
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+
+  INF MdeModulePkg/Bus/Isa/IsaBusDxe/IsaBusDxe.inf
+  INF MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+
+  # ACPI
+  INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  INF OvmfPkg/AcpiPlatformDxe/AcpiPlatformDxe.inf
+
+  # Buses
+
+  INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
+  INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  INF MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+
+  INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
+  INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
+
+  INF OvmfPkg/SataControllerDxe/SataControllerDxe.inf
+
+  INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  INF MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+  !if $(SMM_REQUIRED) == TRUE
+      INF OvmfPkg/SmmAccess/SmmAccess2Dxe.inf
+      INF OvmfPkg/SmmControl2Dxe/SmmControl2Dxe.inf
+      INF MdeModulePkg/Core/PiSmmCore/PiSmmIpl.inf
+      INF MdeModulePkg/Core/PiSmmCore/PiSmmCore.inf
+      INF MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
+      INF MdeModulePkg/Universal/ReportStatusCodeRouter/Smm/ReportStatusCodeRouterSmm.inf
+      INF MdeModulePkg/Universal/StatusCodeHandler/Smm/StatusCodeHandlerSmm.inf
+      INF UefiCpuPkg/PiSmmCpuDxeSmm/PiSmmCpuDxeSmm.inf
+      INF UefiCpuPkg/CpuIo2Smm/CpuIo2Smm.inf
+      INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteSmm.inf
+      INF IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
+  !endif
+
+  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  INF OvmfPkg/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+
 [FV.FvOsBoot]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid    = AE8F0EA0-1614-422D-ABC1-C518596F1678
+
+   FILE FV_IMAGE = 4bb59c22-e1b8-414e-9de8-559db4054c4c {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvOsBootUncompressed
+    }
+  }
 
 ###########################
 #
@@ -249,6 +308,8 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x800000
 [FV.FvSecurity]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid    = 1AE6AB90-9431-425B-9A92-ED2708A4E982
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityLateInclude.fdf
+  !include MinPlatformPkg/Include/Fdf/CoreSecurityPreMemoryInclude.fdf
 
 ###########################
 #

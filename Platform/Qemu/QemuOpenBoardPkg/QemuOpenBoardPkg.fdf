@@ -174,9 +174,63 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x800000
 # Stage 3 Firmware Volumes
 #
 ###########################
+
+[FV.FvUefiBootUnCompressed]
+  !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
+  FvNameGuid    = D2F110DB-2388-4963-BEFD-5889EEE01569
+
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+
+  INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
+
+  INF MdeModulePkg/Universal/Metronome/Metronome.inf
+  INF PcAtChipsetPkg/HpetTimerDxe/HpetTimerDxe.inf
+  INF UefiCpuPkg/CpuIo2Dxe/CpuIo2Dxe.inf
+  INF UefiCpuPkg/CpuDxe/CpuDxe.inf
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+  INF PcAtChipsetPkg/PcatRealTimeClockRuntimeDxe/PcatRealTimeClockRuntimeDxe.inf
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF MdeModulePkg/Universal/MonotonicCounterRuntimeDxe/MonotonicCounterRuntimeDxe.inf
+  INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  INF MdeModulePkg/Universal/Acpi/S3SaveStateDxe/S3SaveStateDxe.inf
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+
+  INF OvmfPkg/IoMmuDxe/IoMmuDxe.inf
+  INF OvmfPkg/PlatformDxe/Platform.inf
+
+  INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsOutputDxe/GraphicsOutputDxe.inf
+  INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
+  INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+
+  INF MdeModulePkg/Application/BootManagerMenuApp/BootManagerMenuApp.inf
+  INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
+  INF ShellPkg/Application/Shell/Shell.inf
+
+  INF OvmfPkg/SioBusDxe/SioBusDxe.inf
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciSioSerialDxe/PciSioSerialDxe.inf
+
 [FV.FvUefiBoot]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid    = D0C15ADB-FE38-4331-841C-0E96C1B0FBFA
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+
+   FILE FV_IMAGE = D2F110DB-2388-4963-BEFD-5889EEE01569 {
+    SECTION GUIDED EE4E5898-3914-4259-9D6E-DC7BD79403CF PROCESSING_REQUIRED = TRUE {
+      SECTION FV_IMAGE = FvUefiBootUncompressed
+    }
+  }
 
 ###########################
 #

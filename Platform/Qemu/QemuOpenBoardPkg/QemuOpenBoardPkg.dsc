@@ -50,7 +50,7 @@
   # Stage 5 - boot to OS with security boot enabled
   # Stage 6 - boot with advanced features enabled
   #
-  gMinPlatformPkgTokenSpaceGuid.PcdBootStage | 1
+  gMinPlatformPkgTokenSpaceGuid.PcdBootStage | 2
 
 #
 # MinPlatform common include for required feature PCD
@@ -131,6 +131,7 @@
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
 !include QemuOpenBoardPkg/Include/Dsc/Stage1.dsc.inc
+!include QemuOpenBoardPkg/Include/Dsc/Stage2.dsc.inc
 
 [LibraryClasses.Common]
   QemuOpenFwCfgLib        | QemuOpenBoardPkg/Library/QemuOpenFwCfgLib/QemuOpenFwCfgLib.inf

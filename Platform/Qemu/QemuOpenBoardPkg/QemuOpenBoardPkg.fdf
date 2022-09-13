@@ -155,6 +155,16 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize             = 0x800000
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid    = 5A1D6978-BABE-42F9-A629-F7B3B6A1E1BD
 
+  INF UefiCpuPkg/CpuMpPei/CpuMpPei.inf
+
+  INF MinPlatformPkg/PlatformInit/SiliconPolicyPei/SiliconPolicyPeiPostMem.inf
+  INF MinPlatformPkg/PlatformInit/PlatformInitPei/PlatformInitPostMem.inf
+
+  INF MdeModulePkg/Core/DxeIplPeim/DxeIpl.inf
+
+  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  INF MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+
 [FV.FvBsp]
   !include MinPlatformPkg/Include/Fdf/CommonSpiFvHeaderInfo.fdf
   FvNameGuid    = FCA0BC4A-994D-4EF9-BD56-A8C45872C2A8

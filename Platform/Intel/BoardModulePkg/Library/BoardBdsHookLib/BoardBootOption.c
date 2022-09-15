@@ -451,7 +451,7 @@ RegisterStaticHotkey (
 
 
   //
-  // [F2]/[F7]
+  // [F2]
   //
   if (mSetupOptionNumber != LoadOptionNumberUnassigned) {
     F2.Key.ScanCode    = SCAN_F2;
@@ -461,13 +461,17 @@ RegisterStaticHotkey (
     RegisterBootOptionHotkey ((UINT16) mSetupOptionNumber, &F2.Key, TRUE);
   }
 
-  F7.Key.ScanCode    = SCAN_F7;
-  F7.Key.UnicodeChar = CHAR_NULL;
-  F7.KeyState.KeyShiftState = EFI_SHIFT_STATE_VALID;
-  F7.KeyState.KeyToggleState = 0;
-  mBootMenuBoot  = !EnterSetup;
-  RegisterBootOptionHotkey ((UINT16) mBootMenuOptionNumber, &F7.Key, mBootMenuBoot);
-
+  //
+  // Register [F7] only when the mBootMenuOptionNumber is valid
+  //
+  if (mBootMenuOptionNumber != LoadOptionNumberUnassigned) {
+    F7.Key.ScanCode    = SCAN_F7;
+    F7.Key.UnicodeChar = CHAR_NULL;
+    F7.KeyState.KeyShiftState = EFI_SHIFT_STATE_VALID;
+    F7.KeyState.KeyToggleState = 0;
+    mBootMenuBoot  = !EnterSetup;
+    RegisterBootOptionHotkey ((UINT16) mBootMenuOptionNumber, &F7.Key, mBootMenuBoot);
+  }
 }
 
 
@@ -584,4 +588,3 @@ CompareBootOption (
   return BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *) Left) -
          BootOptionPriority ((EFI_BOOT_MANAGER_LOAD_OPTION *) Right);
 }
-

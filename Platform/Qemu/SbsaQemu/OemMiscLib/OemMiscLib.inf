@@ -34,7 +34,12 @@
   IoLib
   PcdLib
 
+[Guids]
+  gZeroGuid
+
 [Pcd]
+  gArmTokenSpaceGuid.PcdEmbeddedControllerFirmwareRelease
+  gArmTokenSpaceGuid.PcdSystemBiosRelease
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdDeviceTreeBaseAddress
 
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdSystemManufacturer

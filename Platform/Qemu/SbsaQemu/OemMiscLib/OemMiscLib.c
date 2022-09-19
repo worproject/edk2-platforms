@@ -9,6 +9,7 @@
 **/
 
 #include <Uefi.h>
+#include <Guid/ZeroGuid.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/FdtHelperLib.h>
@@ -329,4 +330,45 @@ OemGetChassisNumPowerCords (
   )
 {
   return 1;
+}
+
+/**
+  Fetches the system UUID.
+
+  @param[out] SystemUuid     The pointer to the buffer to store the System UUID.
+
+**/
+VOID
+EFIAPI
+OemGetSystemUuid (
+  OUT GUID  *SystemUuid
+  )
+{
+  CopyGuid (SystemUuid, &gZeroGuid);
+}
+
+/** Fetches the BIOS release.
+
+  @return The BIOS release.
+**/
+UINT16
+EFIAPI
+OemGetBiosRelease (
+  VOID
+  )
+{
+  return PcdGet16 (PcdSystemBiosRelease);
+}
+
+/** Fetches the embedded controller firmware release.
+
+  @return The embedded controller firmware release.
+**/
+UINT16
+EFIAPI
+OemGetEmbeddedControllerFirmwareRelease (
+  VOID
+  )
+{
+  return PcdGet16 (PcdEmbeddedControllerFirmwareRelease);
 }

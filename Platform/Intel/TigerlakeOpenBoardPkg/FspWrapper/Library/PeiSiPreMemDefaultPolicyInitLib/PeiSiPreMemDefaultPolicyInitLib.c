@@ -32,7 +32,7 @@ PeiSiPreMemDefaultPolicyInitLibConstructor (
   if (PeiPreMemSiDefaultPolicyInitPpi == NULL) {
     return Status;
   }
-  DEBUG ((DEBUG_INFO, "PeiPreMemSiDefaultPolicyInitPpi->PeiPreMemPolicyInit ()\n", Status));
+  DEBUG ((DEBUG_INFO, "PeiPreMemSiDefaultPolicyInitPpi->PeiPreMemPolicyInit ()\n"));
   Status = PeiPreMemSiDefaultPolicyInitPpi->PeiPreMemPolicyInit ();
   ASSERT_EFI_ERROR (Status);
 

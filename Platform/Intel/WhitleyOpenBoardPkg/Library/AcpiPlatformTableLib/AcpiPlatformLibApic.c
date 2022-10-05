@@ -137,7 +137,7 @@ UpdateApicIdMap (
     }
 
     if (ThreadIndex != mThreadCount[SocketId]) {
-      DEBUG((DEBUG_ERROR, ":: Skt: %d - Enabled ThreadCount is incorrect!!!\n"));
+      DEBUG ((DEBUG_ERROR, ":: Skt: %d - Enabled ThreadCount is incorrect!!!\n", ThreadIndex));
       break;
     }
   }

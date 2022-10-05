@@ -254,7 +254,7 @@ SkipExternalSbOpcodes(
     }
   }
 
-  DEBUG ((DEBUG_ERROR, "ExternSbExpected: %d, ExternSbFound: %d\n"));
+  DEBUG ((DEBUG_ERROR, "ExternSbExpected: %d, ExternSbFound: %d\n", ExternSbExpected, ExternSbFound));
 
   ASSERT ((ExternSbFound % ExternSbExpected) == 0);
 

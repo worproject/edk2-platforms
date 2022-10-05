@@ -185,7 +185,7 @@ CopyHobData (
   OrgData = GET_GUID_HOB_DATA (OrgGuidHob);
   OrgDataSize = GET_GUID_HOB_DATA_SIZE (OrgGuidHob);
   if (OrgDataSize != DataSize) {
-    DEBUG ((EFI_D_ERROR, "%a Hob Size Don't Match Between FSP and BootLoader. FSP:%x vs BootLoader:%x\n", OrgDataSize, DataSize));
+    DEBUG ((DEBUG_ERROR, "Hob Size Don't Match Between FSP and BootLoader. FSP:%x vs BootLoader:%x\n", OrgDataSize, DataSize));
     ASSERT (FALSE);
   }
   CopyMem (OrgData, Data, DataSize);

@@ -388,14 +388,14 @@ SyncPcie (
    * triggering the mailbox by removing the node.
    */
 
-  Node = fdt_path_offset (mFdtImage, "/scb/pcie@7d500000/pci@1,0");
+  Node = fdt_path_offset (mFdtImage, "/scb/pcie@7d500000/pci");
   if (Node < 0) {
     // This can happen on CM4/etc which doesn't have an onboard XHCI
-    DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci@1/usb@1\n", __FUNCTION__));
+    DEBUG ((DEBUG_INFO, "%a: failed to locate /scb/pcie@7d500000/pci\n", __FUNCTION__));
   } else {
     Retval = fdt_del_node (mFdtImage, Node);
     if (Retval != 0) {
-      DEBUG ((DEBUG_ERROR, "Failed to remove /scb/pcie@7d500000/pci@1/usb@1\n"));
+      DEBUG ((DEBUG_ERROR, "Failed to remove /scb/pcie@7d500000/pci\n"));
       return EFI_NOT_FOUND;
     }
   }

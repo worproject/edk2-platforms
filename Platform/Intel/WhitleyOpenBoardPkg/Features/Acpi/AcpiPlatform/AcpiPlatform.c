@@ -475,7 +475,7 @@ AcpiPlatformEarlyAcpiTablesInstall (
               // Install the table
               //
               AcpiStatus = AcpiTable->InstallAcpiTable (AcpiTable, CurrentTable, CurrentTable->Length, &TableHandle);
-              if (!EFI_ERROR (AcpiStatus)) {
+              if (EFI_ERROR (AcpiStatus)) {
                 ASSERT_EFI_ERROR (AcpiStatus);
                 return AcpiStatus;
               }

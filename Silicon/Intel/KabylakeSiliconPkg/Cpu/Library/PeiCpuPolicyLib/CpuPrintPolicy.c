@@ -39,13 +39,16 @@ CpuPowerMgmtBasicConfigPrint (
   )
 {
   DEBUG ((DEBUG_INFO, "------------------ CPU Power Mgmt Basic Config ------------------\n"));
-  DEBUG ((DEBUG_INFO, " CPU_POWER_MGMT_BASIC_CONFIG : OneCoreRatioLimit : 0x%X , TwoCoreRatioLimit = 0x%X , ThreeCoreRatioLimit = 0x%X , FourCoreRatioLimit = 0x%X \n",  CpuPowerMgmtBasicConfig->OneCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->TwoCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->ThreeCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->FourCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->FiveCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->SixCoreRatioLimit, \
-          CpuPowerMgmtBasicConfig->SevenCoreRatioLimit, \
+  DEBUG ((DEBUG_INFO,
+          " CPU_POWER_MGMT_BASIC_CONFIG : OneCoreRatioLimit : 0x%X , TwoCoreRatioLimit = 0x%X , ThreeCoreRatioLimit = 0x%X , FourCoreRatioLimit = 0x%X\n"
+          "                               FiveCoreRatioLimit : 0x%X , SixCoreRatioLimit = 0x%X , SevenCoreRatioLimit = 0x%X , EightCoreRatioLimit = 0x%X\n",
+          CpuPowerMgmtBasicConfig->OneCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->TwoCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->ThreeCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->FourCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->FiveCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->SixCoreRatioLimit,
+          CpuPowerMgmtBasicConfig->SevenCoreRatioLimit,
           CpuPowerMgmtBasicConfig->EightCoreRatioLimit));
   DEBUG ((DEBUG_INFO, " CPU_POWER_MGMT_BASIC_CONFIG: Hwp : 0x%x\n", CpuPowerMgmtBasicConfig->Hwp));
   DEBUG ((DEBUG_INFO, " CPU_POWER_MGMT_BASIC_CONFIG: SkipSetBootPState : 0x%x\n", CpuPowerMgmtBasicConfig->SkipSetBootPState));
@@ -151,7 +154,7 @@ CpuPidTestConfigPrint (
 {
   UINT32 Index = 0;
   DEBUG ((DEBUG_INFO, "------------------ CPU PID Test Config ------------------\n"));
-  DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : PidTuning : 0x%X\n", Index,  CpuPidTestConfig->PidTuning));
+  DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : PidTuning : 0x%X\n", CpuPidTestConfig->PidTuning));
   if ( CpuPidTestConfig->PidTuning == 1) {
     for (Index = PID_DOMAIN_KP; Index <= PID_DOMAIN_KD; Index++) {
         DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : Ratl[%X] : 0x%X\n", Index,  CpuPidTestConfig->Ratl[Index]));

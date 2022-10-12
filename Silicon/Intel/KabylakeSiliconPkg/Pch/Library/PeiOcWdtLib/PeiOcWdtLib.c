@@ -75,7 +75,7 @@ OcWdtResetCheck (
   /// Timeout status bits are cleared by writing '1'
   ///
   if (Readback & (B_PCH_OC_WDT_CTL_ICCSURV_STS | B_PCH_OC_WDT_CTL_NO_ICCSURV_STS)) {
-    DEBUG ((DEBUG_ERROR, "(WDT) Expiration detected.\n", Readback));
+    DEBUG ((DEBUG_ERROR, "(WDT) Expiration detected. Read back = 0x%08x\n", Readback));
     Readback |= B_PCH_OC_WDT_CTL_FAILURE_STS;
     Readback |= (B_PCH_OC_WDT_CTL_ICCSURV_STS | B_PCH_OC_WDT_CTL_NO_ICCSURV_STS);
     Readback &= ~(B_PCH_OC_WDT_CTL_UNXP_RESET_STS);
@@ -102,7 +102,7 @@ OcWdtResetCheck (
       ///
       /// No WDT expiration and no unexpected reset - clear Failure status
       ///
-      DEBUG ((DEBUG_INFO, "(WDT) Status OK.\n", Readback));
+      DEBUG ((DEBUG_INFO, "(WDT) Status OK.\n"));
       Readback &= ~(B_PCH_OC_WDT_CTL_FAILURE_STS);
       Readback |= (B_PCH_OC_WDT_CTL_ICCSURV_STS | B_PCH_OC_WDT_CTL_NO_ICCSURV_STS);
     }

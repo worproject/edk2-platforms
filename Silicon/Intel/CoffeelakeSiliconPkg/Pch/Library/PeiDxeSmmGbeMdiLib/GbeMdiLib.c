@@ -335,7 +335,7 @@ GbeMdiGetLanPhyRevision (
       Status = EFI_DEVICE_ERROR;
       goto PHY_EXIT;
     }
-    DEBUG ((DEBUG_INFO, "GbeMdiGetLanPhyRevision failed to read Revision. Overriding LANPHYPC\n", Status));
+    DEBUG ((DEBUG_INFO, "GbeMdiGetLanPhyRevision failed to read Revision. Overriding LANPHYPC. Status: %r\n", Status));
     //
     // Taking over LANPHYPC
     // 1. SW signal override - 1st cycle.

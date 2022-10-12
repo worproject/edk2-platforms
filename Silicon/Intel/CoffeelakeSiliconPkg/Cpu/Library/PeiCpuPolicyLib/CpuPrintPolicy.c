@@ -161,7 +161,7 @@ CpuPidTestConfigPrint (
 {
   UINT32 Index = 0;
   DEBUG ((DEBUG_INFO, "------------------ CPU PID Test Config ------------------\n"));
-  DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : PidTuning : 0x%X\n", Index,  CpuPidTestConfig->PidTuning));
+  DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : PidTuning : 0x%X\n", CpuPidTestConfig->PidTuning));
   if ( CpuPidTestConfig->PidTuning == 1) {
     for (Index = PID_DOMAIN_KP; Index <= PID_DOMAIN_KD; Index++) {
         DEBUG ((DEBUG_INFO, " CPU_PID_TEST_CONFIG : Ratl[%X] : 0x%X\n", Index,  CpuPidTestConfig->Ratl[Index]));

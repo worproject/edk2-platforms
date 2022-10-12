@@ -1800,7 +1800,7 @@ RecursiveIoApicCheck (
   IoApicPresent = FALSE;
 
   if (IsIoApicDevice (SbdfToBase (Sbdf))) {
-    DEBUG ((DEBUG_INFO, "IoApicFound @%x:%x:%x:%x\n", Sbdf.Bus, Sbdf.Dev, Sbdf.Func));
+    DEBUG ((DEBUG_INFO, "IoApicFound @%x:%x:%x:%x\n", Sbdf.Seg, Sbdf.Bus, Sbdf.Dev, Sbdf.Func));
     return TRUE;
   }
   if (HasChildBus (Sbdf, &ChildSbdf)) {

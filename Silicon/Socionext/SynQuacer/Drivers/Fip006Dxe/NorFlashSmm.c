@@ -106,13 +106,6 @@ NorFlashInitialise (
   NOR_FLASH_DESCRIPTION*  NorFlashDevices;
   BOOLEAN                 ContainVariableStorage;
 
-  Status = NorFlashPlatformInitialization ();
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR,
-      "NorFlashInitialise: Fail to initialize Nor Flash devices\n"));
-    return Status;
-  }
-
   // Initialize NOR flash instances
   Status = NorFlashPlatformGetDevices (&NorFlashDevices, &mNorFlashDeviceCount);
   if (EFI_ERROR (Status)) {

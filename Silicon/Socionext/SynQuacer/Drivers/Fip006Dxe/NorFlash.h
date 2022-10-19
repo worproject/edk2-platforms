@@ -22,7 +22,6 @@
 
 #include <Library/DebugLib.h>
 #include <Library/IoLib.h>
-#include <Library/NorFlashPlatformLib.h>
 
 #include "Fip006Reg.h"
 
@@ -289,6 +288,19 @@ EFI_STATUS
 NorFlashReadID (
   IN  NOR_FLASH_INSTANCE  *Instance,
   OUT UINT8               JedecId[3]
+  );
+
+typedef struct {
+  UINTN    DeviceBaseAddress;       // Start address of the Device Base Address (DBA)
+  UINTN    RegionBaseAddress;       // Start address of one single region
+  UINTN    Size;
+  UINTN    BlockSize;
+} NOR_FLASH_DESCRIPTION;
+
+EFI_STATUS
+NorFlashPlatformGetDevices (
+  OUT NOR_FLASH_DESCRIPTION   **NorFlashDevices,
+  OUT UINT32                  *Count
   );
 
 #define SPINOR_SR_WIP                 BIT0  // Write in progress

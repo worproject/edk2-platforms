@@ -229,13 +229,6 @@ NorFlashInitialise (
       EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
   ASSERT_EFI_ERROR (Status);
 
-  Status = NorFlashPlatformInitialization ();
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR,
-      "NorFlashInitialise: Fail to initialize Nor Flash devices\n"));
-    return Status;
-  }
-
   // Initialize NOR flash instances
   Status = NorFlashPlatformGetDevices (&NorFlashDevices, &mNorFlashDeviceCount);
   if (EFI_ERROR (Status)) {

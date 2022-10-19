@@ -30,6 +30,7 @@
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
   Silicon/Socionext/SynQuacer/Drivers/Fip006Dxe/Fip006Dxe.dec
+  Silicon/Socionext/SynQuacer/SynQuacer.dec
   StandaloneMmPkg/StandaloneMmPkg.dec
 
 [LibraryClasses]
@@ -40,7 +41,6 @@
   MemoryAllocationLib
   MmServicesTableLib
   NorFlashInfoLib
-  NorFlashPlatformLib
   StandaloneMmDriverEntryPoint
 
 [Guids]

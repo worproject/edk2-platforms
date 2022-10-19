@@ -122,7 +122,7 @@
 [Components.AARCH64]
   StandaloneMmPkg/Drivers/StandaloneMmCpu/StandaloneMmCpu.inf
 !if $(SECURE_STORAGE_ENABLE) == TRUE
-  ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
+  Platform/ARM/Drivers/NorFlashDxe/NorFlashStandaloneMm.inf
   MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteStandaloneMm.inf
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableStandaloneMm.inf {
     <LibraryClasses>

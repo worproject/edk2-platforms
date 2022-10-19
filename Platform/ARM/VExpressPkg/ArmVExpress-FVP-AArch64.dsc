@@ -289,7 +289,7 @@
   }
 
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 !ifdef EDK2_ENABLE_PL111
   ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf

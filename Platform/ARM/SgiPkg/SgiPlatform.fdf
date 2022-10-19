@@ -149,7 +149,7 @@ READ_LOCK_STATUS   = TRUE
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   # NOR Flash driver
-  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  INF Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   INF OvmfPkg/VirtioBlkDxe/VirtioBlk.inf
 
   # Graphics Output Protocol

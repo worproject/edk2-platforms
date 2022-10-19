@@ -256,7 +256,7 @@
 !if $(ENABLE_GOP) == TRUE
   ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 !endif
-  ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf

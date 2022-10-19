@@ -112,7 +112,7 @@ FvNameGuid         = 87940482-fc81-41c3-87e6-399cf85ac8a0
 
   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  INF Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
 !ifdef EDK2_ENABLE_PL111
   INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
 !endif

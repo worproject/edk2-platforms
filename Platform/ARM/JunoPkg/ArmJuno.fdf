@@ -136,7 +136,7 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
   INF ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 
   # NOR Flash driver
-  INF ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  INF Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
 
   # Versatile Express FileSystem
   INF Platform/ARM/Drivers/BootMonFs/BootMonFs.inf

@@ -277,7 +277,7 @@
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
   ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  ArmPlatformPkg/Drivers/NorFlashDxe/NorFlashDxe.inf
+  Platform/ARM/Drivers/NorFlashDxe/NorFlashDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   ArmPkg/Drivers/GenericWatchdogDxe/GenericWatchdogDxe.inf
 

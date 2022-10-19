@@ -113,11 +113,6 @@ F: Silicon/TexasInstruments/
 R: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 
-Comcast
-F: Platform/Comcast/
-M: Ard Biesheuvel <ardb+tianocore@kernel.org>
-M: Leif Lindholm <quic_llindhol@quicinc.com>
-
 OptionRomPkg
 F: Drivers/OptionRomPkg/
 W: https://github.com/tianocore/tianocore.github.io/wiki/OptionRomPkg

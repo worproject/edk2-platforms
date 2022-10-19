@@ -18,7 +18,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  ArmPlatformPkg/ArmPlatformPkg.dec
+  Platform/ARM/ARM.dec
   Platform/ARM/VExpressPkg/ArmVExpressPkg.dec
 
 [LibraryClasses]

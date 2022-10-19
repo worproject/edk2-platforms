@@ -18,8 +18,8 @@
   NorFlashLib.c
 
 [Packages]
-  ArmPlatformPkg/ArmPlatformPkg.dec
   MdePkg/MdePkg.dec
+  Platform/ARM/ARM.dec
   Platform/ARM/SgiPkg/SgiPlatform.dec
 
 [LibraryClasses]

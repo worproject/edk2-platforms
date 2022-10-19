@@ -7,7 +7,6 @@
 **/
 
 #include <Library/IoLib.h>
-#include <Library/NorFlashPlatformLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/MemoryAllocationLib.h>
 

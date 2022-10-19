@@ -25,7 +25,6 @@
   BootMonFsUnsupported.c
 
 [Packages]
-  ArmPlatformPkg/ArmPlatformPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   Platform/ARM/ARM.dec

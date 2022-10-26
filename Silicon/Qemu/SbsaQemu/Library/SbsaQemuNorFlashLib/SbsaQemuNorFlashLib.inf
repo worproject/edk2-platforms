@@ -14,16 +14,16 @@
   FILE_GUID                      = c53d904d-de50-40f1-a148-a2ece48303d8
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = NorFlashPlatformLib
+  LIBRARY_CLASS                  = VirtNorFlashPlatformLib
 
 [Sources.common]
   SbsaQemuNorFlashLib.c
 
 [Packages]
-  ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPkg/ArmPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  OvmfPkg/OvmfPkg.dec
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdFdBaseAddress

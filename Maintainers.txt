@@ -355,7 +355,7 @@ F: Platform/Qemu/SbsaQemu/
 F: Silicon/Qemu/SbsaQemu/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
-R: Graeme Gregory <graeme@nuviainc.com>
+R: Graeme Gregory <quic_ggregory@quicinc.com>
 R: Radoslaw Biernacki <rad@semihalf.com>
 
 Raspberry Pi platforms and silicon

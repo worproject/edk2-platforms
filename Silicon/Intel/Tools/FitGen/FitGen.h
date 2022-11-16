@@ -36,7 +36,6 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 
 #define FIT_SPEC_VERSION_MAJOR 1
 #define FIT_SPEC_VERSION_MINOR 4
-
 //
 // The minimum number of arguments accepted from the command line.
 //
@@ -49,5 +48,11 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 ;
 
 #define ROUNDUP(Size, Alignment) (((Size) + (Alignment) - 1) / (Alignment) * (Alignment))
+
+UINT32
+GetFvAcmSizeFromFd(
+IN UINT8                       *FdBuffer,
+IN UINT32                      FdFileSize
+);
 
 #endif

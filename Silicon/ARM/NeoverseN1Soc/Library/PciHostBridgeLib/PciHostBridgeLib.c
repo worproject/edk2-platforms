@@ -65,8 +65,8 @@ STATIC EFI_PCI_ROOT_BRIDGE_DEVICE_PATH mEfiPciRootBridgeDevicePath[ROOT_COMPLEX_
           (UINT8)(sizeof (ACPI_HID_DEVICE_PATH) >> 8)
         }
       },
-      EISA_PNP_ID(0x0A09), // CCIX
-      0
+      EISA_PNP_ID(0x0A08), // CCIX
+      1
     },
     {
       END_DEVICE_PATH_TYPE,

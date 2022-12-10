@@ -13,7 +13,7 @@
 UINT8  EnableSgx;                               ///< Enable SGX
 UINT8  SgxFactoryReset;                         ///< Delete all registration data, if SGX enabled force IPE/FirstBinding flow
 UINT64 PrmrrSize;                               ///< SGX PRMRR size
-UINT64 ReservedS239;
+UINT64 SprspOrLaterPrmSize;                     ///< SGX PRM size (SPR+ only)
 UINT8  SgxQoS;                                  ///< SGX Quality of Service
 UINT8  SgxAutoRegistrationAgent;                ///< SGX Auto Registration Agent
 UINT8  SgxPackageInfoInBandAccess;              ///< SGX Expose Package Info to OS

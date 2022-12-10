@@ -52,7 +52,7 @@ typedef struct {
   UINT8     CpuMtoIWa;
   BOOLEAN   RunCpuPpmInPei;
   BOOLEAN   AcExceptionOnSplitLockEnable;
-  BOOLEAN   CpuCrashLogGprs;
+  BOOLEAN   CpuCrashDataGprs;
 } CPU_POLICY_COMMON;
 
 #endif

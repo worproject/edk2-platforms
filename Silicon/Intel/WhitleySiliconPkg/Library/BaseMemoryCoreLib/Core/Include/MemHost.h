@@ -641,11 +641,9 @@ struct rankDevice {
 ///
 typedef struct dimmDevice {
   INT32               minTCK;     ///< minimum tCK for this DIMM (SPD_MIN_TCK)
-#ifdef DEBUG_CODE_BLOCK
   UINT32              tCL;
   UINT16              tRCD;
   UINT16              tRP;
-#endif  // DEBUG_CODE_BLOCK
   UINT16              NVmemSize;
   UINT16              memSize;    ///< Memory size for this DIMM (64MB granularity)
   UINT16              UnmappedMemSize;
@@ -653,6 +651,7 @@ typedef struct dimmDevice {
   struct FmcCacheSt   FmcCache[MAX_FMC_CACHE]; ///< FMC cache info/status
   UINT8               SPDPartitionRatio[MAX_SOCKET * MAX_IMC]; ///< NVM DIMM partitionRatios
   UINT8               CachedLrBuf_DFECoef[MAX_BITS_IN_BYTE][DB_DFE_TAP][MAX_STROBE/2];  // JEDEC F3BCCx-Fx coeffcient. 8 DQ x 4 taps x 9 DB
+  BOOLEAN             TrainingModeEnabled; //Training Mode for BPS
   BOOLEAN             FmcWdbFlushFailed; /// < 0 = WDB flush failed on previous boot, 1 = WDB flush completed w/o errors on previous boot
   BOOLEAN             EadrFlushFailed;   /// < 0 = Extended ADR flush failed on previous boot, 1 = Extended ADR flush completed w/o errors on previous boot
 } DIMM_DEVICE_INFO_STRUCT; //struct dimmDevice
@@ -919,9 +918,7 @@ typedef struct memVar {
   UINT8                   callingTrngOffstCfgOnce; ///<to prevent looping inside RMT
   UINT8                   earlyCmdClkExecuted;
   UINT8                   checkMappedOutRanks;
-#ifdef DEBUG_CODE_BLOCK
   UINT8                   earlyCtlClkSerialDebugFlag;
-#endif // DEBUG_CODE_BLOCK
   UINT32                  memSize;          ///< Total physical memory size
   UINT32                  NVmemSize;          ///< Total physical memory size
   UINT32                  TotalInterleavedMemSize;      ///< DDR4 memory size for this socket (64MB granularity)
@@ -1048,4 +1045,3 @@ typedef struct memVar {
 #pragma pack(pop)
 
 #endif // _memhost_h
-

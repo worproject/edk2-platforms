@@ -26,6 +26,11 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdCleanTempBusAssignment|TRUE
 
   # Default SMBUS speed for Whitley is 700Khz - see SMB_CLOCK_FREQUENCY definition
+  # 0 - SMB_CLK_100K - 100 Khz
+  # 1 - SMB_CLK_400K - 400 Khz
+  # 2 - SMB_CLK_700K - 700 Khz
+  # 3 - SMB_CLK_1M   - 1   Mhz
+  #
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcSmbusSpeedDefault|0x2
 
 !if (($(CPUTARGET) == "ICX"))

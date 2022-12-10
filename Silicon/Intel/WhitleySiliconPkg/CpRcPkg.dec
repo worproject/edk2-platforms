@@ -252,9 +252,9 @@
       WhitleySiliconPkg/CpRcPkg.dec
   }
   gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Major|0
-  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Minor|2
+  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Minor|4
   gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.Revision|2
-  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.BuildNumber|0x003a
+  gEfiCpRcPkgTokenSpaceGuid.PcdRcVersion.BuildNumber|0x002A
 
   #
   # MRC DEFAULT SETTINGS
@@ -273,7 +273,7 @@
   #
   gEfiCpRcPkgTokenSpaceGuid.PcdEnforcePorDefault             |                     0|  UINT8|0x00000040
 
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved8           |                 FALSE|BOOLEAN|0x0000003A
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved8                     |                 FALSE|BOOLEAN|0x0000003A
 
 
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcMultiThreadedDefault       |                 FALSE|BOOLEAN|0x00000060
@@ -285,7 +285,7 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcTxRfSlewRateDefault        |                   0x2|  UINT8|0x00000066
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcPmemMemHoleDefault         |                 FALSE|BOOLEAN|0x00000067
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcCrQosConfigDefault         |                   0x6|  UINT8|0x00000068
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved9       |                  TRUE|BOOLEAN|0x00000069
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved9                     |                  TRUE|BOOLEAN|0x00000069
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcFastBootDefault            |                  TRUE|  UINT8|0x0000006A
 
 
@@ -293,10 +293,10 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdMemBootHealthConfigString     |L"MemBootHealthConfig"|  VOID*|0x00000070
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcSpdPrintDefault            |                 FALSE|BOOLEAN|0x00000071
   gEfiCpRcPkgTokenSpaceGuid.PcdDdrtSchedulerDebugDefault     |                 FALSE|BOOLEAN|0x00000072
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved10           |                     1|  UINT8|0x00000073
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved11               |                     1|  UINT8|0x00000074
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved12          |                     2|  UINT8|0x0000011F
-  gEfiCpRcPkgTokenSpaceGuid.PcdReserved13          |                  TRUE|BOOLEAN|0x00000120
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved10                    |                     1|  UINT8|0x00000073
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved11                    |                     1|  UINT8|0x00000074
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved12                    |                     2|  UINT8|0x0000011F
+  gEfiCpRcPkgTokenSpaceGuid.PcdReserved13                    |                  TRUE|BOOLEAN|0x00000120
   gEfiCpRcPkgTokenSpaceGuid.PcdMrcCmiInitUseResetDefault     |                 FALSE|BOOLEAN|0x00000075
   #option to choose Mem Boot Health configuration type. 00=>Auto (Use defaults), 01=>Manual (Override defaults with setup option), 02=>Disable (Disable feature)
   gEfiCpRcPkgTokenSpaceGuid.PcdMemBootHealthCheck            |                    00|  UINT8|0x00000076
@@ -359,6 +359,11 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdRmtMinimumCmdVoltageMargin    |                     5|  UINT8|0x00000130
   # Ctl timing: CtlAll
   gEfiCpRcPkgTokenSpaceGuid.PcdRmtMinimumCtlTimingMargin     |                     5|  UINT8|0x00000131
+
+  #MC VC0 Deadlock Breaker
+  gEfiCpRcPkgTokenSpaceGuid.PcdKeepStarveSettings            |                  TRUE|  BOOLEAN|0x00000132
+  gEfiCpRcPkgTokenSpaceGuid.PcdStarveTimer                   |                    18|    UINT8|0x00000133
+  gEfiCpRcPkgTokenSpaceGuid.PcdStarveThreshold               |                     4|    UINT8|0x00000134
 
   #Reset on Critical Margin failure to perform Memory Training from scratch
   gEfiCpRcPkgTokenSpaceGuid.PcdResetOnCriticalError          |                     1|  UINT8|0x00000087
@@ -526,7 +531,7 @@
   gEfiCpRcPkgTokenSpaceGuid.PcdDisableSimSlaveThread|FALSE|BOOLEAN|0x00000036
   gEfiCpRcPkgTokenSpaceGuid.PcdNvDimmJedecDumpStatusRegs|FALSE|BOOLEAN|0x00000118
 ## This PCD specifies the OEM MTS of the Memory Module Thermal Sensor
-  gEfiCpRcPkgTokenSpaceGuid.PcdOemMtsConfigValue|0xD|UINT16|0x0000003C
+  gEfiCpRcPkgTokenSpaceGuid.PcdOemMtsConfigValue|0xC|UINT16|0x0000003C
   gEfiCpRcPkgTokenSpaceGuid.PcdSerialPortEnable|TRUE|BOOLEAN|0x0000003D
 
 [PcdsDynamicEx]

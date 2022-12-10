@@ -12,11 +12,17 @@
 
 #include <Base.h>
 
+///
+/// 8-byte DWORD addressable unsigned value.
+///
 typedef struct u64_struct {
   UINT32  lo;
   UINT32  hi;
 } UINT64_STRUCT, *PUINT64_STRUCT;
 
+///
+/// 8-byte DWORD addressable unsigned value.
+///
 typedef union {
   struct {
     UINT32  Low;
@@ -25,7 +31,9 @@ typedef union {
   UINT64 Data;
 } UINT64_DATA;
 
-
+///
+/// 16-byte DWORD addressable unsigned value.
+///
 typedef struct u128_struct {
   UINT32  one;
   UINT32  two;

@@ -41,11 +41,13 @@ typedef struct {
   // If anything changed reset the system PCI resource configuration.
   //
   UINT64                 MmioHBase;
-  UINT64                 MmioHLimit;
+  UINT64                 MmioHGranularity;
   UINT32                 MmioLBase;
   UINT32                 MmioLLimit;
+  UINT32                 MmioLGranularity;
   UINT16                 IoBase;
   UINT16                 IoLimit;
+  UINT16                 IoGranularity;
   UINT16                 StackPresentBitmap[MAX_SOCKET];
   //
   // Used by the PciHostBridge DXE driver, these variables don't need to be exposed through setup options

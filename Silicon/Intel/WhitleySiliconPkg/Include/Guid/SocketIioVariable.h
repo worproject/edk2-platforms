@@ -133,8 +133,8 @@ typedef struct {
     UINT8   PcieSubSystemMode[TOTAL_IOU_VAR];
     UINT8   CompletionTimeoutGlobal;
     UINT8   CompletionTimeoutGlobalValue;
-    UINT8   CompletionTimeout[MAX_SOCKET];  // On Setup
-    UINT8   CompletionTimeoutValue[MAX_SOCKET]; // On Setup
+    UINT8   ReservedCto[MAX_SOCKET];           // On Setup
+    UINT8   ReservedCtov[MAX_SOCKET];          // On Setup
     UINT8   CoherentReadPart;
     UINT8   CoherentReadFull;
     UINT8   PcieGlobalAspm;
@@ -372,7 +372,7 @@ typedef struct {
   UINT8  ReservedS19;       // On Setup
   UINT8  ReservedS20;          // On Setup
   UINT32 ReservedS21[MAX_DEVHIDE_REGS_PER_SYSTEM]; // On Setup
-  UINT8  ReservedS22[TOTAL_PORTS_VAR];                   // On Setup
+  UINT8  CompletionTimeoutValue[TOTAL_PORTS_VAR];                   // On Setup
 
   UINT8  ReservedS23[TOTAL_PORTS_VAR];          //On Setup
   UINT8  ReservedS24[TOTAL_PORTS_VAR];              //On Setup
@@ -437,7 +437,12 @@ typedef struct {
   UINT8    VtdPciAcsCtlBit2;
   UINT8    VtdPciAcsCtlBit3;
   UINT8    VtdPciAcsCtlBit4;
-  UINT8    AltAttenTable[TOTAL_PORTS_VAR];    //On Setup
+  UINT8    AltAttenTable[TOTAL_PORTS_VAR];
+  UINT8    PciePort10bitTag[TOTAL_PORTS_VAR]; // Controls port support for 10-bit Tag
+
+  UINT8    MaskPcieRpWarmResetMcaWa;                 //on Setup
+  UINT8    PostedInterruptThrottle;
+
 } SOCKET_IIO_CONFIGURATION;
 #pragma pack()
 

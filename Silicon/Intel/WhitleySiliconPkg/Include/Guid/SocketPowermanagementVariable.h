@@ -290,6 +290,8 @@ typedef struct {
   UINT8   RunCpuPpmInPei;
 
   UINT8   UncoreFreqRaplLimit;
+
+  UINT8   PrgTjOffsetEn;
 } SOCKET_POWERMANAGEMENT_CONFIGURATION;
 #pragma pack()
 

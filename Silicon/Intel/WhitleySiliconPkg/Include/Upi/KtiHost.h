@@ -300,12 +300,10 @@ typedef struct {
 
     Contains a pointer to a 24 byte fixed length array.
     The array contains the 3 instances of the following c-struct
-    ~~~
     typedef struct {
       UINT32  CfrImagePtr;
       UINT32  CfrImageSize;
     }
-    ~~~
     This allows a maximum of 3 CFR/SINIT binaries to be provided by platform code.
   **/
   UINT32              CFRImagePtr;

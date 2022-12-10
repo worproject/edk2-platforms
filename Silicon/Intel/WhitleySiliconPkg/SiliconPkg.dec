@@ -698,13 +698,6 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 #
 # VTD PCDs Begin
 #
-  ## The mask is used to control VTd behavior.<BR><BR>
-  #  BIT0: Enable IOMMU during boot (If DMAR table is installed in DXE. If VTD_INFO_PPI is installed in PEI.)
-  #  BIT1: Enable IOMMU when transfer control to OS (ExitBootService in normal boot. EndOfPEI in S3)
-  #  BIT2: Force no IOMMU access attribute request recording before DMAR table is installed.
-  #  BIT3: Enable GENPROTRANGEs as PMRs replacement for IOMMU based DMA Protection
-  # @Prompt The policy for VTd driver behavior.
-  gSiPkgTokenSpaceGuid.PcdVTdPolicyPropertyMask|0x00|UINT8|0x00000002
 
   ## Declares VTd PEI DMA buffer size.<BR><BR>
   #  When this PCD value is referred by platform to calculate the required
@@ -840,7 +833,7 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
   gSiPkgTokenSpaceGuid.PcdTempRefreshOption             |0|UINT8|0x7000000A
 
   # Temperature refresh value default, Values are in Celcius
-  gSiPkgTokenSpaceGuid.PcdHalfxRefreshValue             |0x19|UINT8|0x70000001
+  gSiPkgTokenSpaceGuid.PcdHalfxRefreshValue             |0x00|UINT8|0x70000001
   gSiPkgTokenSpaceGuid.PcdTwoxRefreshValue              |0x53|UINT8|0x70000002
   gSiPkgTokenSpaceGuid.PcdFourxRefreshValue             |0x5F|UINT8|0x70000003
 
@@ -933,6 +926,8 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 # VTD PCDs End
 #
 
+  gSiPkgTokenSpaceGuid.PcdPcieMultiVcEnable|FALSE|BOOLEAN|0xF0000038
+
 [PcdsDynamicEx]
   gReferenceCodePolicyTokenSpaceGuid.PcdEvMode         |0x00|UINT8|0x00010001
   # ReservedC: The Mailbox Command which it gona to assert.
@@ -958,12 +953,26 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
   #
   gSiPkgTokenSpaceGuid.PcdNumaAcpiDataStaticPointer|0|UINT64|0x5000000E
 
+  #
+  # RAS: PcdRasIerrPresent - TRUE: IERR has occured need reset; FALSE: No IERR
+  #
+  gSiPkgTokenSpaceGuid.PcdRasIerrPresent|FALSE|BOOLEAN|0x20000002
+
 [PcdsDynamicEx]
   gPlatformTokenSpaceGuid.PcdFpgaSwSmiInputValue|0|UINT8|0x30000007
   gPlatformTokenSpaceGuid.PcdPlatformType|0x00000000|UINT8|0x3000004A
   gPlatformTokenSpaceGuid.ReservedB|FALSE|BOOLEAN|0x6000001D
   gPlatformTokenSpaceGuid.PcdFlashSecOverridden|FALSE|BOOLEAN|0x6000001B
 
+##  Will be set if platform is WS else remains FALSE for Server platform.
+  gPlatformTokenSpaceGuid.PcdIsCPUWsType|FALSE|BOOLEAN|0x6000001A
+
+##  C2F
+##  Will be set if platform is resuming from a global reset after ADR trigger.
+  # C2F driver will read the PCD and determine whether to perform C2f Entry.
+  # @Prompt Provide status if Adr resume or not
+
+  gPlatformTokenSpaceGuid.PcdAdrResumeStatus|0|UINT8|0x0000104A
 ##
 ## ME
 ##
@@ -979,7 +988,6 @@ gPeiSmmControlPpiGuid  =  {0x61c68702, 0x4d7e, 0x4f43, {0x8d, 0xef, 0xa7, 0x43, 
 ## RAS
 ##
   gSiPkgTokenSpaceGuid.PcdRasGlobaldataTableAddress|0x0|UINT64|0x20000001
-  gSiPkgTokenSpaceGuid.PcdRasIerrPresent|FALSE|BOOLEAN|0x20000002
 
 [PcdsFeatureFlag]
   ## This PCD used by FPGA drivers to decide to install FPGA features.

@@ -53,7 +53,6 @@ typedef struct {
   EFI_HANDLE            Handle;
   PCH_SPI_PROTOCOL      SpiProtocol;
   UINT16                PchAcpiBase;
-  UINTN                 PchSpiBase;
   UINT16                ReadPermission;
   UINT16                WritePermission;
   UINT32                SfdpVscc0Value;

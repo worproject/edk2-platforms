@@ -131,12 +131,16 @@ typedef struct {
 // List of all entry types supported by this revision of memory training data structure
 //
 typedef enum {
-  MemTrainingDataCapability  = 0,
-  MemTrainingDataIoGroup     = 1,
-  MemTrainingDataDram        = 2,
-  MemTrainingDataRcd         = 3,
-  MemTrainingDataIoSignal    = 4,
-  MemTrainingDataIoLatency   = 5,
+  MemTrainingDataCapability       = 0,
+  MemTrainingDataIoGroup          = 1,
+  MemTrainingDataDram             = 2,
+  MemTrainingDataRcd              = 3,
+  MemTrainingDataIoSignal         = 4,
+  MemTrainingDataIoLatency        = 5,
+  MemTrainingDataPpin             = 6,
+  MemTrainingDataBoardUuid        = 7,
+  MemTrainingDataTurnaround       = 8,
+  MemTrainingDataDcPmmTurnaround  = 9,
 
   MemTrainingDataTypeMax,
   MemTrainingDataTypeDelim = MAX_INT32

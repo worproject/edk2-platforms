@@ -91,7 +91,9 @@
   # @Prompt CPU Config Register Table Entry Maximum Count.
   gCpuPkgTokenSpaceGuid.PcdCpuConfigRegTblEntryMaxCount|0x64|UINT16|0x60000022
 
-[PcdsDynamic, PcdsDynamicEx]
+  gCpuPkgTokenSpaceGuid.PcdCpuLowestApicIdAsBsp|TRUE|BOOLEAN|0x60000023
+
+[PcdsDynamicEx]
   gCpuPkgTokenSpaceGuid.PcdCpuConfigContextBuffer|0x0|UINT64|0x50000001
 
   gCpuPkgTokenSpaceGuid.PcdPlatformCpuSocketCount|0x0|UINT32|0x60000012

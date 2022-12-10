@@ -45,6 +45,7 @@ typedef struct {
   UINT8   PcieAspm[MAX_SOCKET][NUMBER_PORTS_PER_SOCKET];   // On Setup
   UINT8   PcieTxRxDetPoll[MAX_SOCKET][NUMBER_PORTS_PER_SOCKET];
   UINT8   PciePortLinkSpeed[MAX_TOTAL_PORTS];
+  UINT8   PciePort10bitTag[MAX_SOCKET][NUMBER_PORTS_PER_SOCKET];
   UINT8   PciePtm;
   UINT8   PcieHotPlugEnable;
   UINT8   PCIe_LTR;
@@ -104,8 +105,7 @@ typedef struct {
 
     UINT8   CompletionTimeoutGlobal;
     UINT8   CompletionTimeoutGlobalValue;
-    UINT8   CompletionTimeout[MAX_SOCKET];  // On Setup
-    UINT8   CompletionTimeoutValue[MAX_SOCKET]; // On Setup
+    UINT8   CompletionTimeoutValue[MAX_SOCKET][NUMBER_PORTS_PER_SOCKET]; // On Setup
     UINT8   CoherentReadPart;
     UINT8   CoherentReadFull;
     UINT8   PcieGlobalAspm;
@@ -124,7 +124,6 @@ typedef struct {
     UINT8    PcieLinkDis[MAX_TOTAL_PORTS];          // On Setup
     UINT8    PcieCommonClock[MAX_TOTAL_PORTS];  // On Setup
     UINT8    PcieDState[MAX_TOTAL_PORTS];           // On Setup
-    UINT8    PcieL0sLatency[MAX_TOTAL_PORTS];       //On Setup
     UINT8    PcieL1Latency[MAX_TOTAL_PORTS];        //On Setup
     UINT8    MsiEn[MAX_TOTAL_PORTS];                // On Setup
     UINT8    IODC[MAX_TOTAL_PORTS];                 // On Setup
@@ -273,6 +272,7 @@ typedef struct {
   UINT8   ProblematicPort;                          //on Setup
   UINT8   DmiAllocatingFlow;                        //on Setup
   UINT8   PcieAllocatingFlow;                       //on Setup
+  UINT8   MaskPcieRpWarmResetMcaWa;                 //on Setup
   UINT8   PcieAcpiHotPlugEnable;                    //on Setup
   BOOLEAN PcieLowLatencyRetimersEnabled;
   UINT8   HaltOnDmiDegraded;                        //on Setup
@@ -335,12 +335,9 @@ typedef struct {
   UINT32  ReservedAC[MAX_SOCKET][NUM_DEVHIDE_UNCORE_STACKS][NUM_DEVHIDE_REGS_PER_STACK];
   UINT32  ReservedAD[MAX_SOCKET][NUM_DEVHIDE_IIO_STACKS][NUM_DEVHIDE_REGS_PER_STACK];
 
-  UINT8   ReservedAE[MAX_TOTAL_PORTS];  // On Setup
-
   UINT8   ReservedAF[MAX_TOTAL_PORTS];
   UINT8   ReservedAG[MAX_TOTAL_PORTS];  // On Setup
   BOOLEAN ReservedAH;                // On Setup
-
 
 /**
 ==================================================================================================
@@ -374,7 +371,6 @@ typedef struct {
   UINT8   MSINFATEN[MAX_TOTAL_PORTS];
   UINT8   MSICOREN[MAX_TOTAL_PORTS];
   UINT8   ACPIPMEn[MAX_TOTAL_PORTS];
-  UINT8   DISL0STx[MAX_TOTAL_PORTS];
   UINT8   P2PRdDis[MAX_TOTAL_PORTS];
   UINT8   DisPMETOAck[MAX_TOTAL_PORTS];
   UINT8   ACPIHP[MAX_TOTAL_PORTS];
@@ -393,6 +389,7 @@ typedef struct {
   IIO_PCIE_CONFIG_DATA  IioPcieConfig;
 
   UINT32  VtdDisabledBitmask[MAX_SOCKET];
+  UINT8   PostedInterruptThrottle;
 } IIO_CONFIG;
 #pragma pack()
 

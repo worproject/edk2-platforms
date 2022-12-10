@@ -128,7 +128,6 @@
 #define PCIE_PORT_0_FUNC_0    0x00
 
 #define PCIE_PORT_1A_DEV_1    0x02
-#define PCIE_PORT_1A_FUNC_1   0x00
 #define PCIE_PORT_1B_DEV_1    0x03
 #define PCIE_PORT_1C_DEV_1    0x04
 #define PCIE_PORT_1D_DEV_1    0x05

@@ -15,8 +15,8 @@ UINT64 ValidPrmrrBitMap;
 UINT64 SprspOrLaterPrmSizeBitmap;               // ## PRODUCED by SgxPreMemInit
 UINT8  ShowEpoch;
 UINT8  SkipSignalPpmDone;                       // ## PRODUCED by SgxEarlyInit
+UINT8  IsSmxCapable;                            // ## PRODUCED by SgxPreMemInit
 
-UINT8  SprspOrLaterIsPrmSizeInvalidated;        // ## PRODUCED by SgxPreMemInit
 UINT8  SprspOrLaterAreHardwarePreconditionsMet; // ## PRODUCED by SgxPreMemInit
 UINT8  SprspOrLaterAreMemoryPreconditionsMet;   // ## PRODUCED by SgxPreMeminit
 UINT8  SprspOrLaterAreSetupPreconditionsMet;    // ## PRODUCED by SgxPreMemInit

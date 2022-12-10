@@ -85,7 +85,9 @@ struct ChannelDevice {
   UINT8                               SpareLogicalRank[MAX_SPARE_RANK];   // Logical rank, selected as Spare
   UINT8                               SparePhysicalRank[MAX_SPARE_RANK];  // Physical rank, selected as spare
   UINT16                              SpareRankSize[MAX_SPARE_RANK];      // spare rank size
-  UINT8                               EnabledLogicalRanks; // Bitmap of Logical ranks that are enabled
+  UINT8                               EnabledLogicalRanks;                // Bitmap of Logical ranks that are enabled
+  UINT8                               DdrPopulationMap;                   // Bitmap to indicate location of DDR DIMMs within the channel memory slots (BIT0: Ch.D0, BIT1: CH.D1)
+  UINT8                               PmemPopulationMap;                  // Bitmap to indicate location of PMem modules within the channel memory slots (BIT0: Ch.D0, BIT1: CH.D1)
   MEMMAP_DIMM_DEVICE_INFO_STRUCT      DimmInfo[MAX_DIMM];
 };
 

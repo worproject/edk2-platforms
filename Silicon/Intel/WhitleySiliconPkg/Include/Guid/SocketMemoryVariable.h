@@ -469,6 +469,9 @@ typedef struct {
   UINT8                   RmtMinimumMarginCheck;
 
   UINT8                   ReservedS149;
+  UINT8                   pTRR;
+  UINT8                   AdrPatrolScrubDisable;
+
 } SOCKET_MEMORY_CONFIGURATION;
 
 #pragma pack()

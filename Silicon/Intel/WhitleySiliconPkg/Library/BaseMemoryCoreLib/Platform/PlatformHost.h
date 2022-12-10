@@ -24,12 +24,7 @@
 #define MAX_PPR_ADDR_ENTRIES           20
 #define MAX_PPR_ADDR_ENTRIES_SPPR      40
 
-#if !defined(SILENT_MODE)
-#define DEBUG_CODE_BLOCK  1
-#endif
-
 #define UBIOS_GENERATION_EN               BIT22     // flag to enable DfxUbiosGeneration from Simics
 #define HYBRID_SYSTEM_LEVEL_EMULATION_EN  BIT23     // flag to enable DfxHybridSystemLevelEmulation from Simics
 
 #endif   // _platformhost_h
-

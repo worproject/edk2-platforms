@@ -136,7 +136,7 @@ typedef struct {
   UINT8  CFRS3mManualCommit;
   UINT8  CFRPucodeEnable;
   UINT8  CFRPucodeManualCommit;
-  UINT8  CpuCrashLogGprs;
+  UINT8  CpuCrashDataGprs;
 } SOCKET_PROCESSORCORE_CONFIGURATION;
 #pragma pack()
 

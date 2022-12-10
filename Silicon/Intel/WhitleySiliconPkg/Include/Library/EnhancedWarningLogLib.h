@@ -191,9 +191,7 @@ typedef struct {
   UINT32 EccS;
   UINT32 Chunk;
   UINT32 Column;
-  UINT32 ColumnExt;
   UINT32 Row;
-  UINT32 RowExt;
   UINT32 Bank;
   UINT32 Rank;
   UINT32 Subrank;

@@ -491,12 +491,14 @@ Ext4ReadDir (
     // or a checksum at the end of the directory block.
     // memcmp (and CompareMem) return 0 when the passed length is 0.
 
-    IsDotOrDotDot = Entry.name_len != 0 &&
-                    (CompareMem (Entry.name, ".", Entry.name_len) == 0 ||
-                     CompareMem (Entry.name, "..", Entry.name_len) == 0);
+    // We must bound name_len as > 0 and <= 2 to avoid any out-of-bounds accesses or bad detection of
+    // "." and "..".
+    IsDotOrDotDot = Entry.name_len > 0 && Entry.name_len <= 2 &&
+                    CompareMem (Entry.name, "..", Entry.name_len) == 0;
 
-    // When inode = 0, it's unused.
-    ShouldSkip = Entry.inode == 0 || IsDotOrDotDot;
+    // When inode = 0, it's unused. When name_len == 0, it's a nameless entry
+    // (which we should not expose to ReadDir).
+    ShouldSkip = Entry.inode == 0 || Entry.name_len == 0 || IsDotOrDotDot;
 
     if (ShouldSkip) {
       Offset += Entry.rec_len;

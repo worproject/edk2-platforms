@@ -3745,9 +3745,14 @@ FitGen (
             DumpAcm((ACM_FORMAT *)AcmBuffer);
 
             if (gFitTableContext.StartupAcm[Index].Version >= 0x200) {
-              GetAcmFms((ACM_FORMAT *)AcmBuffer, &gFitTableContext.StartupAcm[Index].FMS, &gFitTableContext.StartupAcm[Index].FMSMask);
-              printf("ACM FMS:%08x\n", gFitTableContext.StartupAcm[Index].FMS);
-              printf("ACM FMS Mask:%08x\n", gFitTableContext.StartupAcm[Index].FMSMask);
+              if ((gFitTableContext.StartupAcm[Index].FMS == 0) && (gFitTableContext.StartupAcm[Index].FMSMask == 0)) {
+                //
+                // FMS and FMSMask is not assigned via -I argument. Get it from ACM
+                //
+                GetAcmFms((ACM_FORMAT *)AcmBuffer, &gFitTableContext.StartupAcm[Index].FMS, &gFitTableContext.StartupAcm[Index].FMSMask);
+                printf("ACM FMS:%08x\n", gFitTableContext.StartupAcm[Index].FMS);
+                printf("ACM FMS Mask:%08x\n", gFitTableContext.StartupAcm[Index].FMSMask);
+              }
             }
           }
           else {

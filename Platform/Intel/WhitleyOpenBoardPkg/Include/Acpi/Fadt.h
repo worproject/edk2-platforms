@@ -152,9 +152,18 @@ For Watson Creek we set this to 0 and then dynamically update this to 1 in the D
 // Information
 //
 #define EFI_ACPI_GPE0_BLK_ADDRESS_SPACE_ID  EFI_ACPI_6_2_SYSTEM_IO
-#define EFI_ACPI_GPE0_BLK_BIT_WIDTH         0 // size of R_PCH_ACPI_GPE0_STS_127_96 + R_PCH_ACPI_GPE0_EN_127_96
+#define EFI_ACPI_GPE0_BLK_BIT_WIDTH         0x100 // size of R_PCH_ACPI_GPE0_STS_127_96 + R_PCH_ACPI_GPE0_EN_127_96
 #define EFI_ACPI_GPE0_BLK_BIT_OFFSET        0x00
 #define EFI_ACPI_GPE0_BLK_ADDRESS           (EFI_ACPI_PM1A_EVT_BLK_ADDRESS + 0x80)
+
+//
+// X General Purpose Event 0 Register Block Generic Address
+// Information
+//
+#define EFI_ACPI_X_GPE0_BLK_ADDRESS_SPACE_ID  EFI_ACPI_6_2_SYSTEM_IO
+#define EFI_ACPI_X_GPE0_BLK_BIT_WIDTH         0x00
+#define EFI_ACPI_X_GPE0_BLK_BIT_OFFSET        0x00
+#define EFI_ACPI_X_GPE0_BLK_ADDRESS           EFI_ACPI_GPE0_BLK_ADDRESS
 
 //
 // General Purpose Event 1 Register Block Generic Address
@@ -164,6 +173,16 @@ For Watson Creek we set this to 0 and then dynamically update this to 1 in the D
 #define EFI_ACPI_GPE1_BLK_BIT_WIDTH         0x0
 #define EFI_ACPI_GPE1_BLK_BIT_OFFSET        0x0
 #define EFI_ACPI_GPE1_BLK_ADDRESS           0x0
+
+//
+// X General Purpose Event 1 Register Block Generic Address
+// Information
+//
+#define EFI_ACPI_X_GPE1_BLK_ADDRESS_SPACE_ID  EFI_ACPI_6_2_SYSTEM_IO
+#define EFI_ACPI_X_GPE1_BLK_BIT_WIDTH         0x00
+#define EFI_ACPI_X_GPE1_BLK_BIT_OFFSET        0x00
+#define EFI_ACPI_X_GPE1_BLK_ADDRESS           0x00
+
 //
 // Reset Register Generic Address Information
 //

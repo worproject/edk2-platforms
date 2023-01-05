@@ -2,6 +2,8 @@
   IPMI Command - NetFnApp.
 
   Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -242,6 +244,92 @@ IpmiSendMessage (
              SendMessageRequestSize,
              (VOID *)SendMessageResponse,
              SendMessageResponseSize
+             );
+  return Status;
+}
+
+/**
+  This function gets the system UUID.
+
+  @param[out] SystemGuid   The pointer to retrieve system UUID.
+
+  @retval EFI_SUCCESS               UUID is returned.
+  @retval EFI_INVALID_PARAMETER     SystemGuid is a NULL pointer.
+  @retval Others                    Other errors.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetSystemUuid (
+  OUT EFI_GUID *SystemGuid
+  )
+{
+  EFI_STATUS                    Status;
+  UINT32                        RequestSize;
+  UINT32                        ResponseSize;
+  IPMI_GET_SYSTEM_UUID_RESPONSE GetSystemUuidResponse;
+
+  if (SystemGuid == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+  RequestSize = 0;
+  ResponseSize = sizeof (IPMI_GET_SYSTEM_UUID_RESPONSE);
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_APP,
+             IPMI_APP_GET_SYSTEM_GUID,
+             (VOID *)NULL,
+             RequestSize,
+             (VOID *)&GetSystemUuidResponse,
+             &ResponseSize
+             );
+  if (!EFI_ERROR (Status) && GetSystemUuidResponse.CompletionCode == IPMI_COMP_CODE_NORMAL) {
+    CopyMem (
+      (VOID *)SystemGuid,
+      (VOID *)&GetSystemUuidResponse.SystemUuid,
+      sizeof (EFI_GUID)
+      );
+  }
+  return Status;
+}
+
+/**
+  This function gets the channel information.
+
+  @param[in]  GetChannelInfoRequest          The get channel information request.
+  @param[out] GetChannelInfoResponse         The get channel information response.
+  @param[out] GetChannelInfoResponseSize     When input, the expected size of response.
+                                             When output, the exact size of the returned
+                                             response.
+
+  @retval EFI_SUCCESS            Get channel information successfully.
+  @retval EFI_INVALID_PARAMETER  One of the given input parameters is invalid.
+  @retval Others                 Other errors.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetChannelInfo (
+  IN  IPMI_GET_CHANNEL_INFO_REQUEST  *GetChannelInfoRequest,
+  OUT IPMI_GET_CHANNEL_INFO_RESPONSE *GetChannelInfoResponse,
+  OUT UINT32                         *GetChannelInfoResponseSize
+  )
+{
+  EFI_STATUS Status;
+
+  if (GetChannelInfoRequest == NULL ||
+      GetChannelInfoResponse == NULL ||
+      GetChannelInfoResponseSize == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  *GetChannelInfoResponseSize = sizeof (IPMI_GET_CHANNEL_INFO_RESPONSE);
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_APP,
+             IPMI_APP_GET_CHANNEL_INFO,
+             (UINT8 *)GetChannelInfoRequest,
+             sizeof (IPMI_GET_CHANNEL_INFO_REQUEST),
+             (UINT8 *)GetChannelInfoResponse,
+             GetChannelInfoResponseSize
              );
   return Status;
 }

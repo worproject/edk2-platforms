@@ -21,8 +21,7 @@
 
 [Sources.ARM]
   Arm/ArchPrePi.c
-  Arm/ModuleEntryPoint.S   | GCC
-  Arm/ModuleEntryPoint.asm | RVCT
+  Arm/ModuleEntryPoint.S
 
 [Packages]
   ArmPkg/ArmPkg.dec

@@ -68,8 +68,6 @@
   *_*_ARM_PP_FLAGS  = -DARM_BIGLITTLE_TC2=1
 !endif
 
-  RVCT:*_*_ARM_PLATFORM_FLAGS == --cpu Cortex-A15 -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/CTA15-A7
-
   GCC:*_*_ARM_PLATFORM_FLAGS == -mcpu=cortex-a15 -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/CTA15-A7
 
   XCODE:*_*_ARM_PLATFORM_FLAGS = -I$(WORKSPACE)/Platform/ARM/VExpressPkg/Include/Platform/CTA15-A7

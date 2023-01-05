@@ -31,8 +31,7 @@
 [Sources.common]
   CTA15-A7.c
   CTA15-A7Mem.c
-  CTA15-A7Helper.asm | RVCT
-  CTA15-A7Helper.S   | GCC
+  CTA15-A7Helper.S
 
 [FixedPcd]
   gArmPlatformTokenSpaceGuid.PcdCoreCount

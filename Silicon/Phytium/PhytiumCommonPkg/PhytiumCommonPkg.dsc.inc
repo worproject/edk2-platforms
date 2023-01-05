@@ -198,7 +198,6 @@
   PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
 
 [BuildOptions]
-  RVCT:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
   GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
 
 [BuildOptions.AARCH64.EDKII.DXE_RUNTIME_DRIVER]

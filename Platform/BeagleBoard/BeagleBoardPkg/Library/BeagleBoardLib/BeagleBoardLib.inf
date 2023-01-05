@@ -29,14 +29,11 @@
   MemoryAllocationLib
 
 [Sources.common]
-  BeagleBoardHelper.asm  | RVCT
-  BeagleBoardHelper.S    | GCC
+  BeagleBoardHelper.S
   BeagleBoard.c
   BeagleBoardMem.c
   PadConfiguration.c
   Clock.c
-  BeagleBoardHelper.S    | GCC
-  BeagleBoardHelper.asm  | RVCT
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdFdBaseAddress

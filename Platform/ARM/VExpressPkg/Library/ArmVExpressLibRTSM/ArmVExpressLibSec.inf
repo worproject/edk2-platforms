@@ -30,8 +30,7 @@
   RTSM.c
 
 [Sources.ARM]
-  Arm/RTSMHelper.asm    | RVCT
-  Arm/RTSMHelper.S      | GCC
+  Arm/RTSMHelper.S
 
 [Sources.AARCH64]
   AArch64/RTSMHelper.S

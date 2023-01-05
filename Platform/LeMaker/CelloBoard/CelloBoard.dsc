@@ -242,7 +242,6 @@ DEFINE NUM_CORES    = 4
 ###################################################################################################
 
 [BuildOptions]
-  RVCT:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
   GCC:RELEASE_*_*_CC_FLAGS  = -DMDEPKG_NDEBUG
 
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]

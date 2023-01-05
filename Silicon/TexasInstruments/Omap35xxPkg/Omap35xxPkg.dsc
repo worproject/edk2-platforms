@@ -85,9 +85,6 @@
   GCC:*_*_ARM_ARCHCC_FLAGS     == -march=armv7-a -mthumb
   GCC:*_*_ARM_ARCHASM_FLAGS    == -march=armv7-a
 
-  RVCT:*_*_ARM_ARCHCC_FLAGS     == --cpu 7-A
-  RVCT:*_*_ARM_ARCHASM_FLAGS    == --cpu 7-A
-
   *_*_*_CC_FLAGS = -DDISABLE_NEW_DEPRECATED_INTERFACES
 
 ################################################################################

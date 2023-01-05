@@ -207,9 +207,6 @@
   NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
 
 [BuildOptions]
-  XCODE:*_*_ARM_PLATFORM_FLAGS == -arch armv7
-  GCC:*_*_ARM_PLATFORM_FLAGS == -march=armv7-a
-
   *_*_*_CC_FLAGS = -DDISABLE_NEW_DEPRECATED_INTERFACES
 
 [BuildOptions.common.EDKII.DXE_RUNTIME_DRIVER]

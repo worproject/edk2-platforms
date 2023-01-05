@@ -64,7 +64,6 @@
 
 [BuildOptions]
 !ifdef ARM_BIGLITTLE_TC2
-  *_*_ARM_ARCHCC_FLAGS  = -DARM_BIGLITTLE_TC2=1
   *_*_ARM_PP_FLAGS  = -DARM_BIGLITTLE_TC2=1
 !endif
 

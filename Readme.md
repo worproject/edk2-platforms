@@ -9,7 +9,7 @@ please see
 The majority of the content in the EDK II open source project uses a
 [BSD-2-Clause Plus Patent License](License.txt).  Additional details on EDK II
 open source project code contributions can be found in the edk2 repository
-[Readme.md](https://github.com/tianocore/edk2/blob/master/Readme.md).
+[Readme.md](https://github.com/tianocore/edk2/blob/master/ReadMe.rst).
 The EDK II Platforms open source project contains the following components that
 are covered by additional licenses:
 

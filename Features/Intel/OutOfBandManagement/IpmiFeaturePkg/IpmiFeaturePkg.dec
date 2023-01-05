@@ -8,6 +8,7 @@
 # for the build infrastructure.
 #
 # Copyright (c) 2019-2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -37,6 +38,10 @@
   ## @libraryclass  Provides an API for platform-specific IPMI hooks.
   #
   IpmiCommandLib|Include/Library/IpmiPlatformHookLib.h
+
+  ## @libraryclass  Provides an API for the base IPMI library
+  #
+  IpmiBaseLib|Include/Library/IpmiBaseLib.h
 
 [Guids]
   gIpmiFeaturePkgTokenSpaceGuid  =  {0xc05283f6, 0xd6a8, 0x48f3, {0x9b, 0x59, 0xfb, 0xca, 0x71, 0x32, 0x0f, 0x12}}

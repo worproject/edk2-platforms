@@ -2,6 +2,8 @@
   This library abstract how to send/receive IPMI command.
 
 Copyright (c) 2018-2021, Intel Corporation. All rights reserved.<BR>
+Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+
 SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -88,6 +90,44 @@ IpmiSendMessage (
   IN OUT UINT32                  *SendMessageResponseSize
   );
 
+/**
+  This function gets the system UUID.
+
+  @param[out] SystemGuid   The pointer to retrieve system UUID.
+
+  @retval EFI_SUCCESS               UUID is returned.
+  @retval EFI_INVALID_PARAMETER     SystemGuid is a NULL pointer.
+  @retval Others                    Other errors.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetSystemUuid (
+  OUT EFI_GUID *SystemGuid
+  );
+
+/**
+  This function gets the channel information.
+
+  @param[in]  GetChannelInfoRequest           The get channel information request.
+  @param[out] GetChannelInfoResponse          The get channel information response.
+  @param[out] GetChannelInfoResponseSize      When input, the expected size of response.
+                                              When output, the exact size of the returned
+                                              response.
+
+  @retval EFI_SUCCESS            Get channel information successfully.
+  @retval EFI_INVALID_PARAMETER  One of the given input parameters is invalid.
+  @retval Others                 Other errors.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetChannelInfo (
+  IN  IPMI_GET_CHANNEL_INFO_REQUEST  *GetChannelInfoRequest,
+  OUT IPMI_GET_CHANNEL_INFO_RESPONSE *GetChannelInfoResponse,
+  OUT UINT32                         *GetChannelInfoResponseSize
+  );
+
 //
 // NetFnTransport
 //
@@ -112,6 +152,28 @@ IpmiGetSolConfigurationParameters (
   IN  IPMI_GET_SOL_CONFIGURATION_PARAMETERS_REQUEST  *GetConfigurationParametersRequest,
   OUT IPMI_GET_SOL_CONFIGURATION_PARAMETERS_RESPONSE *GetConfigurationParametersResponse,
   IN OUT UINT32                                      *GetConfigurationParametersResponseSize
+  );
+
+/**
+  This function gets the LAN configuration parameter.
+
+  @param[in]     GetLanConfigurationParametersRequest   Request data
+  @param[out]    GetLanConfigurationParametersResponse  Response data
+  @param[in,out] GetLanConfigurationParametersSize      When input, the expected size of response data.
+                                                        When out, the exact size of response data.
+
+  @retval EFI_SUCCESS            Lan configuration parameter is returned in the response.
+  @retval EFI_INVALID_PARAMETER  One of the given input parameters is invalid.
+  @retval Others                 Other errors.
+
+**/
+
+EFI_STATUS
+EFIAPI
+IpmiGetLanConfigurationParameters (
+  IN     IPMI_GET_LAN_CONFIGURATION_PARAMETERS_REQUEST  *GetLanConfigurationParametersRequest,
+  OUT    IPMI_GET_LAN_CONFIGURATION_PARAMETERS_RESPONSE *GetLanConfigurationParametersResponse,
+  IN OUT UINT32                                         *GetLanConfigurationParametersSize
   );
 
 //

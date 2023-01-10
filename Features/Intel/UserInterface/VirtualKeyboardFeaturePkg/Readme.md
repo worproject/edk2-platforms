@@ -43,7 +43,10 @@ User touch the touch panel -> absolute pointer and status -> virtual keyboard ev
 This driver use AbsolutePointer protocol to get the info of user input, and use GraphicsOutput protocol to show the picture.
 
 ## Build Flows
-There is not special build flow.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 Test this driver in a device with touch panel and the BIOS support touch panel driver.

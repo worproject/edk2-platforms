@@ -63,11 +63,10 @@ Architecturally defined data structures and flows for the feature.
 Key control flows for the feature.
 
 ## Build Flows
-*_TODO_*
-Any special build flows should be described in this section.
-
-This is particularly useful for features that use custom build tools or require non-standard tool configuration. If the
-standard flow in the feature package template is used, this section may be empty.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 *_TODO_*

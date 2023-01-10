@@ -44,7 +44,10 @@ AsfPushEvent() -> through SmBus -> NIC -> Remote management consoles
 N/A now.
 
 ## Build Flows
-There is not special build flow.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 There are not test points implemented.

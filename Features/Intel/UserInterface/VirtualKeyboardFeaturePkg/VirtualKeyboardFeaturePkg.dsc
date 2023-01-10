@@ -34,6 +34,10 @@
 #
 !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
+[PcdsDynamicExDefault.X64]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow
+
 #
 # Include common libraries
 #

@@ -132,6 +132,7 @@ IpmiSubmitCommand (
 
 **/
 EFI_STATUS
+EFIAPI
 IpmiGetBmcStatus (
   OUT BMC_STATUS                         *BmcStatus,
   OUT SM_COM_ADDRESS                     *ComAddress
@@ -152,4 +153,3 @@ IpmiGetBmcStatus (
                              );
   return Status;
 }
-

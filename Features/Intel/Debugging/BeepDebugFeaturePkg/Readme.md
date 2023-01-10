@@ -120,11 +120,17 @@ Status Code (ReportStatusCode) -> Beep Value (GetBeepValueFromStatusCode).
 ReportStatusCode () -> BeepStatusCodeReportWorker () -> GetBeepValueFromStatusCode () -> Beep ()
 
 ## Build Flows
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
+
 Standalone build
 * build -a IA32 -a X64 -p Debugging\BeepDebugFeaturePkg\BeepDebugFeaturePkg.dsc
 
 AdvanceFeaturePkg build
 * build -a IA32 -a X64 -p AdvancedFeaturePkg/AdvancedFeaturePkg.dsc
+
 ## Test Point Results
 None
 

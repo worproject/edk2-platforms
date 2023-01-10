@@ -21,6 +21,7 @@
 
 **/
 EFI_STATUS
+EFIAPI
 PcdInitConstructor (
   VOID
   )
@@ -86,4 +87,3 @@ PcdInitConstructor (
 
   return EFI_SUCCESS;
 }
-

@@ -46,7 +46,10 @@ GetSpcrDevice() -> serial port device path -> get PCI info and serial port info 
 GetSpcrDevice () in SpcrDeviceLib -> SpcrAcpiDxe.
 
 ## Build Flows
-There is not special build flow.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 There are not test points implemented.

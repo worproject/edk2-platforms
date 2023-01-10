@@ -78,8 +78,10 @@ Architecturally defined data structures and flows for the feature.
 Consumer gets image from the logo driver via EDKII_PLATFORM_LOGO_PROTOCOL.
 
 ## Build Flows
-
-No any special build flows is needed.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 

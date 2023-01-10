@@ -111,7 +111,10 @@ Status Code (ReportStatusCode) -> Post Code (GetPostCodeFromStatusCode).
 ReportStatusCode () -> PostCodeStatusCodeReportWorker () -> GetPostCodeFromStatusCode () -> PostCode ()
 
 ## Build Flows
-There are not special build flows.
+Supported build targets
+* VS2019
+* CLANGPDB
+* GCC5
 
 ## Test Point Results
 There are no test points defined.

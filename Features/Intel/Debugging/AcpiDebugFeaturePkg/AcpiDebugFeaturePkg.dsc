@@ -34,6 +34,9 @@
 #
 !include MinPlatformPkg/Include/Dsc/MinPlatformFeaturesPcd.dsc.inc
 
+[PcdsFeatureFlag.X64]
+  gAcpiDebugFeaturePkgTokenSpaceGuid.PcdUseSmmVersion                       |FALSE
+
 #
 # Include common libraries
 #

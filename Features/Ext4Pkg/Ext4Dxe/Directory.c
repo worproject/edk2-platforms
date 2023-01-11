@@ -1,7 +1,7 @@
 /** @file
   Directory related routines
 
-  Copyright (c) 2021 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2023 Pedro Falcato All rights reserved.
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -16,8 +16,9 @@
    @param[in]      Entry   Pointer to a EXT4_DIR_ENTRY.
    @param[out]      Ucs2FileName   Pointer to an array of CHAR16's, of size EXT4_NAME_MAX + 1.
 
-   @retval EFI_SUCCESS   The filename was succesfully retrieved and converted to UCS2.
-   @retval !EFI_SUCCESS  Failure.
+   @retval EFI_SUCCESS              The filename was succesfully retrieved and converted to UCS2.
+   @retval EFI_INVALID_PARAMETER    The filename is not valid UTF-8.
+   @retval !EFI_SUCCESS             Failure.
 **/
 EFI_STATUS
 Ext4GetUcs2DirentName (
@@ -174,10 +175,16 @@ Ext4RetrieveDirent (
        * need to form valid ASCII/UTF-8 sequences.
        */
       if (EFI_ERROR (Status)) {
-        // If we error out, skip this entry
-        // I'm not sure if this is correct behaviour, but I don't think there's a precedent here.
-        BlockOffset += Entry->rec_len;
-        continue;
+        if (Status == EFI_INVALID_PARAMETER) {
+          // If we error out due to a bad UTF-8 sequence (see Ext4GetUcs2DirentName), skip this entry.
+          // I'm not sure if this is correct behaviour, but I don't think there's a precedent here.
+          BlockOffset += Entry->rec_len;
+          continue;
+        }
+
+        // Other sorts of errors should just error out.
+        FreePool (Buf);
+        return Status;
       }
 
       if ((Entry->name_len == StrLen (Name)) &&
@@ -436,6 +443,7 @@ Ext4ReadDir (
   EXT4_FILE       *TempFile;
   BOOLEAN         ShouldSkip;
   BOOLEAN         IsDotOrDotDot;
+  CHAR16          DirentUcs2Name[EXT4_NAME_MAX + 1];
 
   DirIno     = File->Inode;
   Status     = EFI_SUCCESS;
@@ -503,6 +511,21 @@ Ext4ReadDir (
     if (ShouldSkip) {
       Offset += Entry.rec_len;
       continue;
+    }
+
+    // Test if the dirent is valid utf-8. This is already done inside Ext4OpenDirent but EFI_INVALID_PARAMETER
+    // has the danger of its meaning being overloaded in many places, so we can't skip according to that.
+    // So test outside of it, explicitly.
+    Status = Ext4GetUcs2DirentName (&Entry, DirentUcs2Name);
+
+    if (EFI_ERROR (Status)) {
+      if (Status == EFI_INVALID_PARAMETER) {
+        // Bad UTF-8, skip.
+        Offset += Entry.rec_len;
+        continue;
+      }
+
+      goto Out;
     }
 
     Status = Ext4OpenDirent (Partition, EFI_FILE_MODE_READ, &TempFile, &Entry, File);

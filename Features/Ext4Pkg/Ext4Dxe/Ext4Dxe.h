@@ -1,7 +1,7 @@
 /** @file
   Common header for the driver
 
-  Copyright (c) 2021 - 2022 Pedro Falcato All rights reserved.
+  Copyright (c) 2021 - 2023 Pedro Falcato All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -31,8 +31,7 @@
 
 #include "Ext4Disk.h"
 
-#define SYMLOOP_MAX    8
-#define EXT4_NAME_MAX  255
+#define SYMLOOP_MAX  8
 //
 // We need to specify path length limit for security purposes, to prevent possible
 // overflows and dead-loop conditions. Originally this limit is absent in FS design,

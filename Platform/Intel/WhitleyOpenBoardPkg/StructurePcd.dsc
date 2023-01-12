@@ -1049,6 +1049,7 @@ gStructPcdTokenSpaceGuid.PcdSetup.DdrtInternalAlertEn|0x1                       
 gStructPcdTokenSpaceGuid.PcdSetup.ReservedS2|0x2
 gStructPcdTokenSpaceGuid.PcdSetup.ReservedS1|0x0
 gStructPcdTokenSpaceGuid.PcdSetup.ReservedS3|0x2
+gStructPcdTokenSpaceGuid.PcdSetup.DisableFastString|0x0                                            # Disable Fast String after first poison error
 gStructPcdTokenSpaceGuid.PcdSetup.DisableMAerrorLoggingDueToLER|0x1                                # LER MA Error Logging
 gStructPcdTokenSpaceGuid.PcdSetup.EdpcEn|0x0                                                       # IIO eDPC Support
 gStructPcdTokenSpaceGuid.PcdSetup.EdpcErrCorMsg|0x1                                                # IIO eDPC ERR_COR Message
@@ -1700,6 +1701,86 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[0]|0x9       
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[1]|0x9                          # PCI-E Completion Timeout
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[2]|0x9                          # PCI-E Completion Timeout
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[3]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[4]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[5]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[6]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[7]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[8]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[9]|0x9                          # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[10]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[11]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[12]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[13]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[14]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[15]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[16]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[17]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[18]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[19]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[20]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[21]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[22]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[23]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[24]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[25]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[26]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[27]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[28]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[29]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[30]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[31]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[32]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[33]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[34]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[35]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[36]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[37]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[38]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[39]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[40]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[41]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[42]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[43]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[44]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[45]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[46]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[47]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[48]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[49]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[50]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[51]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[52]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[53]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[54]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[55]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[56]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[57]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[58]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[59]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[60]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[61]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[62]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[63]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[64]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[65]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[66]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[67]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[68]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[69]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[70]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[71]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[72]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[73]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[74]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[75]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[76]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[77]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[78]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[79]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[80]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[81]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[82]|0x9                         # PCI-E Completion Timeout
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.CompletionTimeoutValue[83]|0x9                         # PCI-E Completion Timeout
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ComplianceMode[0]|0x0                                  # Compliance Mode
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ComplianceMode[1]|0x0                                  # Compliance Mode
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ComplianceMode[2]|0x0                                  # Compliance Mode
@@ -6396,6 +6477,90 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[80]|0x0           
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[81]|0x0                              # Link Speed
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[82]|0x0                              # Link Speed
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePortLinkSpeed[83]|0x0                              # Link Speed
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[0]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[1]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[2]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[3]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[4]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[5]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[6]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[7]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[8]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[9]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[10]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[11]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[12]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[13]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[14]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[15]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[16]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[17]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[18]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[19]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[20]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[21]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[22]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[23]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[24]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[25]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[26]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[27]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[28]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[29]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[30]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[31]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[32]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[33]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[34]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[35]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[36]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[37]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[38]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[39]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[40]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[41]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[42]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[43]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[44]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[45]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[46]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[47]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[48]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[49]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[50]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[51]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[52]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[53]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[54]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[55]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[56]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[57]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[58]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[59]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[60]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[61]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[62]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[63]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[64]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[65]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[66]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[67]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[68]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[69]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[70]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[71]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[72]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[73]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[74]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[75]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[76]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[77]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[78]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[79]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[80]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[81]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[82]|0x2
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePort10bitTag[83]|0x2
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PciePtm|0x2                                            # PCIe PTM Support
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieRelaxedOrdering|0x1                                # Pcie Relaxed Ordering
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PcieSlotItemCtrl|0x0                                   # PCIe Slot Item Control
@@ -6600,6 +6765,7 @@ gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PoisonMmioReadEn[21]|0x0            
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PoisonMmioReadEn[22]|0x0                               # Enable MMIO read cmpl poison for STACK_4
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PoisonMmioReadEn[23]|0x0                               # Enable MMIO read cmpl poison for STACK_5
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PostedInterrupt|0x1                                    # Posted Interrupt
+gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PostedInterruptThrottle|0x1                            # Posted Interrupt Throttle
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.PrioritizeTPH|0x0                                      # Prioritize TPH
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.ProblematicPort|0x0                                    # Problematic port
 gStructPcdTokenSpaceGuid.PcdSocketIioConfig.RetimerGlParmReg0Override[2]|0x0                       # - Override
@@ -7411,6 +7577,7 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ADDDCEn|0x0                      
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ADRDataSaveMode|0x2                                 # ADR Data Save Mode
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ADREn|0x1                                           # Enable ADR
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.AdddcErrInjEn|0x1                                   # Enable ADDDC Error Injection
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.AdrPatrolScrubDisable|0x0                           # ADR Patrol Scrub Disable
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.AdvMemTestCondPause|0x186a0                         # Adv MemTest Pause
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.AdvMemTestCondTrefi|0x3cf0                          # Adv MemTest tREFI
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.AdvMemTestCondTwr|0xa                               # Adv MemTest tWR
@@ -7479,6 +7646,7 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.DdrMemoryType|0x2                
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.DdrtCkeEn|0x1                                       # PMem CKE
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.DdrtSrefEn|0x0                                      # PMem SELF REFRESH
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.DfeGainBias|0x0                                     # DfeGainBias
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS149|0x0
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS48|0x1
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS127|0x1
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS122|0x1
@@ -7529,7 +7697,6 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS137|0x2
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS128|0x2
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS123|0x0
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS80|0x8
-gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS149|0x1
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS125|0x0
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS64|0x7ff
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.ReservedS113|0x1
@@ -7782,6 +7949,7 @@ gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.multiSparingRanks|0x2            
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.normOppInterval|0x400                               # Normal Operation Duration
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.oneRankTimingMode|0x1                               # One Rank Timing Mode
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.oppReadInWmm|0x1                                    # Opp read during WMM
+gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.pTRR|0x0                                            # pTRR
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.partialmirrorsad0|0x0                               # Mirror TAD0
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.partialmirrorsize[0]|0x0                            # Partial Mirror 1 Size (GB)
 gStructPcdTokenSpaceGuid.PcdSocketMemoryConfig.partialmirrorsize[1]|0x0                            # Partial Mirror 2 Size (GB)
@@ -8406,6 +8574,7 @@ gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.SnpLatVal|0x0           
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.SnpLatVld|0x0                              # Snoop Latency Override
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.SwLtrOvrdCtl|0x0                           # PCIe LTR Override Control
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.TCCActivationOffset|0x0                    # TCC Activation Offset
+gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.PrgTjOffsetEn|0x0                          # Programmable TJ Offset Enable
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.TStateEnable|0x0                           # Software Controlled T-States
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.ThermalMonitorStatusFilter|0x0             # Therm-Monitor-Status Filter
 gStructPcdTokenSpaceGuid.PcdSocketPowerManagementConfig.ThermalMonitorStatusFilterTimeWindow|0x9   # Therm-Monitor-Status Filter Time Window
@@ -8451,7 +8620,7 @@ gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CoreDisableMask[1]|0x0    
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CoreDisableMask[2]|0x0                       # Disable Bitmap
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CoreDisableMask[3]|0x0                       # Disable Bitmap
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CoreFailover|0x1                             # Core Failover
-gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CpuCrashLogGprs|0x0                          # Cpu CrashLog Gprs
+gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CpuCrashDataGprs|0x0                         # Cpu Crash Data Gprs
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CpuDbpEnable|0x0                             # DBP-F
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CpuL1NextPagePrefetcherDisable|0x0           # L1 Next Page Prefetcher
 gStructPcdTokenSpaceGuid.PcdSocketProcessorCoreConfig.CpuMtoIWa|0x1                                # MtoI Workaround

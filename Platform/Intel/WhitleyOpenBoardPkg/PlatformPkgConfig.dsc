@@ -13,7 +13,11 @@
 
 [Defines]
 DEFINE CRB_FLAG_ENABLE                       = TRUE
-DEFINE DEBUG_FLAGS_ENABLE                    = FALSE
+!if $(TARGET) == "RELEASE"
+  DEFINE DEBUG_FLAGS_ENABLE                    = FALSE
+!else
+  DEFINE DEBUG_FLAGS_ENABLE                    = TRUE
+!endif
 
 DEFINE SERVER_BIOS_ENABLE                    = TRUE
 DEFINE PCH_SERVER_BIOS_ENABLE                = TRUE

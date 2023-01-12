@@ -419,7 +419,7 @@ AdjustSocketResources (
       Status = AdjustSocketMmioH (SocketResources, ResourceType, ValidSockets);
       break;
     default:
-      DEBUG((DEBUG_ERROR, "ERROR: Resource Type Unknown = %x\n",ResourceType));
+      DEBUG((DEBUG_ERROR, "[PCI] ERROR: Resource Type Unknown = %x\n", ResourceType));
       Status = EFI_INVALID_PARAMETER;
       break;
   } // switch
@@ -429,7 +429,7 @@ AdjustSocketResources (
 
 
 /**
-  Calculate current system resource map with retrieved NVRAM variable to see if stored settings were applied
+  Compare current system resource map with rebalance request NVRAM variable to see if stored settings were applied.
 
   @param[in] SocketPciResourceData - Pointer to stored CPU resource map
 
@@ -488,7 +488,8 @@ IsResourceMapRejected (
           PCIDEBUG ("[%d.%d] Current I/O: 0x%04X..0x%04X\n", Socket, Stack,
                     IioUdsStackLimits->PciResourceIoBase, IioUdsStackLimits->PciResourceIoLimit);
           PCIDEBUG ("[%d.%d]   Saved I/O: 0x%04X..0x%04X %a\n", Socket, Stack,
-                   StackLimits->Io.Base, StackLimits->Io.Limit, Rejected ? "rejected" : "");
+                   StackLimits->Io.Base, StackLimits->Io.Limit,
+                   (StackLimits->Io.Limit != 0 && Rejected) ? "rejected" : "");
 
           if (IioUdsStackLimits->Mmio32Base != StackLimits->LowMmio.Base && StackLimits->LowMmio.Base != 0) {
             Rejected = TRUE;
@@ -499,7 +500,8 @@ IsResourceMapRejected (
           PCIDEBUG ("[%d.%d] Current MMIOL: 0x%08X..0x%08X\n", Socket, Stack,
                     IioUdsStackLimits->Mmio32Base, IioUdsStackLimits->Mmio32Limit);
           PCIDEBUG ("[%d.%d]   Saved MMIOL: 0x%08X..0x%08X %a\n", Socket, Stack,
-                    StackLimits->LowMmio.Base, StackLimits->LowMmio.Limit, Rejected ? "rejected" : "");
+                    StackLimits->LowMmio.Base, StackLimits->LowMmio.Limit,
+                    (StackLimits->LowMmio.Limit != 0 && Rejected) ? "rejected" : "");
 
           if (IioUdsStackLimits->Mmio64Base != StackLimits->HighMmio.Base && StackLimits->HighMmio.Base != 0) {
             Rejected = TRUE;
@@ -510,7 +512,8 @@ IsResourceMapRejected (
           PCIDEBUG ("[%d.%d] Current MMIOH: 0x%012llX..0x%012llX\n", Socket, Stack,
                     IioUdsStackLimits->Mmio64Base, IioUdsStackLimits->Mmio64Limit);
           PCIDEBUG ("[%d.%d]   Saved MMIOH: 0x%012llX..0x%012llX %a\n", Socket, Stack,
-                    StackLimits->HighMmio.Base, StackLimits->HighMmio.Limit, Rejected ? "rejected" : "");
+                    StackLimits->HighMmio.Base, StackLimits->HighMmio.Limit,
+                    (StackLimits->HighMmio.Limit != 0 && Rejected) ? "rejected" : "");
         }
       }
       //
@@ -525,7 +528,8 @@ IsResourceMapRejected (
       PCIDEBUG("[%d] Current I/O: 0x%04X..0x%04X\n", Socket,
                IioUdsSocketLimits->PciResourceIoBase, IioUdsSocketLimits->PciResourceIoLimit);
       PCIDEBUG("[%d]   Saved I/O: 0x%04X..0x%04X %a\n", Socket,
-               SocketLimits->Io.Base, SocketLimits->Io.Limit, Rejected ? "rejected" : "");
+               SocketLimits->Io.Base, SocketLimits->Io.Limit,
+               (SocketLimits->Io.Limit != 0 && Rejected) ? "rejected" : "");
 
       if (IioUdsSocketLimits->Mmio32Base != SocketLimits->LowMmio.Base && SocketLimits->LowMmio.Base != 0) {
         Rejected = TRUE;
@@ -536,7 +540,8 @@ IsResourceMapRejected (
       PCIDEBUG ("[%d] Current MMIOL: 0x%08X..0x%08X\n", Socket,
                IioUdsSocketLimits->Mmio32Base, IioUdsSocketLimits->Mmio32Limit);
       PCIDEBUG ("[%d]   Saved MMIOL: 0x%08X..0x%08X %a\n", Socket,
-                SocketLimits->LowMmio.Base, SocketLimits->LowMmio.Limit, Rejected ? "rejected" : "");
+                SocketLimits->LowMmio.Base, SocketLimits->LowMmio.Limit,
+                (SocketLimits->LowMmio.Limit != 0 && Rejected) ? "rejected" : "");
 
       if (IioUdsSocketLimits->Mmio64Base != SocketLimits->HighMmio.Base && SocketLimits->HighMmio.Base != 0) {
         Rejected = TRUE;
@@ -547,7 +552,8 @@ IsResourceMapRejected (
       PCIDEBUG ("[%d] Current MMIOH: 0x%012llX..0x%012llX\n", Socket,
                IioUdsSocketLimits->Mmio64Base, IioUdsSocketLimits->Mmio64Limit);
       PCIDEBUG ("[%d]   Saved MMIOH: 0x%012llX..0x%012llX %a\n", Socket,
-                SocketLimits->HighMmio.Base, SocketLimits->HighMmio.Limit, Rejected ? "rejected" : "");
+                SocketLimits->HighMmio.Base, SocketLimits->HighMmio.Limit,
+                (SocketLimits->HighMmio.Limit != 0 && Rejected) ? "rejected" : "");
 
       if (IioUdsUboxStackLimits->Mmio64Base != UboxStackLimits->HighMmio.Base && UboxStackLimits->HighMmio.Base != 0) {
         Rejected = TRUE;
@@ -558,7 +564,8 @@ IsResourceMapRejected (
       PCIDEBUG ("[%d] Current UBOX: 0x%08X..0x%08X\n", Socket,
                 IioUdsUboxStackLimits->Mmio64Base, IioUdsUboxStackLimits->Mmio64Limit);
       PCIDEBUG ("[%d]   Saved UBOX: 0x%08X..0x%08X %a\n", Socket,
-                UboxStackLimits->HighMmio.Base, UboxStackLimits->HighMmio.Limit, Rejected ? "rejected" : "");
+                UboxStackLimits->HighMmio.Base, UboxStackLimits->HighMmio.Limit,
+                (UboxStackLimits->HighMmio.Limit != 0 && Rejected) ? "rejected" : "");
     }
   }
   DEBUG ((DEBUG_INFO, "[PCI] Resource rebalance rejected ? %a\n", Rejected ? "TRUE" : "FALSE"));
@@ -567,91 +574,67 @@ IsResourceMapRejected (
 
 
 /**
- Read SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME variable from flash and verify its content.
+ Verify whether system resource map changed comparing to the state when rebalance request was created.
 
- If the variable does not exist, or is not valid for current system configuration
- the buffer at *PciResConfigPtr is just cleared.
+ @param[in] PciResConfigPtr - Buffer with the rebalance request.
 
- @param[out] PciResConfigPtr - Buffer for the resource configuration variable.
-
- @retval EFI_SUCCESS            The function completed successfully.
- @retval EFI_NOT_FOUND          The variable was not found.
- @retval EFI_DEVICE_ERROR       The variable could not be retrieved due to a hardware error.
- @retval EFI_SECURITY_VIOLATION The variable could not be retrieved due to an authentication failure.
+ @return If current map is different than the one used when rebalance was created true is returned,
+         otherwise false.
 **/
-EFI_STATUS
-PciHostReadResourceConfig (
-  OUT SYSTEM_PCI_BASE_LIMITS *PciResConfigPtr
+BOOLEAN
+IsSystemMapChanged (
+  IN SYSTEM_PCI_BASE_LIMITS *PciResConfigPtr
   )
 {
-  UINTN                       VarSize;
-  EFI_STATUS                  Status;
-  UINT8                       Socket;
+  UINT8                      Socket;
 
-  VarSize = sizeof(*PciResConfigPtr);
-  Status = gRT->GetVariable (SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, &gEfiSocketPciResourceDataGuid,
-                             NULL, &VarSize, PciResConfigPtr);
-  if (EFI_ERROR (Status) && Status != EFI_BUFFER_TOO_SMALL) {
-    goto ErrExit;
-  }
-  if (Status == EFI_BUFFER_TOO_SMALL || VarSize != sizeof(*PciResConfigPtr)) {
-
-    PCIDEBUG ("Got variable '%s' of unexpected size %d (expect %d) - overwrite\n",
-              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, VarSize, sizeof(*PciResConfigPtr));
-    Status = EFI_NOT_FOUND;
-    goto ErrExit;
-  }
-  //
-  // If any of the below checks fails clear the buffer and return EFI_NOT_FOUND.
-  //
-  Status = EFI_NOT_FOUND;
   if (PciResConfigPtr->MmioHBase != mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Base ||
-      PciResConfigPtr->MmioHLimit != mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Limit) {
+      PciResConfigPtr->MmioHGranularity != *(UINT64*)&mIioUds->IioUdsPtr->PlatformData.MmiohGranularity) {
 
-    PCIDEBUG ("%s: Memory map changed (MMIOH %012llX..%012llX != %012llX..%012llX) - overwrite\n",
-              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
-              PciResConfigPtr->MmioHBase, PciResConfigPtr->MmioHLimit,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Base,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Limit);
-    goto ErrExit;
+    DEBUG ((DEBUG_ERROR, "[PCI] %s: MMIOH Base %012llX [%llX] != %012llX [%llX] - system map changed\n",
+            SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
+            PciResConfigPtr->MmioHBase, PciResConfigPtr->MmioHGranularity,
+            mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Base,
+            *(UINT64*)&mIioUds->IioUdsPtr->PlatformData.MmiohGranularity));
+    return TRUE;
   }
   if (PciResConfigPtr->MmioLBase != mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Base ||
-      PciResConfigPtr->MmioLLimit != mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Limit) {
+      PciResConfigPtr->MmioLLimit != mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Limit ||
+      PciResConfigPtr->MmioLGranularity != mIioUds->IioUdsPtr->PlatformData.MmiolGranularity) {
 
-    PCIDEBUG ("%s: Memory map changed (MMIOL %08X..%08X != %08X..%08X) - overwrite\n",
-              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
-              PciResConfigPtr->MmioLBase, PciResConfigPtr->MmioLLimit,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Base,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Limit);
-    goto ErrExit;
+    DEBUG ((DEBUG_ERROR, "[PCI] %s: MMIOL %08X..%08X [%X] != %08X..%08X [%X] - system map changed\n",
+            SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
+            PciResConfigPtr->MmioLBase, PciResConfigPtr->MmioLLimit, PciResConfigPtr->MmioLGranularity,
+            mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Base,
+            mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Limit,
+            mIioUds->IioUdsPtr->PlatformData.MmiolGranularity));
+    return TRUE;
   }
   if (PciResConfigPtr->IoBase != mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoBase ||
-      PciResConfigPtr->IoLimit != mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoLimit) {
+      PciResConfigPtr->IoLimit != mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoLimit ||
+      PciResConfigPtr->IoGranularity != mIioUds->IioUdsPtr->PlatformData.IoGranularity) {
 
-    PCIDEBUG ("%s: Memory map changed (I/O %04X..%04X != %04X..%04X) - overwrite\n",
-              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
-              PciResConfigPtr->IoBase, PciResConfigPtr->IoLimit,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoBase,
-              mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoLimit);
-    goto ErrExit;
+    DEBUG ((DEBUG_ERROR, "[PCI] %s: I/O %04X..%04X [%X] != %04X..%04X [%X] - system map changed\n",
+            SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME,
+            PciResConfigPtr->IoBase, PciResConfigPtr->IoLimit, PciResConfigPtr->IoGranularity,
+            mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoBase,
+            mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoLimit,
+            mIioUds->IioUdsPtr->PlatformData.IoGranularity));
+    return TRUE;
   }
   for (Socket = 0; Socket < NELEMENTS (PciResConfigPtr->Socket); Socket++) {
 
     if (PciResConfigPtr->StackPresentBitmap[Socket] !=
                                               mIioUds->IioUdsPtr->PlatformData.CpuQpiInfo[Socket].stackPresentBitmap) {
 
-      PCIDEBUG ("%s: Stack bitmap mismach (%04X != %04X) in socket %d - overwrite\n",
-                SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, PciResConfigPtr->StackPresentBitmap[Socket],
-                mIioUds->IioUdsPtr->PlatformData.CpuQpiInfo[Socket].stackPresentBitmap, Socket);
-      goto ErrExit;
+      DEBUG ((DEBUG_ERROR, "[PCI] %s: Stack bitmap mismach (%04X != %04X) in socket %d - system map changed\n",
+              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, PciResConfigPtr->StackPresentBitmap[Socket],
+              mIioUds->IioUdsPtr->PlatformData.CpuQpiInfo[Socket].stackPresentBitmap, Socket));
+      return TRUE;
     }
   }
-  return EFI_SUCCESS;
-
- ErrExit:
-  ZeroMem (PciResConfigPtr, sizeof(*PciResConfigPtr));
-  return Status;
-} // PciHostReadResourceConfig()
+  return FALSE;
+} // IsSystemMapChanged()
 
 
 /**
@@ -689,6 +672,7 @@ AdjustResourceAmongRootBridges (
   UINT8                                  TypeIndex;
   UINT8                                  ChangedBitMap;
   EFI_STATUS                             Status;
+  UINTN                                  VarSize;
   SYSTEM_PCI_BASE_LIMITS                 SocketPciResourceData;
   UINT8                                  Stack;
   UINT8                                  LastStack;
@@ -717,28 +701,47 @@ AdjustResourceAmongRootBridges (
   MmiohGranularity |= ((UINT64)mIioUds->IioUdsPtr->PlatformData.MmiohGranularity.hi) << 32;
   ZeroMem (&SocketResources[0], sizeof(SocketResources));
   //
-  // Read the system resource cfg from NVRAM. If the variable does not exist, or is
-  // not valid for current system configuration the buffer SocketPciResourceData
-  // is just cleared.
+  // Read the system resource cfg from NVRAM. If the variable does not exist just create new one.
+  // If variable exists, check if it was applied by KTI. If not we got two options possible:
+  // (1) it is not valid because system resource map changed, or
+  // (2) it is not valid because of unknown reason.
+  // The first case is detected and new request shall be created for rebalance.
+  // In the second case just continue boot to avoid reboot loop.
   //
-  Status = PciHostReadResourceConfig (&SocketPciResourceData);
-  if (EFI_ERROR (Status)) {
+  VarSize = sizeof(SocketPciResourceData);
+  ZeroMem (&SocketPciResourceData, sizeof(SocketPciResourceData));
+  Status = gRT->GetVariable (SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, &gEfiSocketPciResourceDataGuid,
+                             NULL, &VarSize, &SocketPciResourceData);
+  if (EFI_ERROR (Status) && Status != EFI_NOT_FOUND && Status != EFI_BUFFER_TOO_SMALL) {
 
-    if (Status != EFI_NOT_FOUND) {
-
-      ASSERT_EFI_ERROR (Status);
-      return;
-    }
-    //
-    // Variable is not initialized yet, go with empty structure.
-    //
-  } else if (IsResourceMapRejected (&SocketPciResourceData)) {
-    //
-    // If variable is already initialized, but rejected by KTI do not reboot to avoid loop.
-    //
+    ASSERT_EFI_ERROR (Status);
     return;
   }
+  if (Status == EFI_BUFFER_TOO_SMALL) {
 
+    VarSize += 1; // Make it not equal to sizeof(SocketPciResourceData)
+  }
+  if (VarSize != sizeof(SocketPciResourceData)) {
+
+    PCIDEBUG ("Got variable '%s' of unexpected size %d (expect %d)\n",
+              SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME, VarSize, sizeof(SocketPciResourceData));
+  }
+  if (Status != EFI_NOT_FOUND) {
+    //
+    // Variable exists, let's check if it was applied by KTI.
+    //
+    if (IsResourceMapRejected (&SocketPciResourceData)) {
+      //
+      // Rejected so check if system resources map was changed.
+      //
+      if (!IsSystemMapChanged (&SocketPciResourceData) &&  VarSize == sizeof(SocketPciResourceData)) {
+
+        DEBUG ((DEBUG_ERROR, "[PCI] ERROR: Resource rebalance rejected by KTI - continue without rebalance\n"));
+        return;
+      }
+      ZeroMem (&SocketPciResourceData, sizeof(SocketPciResourceData));
+    }
+  }
   UboxMmioSize = mIioUds->IioUdsPtr->PlatformData.UboxMmioSize;
   PlatGlobalMmiolBase = mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Base;
   ValidSockets = 0;
@@ -918,6 +921,13 @@ AdjustResourceAmongRootBridges (
         NewLength += Alignment;
       }
 
+      //
+      // Check if new length is big enough to support PEI MMIO resource assigment for the stacks
+      //
+      if (NewLength < mIioUds->IioUdsPtr->PlatformData.IIO_resource[Socket].StackRes[Stack].Mmio32MinSize) {
+        NewLength = mIioUds->IioUdsPtr->PlatformData.IIO_resource[Socket].StackRes[Stack].Mmio32MinSize;
+      }
+
       if (NewLength != 0) {
         //
         // At least 4MB align per KTI requirement. Add the length requested with given alignment.
@@ -1036,6 +1046,9 @@ AdjustResourceAmongRootBridges (
           Remainder = MmiohGranularity - (NewLength % MmiohGranularity);
           NewLength += Remainder;
         }
+
+        NewLength = ALIGN_VALUE (NewLength, Alignment);
+
         //
         // Store length as length - 1 for handling
         //
@@ -1134,31 +1147,44 @@ AdjustResourceAmongRootBridges (
         }
       }
     }
-  } else if (OutOfResources && ChangedTypeOOR[TypeMem64]){
-    //
-    // Allow mmioh to be adjusted to access max available physical address range.
-    //
-    Status = AdjustSocketResources (SocketResources, TypeMem64, ValidSockets);
-    if (Status == EFI_SUCCESS) {
-      ChangedBitMap |= (1 << TypeIndex);
-    } else {
-      ChangedBitMap &= ~(1 << TypeIndex);
+  } else if (OutOfResources) {
+    if (ChangedTypeOOR[TypeMem64]) {
+      //
+      // Allow mmioh to be adjusted to access max available physical address range.
+      //
+      Status = AdjustSocketResources (SocketResources, TypeMem64, ValidSockets);
+      if (Status == EFI_SUCCESS) {
+        ChangedBitMap |= (1 << TypeIndex);
+      } else {
+        ChangedBitMap &= ~(1 << TypeIndex);
+      }
+    }
+    if (ChangedTypeOOR[TypeIo] || ChangedTypeOOR[TypeMem32]) {
+      DEBUG ((DEBUG_ERROR, "Clearing %s request\n", mPciResourceTypeStr[TypeIo]));
+      DEBUG ((DEBUG_ERROR, "Clearing %s request\n", mPciResourceTypeStr[TypeMem32]));
+      for (Socket = 0; Socket < MAX_SOCKET; Socket++) {
+        for (Stack = 0; Stack < MAX_IIO_STACK; Stack++) {
+          SocketResources[Socket].StackRes[Stack].NeedIoUpdate = 0;
+          SocketResources[Socket].StackRes[Stack].MmiolUpdate = 0;
+        }
+      }
     }
   }
-
+  //
   // Update changed resource type.
   // OemGetResourceMapUpdate() will only update changed resource type so it is alright if data is zero.
+  //
   if (ChangedBitMap != 0) {
 
     for (Socket = 0; Socket < MAX_SOCKET; Socket++) {
 
       SocketPciResourceData.StackPresentBitmap[Socket] = mIioUds->IioUdsPtr->PlatformData.CpuQpiInfo[Socket].stackPresentBitmap;
       for (Stack = 0; Stack < MAX_IIO_STACK; Stack++) {
+
         if (!(mIioUds->IioUdsPtr->PlatformData.CpuQpiInfo[Socket].stackPresentBitmap & (1 << Stack))) {
           continue;
         }
         CurStackLimits = &SocketPciResourceData.Socket[Socket].StackLimits[Stack];
-
         //
         // Disable stacks that have no resources and are assigned none.
         // Reaching this far means the stack is valid and should be disabled if base equals limit and
@@ -1293,9 +1319,10 @@ AdjustResourceAmongRootBridges (
         CurSocketLimits->HighMmio.Base  = SocketResources[Socket].MmiohBase;
         CurSocketLimits->HighMmio.Limit = SocketResources[Socket].MmiohLimit;
       }
-
-      DEBUG((DEBUG_INFO, "\nSocketResources[%x].UboxBase =%x\n",Socket,UboxStackLimits->LowMmio.Base));
-      DEBUG((DEBUG_INFO, "SocketResources[%x].UboxLimit =%x\n",Socket,UboxStackLimits->LowMmio.Limit));
+      DEBUG((DEBUG_INFO, "\nSocketResources[%x].UboxBase = %x\n",
+             Socket, SocketPciResourceData.Socket[Socket].StackLimits[UBOX_STACK].LowMmio.Base));
+      DEBUG((DEBUG_INFO, "SocketResources[%x].UboxLimit = %x\n",
+             Socket, SocketPciResourceData.Socket[Socket].StackLimits[UBOX_STACK].LowMmio.Limit));
       DEBUG((DEBUG_INFO, "\nSocketResources[%x].IoBase =%x\n",Socket,SocketResources[Socket].IoBase));
       DEBUG((DEBUG_INFO, "SocketResources[%x].IoLimit =%x\n",Socket,SocketResources[Socket].IoLimit));
       DEBUG((DEBUG_INFO, "SocketResources[%x].MmiolBase =%x\n",Socket,SocketResources[Socket].MmiolBase));
@@ -1304,16 +1331,18 @@ AdjustResourceAmongRootBridges (
       DEBUG((DEBUG_INFO, "SocketResources[%x].MmiohLimit =%lx\n",Socket,SocketResources[Socket].MmiohLimit));
     } // for Socket
     SocketPciResourceData.MmioHBase = mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Base;
-    SocketPciResourceData.MmioHLimit = mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio64Limit;
+    SocketPciResourceData.MmioHGranularity = *(UINT64*)&mIioUds->IioUdsPtr->PlatformData.MmiohGranularity;
     SocketPciResourceData.MmioLBase = mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Base;
     SocketPciResourceData.MmioLLimit = mIioUds->IioUdsPtr->PlatformData.PlatGlobalMmio32Limit;
+    SocketPciResourceData.MmioLGranularity = mIioUds->IioUdsPtr->PlatformData.MmiolGranularity;
     SocketPciResourceData.IoBase = mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoBase;
     SocketPciResourceData.IoLimit = mIioUds->IioUdsPtr->PlatformData.PlatGlobalIoLimit;
+    SocketPciResourceData.IoGranularity = mIioUds->IioUdsPtr->PlatformData.IoGranularity;
 
     PCIDEBUG("Writing resource rebalance request '%s':\n", SYSTEM_PCI_RESOURCE_CONFIGURATION_DATA_NAME);
-    PCIDEBUG("System I/O  : %04X..%04X\n", SocketPciResourceData.IoBase, SocketPciResourceData.IoLimit);
-    PCIDEBUG("System MMIOL: %08X..%08X\n", SocketPciResourceData.MmioLBase, SocketPciResourceData.MmioLLimit);
-    PCIDEBUG("System MMIOH: %012llX..%012llX\n", SocketPciResourceData.MmioHBase, SocketPciResourceData.MmioHLimit);
+    PCIDEBUG("System I/O  : %04X..%04X [%X]\n", SocketPciResourceData.IoBase, SocketPciResourceData.IoLimit, SocketPciResourceData.IoGranularity);
+    PCIDEBUG("System MMIOL: %08X..%08X [%X]\n", SocketPciResourceData.MmioLBase, SocketPciResourceData.MmioLLimit, SocketPciResourceData.MmioLGranularity);
+    PCIDEBUG("System MMIOH: %012llX [%llX]\n", SocketPciResourceData.MmioHBase, SocketPciResourceData.MmioHGranularity);
     for (Socket = 0; Socket < NELEMENTS (SocketPciResourceData.Socket); Socket++) {
 
       PCIDEBUG("[%d] StackPresent: 0x%04X\n", Socket, SocketPciResourceData.StackPresentBitmap[Socket]);

@@ -14,6 +14,15 @@
 # Customize debug messages
 #
 [PcdsFixedAtBuild]
+  ## The mask is used to control DebugLib behavior.<BR><BR>
+  #  BIT0 - Enable Debug Assert.<BR>
+  #  BIT1 - Enable Debug Print.<BR>
+  #  BIT2 - Enable Debug Code.<BR>
+  #  BIT3 - Enable Clear Memory.<BR>
+  #  BIT4 - Enable BreakPoint as ASSERT.<BR>
+  #  BIT5 - Enable DeadLoop as ASSERT.<BR>
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2F                    # Enable asserts, prints, code, clear memory, and deadloops on asserts.
+
   ## This flag is used to control the built in Debug messages.
   #  BIT0  - Initialization message.<BR>
   #  BIT1  - Warning message.<BR>

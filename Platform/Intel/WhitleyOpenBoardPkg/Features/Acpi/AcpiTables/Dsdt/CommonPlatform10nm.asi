@@ -186,6 +186,7 @@
         If(LEqual(And(CPBF, 0x00000040), 0x00000040)) {
           Store(1,HWPS)
         }
+
       }
       If (CondRefOf (\_SB.OSPC)) {
         Return (\_SB.OSPC(Arg0, Arg1, Arg2, Arg3))

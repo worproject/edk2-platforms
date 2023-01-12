@@ -553,7 +553,7 @@ Returns:
   //
   // Update SPI policies
   //
-  PchPolicy->SpiConfig.ShowSpiController = TRUE;
+  PchPolicy->SpiConfig.ShowSpiController = FALSE;
 
   PchPolicy->PmConfig.PmcReadDisable = TRUE;
 

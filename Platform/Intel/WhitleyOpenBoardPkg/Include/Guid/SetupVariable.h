@@ -670,6 +670,9 @@ typedef struct {
   // TCC Mode
   //
   UINT8   TccMode;
+  // RAS Fast string Disable option
+  //
+  UINT8   DisableFastString;
 } SYSTEM_CONFIGURATION;
 
 typedef struct {

@@ -102,6 +102,25 @@ gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortSerialTerminalEnable|FALS
 # @Prompt DDC I2C channel to claim as the HDMI debug port
 gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortDdcI2cChannel|0x00000000|UINT32|0x90000035
 
+## Specifies the DDC I2C speed to use for the HDMI debug port
+#  The value is defined as below.
+#  0: I2C speed 100K
+#  1: I2C speed 50K
+#  2: I2C speed 400K
+#  3: I2C speed 1M
+#  Recommendations as below:
+#  BusPirate: 50K. Increase internal baudrate generator for 100K, maybe 400K. Potentially less stable
+#  Atmel SAMD boards: 1M
+# @Prompt DDC I2C speed to use for the HDMI debug port
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortGmbusClockRate|0x01|UINT8|0x90000036
+
+## Specifies the stall in microsends between packets on the HDMI debug port
+#  Recommendations as below:
+#  BusPirate: 3000
+#  Atmel SAMD boards: 60
+# @Prompt Stall in microsends between packets on the HDMI debug port
+gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortPacketStallUs|3000|UINT32|0x90000037
+
 [PcdsDynamic]
 
 # Board GPIO Table

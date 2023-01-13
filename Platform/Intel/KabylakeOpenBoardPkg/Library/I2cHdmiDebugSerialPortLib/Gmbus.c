@@ -443,6 +443,7 @@ GmbusRead (
 {
   EFI_STATUS              Status;
   EFI_STATUS              Status2;
+  UINT8                   GmbusClockRate;
   UINT32                  Index;
   UINT32                  GmbusCmdSts;
   UINT32                  GmbusStatus;
@@ -472,7 +473,8 @@ GmbusRead (
   //
   // Configure Gmbus port and clock speed
   //
-  Status = GmbusPrepare (GMBUS_CLOCK_RATE_50K, (DdcBusPinPair & B_SA_GTTMMADR_GMBUS0_PIN_PAIR_MASK));
+  GmbusClockRate = FixedPcdGet8 (PcdI2cHdmiDebugPortGmbusClockRate);
+  Status = GmbusPrepare (GmbusClockRate, (DdcBusPinPair & B_SA_GTTMMADR_GMBUS0_PIN_PAIR_MASK));
   if (EFI_ERROR (Status)) {
     goto Done;
   }
@@ -607,6 +609,7 @@ GmbusWrite (
 {
   EFI_STATUS              Status;
   EFI_STATUS              Status2;
+  UINT8                   GmbusClockRate;
   UINT32                  Index;
   UINT32                  GmbusCmdSts;
   UINT32                  GmbusStatus;
@@ -637,7 +640,9 @@ GmbusWrite (
 
   //
   // Configure Gmbus port and clock speed
-  Status = GmbusPrepare (GMBUS_CLOCK_RATE_50K, (DdcBusPinPair & B_SA_GTTMMADR_GMBUS0_PIN_PAIR_MASK));
+  //
+  GmbusClockRate = FixedPcdGet8 (PcdI2cHdmiDebugPortGmbusClockRate);
+  Status = GmbusPrepare (GmbusClockRate, (DdcBusPinPair & B_SA_GTTMMADR_GMBUS0_PIN_PAIR_MASK));
   if (EFI_ERROR (Status)) {
     goto Done;
   }

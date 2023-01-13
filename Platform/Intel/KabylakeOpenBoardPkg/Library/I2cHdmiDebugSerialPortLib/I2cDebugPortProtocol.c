@@ -38,6 +38,7 @@ I2cDebugPortWrite (
   UINT8       WriteBuffer[I2C_DEBUG_PORT_MAX_DATA_SIZE + 1];
   EFI_STATUS  Status;
   UINT32      Index;
+  UINT32      ImplementationDelayUs;
   UINT8       CurrentSize;
   UINT8       DdcBusPinPair;
 
@@ -51,9 +52,10 @@ I2cDebugPortWrite (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+  ImplementationDelayUs = FixedPcdGet32 (PcdI2cHdmiDebugPortPacketStallUs);  //BP: 3ms stall to catch up
   RaiseTplForI2cDebugPortAccess ();
   for (Index = 0; Index < Count; Index += I2C_DEBUG_PORT_MAX_DATA_SIZE) {
-    MicroSecondDelay (3000);  //3ms stall to let the BusPirate catch up
+    MicroSecondDelay (ImplementationDelayUs);
     if ((Index + I2C_DEBUG_PORT_MAX_DATA_SIZE) >= Count) {
       CurrentSize = (UINT8) (Count - Index);
     } else {
@@ -95,6 +97,7 @@ I2cDebugPortRead (
   EFI_STATUS  Status;
   UINT32      Index;
   UINT32      BytesRead;
+  UINT32      ImplementationDelayUs;
   UINT32      CurrentSize;
   UINT8       DdcBusPinPair;
   UINT8       GmbusIndexData;
@@ -110,9 +113,10 @@ I2cDebugPortRead (
   if (EFI_ERROR (Status)) {
     return Status;
   }
+  ImplementationDelayUs = FixedPcdGet32 (PcdI2cHdmiDebugPortPacketStallUs);  //BP: 3ms stall to catch up
   RaiseTplForI2cDebugPortAccess ();
   for (Index = 0; Index < (*Count); Index += I2C_DEBUG_PORT_MAX_DATA_SIZE) {
-    MicroSecondDelay (3000);  //3ms stall to let the BusPirate catch up
+    MicroSecondDelay (ImplementationDelayUs);
     if ((Index + I2C_DEBUG_PORT_MAX_DATA_SIZE) >= (*Count)) {
       CurrentSize = (*Count) - Index;
     } else {
@@ -163,6 +167,7 @@ I2cDebugPortReadyToRead (
   EFI_STATUS  Status;
   UINT32      BytesRead;
   UINT8       DdcBusPinPair;
+  UINT32      ImplementationDelayUs;
   UINT8       GmbusIndexData;
 
   BytesRead = 1;
@@ -173,7 +178,8 @@ I2cDebugPortReadyToRead (
   if (EFI_ERROR (Status)) {
     return Status;
   }
-  MicroSecondDelay (3000);  //3ms stall to let the BusPirate catch up
+  ImplementationDelayUs = FixedPcdGet32 (PcdI2cHdmiDebugPortPacketStallUs);  //BP: 3ms stall to catch up
+  MicroSecondDelay (ImplementationDelayUs);
   GmbusIndexData  = (I2C_DEBUG_PORT_READY_TO_READ_COMMAND << I2C_DEBUG_PORT_COMMAND_BIT_POSITION) |
                     (1 & I2C_DEBUG_PORT_DATA_SIZE_BIT_MASK); //READY_TO_READ always returns 1 byte
   RaiseTplForI2cDebugPortAccess ();

@@ -51,3 +51,5 @@
 [Pcd]
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortDdcI2cChannel    ## CONSUMES
   gKabylakeOpenBoardPkgTokenSpaceGuid.PcdGttMmAddress                     ## CONSUMES
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortGmbusClockRate   ## CONSUMES
+  gKabylakeOpenBoardPkgTokenSpaceGuid.PcdI2cHdmiDebugPortPacketStallUs    ## CONSUMES

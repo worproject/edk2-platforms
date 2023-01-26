@@ -1,7 +1,7 @@
 /** @file
   Symbolic links routines
 
-  Copyright (c) 2022 Savva Mitrofanov All rights reserved.
+  Copyright (c) 2022-2023 Savva Mitrofanov All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -155,11 +155,6 @@ Ext4ReadSlowSymlink (
     return Status;
   }
 
-  //
-  // Add null-terminator
-  //
-  SymlinkTmp[SymlinkSizeTmp] = '\0';
-
   if (SymlinkSizeTmp != ReadSize) {
     DEBUG ((
       DEBUG_FS,
@@ -167,6 +162,11 @@ Ext4ReadSlowSymlink (
       ));
     return EFI_VOLUME_CORRUPTED;
   }
+
+  //
+  // Add null-terminator
+  //
+  SymlinkTmp[ReadSize] = '\0';
 
   *AsciiSymlinkSize = SymlinkAllocateSize;
   *AsciiSymlink     = SymlinkTmp;

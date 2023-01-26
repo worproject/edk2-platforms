@@ -219,7 +219,7 @@ Ext4ExtentIdxLeafBlock (
    @param[in]      LogicalBlock  Block number which the returned extent must cover.
    @param[out]     Extent        Pointer to the output buffer, where the extent will be copied to.
 
-   @retval EFI_SUCCESS        Retrieval was succesful.
+   @retval EFI_SUCCESS        Retrieval was successful.
    @retval EFI_NO_MAPPING     Block has no mapping.
 **/
 EFI_STATUS
@@ -615,7 +615,7 @@ Ext4GetExtentLength (
   IN CONST EXT4_EXTENT  *Extent
   )
 {
-  // If it's an unintialized extent, the true length is ee_len - 2^15
+  // If it's an uninitialized extent, the true length is ee_len - 2^15
   if (EXT4_EXTENT_IS_UNINITIALIZED (Extent)) {
     return Extent->ee_len - EXT4_EXTENT_MAX_INITIALIZED;
   }

@@ -201,7 +201,7 @@ Ext4ReadSymlink (
   CHAR16      *Needle;
 
   //
-  // Assume that we alread read Inode via Ext4ReadInode
+  // Assume that we already read Inode via Ext4ReadInode
   // Skip reading, just check encryption flag
   //
   if ((File->Inode->i_flags & EXT4_ENCRYPT_FL) != 0) {

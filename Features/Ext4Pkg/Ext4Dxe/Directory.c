@@ -16,7 +16,7 @@
    @param[in]      Entry   Pointer to a EXT4_DIR_ENTRY.
    @param[out]      Ucs2FileName   Pointer to an array of CHAR16's, of size EXT4_NAME_MAX + 1.
 
-   @retval EFI_SUCCESS              The filename was succesfully retrieved and converted to UCS2.
+   @retval EFI_SUCCESS              The filename was successfully retrieved and converted to UCS2.
    @retval EFI_INVALID_PARAMETER    The filename is not valid UTF-8.
    @retval !EFI_SUCCESS             Failure.
 **/

@@ -155,7 +155,7 @@ Ext4UnrefDentry (
 
    @param[out]     Partition Partition structure to fill with filesystem
 details.
-   @retval EFI_SUCCESS       Parsing was succesful and the partition is a
+   @retval EFI_SUCCESS       Parsing was successful and the partition is a
                              valid ext4 partition.
 **/
 EFI_STATUS
@@ -322,7 +322,7 @@ Ext4ReadInode (
    @param[out]     Buffer        Pointer to the buffer.
    @param[in]      Offset        Offset of the read.
    @param[in out]  Length        Pointer to the length of the buffer, in bytes.
-                                 After a succesful read, it's updated to the
+                                 After a successful read, it's updated to the
 number of read bytes.
 
    @return Status of the read operation.
@@ -355,7 +355,7 @@ cover.
    @param[out]     Extent        Pointer to the output buffer, where the extent
 will be copied to.
 
-   @retval EFI_SUCCESS        Retrieval was succesful.
+   @retval EFI_SUCCESS        Retrieval was successful.
    @retval EFI_NO_MAPPING     Block has no mapping.
 **/
 EFI_STATUS
@@ -946,7 +946,7 @@ Ext4StrCmpInsensitive (
    @param[in]      Entry   Pointer to a EXT4_DIR_ENTRY.
    @param[out]      Ucs2FileName   Pointer to an array of CHAR16's, of size EXT4_NAME_MAX + 1.
 
-   @retval EFI_SUCCESS              The filename was succesfully retrieved and converted to UCS2.
+   @retval EFI_SUCCESS              The filename was successfully retrieved and converted to UCS2.
    @retval EFI_INVALID_PARAMETER    The filename is not valid UTF-8.
    @retval !EFI_SUCCESS             Failure.
 **/
@@ -1106,7 +1106,7 @@ Ext4CalculateBlockGroupDescChecksum (
   );
 
 /**
-   Verifies the existance of a particular RO compat feature set.
+   Verifies the existence of a particular RO compat feature set.
    @param[in]      Partition           Pointer to the opened EXT4 partition.
    @param[in]      RoCompatFeatureSet  Feature set to test.
 
@@ -1116,7 +1116,7 @@ Ext4CalculateBlockGroupDescChecksum (
   ((Partition->FeaturesRoCompat & RoCompatFeatureSet) == RoCompatFeatureSet)
 
 /**
-   Verifies the existance of a particular compat feature set.
+   Verifies the existence of a particular compat feature set.
    @param[in]      Partition           Pointer to the opened EXT4 partition.
    @param[in]      CompatFeatureSet  Feature set to test.
 
@@ -1126,7 +1126,7 @@ Ext4CalculateBlockGroupDescChecksum (
   ((Partition->FeaturesCompat & CompatFeatureSet) == CompatFeatureSet)
 
 /**
-   Verifies the existance of a particular compat feature set.
+   Verifies the existence of a particular compat feature set.
    @param[in]      Partition           Pointer to the opened EXT4 partition.
    @param[in]      IncompatFeatureSet  Feature set to test.
 
@@ -1217,7 +1217,7 @@ Ext4GetExtentLength (
    @param[in]      LogicalBlock  Block number which the returned extent must cover.
    @param[out]     Extent        Pointer to the output buffer, where the extent will be copied to.
 
-   @retval EFI_SUCCESS        Retrieval was succesful.
+   @retval EFI_SUCCESS        Retrieval was successful.
    @retval EFI_NO_MAPPING     Block has no mapping.
 **/
 EFI_STATUS

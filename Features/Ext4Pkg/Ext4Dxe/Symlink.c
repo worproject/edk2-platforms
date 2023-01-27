@@ -160,6 +160,7 @@ Ext4ReadSlowSymlink (
       DEBUG_FS,
       "[ext4] Error! The size of the read block doesn't match the value from the inode!\n"
       ));
+    FreePool (SymlinkTmp);
     return EFI_VOLUME_CORRUPTED;
   }
 

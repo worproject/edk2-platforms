@@ -28,9 +28,16 @@ Ext4GetUcs2DirentName (
 {
   CHAR8       Utf8NameBuf[EXT4_NAME_MAX + 1];
   UINT16      *Str;
+  UINT8       Index;
   EFI_STATUS  Status;
 
-  CopyMem (Utf8NameBuf, Entry->name, Entry->name_len);
+  for (Index = 0; Index < Entry->name_len; ++Index) {
+    if (Entry->name[Index] == '\0') {
+      return EFI_INVALID_PARAMETER;
+    }
+
+    Utf8NameBuf[Index] = Entry->name[Index];
+  }
 
   Utf8NameBuf[Entry->name_len] = '\0';
 

@@ -255,7 +255,11 @@ Ext4OpenDirent (
     // Using the parent's parent's dentry
     File->Dentry = Directory->Dentry->Parent;
 
-    ASSERT (File->Dentry != NULL);
+    if (!File->Dentry) {
+      // Someone tried .. on root, so direct them to /
+      // This is an illegal EFI Open() but is possible to hit from a variety of internal code
+      File->Dentry = Directory->Dentry;
+    }
 
     Ext4RefDentry (File->Dentry);
   } else {

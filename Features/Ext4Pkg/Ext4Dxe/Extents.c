@@ -237,6 +237,7 @@ Ext4GetExtent (
   EXT4_EXTENT_HEADER  *ExtHeader;
   EXT4_EXTENT_INDEX   *Index;
   EFI_STATUS          Status;
+  EXT4_BLOCK_NR       BlockNumber;
 
   Inode  = File->Inode;
   Ext    = NULL;
@@ -288,7 +289,17 @@ Ext4GetExtent (
     // Therefore, we can use binary search, and it's actually the standard for doing so
     // (see FreeBSD).
 
-    Index = Ext4BinsearchExtentIndex (ExtHeader, LogicalBlock);
+    Index       = Ext4BinsearchExtentIndex (ExtHeader, LogicalBlock);
+    BlockNumber = Ext4ExtentIdxLeafBlock (Index);
+
+    // Check that block isn't file hole
+    if (BlockNumber == EXT4_BLOCK_FILE_HOLE) {
+      if (Buffer != NULL) {
+        FreePool (Buffer);
+      }
+
+      return EFI_VOLUME_CORRUPTED;
+    }
 
     if (Buffer == NULL) {
       Buffer = AllocatePool (Partition->BlockSize);
@@ -298,8 +309,7 @@ Ext4GetExtent (
     }
 
     // Read the leaf block onto the previously-allocated buffer.
-
-    Status = Ext4ReadBlocks (Partition, Buffer, 1, Ext4ExtentIdxLeafBlock (Index));
+    Status = Ext4ReadBlocks (Partition, Buffer, 1, BlockNumber);
     if (EFI_ERROR (Status)) {
       FreePool (Buffer);
       return Status;

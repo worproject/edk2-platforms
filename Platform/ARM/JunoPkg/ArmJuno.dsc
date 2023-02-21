@@ -188,7 +188,8 @@
   #
   # ARM Architectural Timer Frequency
   #
-  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|50000000
+  # Set to 0 so ArmArchTimerLib will read its value from CNTFRQ_EL0
+  gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|0
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 

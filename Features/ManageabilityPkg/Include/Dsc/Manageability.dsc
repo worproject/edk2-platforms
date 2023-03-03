@@ -16,3 +16,10 @@
   NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
   ArmSoftFloatLib|ArmPkg/Library/ArmSoftFloatLib/ArmSoftFloatLib.inf
 
+[Components.IA32]
+  ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+
+[Components.X64]
+  ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+  ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
+

@@ -51,8 +51,7 @@ SetupIpmiTransportHardwareInformation (
     KcsHardwareInfo->IoDataOutAddress.IoAddress16 = IPMI_KCS_REG_DATA_OUT;
     KcsHardwareInfo->IoCommandAddress.IoAddress16 = IPMI_KCS_REG_COMMAND;
     KcsHardwareInfo->IoStatusAddress.IoAddress16  = IPMI_KCS_REG_STATUS;
-    *HardwareInformation                          =
-      (MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION)KcsHardwareInfo;
+    HardwareInformation->Kcs                      = KcsHardwareInfo;
     return EFI_SUCCESS;
   } else {
     DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __FUNCTION__));

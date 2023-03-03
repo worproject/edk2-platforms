@@ -47,7 +47,7 @@
   gManageabilityTransportKcsGuid
 
 [FixedPcd]
-  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsBaseAddress
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsIoBaseAddress   # Used as default KCS I/O base adddress
 
 [Depex]
   TRUE

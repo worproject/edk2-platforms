@@ -1,0 +1,50 @@
+## @file
+# IPMI Protocol DXE Driver.
+#
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001d
+  BASE_NAME                      = IpmiDxe
+  FILE_GUID                      = BC41B0C2-9D8A-42B5-A28F-02CE0D4A6C28
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = DxeIpmiEntry
+  UNLOAD_IMAGE                   = IpmiUnloadImage
+
+#
+#  VALID_ARCHITECTURES           = IA32 X64 ARM AARCH64
+#
+
+[Sources]
+  IpmiProtocol.c
+  ../Common/IpmiProtocolCommon.c
+  ../Common/IpmiProtocolCommon.h
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  ManageabilityPkg/ManageabilityPkg.dec
+
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  ManageabilityTransportHelperLib
+  ManageabilityTransportLib
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+
+[Protocols]
+  gIpmiProtocolGuid               # PROTOCOL ALWAYS_PRODUCED
+
+[Guids]
+  gManageabilityProtocolIpmiGuid
+  gManageabilityTransportKcsGuid
+
+[FixedPcd]
+  gEfiMdePkgTokenSpaceGuid.PcdIpmiKcsBaseAddress
+
+[Depex]
+  TRUE

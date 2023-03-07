@@ -59,6 +59,11 @@
 [PcdsFixedAtBuild]
   gUsb3DebugFeaturePkgTokenSpaceGuid.PcdUsb3DebugPortLibInstance|1
 
+#
+# Include AdvancedFeatures
+#
+!include AdvancedFeaturePkg/Include/AdvancedFeatures.dsc
+
   #
   # Platform On/Off features are defined here
   #

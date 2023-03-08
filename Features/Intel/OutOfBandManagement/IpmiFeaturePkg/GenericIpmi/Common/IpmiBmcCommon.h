@@ -50,7 +50,6 @@ typedef struct {
   UINTN               Signature;
   UINT64              KcsTimeoutPeriod;
   UINT8               SlaveAddress;
-  UINT8               TempData[MAX_TEMP_DATA];
   BMC_STATUS          BmcStatus;
   UINT64              ErrorStatus;
   UINT8               SoftErrorCount;

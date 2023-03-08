@@ -288,6 +288,7 @@ Returns:
   UINT32              DataSize;
   SM_CTRL_INFO        *pBmcInfo;
   UINTN               Retries;
+  UINT8               TempData[MAX_TEMP_DATA];
 
   //
   // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
@@ -298,7 +299,7 @@ Returns:
   //
   // Get the device ID information for the BMC.
   //
-  DataSize = sizeof (mIpmiInstance->TempData);
+  DataSize = sizeof (TempData);
   while (EFI_ERROR (Status = PeiIpmiSendCommand (
                                &mIpmiInstance->IpmiTransportPpi,
                                IPMI_NETFN_APP,
@@ -306,7 +307,7 @@ Returns:
                                IPMI_APP_GET_DEVICE_ID,
                                NULL,
                                0,
-                               mIpmiInstance->TempData,
+                               TempData,
                                &DataSize
                                ))) {
     DEBUG ((EFI_D_ERROR, "[IPMI] BMC does not respond (status: %r), %d retries left\n",
@@ -322,7 +323,7 @@ Returns:
     //
     MicroSecondDelay (1*1000*1000);
   }
-  pBmcInfo = (SM_CTRL_INFO*) &mIpmiInstance->TempData[0];
+  pBmcInfo = (SM_CTRL_INFO*) &TempData[0];
   DEBUG ((DEBUG_INFO, "[IPMI PEI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n",
           pBmcInfo->DeviceId, pBmcInfo->MajorFirmwareRev, pBmcInfo->MinorFirmwareRev, pBmcInfo->UpdateMode));
   //
@@ -347,11 +348,11 @@ Returns:
                  IPMI_APP_GET_DEVICE_ID,
                  NULL,
                  0,
-                 mIpmiInstance->TempData,
+                 TempData,
                  &DataSize
                  );
       if (!EFI_ERROR (Status)) {
-        pBmcInfo = (SM_CTRL_INFO*) &mIpmiInstance->TempData[0];
+        pBmcInfo = (SM_CTRL_INFO*) &TempData[0];
         DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x   pBmcInfo->UpdateMode:%x\n", Retries, pBmcInfo->UpdateMode));
         if (pBmcInfo->UpdateMode == BMC_READY) {
           mIpmiInstance->BmcStatus = BMC_OK;

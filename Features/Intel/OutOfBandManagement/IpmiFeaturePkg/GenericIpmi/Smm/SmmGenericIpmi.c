@@ -56,6 +56,7 @@ Returns:
   SM_CTRL_INFO             *ControllerInfo;
   UINT8                    TimeOut;
   UINT8                    Retries;
+  UINT8                    TempData[MAX_TEMP_DATA];
 
   TimeOut = 0;
   Retries = PcdGet8 (PcdIpmiBmcReadyDelayTimer);
@@ -72,7 +73,7 @@ Returns:
                IPMI_APP_GET_DEVICE_ID,
                NULL,
                0,
-               IpmiInstance->TempData,
+               TempData,
                &DataSize
                );
     if (Status == EFI_SUCCESS) {
@@ -96,7 +97,7 @@ Returns:
   // If there is no error then proceed to check the data returned by the BMC
   //
   if (!EFI_ERROR (Status)) {
-    ControllerInfo = (SM_CTRL_INFO *) IpmiInstance->TempData;
+    ControllerInfo = (SM_CTRL_INFO *) TempData;
     //
     // If the controller is in Update Mode and the maximum number of errors has not been exceeded, then
     // save the error code to the StatusCode array and increment the counter.  Set the BMC Status to indicate

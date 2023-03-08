@@ -101,6 +101,7 @@ Returns:
   IPMI_RESPONSE           *IpmiResponse;
   UINT8                   RetryCnt = IPMI_SEND_COMMAND_MAX_RETRY;
   UINT8                   Index;
+  UINT8                   TempData[MAX_TEMP_DATA];
 
   IpmiInstance = INSTANCE_FROM_SM_IPMI_BMC_THIS (This);
 
@@ -110,8 +111,8 @@ Returns:
     // response data.  Since the command format is different from the response
     // format, the buffer is cast to both structure definitions.
     //
-    IpmiCommand  = (IPMI_COMMAND*)  IpmiInstance->TempData;
-    IpmiResponse = (IPMI_RESPONSE*) IpmiInstance->TempData;
+    IpmiCommand  = (IPMI_COMMAND*)  TempData;
+    IpmiResponse = (IPMI_RESPONSE*) TempData;
 
     //
     // Send IPMI command to BMC

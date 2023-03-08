@@ -86,6 +86,8 @@ Returns:
   BOOLEAN     bResultFlag = FALSE;
   UINT8       TempData[MAX_TEMP_DATA];
 
+  IPMI_SELF_TEST_RESULT_RESPONSE *SelfTestResult;
+
   //
   // Get the SELF TEST Results.
   //
@@ -100,7 +102,8 @@ Returns:
 
   DataSize = sizeof (TempData);
 
-  TempData[1] = 0;
+  SelfTestResult = (IPMI_SELF_TEST_RESULT_RESPONSE *) &TempData[0];
+  SelfTestResult->Result = 0;
 
   do {
     Status = IpmiSendCommand (
@@ -114,7 +117,7 @@ Returns:
                &DataSize
                );
     if (Status == EFI_SUCCESS) {
-      switch (TempData[1]) {
+      switch (SelfTestResult->Result) {
         case IPMI_APP_SELFTEST_NO_ERROR:
         case IPMI_APP_SELFTEST_NOT_IMPLEMENTED:
         case IPMI_APP_SELFTEST_ERROR:
@@ -147,7 +150,7 @@ Returns:
     IpmiInstance->BmcStatus = BMC_HARDFAIL;
     return Status;
   } else {
-    DEBUG ((DEBUG_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", TempData[1], TempData[2]));
+    DEBUG ((DEBUG_INFO, "[IPMI] BMC self-test result: %02X-%02X\n", SelfTestResult->Result, SelfTestResult->Param));
     //
     // Copy the Self test results to Error Status.  Data will be copied as long as it
     // does not exceed the size of the ErrorStatus variable.
@@ -162,7 +165,7 @@ Returns:
     // Check the IPMI defined self test results.
     // Additional Cases are device specific test results.
     //
-    switch (TempData[1]) {
+    switch (SelfTestResult->Result) {
       case IPMI_APP_SELFTEST_NO_ERROR:
       case IPMI_APP_SELFTEST_NOT_IMPLEMENTED:
         IpmiInstance->BmcStatus = BMC_OK;
@@ -174,7 +177,7 @@ Returns:
         // BootBlock Firmware corruption, and Operational Firmware Corruption.  All
         // other errors are BMC soft failures.
         //
-        if ((TempData[2] & (IPMI_APP_SELFTEST_FRU_CORRUPT | IPMI_APP_SELFTEST_FW_BOOTBLOCK_CORRUPT | IPMI_APP_SELFTEST_FW_CORRUPT)) != 0) {
+        if ((SelfTestResult->Param & (IPMI_APP_SELFTEST_FRU_CORRUPT | IPMI_APP_SELFTEST_FW_BOOTBLOCK_CORRUPT | IPMI_APP_SELFTEST_FW_CORRUPT)) != 0) {
           IpmiInstance->BmcStatus = BMC_HARDFAIL;
         } else {
           IpmiInstance->BmcStatus = BMC_SOFTFAIL;
@@ -182,7 +185,7 @@ Returns:
         //
         // Check if SDR repository is empty and report it if it is.
         //
-        if ((TempData[2] & IPMI_APP_SELFTEST_SDR_REPOSITORY_EMPTY) != 0) {
+        if ((SelfTestResult->Param & IPMI_APP_SELFTEST_SDR_REPOSITORY_EMPTY) != 0) {
           if (*ErrorCount < MAX_SOFT_COUNT) {
             StatusCodeValue[*ErrorCount] = EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | CU_FP_EC_SDR_EMPTY;
             (*ErrorCount)++;

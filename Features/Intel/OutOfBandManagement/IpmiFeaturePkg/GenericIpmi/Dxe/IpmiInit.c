@@ -161,7 +161,7 @@ Returns:
     // Check the IPMI defined self test results.
     // Additional Cases are device specific test results.
     //
-    switch (IpmiInstance->TempData[0]) {
+    switch (IpmiInstance->TempData[1]) {
       case IPMI_APP_SELFTEST_NO_ERROR:
       case IPMI_APP_SELFTEST_NOT_IMPLEMENTED:
         IpmiInstance->BmcStatus = BMC_OK;
@@ -173,7 +173,7 @@ Returns:
         // BootBlock Firmware corruption, and Operational Firmware Corruption.  All
         // other errors are BMC soft failures.
         //
-        if ((IpmiInstance->TempData[1] & (IPMI_APP_SELFTEST_FRU_CORRUPT | IPMI_APP_SELFTEST_FW_BOOTBLOCK_CORRUPT | IPMI_APP_SELFTEST_FW_CORRUPT)) != 0) {
+        if ((IpmiInstance->TempData[2] & (IPMI_APP_SELFTEST_FRU_CORRUPT | IPMI_APP_SELFTEST_FW_BOOTBLOCK_CORRUPT | IPMI_APP_SELFTEST_FW_CORRUPT)) != 0) {
           IpmiInstance->BmcStatus = BMC_HARDFAIL;
         } else {
           IpmiInstance->BmcStatus = BMC_SOFTFAIL;
@@ -181,7 +181,7 @@ Returns:
         //
         // Check if SDR repository is empty and report it if it is.
         //
-        if ((IpmiInstance->TempData[1] & IPMI_APP_SELFTEST_SDR_REPOSITORY_EMPTY) != 0) {
+        if ((IpmiInstance->TempData[2] & IPMI_APP_SELFTEST_SDR_REPOSITORY_EMPTY) != 0) {
           if (*ErrorCount < MAX_SOFT_COUNT) {
             StatusCodeValue[*ErrorCount] = EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | CU_FP_EC_SDR_EMPTY;
             (*ErrorCount)++;

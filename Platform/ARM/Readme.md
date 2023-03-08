@@ -1,60 +1,320 @@
 # Introduction
 
 These instructions explain how to get an edk2/edk2-platforms build running
-on the ARM Base FVP, which is a software model provided by ARM (for free)
+on the Arm Base FVP and a Juno. The Arm Base FVP is a software model provided by ARM (for free)
 , which models a Cortex A core with various peripherals. More information
-can be found here:
-[https://developer.arm.com/products/system-design/fixed-virtual-platforms]
+can be found [here](https://developer.arm.com/products/system-design/fixed-virtual-platforms).
 
-##Requirements
-- A 32-bit or 64-bit Linux host machine.
+## Build environment setup on Linux or Windows
 
-# Build EDK2 TianoCore
+### Initial steps
 
-`build -a AARCH64 -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -t GCC5`
+The first step towards building an EDKII firmware image is to create a working directory.
 
-Once built, the edk2 image is the following file Build/ArmVExpress-FVP-AArch64/DEBUG_GCC5/FV/FVP_AARCH64_EFI.fd
+1. Launch a terminal window.
+2. Create a directory on your development machine (we willl name it 'source' in this example).
+3. Set the WORKSPACE environment variable to point to this directory.
 
-# Run edk2/edk2-platforms on the ARM Base Platform FVP
+#### Example:
+In a Linux bash shell:
+```
+cd <Directory where you want to work>
+mkdir source
+cd source
+export WORKSPACE=$PWD
+```
 
-In order to run the binary we have just built there are a few steps we need to
-go through, we need to get a model, a set of prebuilts (where we will swap out
-the edk2 image with our own) and the tool with which we will swap out the
-prebuilt edk2 image.
+OR
 
-We will also rely on the "run_model" script that comes with the prebuilts, it
-is entirely possible to run the model without this but would require quite a bit
-of knowledge regarding the arguments of the ARM fastmodel (documentation can be found here:
-[https://developer.arm.com/docs/100966/1101/programming-reference-for-base-fvps/base-platform-revc-features])
-however the manual set of the FVP is outside the scope of this document. If you are interested
-please consult the documentation.
+In a Windows command prompt:
 
-It's recommended you create a folder where you download the prebuilts and
-required tool and copy your edk2 image in to it, as the run script expects
-the binaries in the same directory.
+```
+cd <Directory where you want to work>
+mkdir source
+cd source
+set WORKSPACE=%CD%
+```
 
-1. Download the Base FVP from here https://developer.arm.com/products/system-design/fixed-virtual-platforms
+### Cloning the source code repositories
 
-	- Select Armv8-A Base Platform FVP based on Fast Models 11.4
-	- It has a click through license but is free.
+Note: To clone the repositories you need 'git' to be installed on your development PC (see Development Tools).
 
-2. Download the 20.01 Linaro ARM Landing Team release for FVP booting UEFI
-https://releases.linaro.org/members/arm/platforms/20.01/fvp-uefi.zip
+In the terminal window, change directory to your workspace ('source') folder and run the following commands. Install Git if necessary.
 
-3. Clone the trusted firmware repo from https://git.trustedfirmware.org/TF-A/trusted-firmware-a.git
+```
+git clone https://github.com/tianocore/edk2.git
+git clone https://github.com/tianocore/edk2-platforms.git
+git clone https://github.com/acpica/acpica.git
+```
 
-4. Build fiptool: `make -C trusted-firmware-a/tools/fiptool`
+Then go to the edk2 folder and update the submodules.
 
-5. Update the fip.bin image from fvp-uefi.zip by running the following command:
+```
+cd edk2
+git submodule update --init
+cd ..
+```
 
-    `./trusted-firmware-a/tools/fiptool/fiptool update --nt-fw=[path to binary built above] fip.bin`
+# Building firmware on a Linux host
 
-6. Execute the FVP run_model.sh script from fvp-uefi.zip and provide a path to the FVP binaries
-downloaded in step 1):
+## Prerequisites
 
-	`MODEL=[path to FVP binary] ./run_model.sh`
+- A 64-bit development machine.
+- Ubuntu 20.04 desktop.
+- At least 10GB of free disk space.
 
-This expects the contents of fvp-uefi.zip, the bl1.bin and fip.bin (which is
-the file we modify), to be in the same directory as the run_model.sh script.
+Check the Ubuntu version by typing the following in the terminal window.
 
-This should be sufficient to provide a build/run/debug environment for aarch64.
+```
+$ uname -srvmpio
+Linux 5.4.0-131-generic #147-Ubuntu SMP Fri Oct 14 17:07:22 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+### Development Tools
+
+The following tools must be installed on the development PC.
+
+
+| Sr. No.   | Tool                | Description                                                  | Install instructions                                     |
+|-----------|---------------------|--------------------------------------------------------------|----------------------------------------------------------|
+| 1         | Python 3            | Python interpreter                                           | $ sudo apt install python3 python3-distutils             |
+| 2         | Git                 | Git source control tool                                      | $ sudo apt install git                                   |
+| 3         | uuid-dev            | Required for including uuid/uuid.h                           | $ sudo apt install uuid-dev                              |
+| 4         | build-essential     | Installs make, gcc, g++, etc                                 | $ sudo apt install build-essential <br> $ make -v <br> GNU Make 4.2.1 <br> gcc --version <br> gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0 <br> $ g++ --version <br> g++ (Ubuntu 9.4.0-1ubuntu1\~20.04.1) 9.4.0 |
+| 5         | bison               | A parser generator required by acpica tools.                 | $ sudo apt install bison                                 |
+| 6         | flex                | A fast lexical analyzer generator required by acpica tools   | $ sudp apt get install flex                              |
+
+### Setting up the development tools
+
+Install the required development tools by running the following commands in the terminal window.
+
+```
+$ sudo apt install bison build-essential flex git uuid-dev
+ ```
+
+```
+$ sudo apt install python3 python3-distutils
+ ```
+
+### Arm cross compiler toolchain
+
+The Arm toolchain to cross compile from x86_64-linux to aarch64-elf is available [here](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads).
+
+Select the latest toolchain to match the development PC architecture. Select the little-endian 'AArch64 ELF bare-metal target (aarch64-elf)' GCC cross compiler.
+
+Example: For a x86_64 development PC, download arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
+
+Create a directory called 'toolchain' under the workspace folder. For example source\toolchain and extract the toolchain to this directory.
+
+```
+$ mkdir $WORKSPACE/toolchain
+$ cd $WORKSPACE/toolchain
+$ wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
+$ tar xf arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz
+$ cd $WORKSPACE
+```
+
+### Build the acpica tools
+
+The acpica tools implement the latest iasl compiler. To build the acpica tools, run the following commands in the terminal window.
+
+```
+$ make -C $WORKSPACE/acpica
+```
+
+## Building EDKII firmware
+
+1. To build the firmware image, follow the steps below and run the commands in the terminal window.
+
+2. Set up the environment variables.
+
+```
+$ export GCC5_AARCH64_PREFIX=$WORKSPACE/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf/bin/aarch64-none-elf-
+$ export PACKAGES_PATH=$WORKSPACE/edk2:$WORKSPACE/edk2-platforms
+$ export IASL_PREFIX=$WORKSPACE/acpica/generate/unix/bin/
+$ export PYTHON_COMMAND=/usr/bin/python3
+```
+
+3. Configure the EDKII development environment by running the edk2setup bash script.
+```
+$ source edk2/edksetup.sh
+```
+
+4. Build the BaseTools.
+```
+$ make -C edk2/BaseTools
+```
+
+### Build the firmware for Arm FVP Base Model platform
+
+Run the following command to build the firmware for FVP Base platform.
+```
+$ build -a AARCH64 -t GCC5 -p Platform/ARM/VExpressPkg/ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
+```
+
+The firmware binaries can be found at the following location:
+```
+$WORKSPACE/Build/ArmVExpress-FVP-AArch64/<DEBUG|RELEASE>_GCC5/FV/FVP_AARCH64_EFI.fd
+```
+
+Note: The same firmware binary can be used with Arm FVP Base AEMvA-AEMvA and
+Armv-A Base RevC AEM FVP models.
+
+### Build the firmware for Arm Juno platform
+
+Run the following command to build the firmware for Arm Juno platform.
+```
+$ build -a AARCH64 -t GCC5 -p Platform/ARM/JunoPkg/ArmJuno.dsc -b < DEBUG | RELEASE >
+```
+
+The firmware binaries can be found at the following location:
+```
+$WORKSPACE/Build/ArmJuno/<DEBUG|RELEASE>_GCC5/FV/BL33_AP_UEFI.fd
+```
+
+# Building firmware on a Windows host using Windows Subsystem for Linux (WSL)
+
+The instructions for building the firmware using WSL are similar to that for a Linux host.
+The prerequisites for setting up the Windows Subsystem for Linux environment are listed below.
+
+## Prerequisites
+
+- A x64 development machine with Windows 10 (Version 21H2 - OS Build 19044.2486).
+- At least 10GB of free disk space.
+- Install the Windows Subsystem for Linux. Select Ubuntu 20.04 LTS from the Microsoft Store.
+
+Check the Ubuntu version by typing the following on the console.
+```
+$ uname -srvmpio
+Linux 4.4.0-19041-Microsoft #2311-Microsoft Tue Nov 08 17:09:00 PST 2022 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+The remaining instructions for installing the development tools, configuring the development environment and building firmware are exactly the same as those for a Linux host.
+
+# Building firmware on a x64 Windows host
+
+#### Prerequisites
+
+- A 64-bit development machine
+- Windows 10 desktop (Version 21H2 - OS Build 19044.2486)
+- At least 10GB of free disk space.
+
+#### Development Tools
+
+The following tools must be installed on the development machine.
+
+| Sr. No.   | Tool                                         | Description                                                  | Install instructions                                     |
+|-----------|----------------------------------------------|--------------------------------------------------------------|----------------------------------------------------------|
+| 1         | Python 3                                     | Python interpreter                                           | Go [here](https://www.python.org/downloads/windows/) <br> <br> Choose the latest Python 3.X release. <br> <br> Download and run the Windows x86_64 MSI installer <br> <br> If needed, add the python executable to your path by executing the following command: <br> > set PATH=<Path_to_the_python_executable>;%PATH%  |
+| 2         | Git                                          | Git source control tool                                      | Go [here](https://git-scm.com/download/win) <br> <br> Download and run the 64-bit Git for Windows Setup |
+| 3         | ASL tools                                    | iasl compiler and other tools for the ASL language           | Go [here](https://www.acpica.org/downloads/binary-tools)  <br> <br> Download the iASL Compiler and Windows ACPI Tools <br> <br> Extract the content and place it at C:\ASL\ <br> <br> Check that the compiler is at the right place by executing: <br> > C:\ASL\iasl.exe -v |
+| 4         | Microsoft Visual Studio 2019 Professional    | Microsoft IDE and compiler toolchain.                        | Go [here](https://visualstudio.microsoft.com/downloads/) <br> <br> Download and install Visual Studio 2019 Professional |
+| 5         | echo tool                                    | Echo                                                         | See Workaround for echo command below. |
+
+
+## Setting up the development tools
+
+Install the required development tools listed above by running the appropriate installer applications.
+
+### Arm cross compiler toolchain
+The Arm toolchain Windows (i686-mingw32) hosted cross compilers are available [here](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads).
+
+Select the latest toolchain for 'AArch64 bare-metal target (aarch64-none-elf)' GCC cross compiler.
+
+Example: Download arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-aarch64-none-elf
+
+Create a directory called 'toolchain' under the workspace directory and extract the toolchain to this directory using the downloaded installer.
+
+The toolchain folder tree should look as below:
+
+```
+toolchain
++---arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-aarch64-none-elf
+|   +---aarch64-none-elf
+|   +---bin
+|   +---include
+|   +---lib
+|   +---libexec
+|   +---share
+```
+
+### Workaround for the echo command
+
+EDKII needs a workaround related to the echo command. A script replacing the Windows echo executable must be created, with the name "echo.BAT?:
+
+- Create a file named "echo.BAT" in the folder of your choice.
+- Paste the following lines inside the file:
+
+```
+rem %~f0  echo.BAT  %*
+rem This file exists to overcome a problem in the EDKII build where
+rem build_rule.template invokes a command as:
+rem     "$(OBJCOPY)" $(OBJCOPY_FLAGS) ${dst}
+rem When OBJCOPY is set to echo, this results in the following error:
+rem     "echo" objcopy not needed for m:\...\PCD\Dxe\Pcd\DEBUG\PcdDxe.dll
+rem And CMD.EXE fails to find the DOS echo command because of the quotes
+@echo %*
+@goto :EOF
+```
+
+- Add the file to your PATH by executing:
+```
+> set PATH=<Path_to_the_echo_file>;%PATH%
+```
+
+## Building EDKII firmware
+
+1. To build the firmware image, follow the steps below and run the commands in the terminal window.
+2. Set up the environment variables.
+
+```
+ set GCC5_AARCH64_PREFIX=%WORKSPACE%\toolchain\arm-gnu-toolchain-12.2.rel1-mingw-w64-i686-aarch64-none-elf\bin\aarch64-none-elf-
+ set PACKAGES_PATH=%WORKSPACE%\edk2;%WORKSPACE%\edk2-platforms
+ set EDK_TOOLS_PATH=%WORKSPACE%\edk2\BaseTools
+ set GCC_HOST_BIN=n
+```
+
+Select the python version you wish to use and set the PYTHON_COMMAND environment variable to your Python executable.
+
+Set the PYTHON_COMMAND to point to the Python3 executable.
+
+Check that your path is set up as it is stated in the development tools table above. It should give access to:
+
+- The make executable
+- The echo.BAT script
+
+3. Configure the EDKII development environment by running the edksetup.bat script.
+The Rebuild option can be skipped if the BaseTools have already been built.
+
+The ForceRebuild option can be used to do a clean build of the Base tools.
+```
+> call %WORKSPACE%\edk2\edksetup.bat [Rebuild | ForceRebuild]
+```
+
+### Build the firmware for Arm FVP Base Model platform
+
+Run the following command to build the firmware for FVP Base platform.
+
+```
+> build -a AARCH64 -t GCC5 -p Platform\ARM\VExpressPkg\ArmVExpress-FVP-AArch64.dsc -b < DEBUG | RELEASE >
+```
+
+The firmware binaries can be found at the following location:
+```
+%WORKSPACE%\Build\ArmVExpress-FVP-AArch64\<DEBUG|RELEASE>_GCC5\FV\FVP_AARCH64_EFI.fd
+```
+Note: The same firmware binary can be used with Arm FVP Base AEMvA-AEMvA and
+Armv-A Base RevC AEM FVP models.
+
+### Build the firmware for Arm Juno platform
+
+Run the following command to build the firmware for Arm Juno platform.
+
+```
+> build -a AARCH64 -t GCC5 -p Platform\ARM\JunoPkg\ArmJuno.dsc -b < DEBUG | RELEASE >
+```
+The firmware binaries are at the following location:
+
+```
+%WORKSPACE%\Build\ArmJuno\<DEBUG|RELEASE>_GCC5\FV\BL33_AP_UEFI.fd
+```

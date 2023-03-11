@@ -198,6 +198,7 @@ Returns:
         break;
 
       default:
+        IpmiInstance->BmcStatus = BMC_HARDFAIL;
         //
         // Call routine to check device specific failures.
         //

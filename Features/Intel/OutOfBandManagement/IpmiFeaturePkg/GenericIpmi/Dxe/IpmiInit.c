@@ -305,6 +305,7 @@ Returns:
     mIpmiInstance->BmcStatus = BMC_OK;
     return EFI_SUCCESS;
   } else {
+    DataSize = sizeof (TempData);
     Status = IpmiSendCommand (
                &IpmiInstance->IpmiTransport,
                IPMI_NETFN_FIRMWARE, 0,
@@ -326,6 +327,7 @@ Returns:
       while (Retries-- != 0) {
         MicroSecondDelay(1*1000*1000); //delay 1 seconds
         DEBUG ((EFI_D_ERROR, "[IPMI] UpdateMode Retries: %d \n",Retries));
+        DataSize = sizeof (TempData);
         Status = IpmiSendCommand (
                    &IpmiInstance->IpmiTransport,
                    IPMI_NETFN_APP, 0,

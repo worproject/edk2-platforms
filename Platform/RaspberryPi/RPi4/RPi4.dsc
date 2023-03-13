@@ -797,4 +797,9 @@
 !endif
 
   ArmPkg/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
-  MdeModulePkg/Application/MpServicesTest/MpServicesTest.inf
+  UefiCpuPkg/Test/UnitTest/EfiMpServicesPpiProtocol/EfiMpServiceProtocolShellUnitTest.inf {
+    <LibraryClasses>
+      UnitTestLib|UnitTestFrameworkPkg/Library/UnitTestLib/UnitTestLib.inf
+      UnitTestPersistenceLib|UnitTestFrameworkPkg/Library/UnitTestPersistenceLibNull/UnitTestPersistenceLibNull.inf
+      UnitTestResultReportLib|UnitTestFrameworkPkg/Library/UnitTestResultReportLib/UnitTestResultReportLibConOut.inf
+  }

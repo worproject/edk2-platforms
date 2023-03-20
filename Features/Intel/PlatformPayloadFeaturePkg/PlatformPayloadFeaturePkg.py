@@ -38,7 +38,7 @@ def BuildUniversalPayload(Args, MacroList):
     # Find universal UEFI payload build build script
     #
     Edk2PayloadBuildScript = os.path.normpath("UefiPayloadPkg/UniversalPayloadBuild.py")
-    for package_path in os.environ['PACKAGES_PATH'].split(';'):
+    for package_path in os.environ['PACKAGES_PATH'].split(os.pathsep):
         if os.path.exists (os.path.join (package_path, Edk2PayloadBuildScript)):
             Edk2PayloadBuildScript = os.path.join (package_path, Edk2PayloadBuildScript)
             break
@@ -49,7 +49,7 @@ def BuildUniversalPayload(Args, MacroList):
     BuildDir               = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/UefiPayloadPkgX64"))
     PlatformFvReportPath   = os.path.join(BuildDir, "PlatformPayloadReport.txt")
     UniversalUefiPld       = os.path.join(BuildDir, 'UniversalPayload.elf')
-    PlatformFv             = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/PlatformPayloadFeaturePkg"), f"{BuildTarget}_{ToolChain}", os.path.normpath("FV/PlatformPayload.Fv"))
+    PlatformFv             = os.path.join(os.environ['WORKSPACE'], os.path.normpath("Build/PlatformPayloadFeaturePkg"), f"{BuildTarget}_{ToolChain}", os.path.normpath("FV/PLATFORMPAYLOAD.Fv"))
 
     if "CLANG_BIN" in os.environ:
         LlvmObjcopyPath = os.path.join(os.environ["CLANG_BIN"], "llvm-objcopy")

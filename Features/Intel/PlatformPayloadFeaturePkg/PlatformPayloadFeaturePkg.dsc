@@ -33,6 +33,9 @@
 
 [Packages]
   MinPlatformPkg/MinPlatformPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UefiPayloadPkg/UefiPayloadPkg.dec
 
 ################################################################################
 #

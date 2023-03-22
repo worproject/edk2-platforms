@@ -164,6 +164,13 @@ F: Features/Intel/UserInterface/
 M: Dandan Bi <dandan.bi@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 
+Features/ManageabilityPkg
+F: Features/ManageabilityPkg/
+M: Abner Chang <abner.chang@amd.com>
+M: Isaac Oram <isaac.w.oram@intel.com>
+R: Abdul Lateef Attar <AbdulLateef.Attar@amd.com>
+R: Nickle Wang <nicklew@nvidia.com>
+
 Platform/Intel
 F: Platform/Intel/
 M: Sai Chaganty <rangasai.v.chaganty@intel.com>

@@ -35,5 +35,7 @@
 !include MinPlatformPkg/Include/Dsc/CorePeiLib.dsc
 !include MinPlatformPkg/Include/Dsc/CoreDxeLib.dsc
 
-!include Include/Dsc/Manageability.dsc
+[LibraryClasses]
+  ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
 
+!include Include/Dsc/Manageability.dsc

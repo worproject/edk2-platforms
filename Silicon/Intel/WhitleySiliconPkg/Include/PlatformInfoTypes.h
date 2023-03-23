@@ -69,7 +69,7 @@ typedef enum {
   //
   // Vendor board range currently starts at 0x80
   //
-  TypeBoardPortTemplate,               // 0x80
+  TypeBoardPortTemplate = 0x80,               // 0x80
   TypeJunctionCity,
   TypeAowanda,
   EndOfVendorPlatformTypeEnum

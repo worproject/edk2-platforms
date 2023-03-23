@@ -49,7 +49,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdFixedDebugPrintErrorLevel|0x80200047      # Built in messages:  Error, MTRR, info, load, warn, init
   gEfiSourceLevelDebugPkgTokenSpaceGuid.PcdDebugLoadImageMethod|0x2     # This is set to INT3 (0x2) for Simics source level debugging
 !endif
-  gPlatformTokenSpaceGuid.PcdBoardId|0x26
+  gPlatformTokenSpaceGuid.PcdBoardId|0x82
 
 [PcdsFixedAtBuild.X64]
   gPcAtChipsetPkgTokenSpaceGuid.PcdMinimalValidYear|1900

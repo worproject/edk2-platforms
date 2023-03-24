@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2018-2020, ARM Limited. All rights reserved.
+*  Copyright (c) 2018-2023, ARM Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -13,11 +13,24 @@
 #include <Library/IoLib.h>
 #include <Library/MemoryAllocationLib.h>
 
+#include <IoVirtSoCExp.h>
 #include <SgiPlatform.h>
 
 // Total number of descriptors, including the final "end-of-table" descriptor.
-#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS                 \
-          (14 + (FixedPcdGet32 (PcdChipCount) * 2))
+#define MAX_VIRTUAL_MEMORY_MAP_DESCRIPTORS                                     \
+          ((14 + (FixedPcdGet32 (PcdChipCount) * 2)) +                         \
+           (FixedPcdGet32 (PcdIoVirtSocExpBlkUartEnable) *                     \
+            FixedPcdGet32 (PcdChipCount) * 2))
+
+// Memory Map descriptor for IO Virtualization SoC Expansion Block UART
+#define IO_VIRT_SOC_EXP_BLK_UART_MMAP(UartIdx, ChipIdx)                        \
+  VirtualMemoryTable[++Index].PhysicalBase =                                   \
+    SGI_REMOTE_CHIP_MEM_OFFSET(ChipIdx) + UART_START(UartIdx);                 \
+  VirtualMemoryTable[Index].VirtualBase    =                                   \
+    SGI_REMOTE_CHIP_MEM_OFFSET(ChipIdx) + UART_START(UartIdx);                 \
+  VirtualMemoryTable[Index].Length         = SIZE_64KB;                        \
+  VirtualMemoryTable[Index].Attributes     = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+
 
 /**
   Returns the Virtual Memory Map of the platform.
@@ -170,6 +183,31 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryTable[Index].VirtualBase     = FixedPcdGet64 (PcdSerialRegisterBase);
   VirtualMemoryTable[Index].Length          = SIZE_64KB;
   VirtualMemoryTable[Index].Attributes      = ARM_MEMORY_REGION_ATTRIBUTE_DEVICE;
+
+#if (FixedPcdGet32 (PcdIoVirtSocExpBlkUartEnable) == 1)
+  // Chip-0 IO Virtualization SoC Expansion Block - UART0
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(0, 0)
+  // Chip-0 IO Virtualization SoC Expansion Block - UART1
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(1, 0)
+#if (FixedPcdGet32 (PcdChipCount) > 1)
+  // Chip-1 IO Virtualization SoC Expansion Block - UART0
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(0, 1)
+  // Chip-1 IO Virtualization SoC Expansion Block - UART1
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(1, 1)
+#if (FixedPcdGet32 (PcdChipCount) > 2)
+  // Chip-2 IO Virtualization SoC Expansion Block - UART0
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(0, 2)
+  // Chip-2 IO Virtualization SoC Expansion Block - UART1
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(1, 2)
+#if (FixedPcdGet32 (PcdChipCount) > 3)
+  // Chip-3 IO Virtualization SoC Expansion Block - UART0
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(0, 3)
+  // Chip-3 IO Virtualization SoC Expansion Block - UART1
+  IO_VIRT_SOC_EXP_BLK_UART_MMAP(1, 3)
+#endif
+#endif
+#endif
+#endif
 
   // DDR - (2GB - 16MB)
   VirtualMemoryTable[++Index].PhysicalBase  = PcdGet64 (PcdSystemMemoryBase);

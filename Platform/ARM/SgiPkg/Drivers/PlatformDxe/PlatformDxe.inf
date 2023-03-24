@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018, ARM Limited. All rights reserved.
+#  Copyright (c) 2018 - 2023, ARM Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -17,6 +17,7 @@
   VirtioDevices.c
 
 [Packages]
+  ArmPlatformPkg/ArmPlatformPkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   OvmfPkg/OvmfPkg.dec
@@ -37,10 +38,16 @@
   gArmSgiTokenSpaceGuid.PcdVirtioNetSupported
 
 [FixedPcd]
+  gArmSgiTokenSpaceGuid.PcdChipCount
+  gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base
+  gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable
+  gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip
   gArmSgiTokenSpaceGuid.PcdVirtioBlkBaseAddress
   gArmSgiTokenSpaceGuid.PcdVirtioBlkSize
   gArmSgiTokenSpaceGuid.PcdVirtioNetBaseAddress
   gArmSgiTokenSpaceGuid.PcdVirtioNetSize
+
+  gArmPlatformTokenSpaceGuid.PcdSerialDbgUartClkInHz
 
 [Depex]
   TRUE

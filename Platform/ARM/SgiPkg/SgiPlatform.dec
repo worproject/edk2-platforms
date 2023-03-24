@@ -98,5 +98,9 @@
   # Address bus width
   gArmSgiTokenSpaceGuid.PcdMaxAddressBitsPerChip|0x0|UINT64|0x00000027
 
+  # IO virtualization block
+  gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base|0|UINT64|0x0000002B
+  gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlkUartEnable|0|UINT32|0x0000002C
+
 [Ppis]
   gNtFwConfigDtInfoPpiGuid     = { 0x6f606eb3, 0x9123, 0x4e15, { 0xa8, 0x9b, 0x0f, 0xac, 0x66, 0xef, 0xd0, 0x17 } }

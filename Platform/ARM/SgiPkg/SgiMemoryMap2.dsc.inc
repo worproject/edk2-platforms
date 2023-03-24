@@ -72,3 +72,6 @@
   gArmSgiTokenSpaceGuid.PcdGpioController0BaseAddress|0x0C1D0000
   gArmSgiTokenSpaceGuid.PcdGpioController0Size|0x00010000
   gArmSgiTokenSpaceGuid.PcdGpioController0Interrupt|392
+
+  # IO virtualization block
+  gArmSgiTokenSpaceGuid.PcdIoVirtSocExpBlk0Base|0x1080000000

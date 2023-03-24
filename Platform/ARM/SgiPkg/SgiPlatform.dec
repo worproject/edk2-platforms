@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2018 - 2022, Arm Limited. All rights reserved.
+#  Copyright (c) 2018 - 2023, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -45,6 +45,11 @@
   gArmSgiTokenSpaceGuid.PcdVirtioNetBaseAddress|0x00000000|UINT32|0x00000007
   gArmSgiTokenSpaceGuid.PcdVirtioNetSize|0x00000000|UINT32|0x00000008
   gArmSgiTokenSpaceGuid.PcdVirtioNetInterrupt|0x00000000|UINT32|0x00000009
+
+  # Virtio P9
+  gArmSgiTokenSpaceGuid.PcdVirtioP9BaseAddress|0x00000000|UINT32|0x00000028
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Size|0x00000000|UINT32|0x00000029
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Interrupt|0x00000000|UINT32|0x0000002A
 
   # Chip count on the platform
   gArmSgiTokenSpaceGuid.PcdChipCount|1|UINT32|0x0000000B

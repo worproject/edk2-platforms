@@ -1,5 +1,5 @@
 #
-#  Copyright (c) 2020 - 2022, Arm Limited. All rights reserved.
+#  Copyright (c) 2020 - 2023, Arm Limited. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -37,6 +37,11 @@
   # Ethernet
   gArmSgiTokenSpaceGuid.PcdVirtioNetBaseAddress|0x0C150000
   gArmSgiTokenSpaceGuid.PcdVirtioNetInterrupt|460
+
+  # Virtio P9
+  gArmSgiTokenSpaceGuid.PcdVirtioP9BaseAddress|0x0C190000
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Size|0x10000
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Interrupt|459
 
   # PCIe
   gArmTokenSpaceGuid.PcdPciMmio32Base|0x60000000

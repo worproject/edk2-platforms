@@ -1,7 +1,7 @@
 ## @file
 #  ACPI table data and ASL sources required to boot the platform.
 #
-#  Copyright (c) 2021, Arm Ltd. All rights reserved.
+#  Copyright (c) 2021 - 2023, Arm Ltd. All rights reserved.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -25,8 +25,9 @@
   RdN2Cfg1/Pptt.aslc
   Spcr.aslc
   Ssdt.asl
-  SsdtRos.asl
   SsdtEvents.asl
+  SsdtRos.asl
+  SsdtRosVirtioP9.asl
 
 [Packages]
   ArmPkg/ArmPkg.dec
@@ -71,6 +72,9 @@
   gArmSgiTokenSpaceGuid.PcdVirtioNetBaseAddress
   gArmSgiTokenSpaceGuid.PcdVirtioNetSize
   gArmSgiTokenSpaceGuid.PcdVirtioNetInterrupt
+  gArmSgiTokenSpaceGuid.PcdVirtioP9BaseAddress
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Size
+  gArmSgiTokenSpaceGuid.PcdVirtioP9Interrupt
   gArmSgiTokenSpaceGuid.PcdWdogWS0Gsiv
   gArmSgiTokenSpaceGuid.PcdWdogWS1Gsiv
 

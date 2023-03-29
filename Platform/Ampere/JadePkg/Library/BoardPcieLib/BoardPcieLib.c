@@ -2,7 +2,7 @@
   Pcie board specific driver to handle asserting PERST signal to Endpoint
   card. PERST asserting is via group of GPIO pins to CPLD as Platform Specification.
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -20,6 +20,8 @@
 #define RCB_MAX_PERST_GROUPVAL          46
 #define DEFAULT_SEGMENT_NUMBER          0x0F
 
+#define PCIE_PERST_DELAY  (100 * 1000)               // 100ms
+
 VOID
 BoardPcieReleaseAllPerst (
   IN UINT8 SocketId
@@ -32,6 +34,8 @@ BoardPcieReleaseAllPerst (
   for (GpioIndex = 0; GpioIndex < 6; GpioIndex++) {
     GpioModeConfig (GpioPin + GpioIndex, GpioConfigOutHigh);
   }
+
+  MicroSecondDelay (PCIE_PERST_DELAY);
 }
 
 /**
@@ -81,7 +85,7 @@ BoardPcieAssertPerst (
     }
 
     // Keep reset as low as 100 ms as specification
-    MicroSecondDelay (100 * 1000);
+    MicroSecondDelay (PCIE_PERST_DELAY);
   } else {
     BoardPcieReleaseAllPerst (RootComplex->Socket);
   }

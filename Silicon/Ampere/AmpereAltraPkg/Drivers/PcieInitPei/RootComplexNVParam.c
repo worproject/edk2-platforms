@@ -37,7 +37,7 @@
   |  Y   |  Y   |  Y   |  Y   | 3        |
   ----------------------------------------
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -54,6 +54,12 @@
 #include <NVParamDef.h>
 
 #include "RootComplexNVParam.h"
+
+typedef enum {
+  Gen3Preset = 0,
+  Gen4Preset,
+  GenPresetMax
+} NVPARAM_PCIE_PRESET_TYPE;
 
 STATIC
 BOOLEAN
@@ -144,85 +150,233 @@ SetRootComplexBifurcation (
   }
 }
 
-VOID
+DEV_MAP_MODE
 GetDefaultDevMap (
-  AC01_ROOT_COMPLEX *RootComplex
+  IN AC01_ROOT_COMPLEX *RootComplex,
+  IN BOOLEAN           IsGetDevMapLow
   )
 {
-  if (RootComplex->Pcie[PcieController0].Active
-      && RootComplex->Pcie[PcieController1].Active
-      && RootComplex->Pcie[PcieController2].Active
-      && RootComplex->Pcie[PcieController3].Active) {
-    RootComplex->DefaultDevMapLow = DevMapMode4;
-  } else if (RootComplex->Pcie[PcieController0].Active
-             && RootComplex->Pcie[PcieController2].Active
-             && RootComplex->Pcie[PcieController3].Active) {
-    RootComplex->DefaultDevMapLow = DevMapMode3;
-  } else if (RootComplex->Pcie[PcieController0].Active
-             && RootComplex->Pcie[PcieController2].Active) {
-    RootComplex->DefaultDevMapLow = DevMapMode2;
-  } else {
-    RootComplex->DefaultDevMapLow = DevMapMode1;
+  UINT8        StartIndex;
+  DEV_MAP_MODE DevMapMode;
+
+  DevMapMode = MaxDevMapMode;
+  StartIndex = IsGetDevMapLow ? PcieController0 : PcieController4;
+
+  while (DevMapMode >= DevMapMode1)
+  {
+    switch (DevMapMode) {
+    case DevMapMode4:
+      if (RootComplex->Pcie[StartIndex].Active
+          && RootComplex->Pcie[StartIndex + 1].Active
+          && RootComplex->Pcie[StartIndex + 2].Active
+          && RootComplex->Pcie[StartIndex + 3].Active) {
+            return DevMapMode4;
+          }
+      break;
+    case DevMapMode3:
+      if (RootComplex->Pcie[StartIndex].Active
+          && RootComplex->Pcie[StartIndex + 2].Active
+          && RootComplex->Pcie[StartIndex + 3].Active) {
+            return DevMapMode3;
+          }
+      break;
+    case DevMapMode2:
+      if (RootComplex->Pcie[StartIndex].Active
+          && RootComplex->Pcie[StartIndex + 2].Active) {
+            return DevMapMode2;
+          }
+      break;
+    default:
+      return DevMapMode1;
+    }
+
+    DevMapMode--;
   }
 
-  if (RootComplex->Pcie[PcieController4].Active
-      && RootComplex->Pcie[PcieController5].Active
-      && RootComplex->Pcie[PcieController6].Active
-      && RootComplex->Pcie[PcieController7].Active) {
-    RootComplex->DefaultDevMapHigh = DevMapMode4;
-  } else if (RootComplex->Pcie[PcieController4].Active
-             && RootComplex->Pcie[PcieController6].Active
-             && RootComplex->Pcie[PcieController7].Active) {
-    RootComplex->DefaultDevMapHigh = DevMapMode3;
-  } else if (RootComplex->Pcie[PcieController4].Active
-             && RootComplex->Pcie[PcieController6].Active) {
-    RootComplex->DefaultDevMapHigh = DevMapMode2;
-  } else {
-    RootComplex->DefaultDevMapHigh = DevMapMode1;
-  }
+  return DevMapMode1;
+}
 
+VOID
+GetDevMap (
+  IN OUT AC01_ROOT_COMPLEX *RootComplex
+  )
+{
+  //
+  // Get default Devmap low and configure Devmap low accordingly.
+  //
+  RootComplex->DefaultDevMapLow = GetDefaultDevMap (RootComplex, TRUE);
   if (RootComplex->DevMapLow == 0) {
     RootComplex->DevMapLow = RootComplex->DefaultDevMapLow;
   }
 
+  //
+  // Get default Devmap high and configure Devmap high accordingly.
+  //
+  RootComplex->DefaultDevMapHigh = IsAc01Processor () ? GetDefaultDevMap (RootComplex, FALSE) : DevMapMode1;
   if (RootComplex->Type == RootComplexTypeB && RootComplex->DevMapHigh == 0) {
     RootComplex->DevMapHigh = RootComplex->DefaultDevMapHigh;
   }
 
+  //
+  // Set bifurcation bases on Devmap high and Devmap low.
+  //
   SetRootComplexBifurcation (RootComplex, PcieController0, RootComplex->DevMapLow);
   if (RootComplex->Type == RootComplexTypeB) {
     SetRootComplexBifurcation (RootComplex, PcieController4, RootComplex->DevMapHigh);
   }
 }
 
+UINT8
+GetMaxController (
+  IN AC01_ROOT_COMPLEX *RootComplex
+  )
+{
+  if (IsAc01Processor ()) {
+    return MaxPcieControllerOfRootComplexA;
+  }
+
+  return RootComplex->MaxPcieController;
+}
+
+NVPARAM
+CalculateNvParamOffset (
+  IN AC01_ROOT_COMPLEX *RootComplex,
+  IN UINT8             PaddingOrder,
+  IN UINT8             StartIndex,
+  IN UINT64            StartOffset
+  )
+{
+  UINT8   NeededPadding;
+  INT8    PositionFromStartIndex;
+  NVPARAM NvParamOffset;
+
+
+  NeededPadding = RootComplex->ID - PaddingOrder;
+  PositionFromStartIndex = (RootComplex->ID - StartIndex) + NeededPadding;
+  NvParamOffset = StartOffset + PositionFromStartIndex * NV_PARAM_ENTRYSIZE;
+
+  return NvParamOffset;
+}
+
+EFI_STATUS_CODE_TYPE
+GetNvParamOffsetLane (
+  IN  AC01_ROOT_COMPLEX *RootComplex,
+  OUT NVPARAM           *NvParamOffset
+  )
+{
+  BOOLEAN IsAc01;
+  BOOLEAN IsRootComplexTypeA;
+  BOOLEAN IsSocket0;
+  UINT8   StartIndex;
+  UINT64  StartOffset;
+  UINT8   PaddingOrder;
+
+  IsSocket0 = RootComplex->Socket == 0 ? TRUE : FALSE;
+  IsAc01 = IsAc01Processor ();
+  IsRootComplexTypeA = RootComplex->Type == RootComplexTypeA ? TRUE : FALSE;
+
+  if (!IsAc01 && (RootComplex->ID >= MaxPcieControllerOfRootComplexA)) {
+    // Because from NV_SI_RO_BOARD_S0_RCA4_CFG to NV_SI_RO_BOARD_S0_RCA7_CFG for supporting
+    // Altra Max are not sequential arrangement with NV_SI_RO_BOARD_S0_RCA0_CFG
+    // so the start index will be the first Root Complex ID which using these NVParams
+    // (NV_SI_RO_BOARD_S0_RCA4_CFG to NV_SI_RO_BOARD_S0_RCA7_CFG) to support Altra Max processor.
+    StartIndex = 4;
+    StartOffset = IsSocket0 ? NV_SI_RO_BOARD_S0_RCA4_CFG : NV_SI_RO_BOARD_S1_RCA4_CFG;
+    PaddingOrder = RootComplex->ID;
+  } else {
+    StartIndex = 0;
+    StartOffset = IsSocket0 ? NV_SI_RO_BOARD_S0_RCA0_CFG : NV_SI_RO_BOARD_S1_RCA0_CFG;
+    PaddingOrder = IsRootComplexTypeA ? RootComplex->ID : MaxRootComplexA;
+  }
+
+  *NvParamOffset = CalculateNvParamOffset (RootComplex, PaddingOrder, StartIndex, StartOffset);
+  return EFI_SUCCESS;
+}
+
+EFI_STATUS
+GetNvParamOffsetPreset (
+  IN  AC01_ROOT_COMPLEX        *RootComplex,
+  IN  NVPARAM_PCIE_PRESET_TYPE PresetType,
+  OUT NVPARAM                  *NvParamOffset
+  )
+{
+  BOOLEAN IsAc01;
+  BOOLEAN IsRootComplexTypeA;
+  BOOLEAN IsSocket0;
+  UINT8   StartIndex;
+  UINT64  StartOffset;
+  UINT8   PaddingOrder;
+
+  IsSocket0 = RootComplex->Socket == 0 ? TRUE : FALSE;
+  IsAc01 = IsAc01Processor ();
+  IsRootComplexTypeA = RootComplex->Type == RootComplexTypeA ? TRUE : FALSE;
+
+  switch (PresetType) {
+  case Gen3Preset:
+    if (IsAc01) {
+      StartOffset = IsSocket0 ? NV_SI_RO_BOARD_S0_RCA0_TXRX_G3PRESET :
+                                NV_SI_RO_BOARD_S1_RCA2_TXRX_G3PRESET;
+    } else {
+      StartOffset = IsSocket0 ? NV_SI_RO_BOARD_MQ_S0_RCA0_TXRX_G3PRESET :
+                                NV_SI_RO_BOARD_MQ_S1_RCA2_TXRX_G3PRESET;
+    }
+    break;
+
+  case Gen4Preset:
+    if (IsAc01) {
+      StartOffset = IsSocket0 ? NV_SI_RO_BOARD_S0_RCA0_TXRX_G4PRESET :
+                                NV_SI_RO_BOARD_S1_RCA2_TXRX_G4PRESET;
+    } else {
+      StartOffset = IsSocket0 ? NV_SI_RO_BOARD_MQ_S0_RCA0_TXRX_G4PRESET :
+                                NV_SI_RO_BOARD_MQ_S1_RCA2_TXRX_G4PRESET;
+    }
+    break;
+
+  default:
+    return EFI_INVALID_PARAMETER;
+  }
+
+  //
+  // For Socket 0, NVParams for all Root Complexes are supported so starting from RCA0.
+  // For Socket 1, NVParams for RCA0 and RCA1 are not supported so starting from RCA2.
+  //
+  StartIndex = IsSocket0 ? 0 : 2;
+  //
+  // There're two NVParam entries per RootComplexTypeB
+  // so padding need to be start from MaxRootComplexA to
+  // get the first NVParam entry of RootComplexTypeB
+  //
+  PaddingOrder = IsRootComplexTypeA ? RootComplex->ID : MaxRootComplexA;
+
+  *NvParamOffset = CalculateNvParamOffset (RootComplex, PaddingOrder, StartIndex, StartOffset);
+
+  return EFI_SUCCESS;
+}
+
 VOID
 GetLaneAllocation (
-  AC01_ROOT_COMPLEX *RootComplex
+  IN OUT AC01_ROOT_COMPLEX *RootComplex
   )
 {
   EFI_STATUS Status;
   INTN       RPIndex;
   NVPARAM    NvParamOffset;
-  UINT32     Value, Width;
+  UINT32     Value;
+  UINT32     Width;
+  UINT32     MaxController;
 
-  // Retrieve lane allocation and capabilities for each controller
-  if (RootComplex->Type == RootComplexTypeA) {
-    NvParamOffset = (RootComplex->Socket == 0) ? NV_SI_RO_BOARD_S0_RCA0_CFG : NV_SI_RO_BOARD_S1_RCA0_CFG;
-    NvParamOffset += RootComplex->ID * NV_PARAM_ENTRYSIZE;
+  Status = GetNvParamOffsetLane (RootComplex, &NvParamOffset);
+  if (!EFI_ERROR (Status)) {
+    Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
+    if (EFI_ERROR (Status)) {
+      Value = 0;
+    }
   } else {
-    //
-    // There're two NVParam entries per RootComplexTypeB
-    //
-    NvParamOffset = (RootComplex->Socket == 0) ? NV_SI_RO_BOARD_S0_RCB0_LO_CFG : NV_SI_RO_BOARD_S1_RCB0_LO_CFG;
-    NvParamOffset += (RootComplex->ID - MaxRootComplexA) * (NV_PARAM_ENTRYSIZE * 2);
-  }
-
-  Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
-  if (EFI_ERROR (Status)) {
     Value = 0;
   }
 
-  for (RPIndex = 0; RPIndex < MaxPcieControllerOfRootComplexA; RPIndex++) {
+  MaxController = GetMaxController (RootComplex);
+  for (RPIndex = PcieController0; RPIndex < MaxController; RPIndex++) {
     Width = (Value >> (RPIndex * BITS_PER_BYTE)) & BYTE_MASK;
     switch (Width) {
     case 1:
@@ -278,78 +432,6 @@ GetLaneAllocation (
   }
 }
 
-NVPARAM
-GetGen3PresetNvParamOffset (
-  AC01_ROOT_COMPLEX *RootComplex
-  )
-{
-  NVPARAM NvParamOffset;
-
-  if (RootComplex->Socket == 0) {
-    if (RootComplex->Type == RootComplexTypeA) {
-      if (RootComplex->ID < MaxRootComplexA) {
-        NvParamOffset = NV_SI_RO_BOARD_S0_RCA0_TXRX_G3PRESET + RootComplex->ID * NV_PARAM_ENTRYSIZE;
-      } else {
-        NvParamOffset = NV_SI_RO_BOARD_S0_RCA4_TXRX_G3PRESET + (RootComplex->ID - MaxRootComplexA) * NV_PARAM_ENTRYSIZE;
-      }
-    } else {
-      //
-      // There're two NVParam entries per RootComplexTypeB
-      //
-      NvParamOffset = NV_SI_RO_BOARD_S0_RCB0A_TXRX_G3PRESET + (RootComplex->ID - MaxRootComplexA) * (NV_PARAM_ENTRYSIZE * 2);
-    }
-  } else if (RootComplex->Type == RootComplexTypeA) {
-    if (RootComplex->ID < MaxRootComplexA) {
-      NvParamOffset = NV_SI_RO_BOARD_S1_RCA2_TXRX_G3PRESET + (RootComplex->ID - 2) * NV_PARAM_ENTRYSIZE;
-    } else {
-      NvParamOffset = NV_SI_RO_BOARD_S1_RCA4_TXRX_G3PRESET + (RootComplex->ID - MaxRootComplexA) * NV_PARAM_ENTRYSIZE;
-    }
-  } else {
-    //
-    // There're two NVParam entries per RootComplexTypeB
-    //
-    NvParamOffset = NV_SI_RO_BOARD_S1_RCB0A_TXRX_G3PRESET + (RootComplex->ID - MaxRootComplexA) * (NV_PARAM_ENTRYSIZE * 2);
-  }
-
-  return NvParamOffset;
-}
-
-NVPARAM
-GetGen4PresetNvParamOffset (
-  AC01_ROOT_COMPLEX *RootComplex
-  )
-{
-  NVPARAM NvParamOffset;
-
-  if (RootComplex->Socket == 0) {
-    if (RootComplex->Type == RootComplexTypeA) {
-      if (RootComplex->ID < MaxRootComplexA) {
-        NvParamOffset = NV_SI_RO_BOARD_S0_RCA0_TXRX_G4PRESET + RootComplex->ID * NV_PARAM_ENTRYSIZE;
-      } else {
-        NvParamOffset = NV_SI_RO_BOARD_S0_RCA4_TXRX_G4PRESET + (RootComplex->ID - MaxRootComplexA) * NV_PARAM_ENTRYSIZE;
-      }
-    } else {
-      //
-      // There're two NVParam entries per RootComplexTypeB
-      //
-      NvParamOffset = NV_SI_RO_BOARD_S0_RCB0A_TXRX_G4PRESET + (RootComplex->ID - MaxRootComplexA) * (NV_PARAM_ENTRYSIZE * 2);
-    }
-  } else if (RootComplex->Type == RootComplexTypeA) {
-    if (RootComplex->ID < MaxRootComplexA) {
-      NvParamOffset = NV_SI_RO_BOARD_S1_RCA2_TXRX_G4PRESET + (RootComplex->ID - 2) * NV_PARAM_ENTRYSIZE;
-    } else {
-      NvParamOffset = NV_SI_RO_BOARD_S1_RCA4_TXRX_G4PRESET + (RootComplex->ID - MaxRootComplexA) * NV_PARAM_ENTRYSIZE;
-    }
-  } else {
-    //
-    // There're two NVParam entries per RootComplexTypeB
-    //
-    NvParamOffset = NV_SI_RO_BOARD_S1_RCB0A_TXRX_G4PRESET + (RootComplex->ID - MaxRootComplexA) * (NV_PARAM_ENTRYSIZE * 2);
-  }
-
-  return NvParamOffset;
-}
-
 VOID
 GetPresetSetting (
   AC01_ROOT_COMPLEX *RootComplex
@@ -366,9 +448,11 @@ GetPresetSetting (
     RootComplex->PresetGen4[Index] = PRESET_INVALID;
   }
 
-  NvParamOffset = GetGen3PresetNvParamOffset (RootComplex);
-
-  Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
+  // Get NVParam offset of Gen3 preset
+  Status = GetNvParamOffsetPreset (RootComplex, Gen3Preset, &NvParamOffset);
+  if (!EFI_ERROR (Status)) {
+    Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
+  }
   if (!EFI_ERROR (Status)) {
     for (Index = 0; Index < MaxPcieControllerOfRootComplexA; Index++) {
       RootComplex->PresetGen3[Index] = (Value >> (Index * BITS_PER_BYTE)) & BYTE_MASK;
@@ -385,9 +469,11 @@ GetPresetSetting (
     }
   }
 
-  NvParamOffset = GetGen4PresetNvParamOffset (RootComplex);
-
-  Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
+  // Get NVParam offset of Gen4 preset.
+  Status = GetNvParamOffsetPreset (RootComplex, Gen4Preset, &NvParamOffset);
+  if (!EFI_ERROR (Status)) {
+    Status = NVParamGet (NvParamOffset, NV_PERM_ALL, &Value);
+  }
   if (!EFI_ERROR (Status)) {
     for (Index = 0; Index < MaxPcieControllerOfRootComplexA; Index++) {
       RootComplex->PresetGen4[Index] = (Value >> (Index * BITS_PER_BYTE)) & BYTE_MASK;
@@ -415,6 +501,7 @@ GetMaxSpeedGen (
   UINT8 ErrataSpeedDevMap4[MaxPcieControllerOfRootComplexA] = { LINK_SPEED_GEN1, LINK_SPEED_GEN1, LINK_SPEED_GEN1, LINK_SPEED_GEN1 };  // Bifurcation 3: x4 x4 x4 x4 (PCIE_ERRATA_SPEED1)
   UINT8 ErrataSpeedRcb[MaxPcieControllerOfRootComplexA] = { LINK_SPEED_GEN1, LINK_SPEED_GEN1, LINK_SPEED_GEN1, LINK_SPEED_GEN1 };      // RootComplexTypeB PCIE_ERRATA_SPEED1
   UINT8 Idx;
+  UINT8 MaxController;
   UINT8 *MaxGen;
 
   ASSERT (MaxPcieControllerOfRootComplexA == 4);
@@ -452,7 +539,8 @@ GetMaxSpeedGen (
     }
   }
 
-  for (Idx = 0; Idx < MaxPcieControllerOfRootComplexA; Idx++) {
+  MaxController = GetMaxController (RootComplex);
+  for (Idx = 0; Idx < MaxController; Idx++) {
     RootComplex->Pcie[Idx].MaxGen = RootComplex->Pcie[Idx].Active ? MaxGen[Idx] : LINK_SPEED_NONE;
   }
 
@@ -509,6 +597,6 @@ ParseRootComplexNVParamData (
 
   GetPresetSetting (RootComplex);
   GetLaneAllocation (RootComplex);
-  GetDefaultDevMap (RootComplex);
+  GetDevMap (RootComplex);
   GetMaxSpeedGen (RootComplex);
 }

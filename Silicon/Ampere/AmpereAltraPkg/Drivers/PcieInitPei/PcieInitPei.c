@@ -40,61 +40,33 @@ STATIC UINT64                   mMmio32Size1P[AC01_PCIE_MAX_ROOT_COMPLEX]    = {
 STATIC UINT64                   mMmioBase[AC01_PCIE_MAX_ROOT_COMPLEX]        = { AC01_PCIE_MMIO_BASE_LIST };
 STATIC UINT64                   mMmioSize[AC01_PCIE_MAX_ROOT_COMPLEX]        = { AC01_PCIE_MMIO_SIZE_LIST };
 
-VOID
-BuildRootComplexData (
-  VOID
+AC01_ROOT_COMPLEX_TYPE
+GetRootComplexType (
+  UINT8 RootComplexId
   )
 {
-  AC01_ROOT_COMPLEX                    *RootComplex;
-  BOOLEAN                              ConfigFound;
-  EFI_PEI_READ_ONLY_VARIABLE2_PPI      *VariablePpi;
-  EFI_STATUS                           Status;
-  ROOT_COMPLEX_CONFIG_VARSTORE_DATA    RootComplexConfig;
-  UINT8                                RCIndex;
-  UINT8                                PcieIndex;
-  UINTN                                DataSize;
-
-  ConfigFound = FALSE;
-
-  //
-  // Get the Root Complex config from NVRAM
-  //
-  Status = PeiServicesLocatePpi (
-             &gEfiPeiReadOnlyVariable2PpiGuid,
-             0,
-             NULL,
-             (VOID **)&VariablePpi
-             );
-  if (!EFI_ERROR (Status)) {
-    DataSize = sizeof (RootComplexConfig);
-    Status = VariablePpi->GetVariable (
-                            VariablePpi,
-                            ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
-                            &gRootComplexConfigFormSetGuid,
-                            NULL,
-                            &DataSize,
-                            &RootComplexConfig
-                            );
-    if (!EFI_ERROR (Status)) {
-      ConfigFound = TRUE;
-    }
+  if (IsAc01Processor ()) {
+    return (RootComplexId < MaxRootComplexA) ? RootComplexTypeA : RootComplexTypeB;
   }
 
-  ZeroMem (&mRootComplexList, sizeof (AC01_ROOT_COMPLEX) * AC01_PCIE_MAX_ROOT_COMPLEX);
+  return RootComplexTypeA;
+}
 
-  //
-  // Adjust Root Complex MMIO32 base address in 1P or 2P configuration
-  //
-  if (!IsSlaveSocketAvailable ()) {
-    CopyMem ((VOID *)&mMmio32Base, (VOID *)&mMmio32Base1P, sizeof (mMmio32Base1P));
-    CopyMem ((VOID *)&mMmio32Size, (VOID *)&mMmio32Size1P, sizeof (mMmio32Size1P));
-  }
+VOID
+ConfigureRootComplex (
+  BOOLEAN                           IsConfigFound,
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA RootComplexConfig
+  )
+{
+  UINT8             RCIndex;
+  UINT8             PcieIndex;
+  AC01_ROOT_COMPLEX *RootComplex;
 
   for (RCIndex = 0; RCIndex < AC01_PCIE_MAX_ROOT_COMPLEX; RCIndex++) {
     RootComplex = &mRootComplexList[RCIndex];
-    RootComplex->Active = ConfigFound ? RootComplexConfig.RCStatus[RCIndex] : TRUE;
-    RootComplex->DevMapLow = ConfigFound ? RootComplexConfig.RCBifurcationLow[RCIndex] : 0;
-    RootComplex->DevMapHigh = ConfigFound ? RootComplexConfig.RCBifurcationHigh[RCIndex] : 0;
+    RootComplex->Active = IsConfigFound ? RootComplexConfig.RCStatus[RCIndex] : TRUE;
+    RootComplex->DevMapLow = IsConfigFound ? RootComplexConfig.RCBifurcationLow[RCIndex] : 0;
+    RootComplex->DevMapHigh = IsConfigFound ? RootComplexConfig.RCBifurcationHigh[RCIndex] : 0;
     RootComplex->Socket = RCIndex / AC01_PCIE_MAX_RCS_PER_SOCKET;
     RootComplex->ID = RCIndex % AC01_PCIE_MAX_RCS_PER_SOCKET;
     RootComplex->CsrBase = mCsrBase[RCIndex];
@@ -106,7 +78,7 @@ BuildRootComplexData (
     RootComplex->MmioSize = mMmioSize[RCIndex];
     RootComplex->Mmio32Base = mMmio32Base[RCIndex];
     RootComplex->Mmio32Size = mMmio32Size[RCIndex];
-    RootComplex->Type = (RootComplex->ID < MaxRootComplexA) ? RootComplexTypeA : RootComplexTypeB;
+    RootComplex->Type = GetRootComplexType (RootComplex->ID);
     RootComplex->MaxPcieController = (RootComplex->Type == RootComplexTypeB)
                                      ? MaxPcieControllerOfRootComplexB : MaxPcieControllerOfRootComplexA;
     RootComplex->Logical = BoardPcieGetSegmentNumber (RootComplex);
@@ -146,6 +118,60 @@ BuildRootComplexData (
   }
 }
 
+VOID
+BuildRootComplexData (
+  VOID
+  )
+{
+  BOOLEAN                              IsConfigFound;
+  EFI_PEI_READ_ONLY_VARIABLE2_PPI      *VariablePpi;
+  EFI_STATUS                           Status;
+  ROOT_COMPLEX_CONFIG_VARSTORE_DATA    RootComplexConfig;
+  UINTN                                DataSize;
+
+  IsConfigFound = FALSE;
+  ZeroMem ((VOID *)&RootComplexConfig, sizeof (ROOT_COMPLEX_CONFIG_VARSTORE_DATA));
+
+  //
+  // Get the Root Complex config from NVRAM
+  //
+  Status = PeiServicesLocatePpi (
+             &gEfiPeiReadOnlyVariable2PpiGuid,
+             0,
+             NULL,
+             (VOID **)&VariablePpi
+             );
+  if (!EFI_ERROR (Status)) {
+    DataSize = sizeof (RootComplexConfig);
+    Status = VariablePpi->GetVariable (
+                            VariablePpi,
+                            ROOT_COMPLEX_CONFIG_VARSTORE_NAME,
+                            &gRootComplexConfigFormSetGuid,
+                            NULL,
+                            &DataSize,
+                            &RootComplexConfig
+                            );
+    if (!EFI_ERROR (Status)) {
+      IsConfigFound = TRUE;
+    }
+  }
+
+  ZeroMem (&mRootComplexList, sizeof (AC01_ROOT_COMPLEX) * AC01_PCIE_MAX_ROOT_COMPLEX);
+
+  //
+  // Adjust Root Complex MMIO32 base address in 1P or 2P configuration
+  //
+  if (!IsSlaveSocketAvailable ()) {
+    CopyMem ((VOID *)&mMmio32Base, (VOID *)&mMmio32Base1P, sizeof (mMmio32Base1P));
+    CopyMem ((VOID *)&mMmio32Size, (VOID *)&mMmio32Size1P, sizeof (mMmio32Size1P));
+  }
+
+  //
+  // All necessary information is available, config Root complex accordingly
+  //
+  ConfigureRootComplex (IsConfigFound, RootComplexConfig);
+}
+
 EFI_STATUS
 EFIAPI
 PcieInitEntry (
@@ -168,11 +194,14 @@ PcieInitEntry (
       continue;
     }
 
+    DEBUG ((DEBUG_INIT, "Initializing S%d-RC%d...", RootComplex->Socket, RootComplex->ID));
     Status = Ac01PcieCoreSetupRC (RootComplex, FALSE, 0);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "RootComplex[%d]: Init Failed\n", Index));
+      DEBUG ((DEBUG_ERROR, "Failed\n"));
       RootComplex->Active = FALSE;
       continue;
+    } else {
+      DEBUG ((DEBUG_INIT, "Done + DevMapLow/High: %d/%d\n", RootComplex->DevMapLow, RootComplex->DevMapHigh));
     }
   }
 

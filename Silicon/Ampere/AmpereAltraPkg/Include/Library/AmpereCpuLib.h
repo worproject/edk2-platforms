@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -16,11 +16,6 @@
 #define MONOLITIC_NUM_OF_REGION        1
 #define HEMISPHERE_NUM_OF_REGION       2
 #define QUADRANT_NUM_OF_REGION         4
-#define SUBNUMA_CPM_REGION_SIZE        4
-#define NUM_OF_CPM_PER_MESH_ROW        8
-
-#define CPM_PER_ROW_OFFSET(CpmId)      ((CpmId) % NUM_OF_CPM_PER_MESH_ROW)
-#define CPM_ROW_NUMBER(CpmId)          ((CpmId) / NUM_OF_CPM_PER_MESH_ROW)
 
 #define SOCKET_ID(CpuId)               ((CpuId) / (PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM))
 #define CLUSTER_ID(CpuId)              (((CpuId) / PLATFORM_CPU_NUM_CORES_PER_CPM) % PLATFORM_CPU_MAX_CPM)
@@ -63,6 +58,17 @@ UINT8
 EFIAPI
 CpuGetVoltage (
   UINT8 Socket
+  );
+
+/**
+  Get CPU Core order number.
+
+  @return   UINT8      The order number.
+
+**/
+UINT32 *
+CpuGetCoreOrder (
+  VOID
   );
 
 /**
@@ -180,19 +186,6 @@ SetNumberOfConfiguredCPMs (
 UINT16
 EFIAPI
 GetMaximumNumberOfCores (
-  VOID
-  );
-
-/**
-  Get the maximum number of CPM per socket. This number
-  should be the same for all sockets.
-
-  @return   UINT32      Maximum number of CPM.
-
-**/
-UINT16
-EFIAPI
-GetMaximumNumberOfCPMs (
   VOID
   );
 

@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -10,8 +10,10 @@
 
 #include <Guid/PlatformInfoHob.h>
 #include <Guid/RootComplexInfoHob.h>
+#include <IndustryStandard/Pci.h>
 #include <Library/ArmGenericTimerCounterLib.h>
 #include <Library/BaseLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/BoardPcieLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
@@ -21,6 +23,25 @@
 #include <Library/TimerLib.h>
 
 #include "PcieCore.h"
+
+VOID
+EnableDbiAccess (
+  AC01_ROOT_COMPLEX *RootComplex,
+  UINT32            PcieIndex,
+  BOOLEAN           EnableDbi
+  );
+
+BOOLEAN
+EndpointCfgReady (
+  IN AC01_ROOT_COMPLEX  *RootComplex,
+  IN UINT8              PcieIndex,
+  IN UINT32             Timeout
+  );
+
+BOOLEAN
+PcieLinkUpCheck (
+  IN AC01_PCIE_CONTROLLER *Pcie
+  );
 
 /**
   Return the next extended capability base address
@@ -41,14 +62,38 @@ GetCapabilityBase (
 {
   BOOLEAN                IsExtCapability = FALSE;
   PHYSICAL_ADDRESS       CfgBase;
+  PHYSICAL_ADDRESS       Ret = 0;
+  PHYSICAL_ADDRESS       RootComplexCfgBase;
   UINT32                 CapabilityId;
   UINT32                 NextCapabilityPtr;
   UINT32                 Val;
+  UINT32                 RestoreVal;
 
-  if (IsRootComplex) {
-    CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
-  } else {
+  RootComplexCfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
+  if (!IsRootComplex) {
+    // Allow programming to config space
+    EnableDbiAccess (RootComplex, PcieIndex, TRUE);
+
+    Val        = MmioRead32 (RootComplexCfgBase + SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG);
+    RestoreVal = Val;
+    Val        = SUB_BUS_SET (Val, DEFAULT_SUB_BUS);
+    Val        = SEC_BUS_SET (Val, RootComplex->Pcie[PcieIndex].DevNum);
+    Val        = PRIM_BUS_SET (Val, 0x0);
+    MmioWrite32 (RootComplexCfgBase + SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG, Val);
     CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << BUS_SHIFT);
+
+    if (!EndpointCfgReady (RootComplex, PcieIndex, EP_LINKUP_TIMEOUT)) {
+      goto _CheckCapEnd;
+    }
+  } else {
+    CfgBase = RootComplexCfgBase;
+  }
+
+  // Check if device provide capability
+  Val = MmioRead32 (CfgBase + PCI_COMMAND_OFFSET);
+  Val = GET_HIGH_16_BITS (Val); /* Status */
+  if (!(Val & EFI_PCI_STATUS_CAPABILITY)) {
+    goto _CheckCapEnd;
   }
 
   Val = MmioRead32 (CfgBase + TYPE1_CAP_PTR_REG);
@@ -58,7 +103,8 @@ GetCapabilityBase (
   while (1) {
     if ((NextCapabilityPtr & WORD_ALIGN_MASK) != 0) {
       // Not alignment, just return
-      return 0;
+      Ret = 0;
+      goto _CheckCapEnd;
     }
 
     Val = MmioRead32 (CfgBase + NextCapabilityPtr);
@@ -69,7 +115,8 @@ GetCapabilityBase (
     }
 
     if (CapabilityId == ExtCapabilityId) {
-      return (CfgBase + NextCapabilityPtr);
+      Ret = (CfgBase + NextCapabilityPtr);
+      goto _CheckCapEnd;
     }
 
     if (NextCapabilityPtr < EXT_CAPABILITY_START_BASE) {
@@ -84,9 +131,20 @@ GetCapabilityBase (
     }
 
     if ((NextCapabilityPtr == 0) && IsExtCapability) {
-      return 0;
+      Ret = 0;
+      goto _CheckCapEnd;
     }
   }
+
+_CheckCapEnd:
+  if (!IsRootComplex) {
+    MmioWrite32 (RootComplexCfgBase + SEC_LAT_TIMER_SUB_BUS_SEC_BUS_PRI_BUS_REG, RestoreVal);
+
+    // Disable programming to config space
+    EnableDbiAccess (RootComplex, PcieIndex, FALSE);
+  }
+
+  return Ret;
 }
 
 /**
@@ -677,6 +735,14 @@ Ac01PcieCoreSetupRC (
     // Hold link training
     StartLinkTraining (RootComplex, PcieIndex, FALSE);
 
+    // Clear BUSCTRL.CfgUrMask to set CRS (Configuration Request Retry Status) to 0xFFFF.FFFF
+    // rather than 0xFFFF.0001 as per PCIe specification requirement. Otherwise, this causes
+    // device drivers respond incorrectly on timeout due to long device operations.
+    TargetAddress = CsrBase + AC01_PCIE_CORE_BUS_CONTROL_REG;
+    Val           = MmioRead32 (TargetAddress);
+    Val          &= ~BUS_CTL_CFG_UR_MASK;
+    MmioWrite32 (TargetAddress, Val);
+
     if (!EnableAxiPipeClock (RootComplex, PcieIndex)) {
       DEBUG ((DEBUG_ERROR, "- Pcie[%d] - PIPE clock is not stable\n", PcieIndex));
       return RETURN_DEVICE_ERROR;
@@ -1067,21 +1133,20 @@ Ac01PFACommand (
   return Ret;
 }
 
-UINT32
+BOOLEAN
 EndpointCfgReady (
-  IN AC01_ROOT_COMPLEX  *RootComplex,
-  IN UINT8              PcieIndex
+  IN AC01_ROOT_COMPLEX *RootComplex,
+  IN UINT8             PcieIndex,
+  IN UINT32            TimeOut
   )
 {
   PHYSICAL_ADDRESS      CfgBase;
-  UINT32                TimeOut;
   UINT32                Val;
 
   CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << BUS_SHIFT);
 
   // Loop read CfgBase value until got valid value or
-  // reach to timeout EP_LINKUP_TIMEOUT (or more depend on card)
-  TimeOut = EP_LINKUP_TIMEOUT;
+  // reach to Timeout (or more depend on card)
   do {
     Val = MmioRead32 (CfgBase);
     if (Val != 0xFFFF0001 && Val != 0xFFFFFFFF) {
@@ -1112,6 +1177,7 @@ Ac01PcieCoreGetEndpointInfo (
   )
 {
   PHYSICAL_ADDRESS      CfgBase;
+  PHYSICAL_ADDRESS      EpCfgAddr;
   PHYSICAL_ADDRESS      PcieCapBase;
   PHYSICAL_ADDRESS      SecLatTimerAddr;
   PHYSICAL_ADDRESS      TargetAddress;
@@ -1133,8 +1199,23 @@ Ac01PcieCoreGetEndpointInfo (
   Val = SEC_BUS_SET (Val, RootComplex->Pcie[PcieIndex].DevNum);
   Val = PRIM_BUS_SET (Val, DEFAULT_PRIM_BUS);
   MmioWrite32 (SecLatTimerAddr, Val);
+  EpCfgAddr = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << BUS_SHIFT);
 
-  if (EndpointCfgReady (RootComplex, PcieIndex)) {
+  if (!EndpointCfgReady (RootComplex, PcieIndex, EP_LINKUP_EXTRA_TIMEOUT)) {
+    goto Exit;
+  }
+
+  Val = MmioRead32 (EpCfgAddr);
+  // Check whether EP config space is accessible or not
+  if (Val == 0xFFFFFFFF) {
+    *EpMaxWidth = 0;   // Invalid Width
+    *EpMaxGen   = 0;   // Invalid Speed
+    DEBUG ((DEBUG_ERROR, "PCIE%d.%d Cannot access EP config space!\n", RootComplex->ID, PcieIndex));
+  } else if (Val == 0xFFFF0001) {
+    *EpMaxWidth = 0;   // Invalid Width
+    *EpMaxGen   = 0;   // Invalid Speed
+    DEBUG ((DEBUG_ERROR, "PCIE%d.%d EP config space still not ready to access, need poll more time!!!\n", RootComplex->ID, PcieIndex));
+  } else {
     PcieCapBase = GetCapabilityBase (RootComplex, PcieIndex, FALSE, PCIE_CAPABILITY_ID);
     if (PcieCapBase == 0) {
       DEBUG ((
@@ -1164,6 +1245,7 @@ Ac01PcieCoreGetEndpointInfo (
     }
   }
 
+Exit:
   // Restore value in order to not affect enumeration process
   MmioWrite32 (SecLatTimerAddr, RestoreVal);
 
@@ -1280,6 +1362,30 @@ Ac01PcieCoreQoSLinkCheckRecovery (
   return LINK_CHECK_SUCCESS;
 }
 
+BOOLEAN
+Ac01PcieCoreCheckCardPresent (
+  IN AC01_PCIE_CONTROLLER *PcieController
+  )
+{
+  EFI_PHYSICAL_ADDRESS  TargetAddress;
+  UINT32                ControlValue;
+
+  ControlValue = 0;
+
+  TargetAddress = PcieController->CsrBase;
+
+  ControlValue = MmioRead32 (TargetAddress + AC01_PCIE_CORE_LINK_CTRL_REG);
+
+  if (0 == LTSSMENB_GET (ControlValue)) {
+    //
+    // LTSSMENB is clear to 0x00 by Hardware -> link partner is connected.
+    //
+    return TRUE;
+  }
+
+  return FALSE;
+}
+
 VOID
 Ac01PcieCoreUpdateLink (
   IN  AC01_ROOT_COMPLEX *RootComplex,
@@ -1314,30 +1420,16 @@ Ac01PcieCoreUpdateLink (
         Pcie->LinkUp = TRUE;
         Val = MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
 
-        DEBUG ((
-          DEBUG_INFO,
-          "%a Socket%d RootComplex%d RP%d NEGO_LINK_WIDTH: 0x%x LINK_SPEED: 0x%x\n",
-          __FUNCTION__,
-          RootComplex->Socket,
-          RootComplex->ID,
-          PcieIndex,
-          CAP_NEGO_LINK_WIDTH_GET (Val),
-          CAP_LINK_SPEED_GET (Val)
-          ));
-
         // Doing link checking and recovery if needed
         Ac01PcieCoreQoSLinkCheckRecovery (RootComplex, PcieIndex);
-
-        // Link timeout after 32ms
-        SetLinkTimeout (RootComplex, PcieIndex, 32);
 
         // Un-mask Completion Timeout
         DisableCompletionTimeOut (RootComplex, PcieIndex, FALSE);
 
       } else {
-        *IsNextRoundNeeded = FALSE;
         FailedPciePtr[*FailedPcieCount] = PcieIndex;
         *FailedPcieCount += 1;
+        *IsNextRoundNeeded = !(*IsNextRoundNeeded) ? Ac01PcieCoreCheckCardPresent (Pcie) : TRUE;
       }
     }
   }

@@ -29,7 +29,7 @@
   As each non-volatile parameter requires 8 bytes, there is a total of 8K
   parameters.
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -523,7 +523,39 @@
 #define NV_SI_RO_BOARD_RAS_DDR_CE_TH1                     ((205 * 8) + NV_BOARD_PARAM_START) /* Default: 0x000001F4 */
 #define NV_SI_RO_BOARD_RAS_DDR_CE_TH2                     ((206 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00001388 */
 #define NV_SI_RO_BOARD_RAS_DDR_CE_THC                     ((207 * 8) + NV_BOARD_PARAM_START) /* Default: 0x00000000 */
-#define NV_PMPRO_REGION4_LOAD_END                         (NV_SI_RO_BOARD_RAS_DDR_CE_THC)
+#define NV_SI_RO_BOARD_MQ_SX_RCA0_TXRX_20GPRESET          ((208 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_MQ_SX_RCA1_TXRX_20GPRESET          ((209 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_MQ_SX_RCA0_TXRX_25GPRESET          ((210 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_MQ_SX_RCA1_TXRX_25GPRESET          ((211 * 8) + NV_BOARD_PARAM_START)
+#define NV_SI_RO_BOARD_MQ_S0_RCA0_TXRX_G3PRESET           ((212 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA1_TXRX_G3PRESET           ((213 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA2_TXRX_G3PRESET           ((214 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA3_TXRX_G3PRESET           ((215 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA4_TXRX_G3PRESET           ((216 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA5_TXRX_G3PRESET           ((217 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA6_TXRX_G3PRESET           ((218 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA7_TXRX_G3PRESET           ((219 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA2_TXRX_G3PRESET           ((220 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA3_TXRX_G3PRESET           ((221 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA4_TXRX_G3PRESET           ((222 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA5_TXRX_G3PRESET           ((223 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA6_TXRX_G3PRESET           ((224 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S1_RCA7_TXRX_G3PRESET           ((225 * 8) + NV_BOARD_PARAM_START) /* Default: 0xFFFFFFFF */
+#define NV_SI_RO_BOARD_MQ_S0_RCA0_TXRX_G4PRESET           ((226 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA1_TXRX_G4PRESET           ((227 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA2_TXRX_G4PRESET           ((228 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA3_TXRX_G4PRESET           ((229 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA4_TXRX_G4PRESET           ((230 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA5_TXRX_G4PRESET           ((231 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA6_TXRX_G4PRESET           ((232 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S0_RCA7_TXRX_G4PRESET           ((233 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA2_TXRX_G4PRESET           ((234 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA3_TXRX_G4PRESET           ((235 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA4_TXRX_G4PRESET           ((236 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA5_TXRX_G4PRESET           ((237 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA6_TXRX_G4PRESET           ((238 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_SI_RO_BOARD_MQ_S1_RCA7_TXRX_G4PRESET           ((239 * 8) + NV_BOARD_PARAM_START) /* Default: 0x57575757 */
+#define NV_PMPRO_REGION4_LOAD_END                         (NV_SI_RO_BOARD_MQ_S1_RCA7_TXRX_G4PRESET)
 //
 // NOTE: Add before NV_BOARD_PARAM_MAX and increase its value
 //

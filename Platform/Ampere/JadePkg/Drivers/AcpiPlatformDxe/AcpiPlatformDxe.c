@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -16,6 +16,8 @@ STATIC EFI_EVENT mAcpiRegistration = NULL;
  */
 STATIC CONST EFI_GUID mAcpiCommonTableFile = { 0xCEFA2AEB, 0x357E, 0x4F48, { 0x80, 0x66, 0xEA, 0x95, 0x08, 0x53, 0x05, 0x6E } } ;
 STATIC CONST EFI_GUID mJadeAcpiTableFile = { 0x5addbc13, 0x8634, 0x480c, { 0x9b, 0x94, 0x67, 0x1b, 0x78, 0x55, 0xcd, 0xb8 } };
+STATIC CONST EFI_GUID mJadeAcpiTableAc02File = { 0x5CA064B6 , 0x5AA4, 0x4E29, { 0xAB, 0xDC, 0x8B, 0xF3, 0xB3, 0x4D, 0xBF, 0x9E } };
+
 /**
  * Callback called when ACPI Protocol is installed
  */
@@ -31,7 +33,11 @@ AcpiNotificationEvent (
   Status = LocateAndInstallAcpiFromFv (&mAcpiCommonTableFile);
   ASSERT_EFI_ERROR (Status);
 
-  Status = LocateAndInstallAcpiFromFv (&mJadeAcpiTableFile);
+  if (IsAc01Processor ()) {
+    Status = LocateAndInstallAcpiFromFv (&mJadeAcpiTableFile);
+  } else {
+    Status = LocateAndInstallAcpiFromFv (&mJadeAcpiTableAc02File);
+  }
   ASSERT_EFI_ERROR (Status);
 
   //

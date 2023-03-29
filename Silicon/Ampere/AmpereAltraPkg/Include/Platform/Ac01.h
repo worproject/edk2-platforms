@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -28,6 +28,9 @@
 // Maximum number of cores supported.
 //
 #define PLATFORM_CPU_MAX_NUM_CORES        (PLATFORM_CPU_MAX_SOCKET * PLATFORM_CPU_MAX_CPM * PLATFORM_CPU_NUM_CORES_PER_CPM)
+
+#define MAX_AMPERE_ALTRA_CORES            80
+#define MAX_AMPERE_ALTRA_MAX_CORES        128
 
 //
 // Maximum number of memory region

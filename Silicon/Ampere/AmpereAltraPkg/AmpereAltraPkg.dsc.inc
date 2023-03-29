@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -410,8 +410,8 @@
   #
   # Ampere Altra Core-Cluster profile
   #
-  gArmPlatformTokenSpaceGuid.PcdCoreCount|80
-  gArmPlatformTokenSpaceGuid.PcdClusterCount|40
+  gArmPlatformTokenSpaceGuid.PcdCoreCount|128
+  gArmPlatformTokenSpaceGuid.PcdClusterCount|64
 
   #
   # PL011 - Serial Terminal

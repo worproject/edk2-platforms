@@ -62,7 +62,7 @@ KcsTransportInit (
   }
 
   if (HardwareInfo.Kcs == NULL) {
-    DEBUG ((DEBUG_INFO, "%a: Hardware information is not provided, use dfault settings.\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Hardware information is not provided, use dfault settings.\n", __FUNCTION__));
     mKcsHardwareInfo.MemoryMap                    = MANAGEABILITY_TRANSPORT_KCS_IO_MAP_IO;
     mKcsHardwareInfo.IoBaseAddress.IoAddress16    = PcdGet16 (PcdIpmiKcsIoBaseAddress);
     mKcsHardwareInfo.IoDataInAddress.IoAddress16  = mKcsHardwareInfo.IoBaseAddress.IoAddress16 + IPMI_KCS_DATA_IN_REGISTER_OFFSET;
@@ -81,21 +81,21 @@ KcsTransportInit (
   // Get protocol specification name.
   ManageabilityProtocolName = HelperManageabilitySpecName (TransportToken->ManageabilityProtocolSpecification);
 
-  DEBUG ((DEBUG_INFO, "%a: KCS transport hardware for %s is:\n", __FUNCTION__, ManageabilityProtocolName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: KCS transport hardware for %s is:\n", __FUNCTION__, ManageabilityProtocolName));
   if (mKcsHardwareInfo.MemoryMap) {
-    DEBUG ((DEBUG_INFO, "Memory Map I/O\n", __FUNCTION__));
-    DEBUG ((DEBUG_INFO, "Base Memory Address : 0x%08x\n", mKcsHardwareInfo.IoBaseAddress.IoAddress32));
-    DEBUG ((DEBUG_INFO, "Data in Address     : 0x%08x\n", mKcsHardwareInfo.IoDataInAddress.IoAddress32));
-    DEBUG ((DEBUG_INFO, "Data out Address    : 0x%08x\n", mKcsHardwareInfo.IoDataOutAddress.IoAddress32));
-    DEBUG ((DEBUG_INFO, "Command Address     : 0x%08x\n", mKcsHardwareInfo.IoCommandAddress.IoAddress32));
-    DEBUG ((DEBUG_INFO, "Status Address      : 0x%08x\n", mKcsHardwareInfo.IoStatusAddress.IoAddress32));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Memory Map I/O\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Base Memory Address : 0x%08x\n", mKcsHardwareInfo.IoBaseAddress.IoAddress32));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data in Address     : 0x%08x\n", mKcsHardwareInfo.IoDataInAddress.IoAddress32));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data out Address    : 0x%08x\n", mKcsHardwareInfo.IoDataOutAddress.IoAddress32));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Command Address     : 0x%08x\n", mKcsHardwareInfo.IoCommandAddress.IoAddress32));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Status Address      : 0x%08x\n", mKcsHardwareInfo.IoStatusAddress.IoAddress32));
   } else {
-    DEBUG ((DEBUG_INFO, "I/O Map I/O\n"));
-    DEBUG ((DEBUG_INFO, "Base I/O port    : 0x%04x\n", mKcsHardwareInfo.IoBaseAddress.IoAddress16));
-    DEBUG ((DEBUG_INFO, "Data in I/O port : 0x%04x\n", mKcsHardwareInfo.IoDataInAddress.IoAddress16));
-    DEBUG ((DEBUG_INFO, "Data out I/O port: 0x%04x\n", mKcsHardwareInfo.IoDataOutAddress.IoAddress16));
-    DEBUG ((DEBUG_INFO, "Command I/O port : 0x%04x\n", mKcsHardwareInfo.IoCommandAddress.IoAddress16));
-    DEBUG ((DEBUG_INFO, "Status I/O port  : 0x%04x\n", mKcsHardwareInfo.IoStatusAddress.IoAddress16));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "I/O Map I/O\n"));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Base I/O port    : 0x%04x\n", mKcsHardwareInfo.IoBaseAddress.IoAddress16));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data in I/O port : 0x%04x\n", mKcsHardwareInfo.IoDataInAddress.IoAddress16));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Data out I/O port: 0x%04x\n", mKcsHardwareInfo.IoDataOutAddress.IoAddress16));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Command I/O port : 0x%04x\n", mKcsHardwareInfo.IoCommandAddress.IoAddress16));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "Status I/O port  : 0x%04x\n", mKcsHardwareInfo.IoStatusAddress.IoAddress16));
   }
 
   return EFI_SUCCESS;
@@ -221,7 +221,7 @@ KcsTransportTransmitReceive (
   EFI_STATUS                           Status;
   MANAGEABILITY_IPMI_TRANSPORT_HEADER  *TransmitHeader;
 
-  if (TransportToken == NULL || TransferToken == NULL) {
+  if ((TransportToken == NULL) || (TransferToken == NULL)) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid transport token or transfer token.\n", __FUNCTION__));
     return;
   }
@@ -298,6 +298,7 @@ AcquireTransportSession (
     DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_KCS\n", __FUNCTION__));
     return EFI_OUT_OF_RESOURCES;
   }
+
   KcsTransportToken->Token.Transport = AllocateZeroPool (sizeof (MANAGEABILITY_TRANSPORT));
   if (KcsTransportToken->Token.Transport == NULL) {
     FreePool (KcsTransportToken);
@@ -329,21 +330,29 @@ AcquireTransportSession (
 }
 
 /**
-  This function returns the transport capabilities.
+  This function returns the transport capabilities according to
+  the manageability protocol.
 
-  @param [out]  TransportFeature        Pointer to receive transport capabilities.
-                                        See the definitions of
-                                        MANAGEABILITY_TRANSPORT_CAPABILITY.
-
+  @param [in]   TransportToken             Transport token acquired from manageability
+                                           transport library.
+  @param [out]  TransportFeature           Pointer to receive transport capabilities.
+                                           See the definitions of
+                                           MANAGEABILITY_TRANSPORT_CAPABILITY.
+  @retval       EFI_SUCCESS                TransportCapability is returned successfully.
+  @retval       EFI_INVALID_PARAMETER      TransportToken is not a valid token.
 **/
-VOID
+EFI_STATUS
 GetTransportCapability (
+  IN MANAGEABILITY_TRANSPORT_TOKEN        *TransportToken,
   OUT MANAGEABILITY_TRANSPORT_CAPABILITY  *TransportCapability
   )
 {
-  if (TransportCapability != NULL) {
-    *TransportCapability = 0;
+  if ((TransportToken == NULL) || (TransportCapability == NULL)) {
+    return EFI_INVALID_PARAMETER;
   }
+
+  *TransportCapability = 0;
+  return EFI_SUCCESS;
 }
 
 /**

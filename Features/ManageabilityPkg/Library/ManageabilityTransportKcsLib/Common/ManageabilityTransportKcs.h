@@ -32,6 +32,8 @@ typedef struct {
 #define IPMI_KCS_GET_STATE(s)  (s >> 6)
 #define IPMI_KCS_SET_STATE(s)  (s << 6)
 
+#define MCTP_KCS_MTU_IN_POWER_OF_2  8
+
 /// 5 sec, according to IPMI spec
 #define IPMI_KCS_TIMEOUT_5_SEC  5000*1000
 #define IPMI_KCS_TIMEOUT_1MS    1000

@@ -31,19 +31,25 @@ AcquireTransportSession (
 }
 
 /**
-  This function returns the transport capabilities.
+  This function returns the transport capabilities according to
+  the manageability protocol.
 
-  @param [out]  TransportFeature        Pointer to receive transport capabilities.
-                                        See the definitions of
-                                        MANAGEABILITY_TRANSPORT_CAPABILITY.
-
+  @param [in]   TransportToken             Transport token acquired from manageability
+                                           transport library.
+  @param [out]  TransportFeature           Pointer to receive transport capabilities.
+                                           See the definitions of
+                                           MANAGEABILITY_TRANSPORT_CAPABILITY.
+  @retval       EFI_SUCCESS                TransportCapability is returned successfully.
+  @retval       EFI_INVALID_PARAMETER      TransportToken is not a valid token.
 **/
-VOID
+EFI_STATUS
 GetTransportCapability (
+  IN MANAGEABILITY_TRANSPORT_TOKEN        *TransportToken,
   OUT MANAGEABILITY_TRANSPORT_CAPABILITY  *TransportCapability
   )
 {
   *TransportCapability = 0;
+  return EFI_SUCCESS;
 }
 
 /**

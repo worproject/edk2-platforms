@@ -51,19 +51,19 @@ PeiIpmiSubmitCommand (
   IN OUT UINT32        *ResponseDataSize
   )
 {
-  EFI_STATUS            Status;
-  PEI_IPMI_PPI_INTERNAL *PeiIpmiPpiinternal;
+  EFI_STATUS             Status;
+  PEI_IPMI_PPI_INTERNAL  *PeiIpmiPpiinternal;
 
-  PeiIpmiPpiinternal = MANAGEABILITY_IPMI_PPI_INTERNAL_FROM_LINK(This);
-  Status = CommonIpmiSubmitCommand (
-             PeiIpmiPpiinternal->TransportToken,
-             NetFunction,
-             Command,
-             RequestData,
-             RequestDataSize,
-             ResponseData,
-             ResponseDataSize
-             );
+  PeiIpmiPpiinternal = MANAGEABILITY_IPMI_PPI_INTERNAL_FROM_LINK (This);
+  Status             = CommonIpmiSubmitCommand (
+                         PeiIpmiPpiinternal->TransportToken,
+                         NetFunction,
+                         Command,
+                         RequestData,
+                         RequestDataSize,
+                         ResponseData,
+                         ResponseDataSize
+                         );
   return Status;
 }
 
@@ -87,29 +87,28 @@ PeiIpmiEntry (
   CHAR16                                        *TransportName;
   PEI_IPMI_PPI_INTERNAL                         *PeiIpmiPpiinternal;
   EFI_PEI_PPI_DESCRIPTOR                        *PpiDescriptor;
-  MANAGEABILITY_TRANSPORT_CAPABILITY            TransportCapability;
   MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS     TransportAdditionalStatus;
   MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION  HardwareInformation;
 
-  PeiIpmiPpiinternal = (PEI_IPMI_PPI_INTERNAL *)AllocateZeroPool (sizeof(PEI_IPMI_PPI_INTERNAL));
+  PeiIpmiPpiinternal = (PEI_IPMI_PPI_INTERNAL *)AllocateZeroPool (sizeof (PEI_IPMI_PPI_INTERNAL));
   if (PeiIpmiPpiinternal == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Not enough memory for PEI_IPMI_PPI_INTERNAL.\n", __FUNCTION__));
     return EFI_OUT_OF_RESOURCES;
   }
-  PpiDescriptor = (EFI_PEI_PPI_DESCRIPTOR *)AllocateZeroPool (sizeof(EFI_PEI_PPI_DESCRIPTOR));
+
+  PpiDescriptor = (EFI_PEI_PPI_DESCRIPTOR *)AllocateZeroPool (sizeof (EFI_PEI_PPI_DESCRIPTOR));
   if (PpiDescriptor == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Not enough memory for EFI_PEI_PPI_DESCRIPTOR.\n", __FUNCTION__));
     return EFI_OUT_OF_RESOURCES;
   }
 
-  PeiIpmiPpiinternal->Signature = MANAGEABILITY_IPMI_PPI_INTERNAL_SIGNATURE;
+  PeiIpmiPpiinternal->Signature                    = MANAGEABILITY_IPMI_PPI_INTERNAL_SIGNATURE;
   PeiIpmiPpiinternal->PeiIpmiPpi.IpmiSubmitCommand = PeiIpmiSubmitCommand;
 
   PpiDescriptor->Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
   PpiDescriptor->Guid  = &gPeiIpmiPpiGuid;
   PpiDescriptor->Ppi   = &PeiIpmiPpiinternal->PeiIpmiPpi;
 
-  GetTransportCapability (&TransportCapability);
   Status = HelperAcquireManageabilityTransport (
              &gManageabilityProtocolIpmiGuid,
              &PeiIpmiPpiinternal->TransportToken
@@ -119,8 +118,22 @@ PeiIpmiEntry (
     return Status;
   }
 
+  Status = GetTransportCapability (PeiIpmiPpiinternal->TransportToken, &PeiIpmiPpiinternal->TransportCapability);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __FUNCTION__));
+    return Status;
+  }
+
+  PeiIpmiPpiinternal->TransportMaximumPayload = MANAGEABILITY_TRANSPORT_PAYLOAD_SIZE_FROM_CAPABILITY (PeiIpmiPpiinternal->TransportCapability);
+  if (PeiIpmiPpiinternal->TransportMaximumPayload  == (1 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE)) {
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __FUNCTION__));
+  } else {
+    PeiIpmiPpiinternal->TransportMaximumPayload -= 1;
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for IPMI protocol has maximum payload 0x%x.\n", __FUNCTION__, PeiIpmiPpiinternal->TransportMaximumPayload));
+  }
+
   TransportName = HelperManageabilitySpecName (PeiIpmiPpiinternal->TransportToken->Transport->ManageabilityTransportSpecification);
-  DEBUG ((DEBUG_INFO, "%a: IPMI protocol over %s.\n", __FUNCTION__, TransportName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: IPMI protocol over %s.\n", __FUNCTION__, TransportName));
 
   //
   // Setup hardware information according to the transport interface.

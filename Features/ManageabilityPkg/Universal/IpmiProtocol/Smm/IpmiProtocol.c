@@ -18,9 +18,9 @@
 
 #include "IpmiProtocolCommon.h"
 
-MANAGEABILITY_TRANSPORT_TOKEN  *mTransportToken = NULL;
-CHAR16                         *mTransportName;
-
+MANAGEABILITY_TRANSPORT_TOKEN                 *mTransportToken = NULL;
+CHAR16                                        *mTransportName;
+UINT32                                        TransportMaximumPayload;
 MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION  mHardwareInformation;
 
 /**
@@ -93,8 +93,6 @@ SmmIpmiEntry (
   MANAGEABILITY_TRANSPORT_CAPABILITY         TransportCapability;
   MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  TransportAdditionalStatus;
 
-  GetTransportCapability (&TransportCapability);
-
   Status = HelperAcquireManageabilityTransport (
              &gManageabilityProtocolIpmiGuid,
              &mTransportToken
@@ -104,8 +102,22 @@ SmmIpmiEntry (
     return Status;
   }
 
+  Status = GetTransportCapability (mTransportToken, &TransportCapability);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __FUNCTION__));
+    return Status;
+  }
+
+  TransportMaximumPayload = MANAGEABILITY_TRANSPORT_PAYLOAD_SIZE_FROM_CAPABILITY (TransportCapability);
+  if (TransportMaximumPayload == (1 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE)) {
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __FUNCTION__));
+  } else {
+    TransportMaximumPayload -= 1;
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for IPMI protocol has maximum payload 0x%x.\n", __FUNCTION__, TransportMaximumPayload));
+  }
+
   mTransportName = HelperManageabilitySpecName (mTransportToken->Transport->ManageabilityTransportSpecification);
-  DEBUG ((DEBUG_INFO, "%a: IPMI protocol over %s.\n", __FUNCTION__, mTransportName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: IPMI protocol over %s.\n", __FUNCTION__, mTransportName));
 
   //
   // Setup hardware information according to the transport interface.

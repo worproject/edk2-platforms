@@ -17,9 +17,11 @@
 #define MANAGEABILITY_IPMI_PPI_INTERNAL_FROM_LINK(a)  CR (a, PEI_IPMI_PPI_INTERNAL, PeiIpmiPpi, MANAGEABILITY_IPMI_PPI_INTERNAL_SIGNATURE)
 
 typedef struct {
-  UINT32                         Signature;
-  MANAGEABILITY_TRANSPORT_TOKEN  *TransportToken;
-  PEI_IPMI_PPI                   PeiIpmiPpi;
+  UINT32                                Signature;
+  MANAGEABILITY_TRANSPORT_TOKEN         *TransportToken;
+  MANAGEABILITY_TRANSPORT_CAPABILITY    TransportCapability;
+  UINT32                                TransportMaximumPayload;
+  PEI_IPMI_PPI                          PeiIpmiPpi;
 } PEI_IPMI_PPI_INTERNAL;
 
 #endif // MANAGEABILITY_IPMI_PPI_INTERNAL_H_

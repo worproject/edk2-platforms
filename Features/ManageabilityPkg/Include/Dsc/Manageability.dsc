@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
+[LibraryClasses]
+  ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
 
 [LibraryClasses.ARM, LibraryClasses.AARCH64]
   #

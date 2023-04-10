@@ -2,6 +2,7 @@
 # SPCR is abbreviation of Serial Port Console Redirection Table (SPCR).
 #
 # Copyright (c) 2008 - 2020, Intel Corporation. All rights reserved.<BR>
+#  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
@@ -26,6 +27,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   SpcrFeaturePkg/SpcrFeaturePkg.dec
 
 [Sources]
@@ -37,6 +39,17 @@
   gEfiSioProtocolGuid                           ## SOMETIMES_CONSUMES
   gEfiSerialIoProtocolGuid                      ## SOMETIMES_CONSUMES
   gEfiPciIoProtocolGuid                         ## SOMETIMES_CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultCreatorRevision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemRevision
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterAccessWidth
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseMmio
 
 [Depex]
   TRUE

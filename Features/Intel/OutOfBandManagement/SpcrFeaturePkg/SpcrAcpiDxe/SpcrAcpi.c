@@ -3,6 +3,7 @@
   SPCR is abbreviation of Serial Port Console Redirection Table (SPCR).
 
   Copyright (c) 2004 - 2020, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -368,6 +369,7 @@ OutOfBandACPITableConstruction (
   UINT32                   FlowControl;
   VENDOR_DEVICE_PATH       *Vendor;
   UINT8                    Index;
+  UINT64                   AcpiTableOemId;
 
   Handle          = NULL;
 
@@ -455,6 +457,30 @@ OutOfBandACPITableConstruction (
   if (EFI_ERROR (Status)) {
     goto out;
   }
+
+  // Base register details
+  gSpcrInfo.BaseAddress.Address = PcdGet64 (PcdSerialRegisterBase);
+  gSpcrInfo.BaseAddress.RegisterBitWidth = PcdGet8 (PcdSerialRegisterAccessWidth);
+  gSpcrInfo.BaseAddress.AccessSize = (UINT8)PcdGet32 (PcdSerialRegisterStride);
+  if (PcdGetBool (PcdSerialUseMmio)) {
+    gSpcrInfo.BaseAddress.AddressSpaceId = EFI_ACPI_3_0_SYSTEM_MEMORY;
+  }
+
+  // OEM info
+  CopyMem (
+    (VOID *) &gSpcrInfo.Header.OemId,
+    PcdGetPtr (PcdAcpiDefaultOemId),
+    sizeof (gSpcrInfo.Header.OemId)
+    );
+  AcpiTableOemId = PcdGet64 (PcdAcpiDefaultOemTableId);
+  CopyMem (
+    (VOID *) &gSpcrInfo.Header.OemTableId,
+    (VOID *) &AcpiTableOemId,
+    sizeof (gSpcrInfo.Header.OemTableId)
+    );
+  gSpcrInfo.Header.OemRevision     = PcdGet32 (PcdAcpiDefaultOemRevision);
+  gSpcrInfo.Header.CreatorId       = PcdGet32 (PcdAcpiDefaultCreatorId);
+  gSpcrInfo.Header.CreatorRevision = PcdGet32 (PcdAcpiDefaultCreatorRevision);
 
   //
   // Add table

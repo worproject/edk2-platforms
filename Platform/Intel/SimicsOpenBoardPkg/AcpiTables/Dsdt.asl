@@ -1,7 +1,7 @@
 /** @file
   Contains root level name space objects for the platform
 
-  Copyright (c) 2019 Intel Corporation. All rights reserved. <BR>
+  Copyright (c) 2019 - 2023 Intel Corporation. All rights reserved. <BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -372,7 +372,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 1, "INTEL ", "SIMICS  ", 4) {
 
             Package () {0x000EFFFF, 0x00, 0, 16},
             Package () {0x000EFFFF, 0x01, 0, 17},
-            Package () {0x000EFFFF, 0x02, 0C, 18},
+            Package () {0x000EFFFF, 0x02, 0, 18},
             Package () {0x000EFFFF, 0x03, 0, 19},
 
             Package () {0x000FFFFF, 0x00, 0, 16},

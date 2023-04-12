@@ -202,7 +202,6 @@ INF  UefiCpuPkg/CpuDxe/CpuDxe.inf
 INF  MdeModulePkg/Universal/Acpi/S3SaveStateDxe/S3SaveStateDxe.inf
 INF  MdeModulePkg/Universal/Acpi/BootScriptExecutorDxe/BootScriptExecutorDxe.inf
 INF  UefiCpuPkg/CpuS3DataDxe/CpuS3DataDxe.inf
-INF  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
 INF  MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 INF  MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
 INF  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf

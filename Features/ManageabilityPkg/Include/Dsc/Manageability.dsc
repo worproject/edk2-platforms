@@ -15,11 +15,18 @@
   NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
   NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
   ArmSoftFloatLib|ArmPkg/Library/ArmSoftFloatLib/ArmSoftFloatLib.inf
+  ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
+  BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
 
-[Components.IA32]
+[LibraryClasses.AARCH64.PEIM]
+  PeiServicesTablePointerLib|ArmPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
+
+[Components.IA32, Components.AARCH64]
   ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
 
-[Components.X64]
+[Components.X64, Components.AARCH64]
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+
+[Components.X64]
   ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
 

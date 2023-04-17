@@ -15,13 +15,13 @@
 // Make sure the global variables added here should be unchangable.
 //
 MANAGEABILITY_SPECIFICATION_NAME  ManageabilitySpecNameTable[] = {
-  { &gManageabilityTransportKcsGuid,    L"KCS"     },
-  { &gManageabilityTransportI2CGuid,    L"I2C"     },
-  { &gManageabilityTransportPciVdmGuid, L"PCI VDM" },
-  { &gManageabilityTransportMctpGuid,   L"MCTP"    },
-  { &gManageabilityProtocolIpmiGuid,    L"IPMI"    },
-  { &gManageabilityProtocolMctpGuid,    L"MCTP"    },
-  { &gManageabilityProtocolPldmGuid,    L"PLDM"    }
+  { &gManageabilityTransportKcsGuid,         L"KCS"      },
+  { &gManageabilityTransportSmbusI2cGuid,    L"SMBUS I2C"},
+  { &gManageabilityTransportPciVdmGuid,      L"PCI VDM"  },
+  { &gManageabilityTransportMctpGuid,        L"MCTP"     },
+  { &gManageabilityProtocolIpmiGuid,         L"IPMI"     },
+  { &gManageabilityProtocolMctpGuid,         L"MCTP"     },
+  { &gManageabilityProtocolPldmGuid,         L"PLDM"     }
 };
 
 UINT16  mManageabilitySpecNum = sizeof (ManageabilitySpecNameTable)/ sizeof (MANAGEABILITY_SPECIFICATION_NAME);

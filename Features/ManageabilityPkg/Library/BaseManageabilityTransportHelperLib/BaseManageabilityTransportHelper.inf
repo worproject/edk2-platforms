@@ -32,7 +32,7 @@
 
 [Guids]
   gManageabilityTransportKcsGuid
-  gManageabilityTransportI2CGuid
+  gManageabilityTransportSmbusI2cGuid
   gManageabilityTransportPciVdmGuid
   gManageabilityTransportMctpGuid
   gManageabilityProtocolIpmiGuid

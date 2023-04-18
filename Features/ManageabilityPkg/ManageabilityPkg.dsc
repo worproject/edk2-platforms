@@ -53,4 +53,4 @@
 [LibraryClasses]
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
 
-!include Include/Dsc/Manageability.dsc
+!include Include/Manageability.dsc

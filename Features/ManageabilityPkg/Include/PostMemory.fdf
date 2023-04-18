@@ -1,0 +1,28 @@
+## @file
+# Manageabilty Package post memory initialization firmware
+# volume description.
+#
+# Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable == TRUE
+  INF ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilitySmmIpmiEnable == TRUE
+  INF ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmEnable == TRUE
+  INF ManageabilityPkg/Universal/PldmProtocol/Dxe/PldmProtocolDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable == TRUE
+  INF ManageabilityPkg/Universal/PldmSmbiosTransferDxe/PldmSmbiosTransferDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable == TRUE
+  INF ManageabilityPkg/Universal/MctpProtocol/Dxe/MctpProtocolDxe.inf
+!endif

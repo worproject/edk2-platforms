@@ -10,6 +10,7 @@
 #include <Uefi.h>
 #include <IndustryStandard/IpmiKcs.h>
 #include <Library/IoLib.h>
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/ManageabilityTransportLib.h>
@@ -225,13 +226,6 @@ KcsTransportTransmitReceive (
     return;
   }
 
-  // Transmit header is necessary for KCS transport, which could be
-  // NetFn, Command and etc.
-  if (TransferToken->TransmitHeader == NULL) {
-    TransferToken->TransferStatus = EFI_INVALID_PARAMETER;
-    return;
-  }
-
   Status = KcsTransportSendCommand (
              TransferToken->TransmitHeader,
              TransferToken->TransmitHeaderSize,
@@ -354,6 +348,22 @@ GetTransportCapability (
   }
 
   *TransportCapability = 0;
+  if (CompareGuid (
+        TransportToken->ManageabilityProtocolSpecification,
+        &gManageabilityProtocolIpmiGuid
+        ))
+  {
+    *TransportCapability |=
+      (MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_BIT_POSITION);
+  } else if (CompareGuid (
+               TransportToken->ManageabilityProtocolSpecification,
+               &gManageabilityProtocolMctpGuid
+               ))
+  {
+    *TransportCapability |=
+      (MCTP_KCS_MTU_IN_POWER_OF_2 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_BIT_POSITION);
+  }
+
   return EFI_SUCCESS;
 }
 

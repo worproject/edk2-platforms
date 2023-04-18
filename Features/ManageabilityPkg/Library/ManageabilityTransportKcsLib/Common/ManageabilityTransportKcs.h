@@ -71,7 +71,7 @@ typedef struct {
 EFI_STATUS
 EFIAPI
 KcsTransportSendCommand (
-  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader,
+  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader OPTIONAL,
   IN  UINT16                           TransmitHeaderSize,
   IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
   IN  UINT16                           TransmitTrailerSize,

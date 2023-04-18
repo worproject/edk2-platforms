@@ -32,4 +32,5 @@
 
 [Components.X64]
   ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
+  ManageabilityPkg/Universal/PldmSmbiosTransferDxe/PldmSmbiosTransferDxe.inf
 

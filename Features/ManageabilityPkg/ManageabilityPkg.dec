@@ -45,6 +45,7 @@
   # Manageability Protocol IPMI
   gManageabilityProtocolIpmiGuid    = { 0x36ACA47C, 0xCC80, 0x473B, { 0xAB, 0xEC, 0xF3, 0x98, 0xFF, 0x87, 0x74, 0x5B } }
   # Manageability Protocol MCTP
+  #  MCTP is a transport interface but also a protocol that can be trasmitted over other transport interfaces.
   gManageabilityProtocolMctpGuid    = { 0x76FED8F1, 0x0BE5, 0x4269, { 0xA3, 0x1A, 0x38, 0x0F, 0x54, 0xF1, 0xA1, 0x8A } }
   # Manageability Protocol PLDM
   gManageabilityProtocolPldmGuid    = { 0x3958090D, 0x69DD, 0x4868, { 0x9C, 0x41, 0xC9, 0xAC, 0x31, 0xB5, 0x25, 0xC5 } }
@@ -52,3 +53,18 @@
 [Protocols]
   gEdkiiPldmProtocolGuid                = { 0x60997616, 0xDB70, 0x4B5F, { 0x86, 0xA4, 0x09, 0x58, 0xA3, 0x71, 0x47, 0xB4 } }
   gEdkiiPldmSmbiosTransferProtocolGuid  = { 0xFA431C3C, 0x816B, 0x4B32, { 0xA3, 0xE0, 0xAD, 0x9B, 0x7F, 0x64, 0x27, 0x2E } }
+  gEdkiiMctpProtocolGuid                = { 0xE93465C1, 0x9A31, 0x4C96, { 0x92, 0x56, 0x22, 0x0A, 0xE1, 0x80, 0xB4, 0x1B } }
+
+[PcdsFixedAtBuild]
+  ## This value is the MCTP Interface source and destination endpoint ID for transmiting MCTP message.
+  # @Prompt MCTP source endpoint ID
+  gManageabilityPkgTokenSpaceGuid.PcdMctpSourceEndpointId|0|UINT8|0x00000001
+  # @Prompt MCTP destination endpoint ID
+  gManageabilityPkgTokenSpaceGuid.PcdMctpDestinationEndpointId|0|UINT8|0x00000002
+  ## This is the value of MCTP KCS I/O base address mode
+  # @Prompt MCTP KCS I/O base address mode
+  gManageabilityPkgTokenSpaceGuid.PcdMctpKcsMemoryMappedIo|0|BOOLEAN|0x00000003
+  ## This is the value of MCTP KCS I/O base address
+  # @Prompt MCTP KCS (Memory mapped) I/O base address
+  gManageabilityPkgTokenSpaceGuid.PcdMctpKcsBaseAddress|0xca2|UINT32|0x00000004
+

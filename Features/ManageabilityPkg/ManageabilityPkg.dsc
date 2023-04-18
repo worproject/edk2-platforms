@@ -28,6 +28,16 @@
   gMinPlatformPkgTokenSpaceGuid.PcdUefiSecureBootEnable                   |FALSE
   gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable                      |FALSE
 
+  #
+  # Manageability modules
+  #
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable              |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilitySmmIpmiEnable              |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiEnable              |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmEnable              |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable              |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable|TRUE
+
 #
 # Include common libraries
 #

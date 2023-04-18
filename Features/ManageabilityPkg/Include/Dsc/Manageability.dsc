@@ -25,14 +25,28 @@
   PeiServicesTablePointerLib|ArmPkg/Library/PeiServicesTablePointerLib/PeiServicesTablePointerLib.inf
 
 [Components.IA32, Components.AARCH64]
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
+!endif
 
 [Components.X64, Components.AARCH64]
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
+!endif
 
 [Components.X64]
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilitySmmIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Smm/IpmiProtocolSmm.inf
-  ManageabilityPkg/Universal/PldmProtocol/Dxe/PldmProtocolDxe.inf
-  ManageabilityPkg/Universal/PldmSmbiosTransferDxe/PldmSmbiosTransferDxe.inf
-  ManageabilityPkg/Universal/MctpProtocol/Dxe/MctpProtocolDxe.inf
+!endif
 
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmEnable == TRUE
+  ManageabilityPkg/Universal/PldmProtocol/Dxe/PldmProtocolDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable == TRUE
+  ManageabilityPkg/Universal/PldmSmbiosTransferDxe/PldmSmbiosTransferDxe.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable == TRUE
+  ManageabilityPkg/Universal/MctpProtocol/Dxe/MctpProtocolDxe.inf
+!endif

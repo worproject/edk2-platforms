@@ -25,6 +25,7 @@
 [LibraryClasses]
   BaseMemoryLib
   DebugLib
+  MemoryAllocationLib
 
 [Packages]
   ManageabilityPkg/ManageabilityPkg.dec

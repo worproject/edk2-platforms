@@ -37,6 +37,7 @@
 
 [Components]
   ManageabilityPkg/Library/ManageabilityTransportKcsLib/Dxe/DxeManageabilityTransportKcs.inf
+  ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
 
 [LibraryClasses]
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf

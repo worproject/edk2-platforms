@@ -168,10 +168,12 @@ struct _MANAGEABILITY_TRANSFER_TOKEN {
                                                                           ///< which is sent discretely of payload.
                                                                           ///< This field can be NULL if the transport
                                                                           ///< doesn't require this.
+  UINT16                                       TransmitHeaderSize;        ///< Transmit header size in byte.
   MANAGEABILITY_TRANSPORT_TRAILER              TransmitTrailer;           ///< This is the transport-specific trailer
                                                                           ///< which is sent discretely of payload.
                                                                           ///< This field can be NULL if the transport
                                                                           ///< doesn't require this.
+  UINT16                                       TransmitTrailerSize;       ///< Transmit trailer size in byte.
   MANAGEABILITY_TRANSMIT_PACKAGE               TransmitPackage;           ///< The payload sent to transport interface.
   MANAGEABILITY_RECEIVE_PACKAGE                ReceivePackage;            ///< The buffer to receive the response.
   EFI_STATUS                                   TransferStatus;            ///< The EFI Status of the transfer.

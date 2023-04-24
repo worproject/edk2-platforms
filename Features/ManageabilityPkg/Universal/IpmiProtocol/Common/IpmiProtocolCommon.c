@@ -65,21 +65,23 @@ SetupIpmiTransportHardwareInformation (
   This functions setup the final header/body/trailer packets for
   the acquired transport interface.
 
-  @param[in]         TransportToken  The transport interface.
-  @param[in]         NetFunction     IPMI function.
-  @param[in]         Command         IPMI command.
-  @param[out]        PacketHeader    The pointer to receive header of request.
-  @param[in, out]    PacketBody      The request body.
-                                     When IN, it is the caller's request body.
-                                     When OUT and NULL, the request body is not
-                                     changed.
-                                     When OUT and non-NULL, the request body is
-                                     changed to conform the transport interface.
-  @param[in, out]    PacketBodySize  The request body size.
-                                     When OUT and non-zero, it is the new data
-                                     length of request body.
-                                     When OUT and zero, the request body is unchanged.
-  @param[out]        PacketTrailer   The pointer to receive trailer of request.
+  @param[in]         TransportToken     The transport interface.
+  @param[in]         NetFunction        IPMI function.
+  @param[in]         Command            IPMI command.
+  @param[out]        PacketHeader       The pointer to receive header of request.
+  @param[out]        PacketHeaderSize   Pinter to receive packet header size in byte.
+  @param[in, out]    PacketBody         The request body.
+                                        When IN, it is the caller's request body.
+                                        When OUT and NULL, the request body is not
+                                        changed.
+                                        Whee out and non-NULL, the request body is
+                                        changed to comfort the transport interface.
+  @param[in, out]    PacketBodySize     The request body size.
+                                        When IN and non-zero, it is the new data
+                                        length of request body.
+                                        When IN and zero, the request body is unchanged.
+  @param[out]        PacketTrailer      The pointer to receive trailer of request.
+  @param[out]        PacketTrailerSize  Pinter to receive packet trailer size in byte.
 
   @retval EFI_SUCCESS            Request packet is returned.
   @retval EFI_UNSUPPORTED        Request packet is not returned because
@@ -91,9 +93,11 @@ SetupIpmiRequestTransportPacket (
   IN   UINT8                            NetFunction,
   IN   UINT8                            Command,
   OUT  MANAGEABILITY_TRANSPORT_HEADER   *PacketHeader OPTIONAL,
+  OUT  UINT16                           *PacketHeaderSize,
   IN OUT UINT8                          **PacketBody OPTIONAL,
   IN OUT UINT32                         *PacketBodySize OPTIONAL,
-  OUT  MANAGEABILITY_TRANSPORT_TRAILER  *PacketTrailer OPTIONAL
+  OUT  MANAGEABILITY_TRANSPORT_TRAILER  *PacketTrailer OPTIONAL,
+  OUT  UINT16                           *PacketTrailerSize
   )
 {
   MANAGEABILITY_IPMI_TRANSPORT_HEADER  *IpmiHeader;
@@ -105,18 +109,24 @@ SetupIpmiRequestTransportPacket (
       return EFI_OUT_OF_RESOURCES;
     }
 
+    *PacketHeaderSize   = 0;
+    *PacketTrailerSize  = 0;
     IpmiHeader->Command = Command;
     IpmiHeader->Lun     = 0;
     IpmiHeader->NetFn   = NetFunction;
     if (PacketHeader != NULL) {
-      *PacketHeader = (MANAGEABILITY_TRANSPORT_HEADER *)IpmiHeader;
+      *PacketHeader     = (MANAGEABILITY_TRANSPORT_HEADER *)IpmiHeader;
+      *PacketHeaderSize = sizeof (MANAGEABILITY_IPMI_TRANSPORT_HEADER);
     }
+
     if (PacketTrailer != NULL) {
       *PacketTrailer = NULL;
     }
+
     if (PacketBody != NULL) {
       *PacketBody = NULL;
     }
+
     if (PacketBodySize != NULL) {
       *PacketBodySize = 0;
     }
@@ -124,6 +134,7 @@ SetupIpmiRequestTransportPacket (
     DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __FUNCTION__));
     ASSERT (FALSE);
   }
+
   return EFI_SUCCESS;
 }
 
@@ -164,6 +175,8 @@ CommonIpmiSubmitCommand (
   MANAGEABILITY_TRANSPORT_HEADER             IpmiTransportHeader;
   MANAGEABILITY_TRANSPORT_TRAILER            IpmiTransportTrailer;
   MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  TransportAdditionalStatus;
+  UINT16                                     HeaderSize;
+  UINT16                                     TrailerSize;
 
   if (TransportToken == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: No transport toke for IPMI\n", __FUNCTION__));
@@ -179,8 +192,8 @@ CommonIpmiSubmitCommand (
     return Status;
   }
 
-  ThisRequestData       = RequestData;
-  ThisRequestDataSize   = RequestDataSize;
+  ThisRequestData      = RequestData;
+  ThisRequestDataSize  = RequestDataSize;
   IpmiTransportHeader  = NULL;
   IpmiTransportTrailer = NULL;
   Status               = SetupIpmiRequestTransportPacket (
@@ -188,9 +201,11 @@ CommonIpmiSubmitCommand (
                            NetFunction,
                            Command,
                            &IpmiTransportHeader,
+                           &HeaderSize,
                            &ThisRequestData,
                            &ThisRequestDataSize,
-                           &IpmiTransportTrailer
+                           &IpmiTransportTrailer,
+                           &TrailerSize
                            );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __FUNCTION__, Status));
@@ -198,12 +213,13 @@ CommonIpmiSubmitCommand (
   }
 
   ZeroMem (&TransferToken, sizeof (MANAGEABILITY_TRANSFER_TOKEN));
-  TransferToken.TransmitHeader  = IpmiTransportHeader;
-  TransferToken.TransmitTrailer = IpmiTransportTrailer;
+  TransferToken.TransmitHeader      = IpmiTransportHeader;
+  TransferToken.TransmitHeaderSize  = HeaderSize;
+  TransferToken.TransmitTrailer     = IpmiTransportTrailer;
+  TransferToken.TransmitTrailerSize = TrailerSize;
 
   // Transmit packet.
   if ((ThisRequestData == NULL) || (ThisRequestDataSize == 0)) {
-
     // Transmit parameter were not changed by SetupIpmiRequestTransportPacket().
     TransferToken.TransmitPackage.TransmitPayload    = RequestData;
     TransferToken.TransmitPackage.TransmitSizeInByte = RequestDataSize;
@@ -247,5 +263,6 @@ CommonIpmiSubmitCommand (
   if (ResponseDataSize != NULL) {
     *ResponseDataSize = TransferToken.ReceivePackage.ReceiveSizeInByte;
   }
+
   return Status;
 }

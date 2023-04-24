@@ -11,6 +11,7 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
+#include <Library/ManageabilityTransportHelperLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/TimerLib.h>
 
@@ -98,8 +99,10 @@ ClearOBF (
   Algorithm is based on flow chart provided in IPMI spec 2.0
   Figure 9-6, KCS Interface BMC to SMS Write Transfer Flow Chart
 
-  @param[in]  NetFunction           Net function of the command.
-  @param[in]  Command               IPMI Command.
+  @param[in]  TransmitHeader        KCS packet header.
+  @param[in]  TransmitHeaderSize    KCS packet header size in byte.
+  @param[in]  TransmitTrailer       KCS packet trailer.
+  @param[in]  TransmitTrailerSize   KCS packet trailer size in byte.
   @param[in]  RequestData           Command Request Data, could be NULL.
                                     RequestDataSize must be zero, if RequestData
                                     is NULL.
@@ -122,10 +125,12 @@ ClearOBF (
 **/
 EFI_STATUS
 KcsTransportWrite (
-  IN  UINT8   NetFunction,
-  IN  UINT8   Command,
-  IN  UINT8   *RequestData OPTIONAL,
-  IN  UINT32  RequestDataSize
+  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader,
+  IN  UINT16                           TransmitHeaderSize,
+  IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
+  IN  UINT16                           TransmitTrailerSize,
+  IN  UINT8                            *RequestData OPTIONAL,
+  IN  UINT32                           RequestDataSize
   )
 {
   EFI_STATUS  Status;
@@ -134,16 +139,39 @@ KcsTransportWrite (
   UINT8       *BufferPtr;
 
   // Validation on RequestData and RequestDataSize.
-  if ((RequestData == NULL && RequestDataSize != 0) ||
-      (RequestData != NULL && RequestDataSize == 0)
-      ) {
+  if (((RequestData == NULL) && (RequestDataSize != 0)) ||
+      ((RequestData != NULL) && (RequestDataSize == 0))
+      )
+  {
     DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData or RequestDataSize.\n", __FUNCTION__));
     return EFI_INVALID_PARAMETER;
   }
 
-  Length = sizeof (NetFunction) + sizeof (Command);
+  // Validation on TransmitHeader and TransmitHeaderSize.
+  if (((TransmitHeader == NULL) && (TransmitHeaderSize != 0)) ||
+      ((TransmitHeader != NULL) && (TransmitHeaderSize == 0))
+      )
+  {
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitHeader or TransmitHeaderSize.\n", __FUNCTION__));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  // Validation on TransmitHeader and TransmitHeaderSize.
+  if (((TransmitTrailer == NULL) && (TransmitTrailerSize != 0)) ||
+      ((TransmitTrailer != NULL) && (TransmitTrailerSize == 0))
+      )
+  {
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitTrailer or TransmitTrailerSize.\n", __FUNCTION__));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Length = TransmitHeaderSize;
   if (RequestData != NULL) {
     Length = Length + RequestDataSize;
+  }
+
+  if ((TransmitTrailer != NULL) && (TransmitTrailerSize != 0)) {
+    Length += TransmitTrailerSize;
   }
 
   Buffer = AllocateZeroPool (Length);
@@ -152,17 +180,20 @@ KcsTransportWrite (
   }
 
   //
-  // Buffer[0] = NetFunction
-  // Buffer[1] = Command
-  // Buffer [2..RequestDataSize] = RequestData
+  // Buffer[0..(TransmitHeaderSize - 1)] = TransmitHeader
+  // Buffer [TransmitHeader..(TransmitHeader + RequestDataSize - 1)] = RequestData
+  // Buffer [(TransmitHeader + RequestDataSize)..(TransmitHeader + RequestDataSize + TransmitTrailerSize - 1)] = TransmitTrailer
   //
   BufferPtr = Buffer;
-  CopyMem (BufferPtr, &NetFunction, sizeof (NetFunction));
-  BufferPtr += sizeof (NetFunction);
-  CopyMem (BufferPtr, &Command, sizeof (Command));
-  BufferPtr += sizeof (Command);
-  if (Length > (sizeof (NetFunction) + sizeof (Command))) {
+  CopyMem ((VOID *)BufferPtr, (VOID *)TransmitHeader, TransmitHeaderSize);
+  BufferPtr += TransmitHeaderSize;
+  if (RequestData != NULL) {
     CopyMem (BufferPtr, RequestData, RequestDataSize);
+  }
+
+  BufferPtr += RequestDataSize;
+  if (TransmitTrailer != NULL) {
+    CopyMem (BufferPtr, (VOID *)TransmitTrailer, TransmitTrailerSize);
   }
 
   BufferPtr = Buffer;
@@ -293,10 +324,11 @@ KcsTransportRead (
   EFI_STATUS  Status;
   UINT32      ReadLength;
 
-  if (DataByte == NULL || *Length == 0) {
+  if ((DataByte == NULL) || (*Length == 0)) {
     DEBUG ((DEBUG_ERROR, "%a: Either DataByte is NULL or Length is 0.\n", __FUNCTION__));
     return EFI_INVALID_PARAMETER;
   }
+
   ReadLength = 0;
   while (ReadLength < *Length) {
     // Step 1. wait for IBF to get clear
@@ -350,8 +382,10 @@ KcsTransportRead (
 /**
   This service communicates with BMC using KCS protocol.
 
-  @param[in]      NetFunction           Net function of the command.
-  @param[in]      Command               IPMI Command.
+  @param[in]      TransmitHeader        KCS packet header.
+  @param[in]      TransmitHeaderSize    KCS packet header size in byte.
+  @param[in]      TransmitTrailer       KCS packet trailer.
+  @param[in]      TransmitTrailerSize   KCS packet trailer size in byte.
   @param[in]      RequestData           Command Request Data.
   @param[in]      RequestDataSize       Size of Command Request Data.
   @param[out]     ResponseData          Command Response Data. The completion
@@ -380,12 +414,14 @@ KcsTransportRead (
 EFI_STATUS
 EFIAPI
 KcsTransportSendCommand (
-  IN  UINT8      NetFunction,
-  IN  UINT8      Command,
-  IN  UINT8      *RequestData OPTIONAL,
-  IN  UINT32     RequestDataSize,
-  OUT UINT8      *ResponseData OPTIONAL,
-  IN OUT UINT32  *ResponseDataSize OPTIONAL
+  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader,
+  IN  UINT16                           TransmitHeaderSize,
+  IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
+  IN  UINT16                           TransmitTrailerSize,
+  IN  UINT8                            *RequestData OPTIONAL,
+  IN  UINT32                           RequestDataSize,
+  OUT UINT8                            *ResponseData OPTIONAL,
+  IN OUT UINT32                        *ResponseDataSize OPTIONAL
   )
 {
   EFI_STATUS                Status;
@@ -393,30 +429,41 @@ KcsTransportSendCommand (
   IPMI_KCS_RESPONSE_HEADER  RspHeader;
 
   if ((RequestData != NULL) && (RequestDataSize == 0)) {
-    DEBUG((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __FUNCTION__));
     return EFI_INVALID_PARAMETER;
   }
 
   if ((ResponseData != NULL) && ((ResponseDataSize != NULL) && (*ResponseDataSize == 0))) {
-    DEBUG((DEBUG_ERROR, "%a: Mismatched values of ResponseData and ResponseDataSize\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of ResponseData and ResponseDataSize\n", __FUNCTION__));
     return EFI_INVALID_PARAMETER;
   }
 
+  if (TransmitHeader == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: TransmitHeader is NULL\n", __FUNCTION__));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  //
+  // Print out the request payloads.
+  HelperManageabilityDebugPrint ((VOID *)TransmitHeader, TransmitHeaderSize, "KCS Transmit Header:\n");
+  if (RequestData != NULL) {
+    HelperManageabilityDebugPrint ((VOID *)RequestData, RequestDataSize, "KCS Request Data:\n");
+  }
+
+  if (TransmitTrailer != NULL) {
+    HelperManageabilityDebugPrint ((VOID *)TransmitTrailer, TransmitTrailerSize, "KCS Transmit Trailer:\n");
+  }
+
   Status = KcsTransportWrite (
-             (NetFunction << 2),
-             Command,
+             TransmitHeader,
+             TransmitHeaderSize,
+             TransmitTrailer,
+             TransmitTrailerSize,
              RequestData,
              RequestDataSize
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "IPMI KCS Write Failed with Status(%r) for NetFunction(0x%x)," \
-      " Command(0x%x).\n",
-      Status,
-      NetFunction,
-      Command
-      ));
+    DEBUG ((DEBUG_ERROR, "IPMI KCS Write Failed with Status(%r)", Status));
     return Status;
   }
 
@@ -429,7 +476,7 @@ KcsTransportSendCommand (
       DEBUG_ERROR,
       "IPMI KCS read response header failed Status(%r), " \
       "RspNetFunctionLun = 0x%x, " \
-      "Comamnd = 0x%x \n",
+      "Command = 0x%x \n",
       Status,
       RspHeader.NetFunc,
       RspHeader.Command
@@ -437,16 +484,21 @@ KcsTransportSendCommand (
     return (Status);
   }
 
-  Status = KcsTransportRead ((UINT8 *)ResponseData, ResponseDataSize);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((
-      DEBUG_ERROR,
-      "IPMI KCS response read Failed with Status(%r) for NetFunction(0x%x)," \
-      " Command(0x%x).\n",
-      Status,
-      NetFunction,
-      Command
-      ));
+  //
+  // Print out the response payloads.
+  HelperManageabilityDebugPrint ((VOID *)&RspHeader, (UINT16)RspHeaderSize, "KCS Response Header:\n");
+
+  if ((ResponseData != NULL) && (ResponseDataSize != NULL) && (*ResponseDataSize != 0)) {
+    Status = KcsTransportRead ((UINT8 *)ResponseData, ResponseDataSize);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "IPMI KCS response read Failed with Status(%r)", Status));
+    }
+
+    //
+    // Print out the response payloads.
+    HelperManageabilityDebugPrint ((VOID *)ResponseData, *ResponseDataSize, "KCS Response Data:\n");
+  } else {
+    *ResponseDataSize = 0;
   }
 
   return Status;

@@ -41,8 +41,10 @@ typedef struct {
 /**
   This service communicates with BMC using KCS protocol.
 
-  @param[in]      NetFunction           Net function of the command.
-  @param[in]      Command               IPMI Command.
+  @param[in]      TransmitHeader        KCS packet header.
+  @param[in]      TransmitHeaderSize    KCS packet header size in byte.
+  @param[in]      TransmitTrailer       KCS packet trailer.
+  @param[in]      TransmitTrailerSize   KCS packet trailer size in byte.
   @param[in]      RequestData           Command Request Data.
   @param[in]      RequestDataSize       Size of Command Request Data.
   @param[out]     ResponseData          Command Response Data. The completion
@@ -69,12 +71,14 @@ typedef struct {
 EFI_STATUS
 EFIAPI
 KcsTransportSendCommand (
-  IN  UINT8      NetFunction,
-  IN  UINT8      Command,
-  IN  UINT8      *RequestData OPTIONAL,
-  IN  UINT32     RequestDataSize,
-  OUT UINT8      *ResponseData OPTIONAL,
-  IN OUT UINT32  *ResponseDataSize OPTIONAL
+  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader,
+  IN  UINT16                           TransmitHeaderSize,
+  IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
+  IN  UINT16                           TransmitTrailerSize,
+  IN  UINT8                            *RequestData OPTIONAL,
+  IN  UINT32                           RequestDataSize,
+  OUT UINT8                            *ResponseData OPTIONAL,
+  IN OUT UINT32                        *ResponseDataSize OPTIONAL
   );
 
 /**

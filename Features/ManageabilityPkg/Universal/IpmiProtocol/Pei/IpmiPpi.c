@@ -90,6 +90,10 @@ PeiIpmiEntry (
   MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS     TransportAdditionalStatus;
   MANAGEABILITY_TRANSPORT_HARDWARE_INFORMATION  HardwareInformation;
 
+  //
+  // Allocate PEI_IPMI_PPI_INTERNAL memory for the dynamic variables,
+  // as the global variable in PEI module is read only.
+  //
   PeiIpmiPpiinternal = (PEI_IPMI_PPI_INTERNAL *)AllocateZeroPool (sizeof (PEI_IPMI_PPI_INTERNAL));
   if (PeiIpmiPpiinternal == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Not enough memory for PEI_IPMI_PPI_INTERNAL.\n", __FUNCTION__));

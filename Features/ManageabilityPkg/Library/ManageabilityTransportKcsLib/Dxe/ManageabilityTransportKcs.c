@@ -218,23 +218,25 @@ KcsTransportTransmitReceive (
   IN  MANAGEABILITY_TRANSFER_TOKEN   *TransferToken
   )
 {
-  EFI_STATUS                           Status;
-  MANAGEABILITY_IPMI_TRANSPORT_HEADER  *TransmitHeader;
+  EFI_STATUS  Status;
 
   if ((TransportToken == NULL) || (TransferToken == NULL)) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid transport token or transfer token.\n", __FUNCTION__));
     return;
   }
 
-  TransmitHeader = (MANAGEABILITY_IPMI_TRANSPORT_HEADER *)TransferToken->TransmitHeader;
-  if (TransmitHeader == NULL) {
+  // Transmit header is necessary for KCS transport, which could be
+  // NetFn, Command and etc.
+  if (TransferToken->TransmitHeader == NULL) {
     TransferToken->TransferStatus = EFI_INVALID_PARAMETER;
     return;
   }
 
   Status = KcsTransportSendCommand (
-             TransmitHeader->NetFn,
-             TransmitHeader->Command,
+             TransferToken->TransmitHeader,
+             TransferToken->TransmitHeaderSize,
+             TransferToken->TransmitTrailer,
+             TransferToken->TransmitTrailerSize,
              TransferToken->TransmitPackage.TransmitPayload,
              TransferToken->TransmitPackage.TransmitSizeInByte,
              TransferToken->ReceivePackage.ReceiveBuffer,

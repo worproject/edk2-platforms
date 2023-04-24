@@ -16,6 +16,10 @@
 
 #define MANAGEABILITY_IPMI_PPI_INTERNAL_FROM_LINK(a)  CR (a, PEI_IPMI_PPI_INTERNAL, PeiIpmiPpi, MANAGEABILITY_IPMI_PPI_INTERNAL_SIGNATURE)
 
+///
+/// Use PEI_IPMI_PPI_INTERNAL structure for the dynamic variables,
+/// as the global variable in PEI module is read only.
+///
 typedef struct {
   UINT32                                Signature;
   MANAGEABILITY_TRANSPORT_TOKEN         *TransportToken;

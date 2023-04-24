@@ -44,21 +44,23 @@ SetupIpmiTransportHardwareInformation (
   This functions setup the final header/body/trailer packets for
   the acquired transport interface.
 
-  @param[in]         TransportToken  The transport interface.
-  @param[in]         NetFunction     IPMI function.
-  @param[in]         Command         IPMI command.
-  @param[out]        PacketHeader    The pointer to receive header of request.
-  @param[in, out]    PacketBody      The request body.
-                                     When IN, it is the caller's request body.
-                                     When OUT and NULL, the request body is not
-                                     changed.
-                                     Whee out and non-NULL, the request body is
-                                     changed to comfort the transport interface.
-  @param[in, out]    PacketBodySize  The request body size.
-                                     When IN and non-zero, it is the new data
-                                     length of request body.
-                                     When IN and zero, the request body is unchanged.
-  @param[out]        PacketTrailer   The pointer to receive trailer of request.
+  @param[in]         TransportToken     The transport interface.
+  @param[in]         NetFunction        IPMI function.
+  @param[in]         Command            IPMI command.
+  @param[out]        PacketHeader       The pointer to receive header of request.
+  @param[out]        PacketHeaderSize   Pinter to receive packet header size in byte.
+  @param[in, out]    PacketBody         The request body.
+                                        When IN, it is the caller's request body.
+                                        When OUT and NULL, the request body is not
+                                        changed.
+                                        Whee out and non-NULL, the request body is
+                                        changed to comfort the transport interface.
+  @param[in, out]    PacketBodySize     The request body size.
+                                        When IN and non-zero, it is the new data
+                                        length of request body.
+                                        When IN and zero, the request body is unchanged.
+  @param[out]        PacketTrailer      The pointer to receive trailer of request.
+  @param[out]        PacketTrailerSize  Pinter to receive packet trailer size in byte.
 
   @retval EFI_SUCCESS            Request packet is returned.
   @retval EFI_UNSUPPORTED        Request packet is not returned because
@@ -70,9 +72,11 @@ SetupIpmiRequestTransportPacket (
   IN   UINT8                            NetFunction,
   IN   UINT8                            Command,
   OUT  MANAGEABILITY_TRANSPORT_HEADER   *PacketHeader OPTIONAL,
+  OUT  UINT16                           *PacketHeaderSize,
   IN OUT UINT8                          **PacketBody OPTIONAL,
   IN OUT UINT32                         *PacketBodySize OPTIONAL,
-  OUT  MANAGEABILITY_TRANSPORT_TRAILER  *PacketTrailer OPTIONAL
+  OUT  MANAGEABILITY_TRANSPORT_TRAILER  *PacketTrailer OPTIONAL,
+  OUT  UINT16                           *PacketTrailerSize
   );
 
 /**

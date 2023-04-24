@@ -99,7 +99,9 @@ library to compliant with the framework of ManageabilityPkg design.
     struct _MANAGEABILITY_TRANSFER_TOKEN {
       EFI_EVENT                                  ReceiveEvent;
       MANAGEABILITY_TRANSPORT_HEADER             TransmitHeader;
+      UINT16                                     TransmitHeaderSize;
       MANAGEABILITY_TRANSPORT_TRAILER            TransmitTrailer;
+      UINT16                                     TransmitTrailerSize;
       MANAGEABILITY_TRANSMIT_PACKAGE             TransmitPackage;
       MANAGEABILITY_RECEIVE_PACKAGE              ReceivePackage;
       EFI_STATUS                                 TransferStatus;
@@ -124,12 +126,20 @@ library to compliant with the framework of ManageabilityPkg design.
     manageability transport library to make the transport implementation agnostic to the
     manageability protocol specification.
 
+* ***TransmitHeaderSize***
+
+    This indicates the size of TransmitHeader.
+
 * ***TransmitTrailer***
 
     The transmit trailer may be different according to the disparate transport
     interface for the manageability protocol. Having this header abstracted from
     manageability transport library to make the transport implementation agnostic to the
     manageability protocol specification.
+
+* ***TransmitTrailerSize***
+
+    This indicates the size of TransmitTrailer.
 
 * ***TransmitPackage***
 

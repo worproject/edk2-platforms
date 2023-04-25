@@ -68,6 +68,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdGuidedExtractHandlerTableAddress
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdGuidedExtractHandlerTableSize
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsDecompressionScratchEnd
+  gEfiMdeModulePkgTokenSpaceGuid.PcdInitValueInTempStack
 
 [FeaturePcd]
   gSimicsX58PkgTokenSpaceGuid.PcdSmmSmramRequire

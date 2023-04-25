@@ -24,6 +24,19 @@ extern ASM_PFX(SecCoreStartupWithStack)
 ;
 global ASM_PFX(_ModuleEntryPoint)
 ASM_PFX(_ModuleEntryPoint):
+    ;
+    ; Fill the temporary RAM with the initial stack value.
+    ; The loop below will seed the heap as well, but that's harmless.
+    ;
+    mov     rax, (FixedPcdGet32 (PcdInitValueInTempStack) << 32) | FixedPcdGet32 (PcdInitValueInTempStack)
+                                                                ; qword to store
+    mov     rdi, FixedPcdGet32 (PcdSimicsSecPeiTempRamBase)     ; base address,
+                                                                ;   relative to
+                                                                ;   ES
+    mov     rcx, FixedPcdGet32 (PcdSimicsSecPeiTempRamSize) / 8 ; qword count
+    cld                                                         ; store from base
+                                                                ;   up
+    rep stosq
 
     ;
     ; Load temporary RAM stack based on PCDs

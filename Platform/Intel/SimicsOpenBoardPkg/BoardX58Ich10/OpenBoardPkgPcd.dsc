@@ -39,6 +39,7 @@
   gUefiCpuPkgTokenSpaceGuid.PcdCpuHotPlugSupport|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmEnableBspElection|FALSE
   gUefiCpuPkgTokenSpaceGuid.PcdSmmFeatureControlEnable|FALSE
+  gUefiCpuPkgTokenSpaceGuid.PcdSmrrEnable|FALSE
 
   ######################################
   # Platform Configuration

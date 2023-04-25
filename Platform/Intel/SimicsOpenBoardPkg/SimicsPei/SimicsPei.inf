@@ -65,7 +65,6 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsDxeMemFvSize
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsLockBoxStorageBase
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsLockBoxStorageSize
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPageTablesBase
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPeiTempRamBase
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPeiTempRamSize
   gEfiMdePkgTokenSpaceGuid.PcdGuidedExtractHandlerTableAddress

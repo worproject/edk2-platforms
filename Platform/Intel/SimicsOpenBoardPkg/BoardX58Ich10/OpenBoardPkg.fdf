@@ -79,9 +79,6 @@ ErasePolarity = 1
 BlockSize     = 0x10000
 NumBlocks     = 0xB0
 
-0x000000|0x006000
-gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPageTablesBase|gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPageTablesSize
-
 0x006000|0x001000
 gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsLockBoxStorageBase|gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsLockBoxStorageSize
 

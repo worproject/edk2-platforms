@@ -38,7 +38,6 @@
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsFlashNvStorageFtwSpareBase|0x0|UINT32|0xd
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsFlashNvStorageFtwWorkingBase|0x0|UINT32|0xe
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsFdBaseAddress|0x0|UINT32|0xf
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPageTablesBase|0x0|UINT32|0x11
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPageTablesSize|0x0|UINT32|0x12
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPeiTempRamBase|0x0|UINT32|0x13
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsSecPeiTempRamSize|0x0|UINT32|0x14

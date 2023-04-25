@@ -121,7 +121,7 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = 229EEDCE-8E76-4809-B233-EC36BFBF6989
 
-INF  RuleOverride=RESET_SECMAIN USE = IA32 $(BOARD_PKG)/SecCore/SecMain.inf
+INF  RuleOverride=RESET_SECMAIN USE = $(PEI_ARCH) $(BOARD_PKG)/SecCore/SecMain.inf
 !include $(SKT_PKG)/SktSecInclude.fdf
 
 [FV.FvPreMemory]

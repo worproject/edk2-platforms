@@ -278,7 +278,7 @@
 !if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
   $(PCH_PKG)/SmmControl/RuntimeDxe/SmmControl2Dxe.inf
   $(PCH_PKG)/Spi/Smm/PchSpiSmm.inf
-  $(SKT_PKG)/Smm/Access/SmmAccess2Dxe.inf
+  IntelSiliconPkg/Feature/SmmAccess/SmmAccessDxe/SmmAccess.inf
   IntelSiliconPkg/Feature/Flash/SpiFvbService/SpiFvbServiceSmm.inf
 !endif
 

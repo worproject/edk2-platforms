@@ -36,6 +36,7 @@
   SimicsX58SktPkg/SktPkg.dec
   SimicsIch10Pkg/Ich10Pkg.dec
   BoardModulePkg/BoardModulePkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
 
 [Guids]
   gEfiMemoryTypeInformationGuid
@@ -55,6 +56,7 @@
   MtrrLib
   PcdLib
   CmosAccessLib
+  SmmAccessLib
 
 [Pcd]
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsPeiMemFvBase

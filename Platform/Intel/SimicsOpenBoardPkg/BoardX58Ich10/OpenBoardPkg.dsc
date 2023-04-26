@@ -1,7 +1,7 @@
 ## @file
 #  The main build description file for the X58Ich10 board.
 #
-# Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -142,6 +142,7 @@
   # Silicon Package
   #####################################
   ReportCpuHobLib|IntelSiliconPkg/Library/ReportCpuHobLib/ReportCpuHobLib.inf
+  SmmAccessLib|IntelSiliconPkg/Feature/SmmAccess/Library/PeiSmmAccessLib/PeiSmmAccessLib.inf
 
   #####################################
   # Platform Package
@@ -190,12 +191,6 @@
   #######################################
   # Silicon Initialization Package
   #######################################
-!if gMinPlatformPkgTokenSpaceGuid.PcdBootToShellOnly == FALSE
-  $(SKT_PKG)/Smm/Access/SmmAccessPei.inf {
-    <LibraryClasses>
-      PcdLib|MdePkg/Library/PeiPcdLib/PeiPcdLib.inf
-  }
-!endif
 
   #####################################
   # Platform Package

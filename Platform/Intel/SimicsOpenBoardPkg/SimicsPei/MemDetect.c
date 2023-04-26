@@ -391,11 +391,10 @@ QemuInitializeRam (
   UINT64                               LowerMemorySize;
   UINT64                               UpperMemorySize;
   UINTN                                 BufferSize;
-  UINT8                                 SmramIndex;
   UINT8                                 SmramRanges;
   EFI_PEI_HOB_POINTERS                  Hob;
   EFI_SMRAM_HOB_DESCRIPTOR_BLOCK        *SmramHobDescriptorBlock;
-  UINT8                                 Index;
+  VOID                                  *GuidHob;
 
   DEBUG ((EFI_D_INFO, "%a called\n", __FUNCTION__));
 
@@ -428,8 +427,8 @@ QemuInitializeRam (
     AddReservedMemoryBaseSizeHob (LowerMemorySize - TsegSize, TsegSize,
       TRUE);
 
-    BufferSize = sizeof(EFI_SMRAM_HOB_DESCRIPTOR_BLOCK);
-    SmramRanges = 1;
+    SmramRanges = 2;
+    BufferSize = sizeof(EFI_SMRAM_HOB_DESCRIPTOR_BLOCK) + (SmramRanges - 1) * sizeof(EFI_SMRAM_DESCRIPTOR);
 
     Hob.Raw = BuildGuidHob(
         &gEfiSmmSmramMemoryGuid,
@@ -440,18 +439,25 @@ QemuInitializeRam (
     SmramHobDescriptorBlock = (EFI_SMRAM_HOB_DESCRIPTOR_BLOCK *)(Hob.Raw);
     SmramHobDescriptorBlock->NumberOfSmmReservedRegions = SmramRanges;
 
-    SmramIndex = 0;
-    for (Index = 0; Index < SmramRanges; Index++) {
-      //
-      // This is an SMRAM range, create an SMRAM descriptor
-      //
-      SmramHobDescriptorBlock->Descriptor[SmramIndex].PhysicalStart = LowerMemorySize - TsegSize;
-      SmramHobDescriptorBlock->Descriptor[SmramIndex].CpuStart = LowerMemorySize - TsegSize;
-      SmramHobDescriptorBlock->Descriptor[SmramIndex].PhysicalSize = TsegSize;
-      SmramHobDescriptorBlock->Descriptor[SmramIndex].RegionState = EFI_SMRAM_CLOSED | EFI_CACHEABLE;
-      SmramIndex++;
-    }
+    //
+    // Create first SMRAM descriptor, which contains data structures used in S3 resume.
+    // One page is enough for the data structure
+    //
+    SmramHobDescriptorBlock->Descriptor[0].PhysicalStart = LowerMemorySize - TsegSize;
+    SmramHobDescriptorBlock->Descriptor[0].CpuStart = LowerMemorySize - TsegSize;
+    SmramHobDescriptorBlock->Descriptor[0].PhysicalSize = EFI_PAGE_SIZE;
+    SmramHobDescriptorBlock->Descriptor[0].RegionState = EFI_SMRAM_CLOSED | EFI_CACHEABLE | EFI_ALLOCATED;
+    GuidHob = BuildGuidHob (&gEfiAcpiVariableGuid, sizeof(EFI_SMRAM_DESCRIPTOR));
+    ASSERT (GuidHob != NULL);
+    CopyMem (GuidHob, &SmramHobDescriptorBlock->Descriptor[0], sizeof(EFI_SMRAM_DESCRIPTOR));
 
+    //
+    // Create second SMRAM descriptor, which is free and will be used by SMM foundation.
+    //
+    SmramHobDescriptorBlock->Descriptor[1].PhysicalStart = SmramHobDescriptorBlock->Descriptor[0].PhysicalStart + EFI_PAGE_SIZE;
+    SmramHobDescriptorBlock->Descriptor[1].CpuStart = SmramHobDescriptorBlock->Descriptor[0].CpuStart + EFI_PAGE_SIZE;
+    SmramHobDescriptorBlock->Descriptor[1].PhysicalSize = TsegSize - EFI_PAGE_SIZE;
+    SmramHobDescriptorBlock->Descriptor[1].RegionState = EFI_SMRAM_CLOSED | EFI_CACHEABLE;
   } else {
     AddMemoryRangeHob (BASE_1MB, LowerMemorySize);
   }

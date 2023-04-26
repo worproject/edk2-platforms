@@ -10,7 +10,7 @@
   duration.
 
   Copyright (C) 2013, 2015, Red Hat, Inc.<BR>
-  Copyright (c) 2010 - 2019, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2010 - 2023, Intel Corporation. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
@@ -241,7 +241,6 @@ SmmAccessPeiEntryPoint (
   EFI_STATUS           Status;
   UINTN                SmramMapSize;
   EFI_SMRAM_DESCRIPTOR SmramMap[DescIdxCount];
-  VOID                 *GuidHob;
 
   //
   // This module should only be included if SMRAM support is required.
@@ -321,13 +320,6 @@ SmmAccessPeiEntryPoint (
     }
   }
   DEBUG_CODE_END ();
-
-  GuidHob = BuildGuidHob (&gEfiAcpiVariableGuid, sizeof SmramMap[DescIdxSmmS3ResumeState]);
-  if (GuidHob == NULL) {
-    return EFI_OUT_OF_RESOURCES;
-  }
-
-  CopyMem (GuidHob, &SmramMap[DescIdxSmmS3ResumeState], sizeof SmramMap[DescIdxSmmS3ResumeState]);
 
   //
   // We're done. The next step should succeed, but even if it fails, we can't

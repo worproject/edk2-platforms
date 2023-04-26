@@ -7,7 +7,7 @@
 #   it via the gEfiAcpiVariableGuid GUIDed HOB.
 #
 # Copyright (C) 2013, 2015, Red Hat, Inc.
-# Copyright (C) 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (C) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -37,9 +37,6 @@
   MdePkg/MdePkg.dec
   SimicsX58SktPkg/SktPkg.dec
   SimicsIch10Pkg/Ich10Pkg.dec
-
-[Guids]
-  gEfiAcpiVariableGuid
 
 [LibraryClasses]
   BaseLib

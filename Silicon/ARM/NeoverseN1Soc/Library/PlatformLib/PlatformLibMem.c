@@ -58,7 +58,7 @@ ArmPlatformGetVirtualMemoryMap (
     DramBlock2Size);
 
   if (PlatInfo->MultichipMode == 1) {
-    RemoteDdrSize = ((PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
+    RemoteDdrSize = ((UINT64)(PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
 
     BuildResourceDescriptorHob (
       EFI_RESOURCE_SYSTEM_MEMORY,

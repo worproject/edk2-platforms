@@ -1254,7 +1254,7 @@ InitializePlatformRepository (
   PlatRepoInfo->MemAffInfo[LOCAL_DDR_REGION2].Length = Dram2Size;
 
   if (PlatInfo->MultichipMode == 1) {
-    RemoteDdrSize = ((PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
+    RemoteDdrSize = ((UINT64)(PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
 
     // Update Remote DDR Region1
     PlatRepoInfo->MemAffInfo[REMOTE_DDR_REGION1].ProximityDomain = 1;

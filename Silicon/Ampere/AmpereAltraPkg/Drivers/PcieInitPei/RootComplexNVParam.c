@@ -205,7 +205,9 @@ GetDevMap (
   //
   // Get default Devmap low and configure Devmap low accordingly.
   //
-  RootComplex->DefaultDevMapLow = GetDefaultDevMap (RootComplex, TRUE);
+  if (RootComplex->DefaultDevMapLow != DevMapModeAuto) {
+    RootComplex->DefaultDevMapLow = GetDefaultDevMap (RootComplex, TRUE);
+  }
   if (RootComplex->DevMapLow == 0) {
     RootComplex->DevMapLow = RootComplex->DefaultDevMapLow;
   }
@@ -396,6 +398,14 @@ GetLaneAllocation (
       RootComplex->Pcie[RPIndex].Active = FALSE;
       break;
     }
+  }
+
+  // Update RootComplex data to handle auto bifurcation mode on RCA
+  if (Value == AUTO_BIFURCATION_SETTING_VALUE) {
+    RootComplex->Pcie[PcieController0].MaxWidth = LINK_WIDTH_X4;
+    RootComplex->Pcie[PcieController0].MaxGen = LINK_SPEED_GEN3;
+    RootComplex->Pcie[PcieController0].Active = TRUE;
+    RootComplex->DefaultDevMapLow = DevMapModeAuto;
   }
 
   if (RootComplex->Type == RootComplexTypeB) {

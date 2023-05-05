@@ -733,7 +733,8 @@ PcieRCScreenSetup (
     //
     OptionsOpCodeHandle = CreateDevMapOptions (RootComplex);
 
-    if (RootComplex->DefaultDevMapLow != 0) {
+    if ((RootComplex->DefaultDevMapLow != 0)
+        && (RootComplex->DefaultDevMapLow != DevMapModeAuto)) {
       QuestionFlags |= EFI_IFR_FLAG_READ_ONLY;
     }
 
@@ -1202,8 +1203,8 @@ RootComplexDriverEntry (
     RootComplex = GetRootComplex (RCIndex);
 
     if (EFI_ERROR (Status)) {
-      VarStoreConfig->RCBifurcationLow[RCIndex] = RootComplex->DevMapLow;
-      VarStoreConfig->RCBifurcationHigh[RCIndex] = RootComplex->DevMapHigh;
+      VarStoreConfig->RCBifurcationLow[RCIndex] = RootComplex->DefaultDevMapLow;
+      VarStoreConfig->RCBifurcationHigh[RCIndex] = RootComplex->DefaultDevMapHigh;
       VarStoreConfig->RCStatus[RCIndex] = RootComplex->Active;
       IsUpdated = TRUE;
     }

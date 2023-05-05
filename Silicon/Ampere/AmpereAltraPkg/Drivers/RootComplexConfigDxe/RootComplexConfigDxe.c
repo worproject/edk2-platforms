@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -599,6 +599,16 @@ CreateDevMapOptions (
     EFI_IFR_NUMERIC_SIZE_1,
     DevMapMode4
     );
+
+  if (RootComplex->Type == RootComplexTypeA) {
+    HiiCreateOneOfOptionOpCode (
+      OptionsOpCodeHandle,
+      STRING_TOKEN (STR_PCIE_BIFUR_SELECT_AUTO),
+      0,
+      EFI_IFR_NUMERIC_SIZE_1,
+      DevMapModeAuto
+      );
+  }
 
   return OptionsOpCodeHandle;
 }

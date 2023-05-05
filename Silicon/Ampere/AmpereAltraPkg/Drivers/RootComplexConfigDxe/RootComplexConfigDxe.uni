@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+// Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 //
 // SPDX-License-Identifier: BSD-2-Clause-Patent
 //
@@ -78,6 +78,7 @@
 #string STR_PCIE_RC15_FORM              #language en-US "Root Complex 15 Configuration"
 #string STR_PCIE_RC15_FORM_HELP         #language en-US "Root Complex 15 Configuration"
 
+#string STR_PCIE_BIFUR_SELECT_AUTO      #language en-US "Auto"
 #string STR_PCIE_BIFUR_SELECT_VALUE0    #language en-US "x16"
 #string STR_PCIE_BIFUR_SELECT_VALUE1    #language en-US "x8+x8"
 #string STR_PCIE_BIFUR_SELECT_VALUE2    #language en-US "x8+x4+x4"

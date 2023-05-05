@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -40,7 +40,8 @@ typedef enum {
   DevMapMode2,
   DevMapMode3,
   DevMapMode4,
-  MaxDevMapMode = DevMapMode4
+  DevMapModeAuto,
+  MaxDevMapMode = DevMapModeAuto
 } DEV_MAP_MODE;
 
 //

@@ -664,6 +664,267 @@ EnableDbiAccess (
   MmioWrite32 (TargetAddress, Val);
 }
 
+VOID
+Ac01PcieUpdateMaxWidth (
+  IN AC01_ROOT_COMPLEX   *RootComplex
+  )
+{
+  if (RootComplex->Type == RootComplexTypeA) {
+    switch (RootComplex->DevMapLow) {
+    case DevMapMode1:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X16;
+      break;
+
+    case DevMapMode2:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+      break;
+
+    case DevMapMode3:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      break;
+
+    case DevMapMode4:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      break;
+
+    default:
+      ASSERT (FALSE);
+    }
+  } else {
+    switch (RootComplex->DevMapLow) {
+    case DevMapMode1:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+      break;
+
+    case DevMapMode2:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      break;
+
+    case DevMapMode3:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      break;
+
+    case DevMapMode4:
+      RootComplex->Pcie[PcieController0].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController1].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController2].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController3].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      break;
+
+    default:
+      ASSERT (FALSE);
+    }
+
+    switch (RootComplex->DevMapHigh) {
+    case DevMapMode1:
+      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X8;
+      break;
+
+    case DevMapMode2:
+      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      break;
+
+    case DevMapMode3:
+      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X4;
+      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      break;
+
+    case DevMapMode4:
+      RootComplex->Pcie[PcieController4].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController5].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController6].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      RootComplex->Pcie[PcieController7].MaxWidth = CAP_MAX_LINK_WIDTH_X2;
+      break;
+
+    default:
+      ASSERT (FALSE);
+    }
+  }
+}
+
+VOID
+Ac01PcieUpdateActive (
+  IN AC01_ROOT_COMPLEX   *RootComplex
+  )
+{
+  switch (RootComplex->DevMapLow) {
+  case DevMapMode1:
+    RootComplex->Pcie[PcieController0].Active = TRUE;
+    RootComplex->Pcie[PcieController1].Active = FALSE;
+    RootComplex->Pcie[PcieController2].Active = FALSE;
+    RootComplex->Pcie[PcieController3].Active = FALSE;
+    break;
+
+  case DevMapMode2:
+    RootComplex->Pcie[PcieController0].Active = TRUE;
+    RootComplex->Pcie[PcieController1].Active = FALSE;
+    RootComplex->Pcie[PcieController2].Active = TRUE;
+    RootComplex->Pcie[PcieController3].Active = FALSE;
+    break;
+
+  case DevMapMode3:
+    RootComplex->Pcie[PcieController0].Active = TRUE;
+    RootComplex->Pcie[PcieController1].Active = FALSE;
+    RootComplex->Pcie[PcieController2].Active = TRUE;
+    RootComplex->Pcie[PcieController3].Active = TRUE;
+    break;
+
+  case DevMapMode4:
+    RootComplex->Pcie[PcieController0].Active = TRUE;
+    RootComplex->Pcie[PcieController1].Active = TRUE;
+    RootComplex->Pcie[PcieController2].Active = TRUE;
+    RootComplex->Pcie[PcieController3].Active = TRUE;
+    break;
+
+  default:
+    ASSERT (FALSE);
+  }
+
+  if (RootComplex->Type == RootComplexTypeB) {
+    switch (RootComplex->DevMapHigh) {
+    case DevMapMode1:
+      RootComplex->Pcie[PcieController4].Active = TRUE;
+      RootComplex->Pcie[PcieController5].Active = FALSE;
+      RootComplex->Pcie[PcieController6].Active = FALSE;
+      RootComplex->Pcie[PcieController7].Active = FALSE;
+      break;
+
+    case DevMapMode2:
+      RootComplex->Pcie[PcieController4].Active = TRUE;
+      RootComplex->Pcie[PcieController5].Active = FALSE;
+      RootComplex->Pcie[PcieController6].Active = TRUE;
+      RootComplex->Pcie[PcieController7].Active = FALSE;
+      break;
+
+    case DevMapMode3:
+      RootComplex->Pcie[PcieController4].Active = TRUE;
+      RootComplex->Pcie[PcieController5].Active = FALSE;
+      RootComplex->Pcie[PcieController6].Active = TRUE;
+      RootComplex->Pcie[PcieController7].Active = TRUE;
+      break;
+
+    case DevMapMode4:
+      RootComplex->Pcie[PcieController4].Active = TRUE;
+      RootComplex->Pcie[PcieController5].Active = TRUE;
+      RootComplex->Pcie[PcieController6].Active = TRUE;
+      RootComplex->Pcie[PcieController7].Active = TRUE;
+      break;
+
+    default:
+      ASSERT (FALSE);
+    }
+  }
+}
+
+EFI_STATUS
+Ac01PcieCorrectBifurcation (
+  IN     AC01_ROOT_COMPLEX             *RootComplex,
+  IN     PCI_REG_PCIE_LINK_CAPABILITY  *LinkCap,
+  IN     UINTN                         LinkCapLength,
+  IN OUT DEV_MAP_MODE                  *Bifur
+  )
+{
+  UINTN       Count;
+  UINTN       Idx;
+  EFI_STATUS  Status;
+
+  Status = EFI_SUCCESS;
+
+  if (RootComplex == NULL || LinkCap == NULL || Bifur == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (LinkCapLength != 4) {
+    // Only process 4 controller at a same time
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (LinkCap[PcieController1].Uint32 != 0) {
+    // Bifurcation should be X/X/X/X
+    *Bifur = BIFURCATION_XXXX;
+    return Status;
+  }
+
+  Count = 0;
+  for (Idx = 0; Idx < LinkCapLength; Idx++) {
+    if (LinkCap[Idx].Uint32 != 0) {
+      Count++;
+    }
+  }
+
+  switch (Count) {
+  case 3:
+    // Bifurcation should be X/0/X/X
+    *Bifur = BIFURCATION_X0XX;
+    break;
+
+  case 2:
+    if (LinkCap[PcieController0].Uint32 != 0) {
+      if (LinkCap[PcieController2].Uint32) {
+        *Bifur = BIFURCATION_X0X0;
+      } else {
+        *Bifur = BIFURCATION_X0XX;
+      }
+    } else {
+      *Bifur = BIFURCATION_XXXX;
+    }
+    break;
+
+  case 1:
+    if (LinkCap[PcieController0].Uint32 != 0) {
+      *Bifur = BIFURCATION_X000;
+    } else if (LinkCap[PcieController2].Uint32 != 0) {
+      *Bifur = BIFURCATION_X0X0;
+    } else {
+      // In the lane reverse case, we choose best width
+      switch (LinkCap[PcieController3].Bits.MaxLinkWidth) { /* MAX_SPEED [9:4] */
+      case CAP_MAX_LINK_WIDTH_X1:
+      case CAP_MAX_LINK_WIDTH_X2:
+        *Bifur = BIFURCATION_XXXX;
+        break;
+
+      case CAP_MAX_LINK_WIDTH_X4:
+        if (RootComplex->Type == RootComplexTypeA) {
+          *Bifur = BIFURCATION_XXXX;
+        } else {
+          *Bifur = BIFURCATION_X0X0;
+        }
+        break;
+
+      case CAP_MAX_LINK_WIDTH_X8:
+        if (RootComplex->Type == RootComplexTypeA) {
+          *Bifur = BIFURCATION_X0X0;
+        } else {
+          *Bifur = BIFURCATION_X000;
+        }
+        break;
+
+      default:
+        *Bifur = BIFURCATION_X000;
+        break;
+      }
+    }
+    break;
+
+  default:
+    Status = EFI_NOT_AVAILABLE_YET;
+    break;
+  }
+
+  return Status;
+}
+
 /**
   Setup and initialize the AC01 PCIe Root Complex and underneath PCIe controllers
 
@@ -687,12 +948,87 @@ Ac01PcieCoreSetupRC (
   RETURN_STATUS        Status;
   UINT32               Val;
   UINT8                PcieIndex;
+  BOOLEAN                       AutoLaneBifurcationEnabled = FALSE;
+  PCI_REG_PCIE_LINK_CAPABILITY  LinkCap[MaxPcieController];
+  AC01_PCIE_CONTROLLER          *Pcie;
+  DEV_MAP_MODE                  DevMapMode;
 
   DEBUG ((DEBUG_INFO, "Initializing Socket%d RootComplex%d\n", RootComplex->Socket, RootComplex->ID));
 
-  ProgramHostBridgeInfo (RootComplex);
-
+AutoLaneBifurcationRetry:
   if (!ReInit) {
+    if (AutoLaneBifurcationEnabled) {
+      //
+      // We are here after the first round
+      //
+      // As per 2.7.2. AC Specifications of PCIe card specification this TPVPERL time and
+      // should be minimum 100ms. So this is minimum time we need add and found during test.
+      //
+      MicroSecondDelay (100000);
+      SetMem ((VOID *)LinkCap, sizeof (LinkCap), 0);
+      for (PcieIndex = 0; PcieIndex < RootComplex->MaxPcieController; PcieIndex++) {
+        Pcie = &RootComplex->Pcie[PcieIndex];
+        if (!Pcie->Active || !PcieLinkUpCheck (Pcie)) {
+          continue;
+        }
+        DEBUG ((DEBUG_INFO, "RootComplex->ID:%d Port:%d link up\n", RootComplex->ID, PcieIndex));
+        TargetAddress = GetCapabilityBase (RootComplex, PcieIndex, FALSE, EFI_PCI_CAPABILITY_ID_PCIEXP);
+        if (TargetAddress == 0) {
+          continue;
+        }
+        LinkCap[PcieIndex].Uint32 = MmioRead32 (TargetAddress + LINK_CAPABILITIES_REG);
+      }
+
+      Status = Ac01PcieCorrectBifurcation (RootComplex, LinkCap, MaxPcieControllerOfRootComplexA, &DevMapMode);
+      if (!EFI_ERROR (Status)) {
+        RootComplex->DevMapLow = DevMapMode;
+        DEBUG ((
+          DEBUG_INFO,
+          "RootComplex->ID:%d Auto Bifurcation done, DevMapMode:%d\n",
+          RootComplex->ID,
+          RootComplex->DevMapLow
+          ));
+      } else {
+        RootComplex->DevMapLow = DevMapMode1;
+        DEBUG ((
+          DEBUG_INFO,
+          "RootComplex->ID:%d Auto Bifurcation failed, revert to DevMapMode1\n",
+          RootComplex->ID
+          ));
+      }
+
+      AutoLaneBifurcationEnabled = FALSE;
+
+      if (DevMapMode == DevMapMode4) {
+        // Return directly as the RootComplex already initialized in this mode
+        return EFI_SUCCESS;
+      }
+
+      //
+      // Update the RootComplex data with new DevMapMode
+      //
+      Ac01PcieUpdateActive (RootComplex);
+      Ac01PcieUpdateMaxWidth (RootComplex);
+    } else {
+      if (RootComplex->DevMapLow == DevMapModeAuto) {
+        // Set lowest bifurcation mode
+        RootComplex->DevMapLow = DevMapMode4;
+
+        AutoLaneBifurcationEnabled = TRUE;
+        DEBUG ((
+          DEBUG_INFO,
+          "RootComplex->ID:%d Auto Bifurcation enabled\n",
+          RootComplex->ID
+          ));
+      }
+    }
+
+    ProgramHostBridgeInfo (RootComplex);
+
+    // Fix for UEFI hang due to timing change with bifurcation
+    // register moved very close to PHY initialization.
+    MicroSecondDelay (100000);
+
     Status = PciePhyInit (RootComplex->SerdesBase);
     if (RETURN_ERROR (Status)) {
       DEBUG ((DEBUG_ERROR, "%a: Failed to initialize the PCIe PHY\n", __FUNCTION__));
@@ -853,6 +1189,10 @@ Ac01PcieCoreSetupRC (
     if (ReInit) {
       return RETURN_SUCCESS;
     }
+  }
+
+  if (AutoLaneBifurcationEnabled) {
+    goto AutoLaneBifurcationRetry;
   }
 
   return RETURN_SUCCESS;

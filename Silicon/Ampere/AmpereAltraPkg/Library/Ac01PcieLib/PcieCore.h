@@ -46,6 +46,11 @@
 #define PFA_MODE_CLEAR                   1
 #define PFA_MODE_READ                    2
 
+#define BIFURCATION_X000                 0
+#define BIFURCATION_X0X0                 1
+#define BIFURCATION_X0XX                 2
+#define BIFURCATION_XXXX                 3
+
 //
 // Host Bridge registers
 //

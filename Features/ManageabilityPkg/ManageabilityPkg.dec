@@ -18,6 +18,10 @@
   Include
 
 [LibraryClasses]
+  ##  @libraryclass IPMI command library
+  #   Provide the help functions to send IPMI commands.
+  IpmiCommandLib|Include/Library/IpmiCommandLib.h
+
   ##  @libraryclass Manageability Transport Library
   #   Manageability Transport Library definitions
   ManageabilityTransportLib|Include/Library/ManageabilityTransportLib.h

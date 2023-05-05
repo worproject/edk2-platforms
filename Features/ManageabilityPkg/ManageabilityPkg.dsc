@@ -49,6 +49,7 @@
   ManageabilityPkg/Library/ManageabilityTransportKcsLib/Dxe/DxeManageabilityTransportKcs.inf
   ManageabilityPkg/Library/ManageabilityTransportMctpLib/Dxe/DxeManageabilityTransportMctp.inf
   ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf
+  ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
 
 [LibraryClasses]
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf

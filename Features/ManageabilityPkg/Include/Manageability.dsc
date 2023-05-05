@@ -7,6 +7,7 @@
 ##
 [LibraryClasses]
   ManageabilityTransportHelperLib|ManageabilityPkg/Library/BaseManageabilityTransportHelperLib/BaseManageabilityTransportHelper.inf
+  IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
 
 [LibraryClasses.common.DXE_DRIVER]
   PldmProtocolLib|ManageabilityPkg/Library/PldmProtocolLibrary/Dxe/PldmProtocolLib.inf

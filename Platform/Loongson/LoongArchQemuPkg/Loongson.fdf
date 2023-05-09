@@ -178,7 +178,7 @@ INF  OvmfPkg/PlatformDxe/Platform.inf
 #
 # SATA/SCSI
 #
-INF  OvmfPkg/SataControllerDxe/SataControllerDxe.inf
+INF  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 INF  MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
 INF  MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 

@@ -550,7 +550,7 @@
   #
   # IDE/SCSI
   #
-  OvmfPkg/SataControllerDxe/SataControllerDxe.inf
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
   MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
   MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
 

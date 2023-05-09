@@ -21,6 +21,7 @@
 
 [Sources]
   BaseManageabilityTransportHelper.c
+  BaseManageabilityTransportIpmiHelper.c
 
 [LibraryClasses]
   BaseMemoryLib

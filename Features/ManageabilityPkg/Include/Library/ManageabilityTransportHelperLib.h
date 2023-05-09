@@ -187,4 +187,28 @@ HelperManageabilityDebugPrint (
   ...
   );
 
+///
+/// IPMI Helper Functions.
+///
+
+/**
+  This function returns a human readable string of IPMI KCS Completion Code
+  and returns the corresponding additional status of transport interface.
+
+  @param [in]  CompletionCode     The Completion Code returned from KCS.
+  @param [out] CompletionCodeStr  Human readable string of IPMI Completion Code.
+  @param [out] AdditionalStatus   Return the addtional status.
+
+  @retval  EFI_SUCCESS            The information of Completion Code is returned.
+  @retval  EFI_NOT_FOUND          No information of Completion Code is returned.
+  @retval  EFI_INVALID_PARAMETER  The given parameter is incorrect.
+
+**/
+EFI_STATUS
+IpmiHelperCheckCompletionCode (
+  IN   UINT8                                      CompletionCode,
+  OUT  CHAR16                                     **CompletionCodeStr,
+  OUT  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
+  );
+
 #endif

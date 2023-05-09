@@ -1,5 +1,5 @@
 /** @file
-  Null instance of Manageability Transport Helper Library
+  Manageability Transport Helper Library
 
   Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent

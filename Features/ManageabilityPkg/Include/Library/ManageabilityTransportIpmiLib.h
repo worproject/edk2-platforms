@@ -16,9 +16,18 @@
 /// the payload.
 ///
 typedef struct {
-  UINT8    Lun:2;
-  UINT8    NetFn:6;
+  UINT8    Lun   : 2;
+  UINT8    NetFn : 6;
   UINT8    Command;
 } MANAGEABILITY_IPMI_TRANSPORT_HEADER;
+
+///
+/// The IPMI Completion Code mapping.
+///
+typedef struct {
+  UINT8                                        CompletionCode;
+  CHAR16                                       *CompletionCodeString;
+  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS    AdditionalStatus;
+} MANAGEABILITY_IPMI_COMPLETTION_CODE_MAPPING;
 
 #endif

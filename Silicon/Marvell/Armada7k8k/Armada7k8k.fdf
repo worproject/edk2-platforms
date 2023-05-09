@@ -145,7 +145,7 @@ FvNameGuid         = 5eda4200-2c5f-43cb-9da3-0baf74b1b30c
   # SATA
   INF MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
   INF MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
-  INF OvmfPkg/SataControllerDxe/SataControllerDxe.inf
+  INF MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
 
   # USB
   INF MdeModulePkg/Bus/Pci/XhciDxe/XhciDxe.inf

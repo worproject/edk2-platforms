@@ -392,10 +392,8 @@ KcsTransportRead (
                                         code is the first byte of response
                                         data.
   @param[in, out] ResponseDataSize      Size of Command Response Data.
-                                        When IN, it is the expected data size
-                                        of response data.
-                                        When OUT, it is the data size of response
-                                        exactly returned.
+  @param[out]     AdditionalStatus       Additional status of this transaction.
+
   @retval         EFI_SUCCESS           The command byte stream was
                                         successfully submit to the device and a
                                         response was successfully received.
@@ -414,20 +412,22 @@ KcsTransportRead (
 EFI_STATUS
 EFIAPI
 KcsTransportSendCommand (
-  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader OPTIONAL,
-  IN  UINT16                           TransmitHeaderSize,
-  IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
-  IN  UINT16                           TransmitTrailerSize,
-  IN  UINT8                            *RequestData OPTIONAL,
-  IN  UINT32                           RequestDataSize,
-  OUT UINT8                            *ResponseData OPTIONAL,
-  IN OUT UINT32                        *ResponseDataSize OPTIONAL
+  IN  MANAGEABILITY_TRANSPORT_HEADER              TransmitHeader OPTIONAL,
+  IN  UINT16                                      TransmitHeaderSize,
+  IN  MANAGEABILITY_TRANSPORT_TRAILER             TransmitTrailer OPTIONAL,
+  IN  UINT16                                      TransmitTrailerSize,
+  IN  UINT8                                       *RequestData OPTIONAL,
+  IN  UINT32                                      RequestDataSize,
+  OUT UINT8                                       *ResponseData OPTIONAL,
+  IN  OUT UINT32                                  *ResponseDataSize OPTIONAL,
+  OUT  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
   )
 {
   EFI_STATUS                Status;
   UINT32                    RspHeaderSize;
   IPMI_KCS_RESPONSE_HEADER  RspHeader;
   UINT32                    ExpectedResponseDataSize;
+  CHAR16                    *CompletionCodeStr;
 
   if ((RequestData != NULL) && (RequestDataSize == 0)) {
     DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __FUNCTION__));
@@ -436,6 +436,11 @@ KcsTransportSendCommand (
 
   if ((ResponseData != NULL) && ((ResponseDataSize != NULL) && (*ResponseDataSize == 0))) {
     DEBUG ((DEBUG_ERROR, "%a: Mismatched values of ResponseData and ResponseDataSize\n", __FUNCTION__));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (AdditionalStatus == NULL) {
+    DEBUG ((DEBUG_ERROR, "%a: AdditionalStatus is NULL.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -504,6 +509,16 @@ KcsTransportSendCommand (
       }
 
       HelperManageabilityDebugPrint ((VOID *)ResponseData, (UINT32)*ResponseDataSize, "KCS Response Data:\n");
+
+      // Print Completion Code
+      Status = IpmiHelperCheckCompletionCode (*((UINT8 *)ResponseData), &CompletionCodeStr, AdditionalStatus);
+      if (!EFI_ERROR (Status)) {
+        DEBUG ((DEBUG_MANAGEABILITY_INFO, "Cc: %02x %s.\n", *((UINT8 *)ResponseData), CompletionCodeStr));
+      } else if (Status == EFI_NOT_FOUND) {
+        DEBUG ((DEBUG_MANAGEABILITY_INFO, "Cc: %02x not defined in IpmiCompletionCodeMapping or invalid.\n", *((UINT8 *)ResponseData)));
+      }
+    } else {
+      DEBUG ((DEBUG_ERROR, "No response, can't determine Completion Code.\n"));
     }
   } else {
     *ResponseDataSize = 0;

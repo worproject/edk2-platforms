@@ -219,7 +219,8 @@ KcsTransportTransmitReceive (
   IN  MANAGEABILITY_TRANSFER_TOKEN   *TransferToken
   )
 {
-  EFI_STATUS  Status;
+  EFI_STATUS                                 Status;
+  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  AdditionalStatus;
 
   if ((TransportToken == NULL) || (TransferToken == NULL)) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid transport token or transfer token.\n", __FUNCTION__));
@@ -234,11 +235,13 @@ KcsTransportTransmitReceive (
              TransferToken->TransmitPackage.TransmitPayload,
              TransferToken->TransmitPackage.TransmitSizeInByte,
              TransferToken->ReceivePackage.ReceiveBuffer,
-             &TransferToken->ReceivePackage.ReceiveSizeInByte
+             &TransferToken->ReceivePackage.ReceiveSizeInByte,
+             &AdditionalStatus
              );
 
   TransferToken->TransferStatus = Status;
   KcsTransportStatus (TransportToken, &TransferToken->TransportAdditionalStatus);
+  TransferToken->TransportAdditionalStatus |= AdditionalStatus;
 }
 
 /**

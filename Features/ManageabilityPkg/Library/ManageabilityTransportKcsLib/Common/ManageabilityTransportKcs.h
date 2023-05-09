@@ -51,6 +51,7 @@ typedef struct {
                                         code is the first byte of response
                                         data.
   @param[in, out] ResponseDataSize      Size of Command Response Data.
+  @param[out]     AdditionalStatus       Additional status of this transaction.
 
   @retval         EFI_SUCCESS           The command byte stream was
                                         successfully submit to the device and a
@@ -71,14 +72,15 @@ typedef struct {
 EFI_STATUS
 EFIAPI
 KcsTransportSendCommand (
-  IN  MANAGEABILITY_TRANSPORT_HEADER   TransmitHeader OPTIONAL,
-  IN  UINT16                           TransmitHeaderSize,
-  IN  MANAGEABILITY_TRANSPORT_TRAILER  TransmitTrailer OPTIONAL,
-  IN  UINT16                           TransmitTrailerSize,
-  IN  UINT8                            *RequestData OPTIONAL,
-  IN  UINT32                           RequestDataSize,
-  OUT UINT8                            *ResponseData OPTIONAL,
-  IN OUT UINT32                        *ResponseDataSize OPTIONAL
+  IN  MANAGEABILITY_TRANSPORT_HEADER              TransmitHeader OPTIONAL,
+  IN  UINT16                                      TransmitHeaderSize,
+  IN  MANAGEABILITY_TRANSPORT_TRAILER             TransmitTrailer OPTIONAL,
+  IN  UINT16                                      TransmitTrailerSize,
+  IN  UINT8                                       *RequestData OPTIONAL,
+  IN  UINT32                                      RequestDataSize,
+  OUT UINT8                                       *ResponseData OPTIONAL,
+  IN  OUT UINT32                                  *ResponseDataSize OPTIONAL,
+  OUT  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
   );
 
 /**

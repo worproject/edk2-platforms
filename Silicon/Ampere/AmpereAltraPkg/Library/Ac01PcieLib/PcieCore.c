@@ -1159,8 +1159,12 @@ AutoLaneBifurcationRetry:
       }
     }
 
-    // Link timeout after 1ms
-    SetLinkTimeout (RootComplex, PcieIndex, 1);
+    //
+    // As AMBA_LINK_TIMEOUT_OFF spec, it impacts OS HP removal delay.
+    // The greater value the longer delay it is. Per discussion,
+    // set it 2 from beginning of RP initialization.
+    //
+    SetLinkTimeout (RootComplex, PcieIndex, 2);
 
     DisableCompletionTimeOut (RootComplex, PcieIndex, TRUE);
 

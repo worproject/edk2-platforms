@@ -1093,6 +1093,11 @@ AutoLaneBifurcationRetry:
     // Program the power limit
     TargetAddress = CfgBase + PCIE_CAPABILITY_BASE + SLOT_CAPABILITIES_REG;
     Val = MmioRead32 (TargetAddress);
+    // In order to detect the NVMe after OS boots successfully but
+    // that NVMe's not present previously. Hot Plug Slot Capable
+    // will help PCI Linux driver to initialize its slot iomem resource
+    // which is used for detecting the disk when it's inserted.
+    Val = SLOT_HPC_SET(Val, 1);
     Val = SLOT_CAP_SLOT_POWER_LIMIT_VALUE_SET (Val, SLOT_POWER_LIMIT_75W);
     MmioWrite32 (TargetAddress, Val);
 

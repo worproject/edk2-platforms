@@ -1769,7 +1769,11 @@ Ac01PcieCoreUpdateLink (
       } else {
         FailedPciePtr[*FailedPcieCount] = PcieIndex;
         *FailedPcieCount += 1;
-        *IsNextRoundNeeded = !(*IsNextRoundNeeded) ? Ac01PcieCoreCheckCardPresent (Pcie) : TRUE;
+
+        if (Ac01PcieCoreCheckCardPresent (Pcie)) {
+          *IsNextRoundNeeded = TRUE;
+          DEBUG ((DEBUG_INFO, "PCIE%d.%d Link retry\n", RootComplex->ID, PcieIndex));
+        }
       }
     }
   }

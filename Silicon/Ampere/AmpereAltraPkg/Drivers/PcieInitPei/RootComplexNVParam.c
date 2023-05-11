@@ -160,7 +160,7 @@ GetDefaultDevMap (
   UINT8        StartIndex;
   DEV_MAP_MODE DevMapMode;
 
-  DevMapMode = MaxDevMapMode;
+  DevMapMode = DevMapMode4;
   StartIndex = IsGetDevMapLow ? PcieController0 : PcieController4;
 
   while (DevMapMode >= DevMapMode1)

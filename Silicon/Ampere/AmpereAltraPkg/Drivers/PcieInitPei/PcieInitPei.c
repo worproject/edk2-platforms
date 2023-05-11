@@ -16,6 +16,7 @@
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/Ac01PcieLib.h>
+#include <Library/PcieHotPlugLib.h>
 #include <Library/PeiServicesLib.h>
 #include <Platform/Ac01.h>
 #include <Ppi/ReadOnlyVariable2.h>
@@ -206,6 +207,8 @@ PcieInitEntry (
   }
 
   Ac01PcieCorePostSetupRC (mRootComplexList);
+
+  PcieHotPlugStart ();
 
   //
   // Build Root Complex info Hob

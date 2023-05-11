@@ -1,0 +1,37 @@
+## @file
+#
+# Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = PcieHotPlugLib
+  FILE_GUID                      = 6C0C1D32-CB51-4236-AC33-A7A6D4B638E2
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PcieHotPlugLib
+
+[Sources]
+  PcieHotPlugLib.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/Ampere/AmpereAltraPkg/AmpereAltraPkg.dec
+  Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+
+[LibraryClasses]
+  ArmSmcLib
+  BaseMemoryLib
+  DebugLib
+  PcdLib
+
+[Pcd]
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable
+
+[Guids]
+  gPcieHotPlugGuid

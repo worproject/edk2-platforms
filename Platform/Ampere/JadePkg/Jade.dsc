@@ -100,7 +100,73 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdInstallAcpiSdtProtocol|TRUE
 
+  #
+  # Flag to indicate option of using default or specific platform Port Map table
+  #
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.UseDefaultConfig|TRUE
+
 [PcdsFixedAtBuild]
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x3F
+
+  #
+  # Setting Portmap table
+  #
+  #   * Elements of array:
+  #     - 0:  Index of Portmap entry in Portmap table structure (Vport).
+  #     - 1:  Socket number (Socket).
+  #     - 2:  Root complex port for each Portmap entry (RcaPort).
+  #     - 3:  Root complex sub-port for each Portmap entry (RcaSubPort).
+  #     - 4:  Select output port of IO expander (PinPort).
+  #     - 5:  I2C address of IO expander that CPLD backplane simulates (I2cAddress).
+  #     - 6:  Address of I2C switch between CPU and CPLD backplane (MuxAddress).
+  #     - 7:  Channel of I2C switch (MuxChannel).
+  #     - 8:  It is set from PcieHotPlugSetGPIOMapCmd () function to select GPIO[16:21] (PcdPcieHotPlugGpioResetMap) or I2C for PCIe reset purpose.
+  #     - 9:  Segment of root complex (Segment).
+  #     - 10: SSD slot index on the front panel of backplane (DriveIndex).
+  #
+  #   * Caution:
+  #     - The last array ({ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }) require if no fully structured used.
+  #     - Size of Portmap table: PortMap[MAX_PORT_MAP_ENTRY][sizeof(PCIE_HOT_PLUG_PORTMAP_ENTRY)] <=> PortMap[96][11].
+  #   * Example: Bellow configuration is the configuration for Portmap table of Mt. Jade 2U platform.
+  #
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[0]|{ 0, 0, 2, 0, 0, 0x00, 0x00, 0x0, 0, 1, 0xFF }   # S0 RCA2.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[1]|{ 1, 0, 3, 0, 1, 0x00, 0x00, 0x0, 0, 0, 0xFF }   # S0 RCA3.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[2]|{ 2, 0, 4, 0, 2, 0x27, 0x70, 0x1, 0, 2, 6 }      # S0 RCB0.0 - SSD6
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[3]|{ 3, 0, 4, 2, 3, 0x27, 0x70, 0x1, 0, 2, 7 }      # S0 RCB0.2 - SSD7
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[4]|{ 4, 0, 4, 4, 0, 0x25, 0x70, 0x1, 0, 2, 2 }      # S0 RCB0.4 - SSD2
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[5]|{ 5, 0, 4, 6, 1, 0x25, 0x70, 0x1, 0, 2, 3 }      # S0 RCB0.6 - SSD3
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[6]|{ 6, 0, 5, 0, 0, 0x24, 0x70, 0x1, 0, 3, 0 }      # S0 RCB1.0 - SSD0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[7]|{ 7, 0, 5, 2, 1, 0x24, 0x70, 0x1, 0, 3, 1 }      # S0 RCB1.2 - SSD1
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[8]|{ 8, 0, 5, 4, 2, 0x26, 0x70, 0x1, 0, 3, 4 }      # S0 RCB1.4 - SSD4
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[9]|{ 9, 0, 5, 6, 3, 0x26, 0x70, 0x1, 0, 3, 5 }      # S0 RCB1.6 - SSD5
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[10]|{ 10, 0, 6, 0, 2, 0x00, 0x00, 0x0, 0, 4, 0xFF } # S0 RCB2.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[11]|{ 11, 0, 6, 2, 3, 0x00, 0x00, 0x0, 0, 4, 0xFF } # S0 RCB2.2
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[12]|{ 12, 0, 6, 4, 0, 0x00, 0x00, 0x0, 0, 4, 0xFF } # S0 RCB2.4
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[13]|{ 13, 0, 7, 0, 1, 0x00, 0x00, 0x0, 0, 5, 0xFF } # S0 RCB3.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[14]|{ 14, 0, 7, 4, 2, 0x00, 0x00, 0x0, 0, 5, 0xFF } # S0 RCB3.4
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[15]|{ 15, 0, 7, 6, 3, 0x00, 0x00, 0x0, 0, 5, 0xFF } # S0 RCB3.6
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[16]|{ 16, 1, 2, 0, 0, 0x26, 0x70, 0x2, 0, 6, 20 }   # S1 RCA2.0 - SSD20
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[17]|{ 17, 1, 2, 1, 1, 0x26, 0x70, 0x2, 0, 6, 21 }   # S1 RCA2.1 - SSD21
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[18]|{ 18, 1, 2, 2, 2, 0x27, 0x70, 0x2, 0, 6, 22 }   # S1 RCA2.2 - SSD22
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[19]|{ 19, 1, 2, 3, 3, 0x27, 0x70, 0x2, 0, 6, 23 }   # S1 RCA2.3 - SSD23
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[20]|{ 20, 1, 3, 0, 0, 0x00, 0x00, 0x0, 0, 7, 0xFF } # S1 RCA3.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[21]|{ 21, 1, 3, 2, 1, 0x00, 0x00, 0x0, 0, 7, 0xFF } # S1 RCA3.2
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[22]|{ 22, 1, 4, 0, 0, 0x00, 0x00, 0x0, 0, 8, 0xFF } # S1 RCB0.0
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[23]|{ 23, 1, 4, 4, 2, 0x25, 0x70, 0x2, 0, 8, 18 }   # S1 RCB0.4 - SSD18
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[24]|{ 24, 1, 4, 6, 3, 0x25, 0x70, 0x2, 0, 8, 19 }   # S1 RCB0.6 - SSD19
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[25]|{ 25, 1, 5, 0, 0, 0x24, 0x70, 0x2, 0, 9, 16 }   # S1 RCB1.0 - SSD16
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[26]|{ 26, 1, 5, 2, 1, 0x24, 0x70, 0x2, 0, 9, 17 }   # S1 RCB1.2 - SSD17
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[27]|{ 27, 1, 5, 4, 2, 0x00, 0x00, 0x0, 0, 9, 0xFF } # S1 RCB1.4
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[28]|{ 28, 1, 6, 0, 3, 0x25, 0x70, 0x4, 0, 10, 11 }  # S1 RCB2.0 - SSD11
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[29]|{ 29, 1, 6, 2, 2, 0x25, 0x70, 0x4, 0, 10, 10 }  # S1 RCB2.2 - SSD10
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[30]|{ 30, 1, 6, 4, 1, 0x27, 0x70, 0x4, 0, 10, 15 }  # S1 RCB2.4 - SSD15
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[31]|{ 31, 1, 6, 6, 0, 0x27, 0x70, 0x4, 0, 10, 14 }  # S1 RCB2.6 - SSD14
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[32]|{ 32, 1, 7, 0, 3, 0x26, 0x70, 0x4, 0, 11, 13 }  # S1 RCB3.0 - SSD13
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[33]|{ 33, 1, 7, 2, 2, 0x26, 0x70, 0x4, 0, 11, 12 }  # S1 RCB3.2 - SSD12
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[34]|{ 34, 1, 7, 4, 1, 0x24, 0x70, 0x4, 0, 11, 9 }   # S1 RCB3.4 - SSD9
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[35]|{ 35, 1, 7, 6, 0, 0x24, 0x70, 0x4, 0, 11, 8 }   # S1 RCB3.6 - SSD8
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable.PortMap[36]|{ 0xFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xFF }       # Require if no fully structure used
+
 !ifdef $(FIRMWARE_VER)
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"$(FIRMWARE_VER)"
 !endif

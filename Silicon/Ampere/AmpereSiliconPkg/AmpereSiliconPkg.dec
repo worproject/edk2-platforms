@@ -80,3 +80,16 @@
   #
   # SMBIOS Type 0 - BIOS Information
   gAmpereTokenSpaceGuid.PcdSmbiosTables0BiosReleaseDate|"MM/DD/YYYY"|VOID*|0xB0000002 # Must follow this MM/DD/YYYY SMBIOS date format
+
+  # Pcie HotPlug reset map
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x0|UINT8|0xB000000A
+
+  #
+  # Pcie HotPlug Port Map table
+  #
+  gAmpereTokenSpaceGuid.PcdPcieHotPlugPortMapTable|{0x00}|PCIE_HOT_PLUG_PORT_MAP_TABLE|0xB000000B {
+    <HeaderFiles>
+      Library/PcieHotPlugPortMapLib.h
+    <Packages>
+      Silicon/Ampere/AmpereSiliconPkg/AmpereSiliconPkg.dec
+  }

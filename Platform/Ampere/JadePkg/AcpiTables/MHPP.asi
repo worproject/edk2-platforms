@@ -1,0 +1,127 @@
+/** @file
+
+  Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+// @DRAM base address 0x88970000
+// Regarding updating the status of hotplug PCIe ports, a shared DRAM
+// memory region between Arm Trusted Firmware and UEFI is used to indicate
+// PCIe hotplug event action. An item of MHPP table is used to reflect hotplug
+// event of each PCIe port. There is a maximum of 48 PCIe hotplug ports in Altra
+// Family processor, the definition in this table should be aligned with hotplug
+// port map of a specific platform. For example, in Ampere Mt. Jade platform,
+// there are 40 PCIe hotplug ports. Hence, this table defines 36 entries corresponding
+// to Ampere Mt. Jade PCIe hotplug port map.
+OperationRegion(MHPP, SystemMemory, 0x88970000, 960)
+Field (MHPP, DWordAcc, NoLock, Preserve) {
+    A020, 32, // 0. S0 RCA2.0
+    A00I, 8,  // incomplete remove
+    offset (24),
+    A030, 32, // 1. S0 RCA3.0
+    A01I, 8,  // incomplete remove
+    offset (48),
+    B000, 32, // 2. S0 RCB0.0
+    B02I, 8,  // incomplete remove
+    offset (72),
+    B002, 32, // 3. S0 RCB0.2
+    B03I, 8,  // incomplete remove
+    offset (96),
+    B004, 32, // 4. S0 RCB0.4
+    B04I, 8,  // incomplete remove
+    offset (120),
+    B006, 32, // 5. S0 RCB0.6
+    B05I, 8,  // incomplete remove
+    offset (144),
+    B010, 32, // 6. S0 RCB1.0
+    B06I, 8,  // incomplete remove
+    offset (168),
+    B012, 32, // 7. S0 RCB1.2
+    B07I, 8,  // incomplete remove
+    offset (192),
+    B014, 32, // 8. S0 RCB1.4
+    B08I, 8,  // incomplete remove
+    offset (216),
+    B016, 32, // 9. S0 RCB1.6
+    B09I, 8,  // incomplete remove
+    offset (240),
+    B020, 32, // 10. S0 RCB2.0
+    B10I, 8,  // incomplete remove
+    offset (264),
+    B022, 32, // 11. S0 RCB2.2
+    B11I, 8,  // incomplete remove
+    offset (288),
+    B024, 32, // 12. S0 RCB2.4
+    B12I, 8,  // incomplete remove
+    offset (312),
+    B030, 32, // 13. S0 RCB3.0
+    B13I, 8,  // incomplete remove
+    offset (336),
+    B034, 32, // 14. S0 RCB3.4
+    B14I, 8,  // incomplete remove
+    offset (360),
+    B036, 32, // 15. S0 RCB3.6
+    B15I, 8,  // incomplete remove
+    offset (384),
+    A120, 32, // 16. S1 RCA2.0
+    A16I, 8,  // incomplete remove
+    offset (408),
+    A121, 32, // 17. S1 RCA2.1
+    A17I, 8,  // incomplete remove
+    offset (432),
+    A122, 32, // 18. S1 RCA2.2
+    A18I, 8,  // incomplete remove
+    offset (456),
+    A123, 32, // 19. S1 RCA2.3
+    A19I, 8,  // incomplete remove
+    offset (480),
+    A130, 32, // 20. S1 RCA3.0
+    A20I, 8,  // incomplete remove
+    offset (504),
+    A132, 32, // 21. S1 RCA3.2
+    A21I, 8,  // incomplete remove
+    offset (528),
+    B100, 32, // 22. S1 RCB0.0
+    B22I, 8,  // incomplete remove
+    offset (552),
+    B104, 32, // 23. S1 RCB0.4
+    B23I, 8,  // incomplete remove
+    offset (576),
+    B106, 32, // 24. S1 RCB0.6
+    B24I, 8,  // incomplete remove
+    offset (600),
+    B110, 32, // 25. S1 RCB1.0
+    B25I, 8,  // incomplete remove
+    offset (624),
+    B112, 32, // 26. S1 RCB1.2
+    B26I, 8,  // incomplete remove
+    offset (648),
+    B114, 32, // 27. S1 RCB1.4
+    B27I, 8,  // incomplete remove
+    offset (672),
+    B120, 32, // 28. S1 RCB2.0
+    B28I, 8,  // incomplete remove
+    offset (696),
+    B122, 32, // 29. S1 RCB2.2
+    B29I, 8,  // incomplete remove
+    offset (720),
+    B124, 32, // 30. S1 RCB2.4
+    B30I, 8,  // incomplete remove
+    offset (744),
+    B126, 32, // 31. S1 RCB2.6
+    B31I, 8,  // incomplete remove
+    offset (768),
+    B130, 32, // 32. S1 RCB3.0
+    B32I, 8,  // incomplete remove
+    offset (792),
+    B132, 32, // 33. S1 RCB3.2
+    B33I, 8,  // incomplete remove
+    offset (816),
+    B134, 32, // 34. S1 RCB3.4
+    B34I, 8,  // incomplete remove
+    offset (840),
+    B136, 32, // 35. S1 RCB3.6
+    B35I, 8   // incomplete remove
+}

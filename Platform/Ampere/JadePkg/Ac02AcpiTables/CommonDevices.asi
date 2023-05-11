@@ -174,7 +174,16 @@ Device(GED0) {
     }
     Name(_CRS, ResourceTemplate () {
         Interrupt(ResourceConsumer, Level, ActiveHigh, Exclusive) { 84 } // GHES
+        Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 44 } // PCIe Hot Plug Doorbell Insertion & Ejection (DBNS4 -> GIC-IRQS44)
     })
+
+    // @DBN4 agent base address for HP PCIe insertion/ejection event: 0x1000.0054.4000
+    OperationRegion(DBN4, SystemMemory, 0x100000544010, 20)
+    Field (DBN4, DWordAcc, NoLock, Preserve) {
+        DOUT, 32, // event and PCIe port information at offset 0x10
+        offset (0x10),
+        STA4, 32, // interrupt status at offset 0x20
+    }
 }
 
 // Shutdown button using GED.
@@ -510,4 +519,19 @@ Device(NVDR) {
        return (0xf)
      }
    }
+}
+
+//
+// LED Device
+Device(LED) {
+  Name(_HID, "AMPC0008")
+  Name(_CCA, ONE)
+  Name(_STR, Unicode("Altra LED Device"))
+
+  Name (_DSD, Package () {
+    ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
+    Package () {
+      Package () { "uuid", Package (4) { 0x5598273c, 0xa49611ea, 0xbb370242, 0xac130002 }},
+    }
+  })
 }

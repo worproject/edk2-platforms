@@ -330,6 +330,274 @@ Device (PCIA) {
     Name (_ADR, 0x00000000)
   }
 
+  //
+  // Root Port 1
+  //
+  Device (P2P1) {
+    //
+    // Device 1, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00010000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 1 ([01])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A120 == 0xF0000201) { // SW ejected before ?
+          Store(0x02000201, A120) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000216, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000216 to DBNS1_10
+          Return (0xF)
+        }
+        elseif (A120 == 0x10000201) { // ejected completed ?
+          Store(0x02000201, A120) // clear action value
+          Return (0x0)
+        }
+        elseif ((A120 == 0x01000201) || (A120 == 0x0F000201)) { // inserted ?
+          if (A20I == 0x00) {
+            Store(0x02000201, A120) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A120 == 0x0E000201) || (A120 == 0x0F000201)) { // inprogress inserted ?
+          if (A20I == 0x00) {
+            Store(0x02000201, A120) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A120 == 0x02000201) { // is sw ejection?
+          Store(0xF0000201, A120) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000216, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000216 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000001)
+    }
+  }
+
+  //
+  // Root Port 2
+  //
+  Device (P2P2) {
+    //
+    // Device 2, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00020000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 2 ([02])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A121 == 0xF0010201) { // SW ejected before ?
+          Store(0x02010201, A121) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000226, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000226 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A121 == 0x10010201) { // ejected completed ?
+          Store(0x02010201, A121) // clear action value
+          Return(0x0)
+        }
+        elseif ((A121 == 0x01010201) || (A121 == 0x0F010201)) { // inserted ?
+          if (A21I == 0x00) {
+            Store(0x02010201, A121) // clear action value
+          }
+          Return(0xF)
+        }
+        elseif ((A121 == 0x0E010201) || (A121 == 0x0F010201)) { // inprogress inserted ?
+          if (A21I == 0x00) {
+            Store(0x02010201, A121) // clear action value
+          }
+          Return(0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A121 == 0x02010201) { // is sw ejection?
+          Store(0xF0010201, A121) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000226, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000226 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000002)
+    }
+  }
+
+  //
+  // Root Port 3
+  //
+  Device (P2P3) {
+    //
+    // Device 3, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00030000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 3 [03])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A122 == 0xF0020201) { // SW ejected before ?
+          Store(0x02020201, A122) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000236, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000236 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A122 == 0x10020201) { // ejected complete ?
+          Store(0x02020201, A122) // clear action value
+          Return (0x0)
+        }
+        elseif ((A122 == 0x01020201) || (A122 == 0x0F020201)) { // inserted ?
+          if (A22I == 0x00) {
+            Store(0x02020201, A122) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A122 == 0x0E020201) || (A122 == 0x0F020201)) { // inprogess inserted ?
+          if (A22I == 0x00) {
+            Store(0x02020201, A122) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A122 == 0x02020201) { // is sw ejection?
+          Store(0xF0020201, A122) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000236, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000236 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000003)
+    }
+  }
+
+  //
+  // Root Port 4
+  //
+  Device (P2P4) {
+    //
+    // Device 4, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00040000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 4 [04])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A123 == 0xF0030201) { // SW ejected before ?
+          Store(0x02030201, A123) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000246, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000246 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A123 == 0x10030201) { // ejected complete ?
+          Store(0x02030201, A123) // clear action value
+          Return (0x0)
+        }
+        elseif ((A123 == 0x01030201) || (A123 == 0x0F030201)) { // inserted ?
+          if (A23I == 0x00) {
+            Store(0x02030201, A123) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A123 == 0x0E030201) || (A123 == 0x0F030201)) { // inprogress inserted ?
+          if (A23I == 0x00) {
+            Store(0x02030201, A123) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A123 == 0x02030201) { // is sw ejection?
+          Store(0xF0030201, A123) // set ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000246, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000246 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000004)
+    }
+  }
+
   Method (_PXM, 0, NotSerialized) {
     // Patch by code
     Return(0xFF)
@@ -1350,6 +1618,274 @@ Device (PCID) {
     Name (_ADR, 0x00000000)
   }
 
+  //
+  // Root Port 1
+  //
+  Device (P2P1) {
+    //
+    // Device 1, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00010000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 1 [01])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A150 == 0xF0000501) { // SW ejected ?
+          Store(0x02000501, A150) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000219, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000219 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A150 == 0x10000501) { // ejected complete ?
+          Store(0x02000501, A150) // clear action value
+          Return(0x0)
+        }
+        elseif ((A150 == 0x01000501) || (A150 == 0x0F000501)) { // inserted?
+          if (A16I == 0x00) {
+            Store(0x02000501, A150) // clear action value
+          }
+          Return(0xF)
+        }
+        elseif ((A150 == 0x0E000501) || (A150 == 0x0F000501)) { // inprogress inserted?
+          if (A16I == 0x00) {
+            Store(0x02000501, A150) // clear action value
+          }
+          Return(0xF)
+        }
+        else {
+          Return(0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A150 == 0x02000501) { // really sw ejection call?
+          Store(0xF0000501, A150) // set SW ejection action
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000219, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000219 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000001)
+    }
+  }
+
+  //
+  // Root Port 2
+  //
+  Device (P2P2) {
+    //
+    // Device 2, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00020000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 2 [02])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A151 == 0xF0010501) { // SW ejected ?
+          Store(0x02010501, A151) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000229, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000229 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A151 == 0x10010501) { // ejected complete ?
+          Store(0x02010501, A151) // clear action value
+          Return(0x0)
+        }
+        elseif ((A151 == 0x01010501) || (A151 == 0x0F010501)) { // inserted?
+          if (A17I == 0x00) {
+            Store(0x02010501, A151) // clear action value
+          }
+          Return(0xF)
+        }
+        elseif ((A151 == 0x0E010501) || (A151 == 0x0F010501)) { // inprogress inserted?
+          if (A17I == 0x00) {
+            Store(0x02010501, A151) // clear action value
+          }
+          Return(0xF)
+        }
+        else {
+          Return(0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A151 == 0x02010501) { // really sw ejection call?
+          Store(0xF0010501, A151) // set SW ejection action
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000229, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000229 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000002)
+    }
+  }
+
+  //
+  // Root Port 3
+  //
+  Device (P2P3) {
+    //
+    // Device 3, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00030000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 3 [03])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A152 == 0xF0020501) { // SW ejected ?
+          Store(0x02020501, A152) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000239, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000239 to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A152 == 0x10020501) { // ejected complete ?
+          Store(0x02020501, A152) // clear action value
+          Return(0x0)
+        }
+        elseif ((A152 == 0x01020501) || (A152 == 0x0F020501)) { // inserted?
+          if (A18I == 0x00) {
+            Store(0x02020501, A152) // clear action value
+          }
+          Return(0xF)
+        }
+        elseif ((A152 == 0x0E020501) || (A152 == 0x0F020501)) { // inprogress inserted?
+          if (A18I == 0x00) {
+            Store(0x02020501, A152) // clear action value
+          }
+          Return(0xF)
+        }
+        else {
+          Return(0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A152 == 0x02020501) { // really sw ejection call?
+          Store(0xF0020501, A152) // set SW ejection action
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000239, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000239 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000003)
+    }
+  }
+
+  //
+  // Root Port 4
+  //
+  Device (P2P4) {
+    //
+    // Device 4, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00040000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 4 ([04])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A153 == 0xF0030501) { // SW ejected ?
+          Store(0x02030501, A153) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000249, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000249 to DBNS1_10
+          Return(0xF)
+        }
+        elseif(A153 == 0x10030501) { // ejected complete ?
+          Store(0x02030501, A153) // clear action value
+          Return(0x0)
+        }
+        elseif((A153 == 0x01030501) || (A153 == 0x0F030501)) { // inserted ?
+          if (A19I == 0x00) {
+            Store(0x02030501, A153) // clear action value
+          }
+          Return(0xF)
+        }
+        elseif((A153 == 0x0E030501) || (A153 == 0x0F030501)) { // inprogress inserted ?
+          if (A19I == 0x00) {
+            Store(0x02030501, A153) // clear action value
+          }
+          Return(0xF)
+        }
+        else {
+          Return(0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A153 == 0x02030501) { // really sw ejection call?
+          Store(0xF0030501, A153) // set SW ejection value
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x68000249, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x68000249 to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000004)
+    }
+  }
+
   Method (_PXM, 0, NotSerialized) {
     // Patch by code
     Return(0xFF)
@@ -1697,6 +2233,274 @@ Device (PCIE) {
     Name (_ADR, 0x00000000)
   }
 
+  //
+  // Root Port 1
+  //
+  Device (P2P1) {
+    //
+    // Device 1, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00010000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 1 ([01])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A160 == 0xF0000601) { // SW ejected before ?
+          Store(0x02000601, A160) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800021A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800021A to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A160 == 0x10000601) { // ejected complete ?
+          Store(0x02000601, A160) // clear action value
+          Return (0x0)
+        }
+        elseif ((A160 == 0x01000601) || (A160 == 0x0F000601)){ // inserted ?
+          if (A11I == 0x00) {
+            Store(0x02000601, A160) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A160 == 0x0E000601) || (A160 == 0x0F000601)) { // inprogress inserted ?
+          if (A11I == 0x00) {
+            Store(0x02000601, A160) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A160 == 0x02000601) { // is sw ejection?
+          Store(0xF0000601, A160) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800021A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800021A to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000001)
+    }
+  }
+
+  //
+  // Root Port 2
+  //
+  Device (P2P2) {
+    //
+    // Device 2, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00020000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 2 [02])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A161 == 0xF0010601) { // SW ejected before ?
+          Store(0x02010601, A161) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800022A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800022A to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A161 == 0x10010601) { // ejected completed ?
+          Store(0x02010601, A161) // clear action value
+          Return (0x0)
+        }
+        elseif ((A161 == 0x01010601) || (A161 == 0x0F010601)){ // inserted ?
+          if (A10I == 0x00) {
+            Store(0x02010601, A161) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A161 == 0x0E010601) || (A161 == 0x0F010601)) { // inprogress inserted ?
+          if (A10I == 0x00) {
+            Store(0x02010601, A161) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A161 == 0x02010601) { // is sw ejection?
+          Store(0xF0010601, A161) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800022A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800022A to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000002)
+    }
+  }
+
+  //
+  // Root Port 3
+  //
+  Device (P2P3) {
+    //
+    // Device 3, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00030000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 3 [03])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A162 == 0xF0020601) { // SW ejected before ?
+          Store(0x02020601, A162) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800023A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800023A to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A162 == 0x10020601) { // ejected complete ?
+          Store(0x02020601, A162) // clear action value
+          Return (0x0)
+        }
+        elseif ((A162 == 0x01020601) || (A162 == 0x0F020601)) { // inserted ?
+          if (A09I == 0x00) {
+            Store(0x02020601, A162) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A162 == 0x0E020601) || (A162 == 0x0F020601)) { // inprogress inserted ?
+          if (A09I == 0x00) {
+            Store(0x02020601, A162) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A162 == 0x02020601) { // is sw ejection?
+          Store(0xF0020601, A162) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800023A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800023A to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000003)
+    }
+  }
+
+  //
+  // Root Port 4
+  //
+  Device (P2P4) {
+    //
+    // Device 4, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00040000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 4 ([04])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A163 == 0xF0030601) { // SW ejected before ?
+          Store(0x02030601, A163) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800024A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800024A to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A163 == 0x10030601) { // ejected complete ?
+          Store(0x02030601, A163) // clear action value
+          Return (0x0)
+        }
+        elseif ((A163 == 0x01030601) || (A163 == 0x0F030601)) { // inserted ?
+          if (A08I == 0x00) {
+            Store(0x02030601, A163) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A163 == 0x0E030601) || (A163 == 0x0F030601)) { // inprogress inserted ?
+          if (A08I == 0x00) {
+            Store(0x02030601, A163) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A163 == 0x02030601) { // is sw ejection?
+          Store(0xF0030601, A163) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800024A, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800024A to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000004)
+    }
+  }
+
   Method (_PXM, 0, NotSerialized) {
     // Patch by code
     Return(0xFF)
@@ -2042,6 +2846,274 @@ Device (PCIF) {
     //
 
     Name (_ADR, 0x00000000)
+  }
+
+  //
+  // Root Port 1
+  //
+  Device (P2P1) {
+    //
+    // Device 1, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00010000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 1 ([01])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A170 == 0xF0000701) { // SW ejected before ?
+          Store(0x02000701, A170) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800021B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800021B to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A170 == 0x10000701) { // ejected complete ?
+          Store(0x02000701, A170) // clear action value
+          Return (0x0)
+        }
+        elseif ((A170 == 0x01000701) || (A170 == 0x0F000701)){ // inserted ?
+          if (A15I == 0x00) {
+            Store(0x02000701, A170) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A170 == 0x0E000701) || (A170 == 0x0F000701)) { // inprogress inserted ?
+          if (A15I == 0x00) {
+            Store(0x02000701, A170) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A170 == 0x02000701) { // is sw ejection?
+          Store(0xF0000701, A170) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800021B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800021B to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000001)
+    }
+  }
+
+  //
+  // Root Port 2
+  //
+  Device (P2P2) {
+    //
+    // Device 2, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00020000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 2 [02])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A171 == 0xF0010701) { // SW ejected before ?
+          Store(0x02010701, A171) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800022B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800022B to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A171 == 0x10010701) { // ejected completed ?
+          Store(0x02010701, A171) // clear action value
+          Return (0x0)
+        }
+        elseif ((A171 == 0x01010701) || (A171 == 0x0F010701)){ // inserted ?
+          if (A14I == 0x00) {
+            Store(0x02010701, A171) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A171 == 0x0E010701) || (A171 == 0x0F010701)) { // inprogress inserted ?
+          if (A14I == 0x00) {
+            Store(0x02010701, A171) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A171 == 0x02010701) { // is sw ejection?
+          Store(0xF0010701, A171) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800022B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800022B to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000002)
+    }
+  }
+
+  //
+  // Root Port 3
+  //
+  Device (P2P3) {
+    //
+    // Device 3, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00030000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 3 [03])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A172 == 0xF0020701) { // SW ejected before ?
+          Store(0x02020701, A172) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800023B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800023B to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A172 == 0x10020701) { // ejected complete ?
+          Store(0x02020701, A172) // clear action value
+          Return (0x0)
+        }
+        elseif ((A172 == 0x01020701) || (A172 == 0x0F020701)) { // inserted ?
+          if (A13I == 0x00) {
+            Store(0x02020701, A172) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A172 == 0x0E020701) || (A172 == 0x0F020701)) { // inprogress inserted ?
+          if (A13I == 0x00) {
+            Store(0x02020701, A172) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A172 == 0x02020701) { // is sw ejection?
+          Store(0xF0020701, A172) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800023B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800023B to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000003)
+    }
+  }
+
+  //
+  // Root Port 4
+  //
+  Device (P2P4) {
+    //
+    // Device 4, Function 0 (Bus 0).
+    //
+
+    Name (_ADR, 0x00040000)
+    Name(_HPP, Package(){0x08,0x40, 0x01, 0x00})
+
+    Device (S0F0) {
+      //
+      // On Bus 4 ([04])
+      // Slot 0 (Device 0), Function 0
+      //
+
+      Name (_ADR, 0x00000000)
+
+      Method (_STA, 0) {
+        if (A173 == 0xF0030701) { // SW ejected before ?
+          Store(0x02030701, A173) // clear action value
+          Store(0x680000A4, DIN0) // Off RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800024B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800024B to DBNS1_10
+          Return(0xF)
+        }
+        elseif (A173 == 0x10030701) { // ejected complete ?
+          Store(0x02030701, A173) // clear action value
+          Return (0x0)
+        }
+        elseif ((A173 == 0x01030701) || (A173 == 0x0F030701)) { // inserted ?
+          if (A12I == 0x00) {
+            Store(0x02030701, A173) // clear action value
+          }
+          Return (0xF)
+        }
+        elseif ((A173 == 0x0E030701) || (A173 == 0x0F030701)) { // inprogress inserted ?
+          if (A12I == 0x00) {
+            Store(0x02030701, A173) // clear action value
+          }
+          Return (0xF)
+        }
+        else {
+          Return (0xF)
+        }
+      }
+
+      Method (_EJ0, 1) {
+        if (A173 == 0x02030701) { // is sw ejection?
+          Store(0xF0030701, A173) // set SW ejection event
+          Store(0x680000B4, DIN0) // Blink RED LED
+                                  // <Led:6-7.Led_action:4-5.Ampere_HP_CMD:0-3>
+                                  // Ampere_HP_CMD: LED_CMD = 4, HP_CHG_CMD = 3
+          Store(0x6800024B, OUTV) // <MsgType(0x6)-Hdlr(0x8).Resv.action.dev.segment>
+                                  // action: Insert = 1 & Remove = 2
+                                  // 0x6800024B to DBNS1_10
+        }
+      }
+
+      Name(_SUN, 0x00000004)
+    }
   }
 
   Method (_PXM, 0, NotSerialized) {

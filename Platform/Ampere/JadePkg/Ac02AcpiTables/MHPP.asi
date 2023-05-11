@@ -1,0 +1,92 @@
+/** @file
+
+  Copyright (c) 2023, Ampere Computing LLC. All rights reserved.<BR>
+
+  SPDX-License-Identifier: BSD-2-Clause-Patent
+
+**/
+
+// @DRAM base address 0x88970000
+// Regarding updating the status of hotplug PCIe ports, a shared DRAM
+// memory region between Arm Trusted Firmware and UEFI is used to indicate
+// PCIe hotplug event action. An item of MHPP table is used to reflect hotplug
+// event of each PCIe port. There is a maximum of 48 PCIe hotplug ports in Altra
+// Family processor, the definition in this table should be aligned with hotplug
+// port map of a specific platform. For example, in Ampere Mt. Jade platform,
+// there are 36 PCIe hotplug ports. Hence, this table defines 40 entries corresponding
+// to Ampere Mt. Jade PCIe hotplug port map.
+OperationRegion(MHPP, SystemMemory, 0x88970000, 960)
+Field (MHPP, DWordAcc, NoLock, Preserve) {
+    A050, 32, // 0. S0 RCA5.0
+    A00I, 8,  // incomplete remove
+    offset (24),
+    A051, 32, // 1. S0 RCA5.1
+    A01I, 8,  // incomplete remove
+    offset (48),
+    A052, 32, // 2. S0 RCA5.2
+    A02I, 8,  // incomplete remove
+    offset (72),
+    A053, 32, // 3. S0 RCA5.3
+    A03I, 8,  // incomplete remove
+    offset (96),
+    A040, 32, // 4. S0 RCA4.0
+    A04I, 8,  // incomplete remove
+    offset (120),
+    A041, 32, // 5. S0 RCA4.1
+    A05I, 8,  // incomplete remove
+    offset (144),
+    A042, 32, // 6. S0 RCA4.0
+    A06I, 8,  // incomplete remove
+    offset (168),
+    A043, 32, // 7. S0 RCA4.1
+    A07I, 8,  // incomplete remove
+    offset (192),
+    A163, 32, // 8. S1 RCA6.3
+    A08I, 8,  // incomplete remove
+    offset (216),
+    A162, 32, // 9 S1 RCA6.2
+    A09I, 8,  // incomplete remove
+    offset (240),
+    A161, 32, // 10. S1 RCA6.1
+    A10I, 8,  // incomplete remove
+    offset (264),
+    A160, 32, // 11. S1 RCA6.0
+    A11I, 8,  // incomplete remove
+    offset (288),
+    A173, 32, // 12. S1 RCA7.3
+    A12I, 8,  // incomplete remove
+    offset (312),
+    A172, 32, // 13. S1 RCA7.2
+    A13I, 8,  // incomplete remove
+    offset (336),
+    A171, 32, // 14. S1 RCA7.1
+    A14I, 8,  // incomplete remove
+    offset (360),
+    A170, 32, // 15. S1 RCA7.0
+    A15I, 8,  // incomplete remove
+    offset (384),
+    A150, 32, // 16. S1 RCA5.0
+    A16I, 8,  // incomplete remove
+    offset (408),
+    A151, 32, // 17. S1 RCA5.1
+    A17I, 8,  // incomplete remove
+    offset (432),
+    A152, 32, // 18. S1 RCA5.2
+    A18I, 8,  // incomplete remove
+    offset (456),
+    A153, 32, // 19. S1 RCA5.3
+    A19I, 8,  // incomplete remove
+    offset (480),
+    A120, 32, // 20. S1 RCA2.0
+    A20I, 8,  // incomplete remove
+    offset (504),
+    A121, 32, // 21 S1 RCA2.1
+    A21I, 8,  // incomplete remove
+    offset (528),
+    A122, 32, // 22. S1 RCA2.2
+    A22I, 8,  // incomplete remove
+    offset (552),
+    A123, 32, // 23. S1 RCA2.3
+    A23I, 8,  // incomplete remove
+    offset (576)
+  }

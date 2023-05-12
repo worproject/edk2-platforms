@@ -33,7 +33,7 @@
    EFI_ACPI_6_0_GICR,                        /* Type */                        \
    sizeof (EFI_ACPI_6_0_GICR_STRUCTURE),     /* Length */                      \
    EFI_ACPI_RESERVED_WORD,                   /* Reserved */                    \
-   FixedPcdGet64 (PcdGicRedistributorsBase), /* DiscoveryRangeBaseAddress */   \
+   PcdGet64 (PcdGicRedistributorsBase),      /* DiscoveryRangeBaseAddress */   \
    SBSAQEMU_MADT_GICR_SIZE                   /* DiscoveryRangeLength */        \
    }
 

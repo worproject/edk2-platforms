@@ -406,12 +406,6 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   # Size of the region used by UEFI in permanent memory (Reserved 64MB)
   gArmPlatformTokenSpaceGuid.PcdSystemMemoryUefiRegionSize|0x04000000
 
-  #
-  # ARM General Interrupt Controller
-  #
-  gArmTokenSpaceGuid.PcdGicDistributorBase|0x40060000
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x40080000
-
   ## Default Terminal Type
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
@@ -522,6 +516,12 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   # System Memory Size -- 128 MB initially, actual size will be fetched from DT
   # TODO as no DT will be used we should pass this by some other method
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x08000000
+
+  #
+  # ARM General Interrupt Controller
+  #
+  gArmTokenSpaceGuid.PcdGicDistributorBase|0x40060000
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x40080000
 
   #
   # Set video resolution for boot options

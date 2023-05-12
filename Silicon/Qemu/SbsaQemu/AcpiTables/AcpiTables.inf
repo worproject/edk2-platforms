@@ -32,9 +32,6 @@
   Silicon/Qemu/SbsaQemu/SbsaQemu.dec
 
 [FixedPcd]
-  gArmTokenSpaceGuid.PcdGicDistributorBase
-  gArmTokenSpaceGuid.PcdGicRedistributorsBase
-
   gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerIntrNum
   gArmTokenSpaceGuid.PcdArmArchTimerHypIntrNum
@@ -74,3 +71,7 @@
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciSize
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciSize
+
+[Pcd]
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase

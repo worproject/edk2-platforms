@@ -26,3 +26,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable == TRUE
   INF ManageabilityPkg/Universal/MctpProtocol/Dxe/MctpProtocolDxe.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru == TRUE
+  INF ManageabilityPkg/Universal/IpmiFru/IpmiFru.inf
+!endif

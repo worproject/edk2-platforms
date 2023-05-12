@@ -37,6 +37,7 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmEnable              |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable              |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable|TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru                 |TRUE
 
 #
 # Include common libraries
@@ -53,5 +54,6 @@
 
 [LibraryClasses]
   ManageabilityTransportLib|ManageabilityPkg/Library/BaseManageabilityTransportNullLib/BaseManageabilityTransportNull.inf
+  IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
 
 !include Include/Manageability.dsc

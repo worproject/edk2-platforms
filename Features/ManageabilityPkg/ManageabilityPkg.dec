@@ -72,6 +72,10 @@
   # @Prompt MCTP KCS (Memory mapped) I/O base address
   gManageabilityPkgTokenSpaceGuid.PcdMctpKcsBaseAddress|0xca2|UINT32|0x00000004
 
+  ## This is the value of SOL channels supported on platform.
+  # @Prompt SOL channel number
+  gManageabilityPkgTokenSpaceGuid.PcdMaxSolChannels|3|UINT8|0x00000100
+
 [PcdsFeatureFlag]
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable|FALSE|BOOLEAN|0x10000001
   gManageabilityPkgTokenSpaceGuid.PcdManageabilitySmmIpmiEnable|FALSE|BOOLEAN|0x10000002

@@ -83,7 +83,7 @@ AddMadtTable (
   EFI_ACPI_6_0_GIC_DISTRIBUTOR_STRUCTURE Gicd =
     EFI_ACPI_6_0_GIC_DISTRIBUTOR_INIT (
       0,
-      FixedPcdGet32 (PcdGicDistributorBase),
+      FixedPcdGet64 (PcdGicDistributorBase),
       0,
       3 /* GicVersion */
     );

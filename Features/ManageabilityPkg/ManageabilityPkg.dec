@@ -88,3 +88,8 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus|FALSE|BOOLEAN|0x10000009
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog|FALSE|BOOLEAN|0x1000000A
 
+[PcdsDynamic, PcdsDynamicEx]
+  gManageabilityPkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0x20000001
+  ## This is the timeout value in milliseconds, default set to 360 milliseconds
+  # @Prompt IPMI Fault Resilient Booting timeout value in milliseconds.
+  gManageabilityPkgTokenSpaceGuid.PcdFRBTimeoutValue|360|UINT16|0x20000002

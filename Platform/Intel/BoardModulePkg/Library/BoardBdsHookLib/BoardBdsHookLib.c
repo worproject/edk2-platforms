@@ -1273,6 +1273,7 @@ BdsReadyToBootCallback (
   @param[in] Context    Pointer to the context data registered to the Event.
 **/
 VOID
+EFIAPI
 BdsBeforeConsoleAfterTrustedConsoleCallback (
   IN EFI_EVENT          Event,
   IN VOID               *Context
@@ -1294,6 +1295,7 @@ BdsBeforeConsoleAfterTrustedConsoleCallback (
   @param[in] Context    Pointer to the context data registered to the Event.
 **/
 VOID
+EFIAPI
 BdsBeforeConsoleBeforeEndOfDxeGuidCallback (
   IN EFI_EVENT          Event,
   IN VOID               *Context
@@ -1311,6 +1313,7 @@ BdsBeforeConsoleBeforeEndOfDxeGuidCallback (
   @param[in] Context    Pointer to the context data registered to the Event.
 **/
 VOID
+EFIAPI
 BdsAfterConsoleReadyBeforeBootOptionCallback (
   IN EFI_EVENT          Event,
   IN VOID               *Context

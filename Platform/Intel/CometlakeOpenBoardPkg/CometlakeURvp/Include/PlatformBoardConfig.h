@@ -15,9 +15,6 @@
 #include <GpioConfig.h>
 #include <TbtBoardInfo.h>
 
-#define IS_ALIGNED(addr, size) (((addr) & (size - 1)) ? 0 : 1)
-#define ALIGN16(size)          (IS_ALIGNED(size, 16) ? size : ((size + 16) & 0xFFF0))
-
 #define BOARD_CONFIG_BLOCK_PEI_PREMEM_VERSION  0x00000001
 #define BOARD_CONFIG_BLOCK_PEI_POSTMEM_VERSION 0x00000001
 #define BOARD_CONFIG_BLOCK_DXE_VERSION 0x00000001

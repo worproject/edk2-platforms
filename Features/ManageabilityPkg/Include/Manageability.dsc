@@ -55,3 +55,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru == TRUE
   ManageabilityPkg/Universal/IpmiFru/IpmiFru.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt == TRUE
+  ManageabilityPkg/Universal/IpmiOsWdt/OsWdt.inf
+!endif

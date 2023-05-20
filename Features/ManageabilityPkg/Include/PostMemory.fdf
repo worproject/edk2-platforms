@@ -30,3 +30,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru == TRUE
   INF ManageabilityPkg/Universal/IpmiFru/IpmiFru.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt == TRUE
+  INF ManageabilityPkg/Universal/IpmiOsWdt/OsWdt.inf
+!endif

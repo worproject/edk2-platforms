@@ -80,4 +80,5 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeMctpEnable|FALSE|BOOLEAN|0x10000005
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable|FALSE|BOOLEAN|0x10000006
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru|FALSE|BOOLEAN|0x10000007
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt|FALSE|BOOLEAN|0x10000008
 

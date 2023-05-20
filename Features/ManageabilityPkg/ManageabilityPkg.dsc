@@ -39,6 +39,7 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxePldmSmbiosTransferEnable|TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru                 |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt               |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus           |TRUE
 
 #
 # Include common libraries

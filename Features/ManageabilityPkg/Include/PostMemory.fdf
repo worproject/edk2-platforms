@@ -34,3 +34,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt == TRUE
   INF ManageabilityPkg/Universal/IpmiOsWdt/OsWdt.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus == TRUE
+  INF ManageabilityPkg/Universal/IpmiSolStatus/SolStatus.inf
+!endif

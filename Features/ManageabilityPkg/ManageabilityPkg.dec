@@ -86,4 +86,5 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFru|FALSE|BOOLEAN|0x10000007
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt|FALSE|BOOLEAN|0x10000008
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus|FALSE|BOOLEAN|0x10000009
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog|FALSE|BOOLEAN|0x1000000A
 

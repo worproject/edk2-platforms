@@ -38,3 +38,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus == TRUE
   INF ManageabilityPkg/Universal/IpmiSolStatus/SolStatus.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog == TRUE
+  INF ManageabilityPkg/Universal/IpmiBmcElog/BmcElog.inf
+!endif

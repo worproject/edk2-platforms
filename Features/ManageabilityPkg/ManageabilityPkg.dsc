@@ -43,6 +43,7 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog             |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb                 |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiFrb                 |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcAcpi             |TRUE
 
 #
 # Include common libraries

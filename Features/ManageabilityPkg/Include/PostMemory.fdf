@@ -46,3 +46,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb == TRUE
   INF ManageabilityPkg/Universal/IpmiFrb/FrbDxe.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcAcpi == TRUE
+  INF ManageabilityPkg/Universal/IpmiBmcAcpi/BmcAcpi.inf
+!endif

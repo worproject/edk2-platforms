@@ -42,3 +42,7 @@
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog == TRUE
   INF ManageabilityPkg/Universal/IpmiBmcElog/BmcElog.inf
 !endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb == TRUE
+  INF ManageabilityPkg/Universal/IpmiFrb/FrbDxe.inf
+!endif

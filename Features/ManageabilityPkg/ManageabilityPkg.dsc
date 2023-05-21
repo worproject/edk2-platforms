@@ -41,6 +41,8 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt               |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus           |TRUE
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog             |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb                 |TRUE
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiFrb                 |TRUE
 
 #
 # Include common libraries

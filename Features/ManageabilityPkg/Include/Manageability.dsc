@@ -30,6 +30,10 @@
   ManageabilityPkg/Universal/IpmiProtocol/Pei/IpmiPpiPei.inf
 !endif
 
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiFrb == TRUE
+  ManageabilityPkg/Universal/IpmiFrb/FrbPei.inf
+!endif
+
 [Components.X64, Components.AARCH64]
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiEnable == TRUE
   ManageabilityPkg/Universal/IpmiProtocol/Dxe/IpmiProtocolDxe.inf
@@ -66,4 +70,8 @@
 
 !if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog == TRUE
   ManageabilityPkg/Universal/IpmiBmcElog/BmcElog.inf
+!endif
+
+!if gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb == TRUE
+  ManageabilityPkg/Universal/IpmiFrb/FrbDxe.inf
 !endif

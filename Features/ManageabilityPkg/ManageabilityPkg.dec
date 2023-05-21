@@ -87,6 +87,8 @@
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiOsWdt|FALSE|BOOLEAN|0x10000008
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiSolStatus|FALSE|BOOLEAN|0x10000009
   gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiBmcElog|FALSE|BOOLEAN|0x1000000A
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityDxeIpmiFrb|FALSE|BOOLEAN|0x1000000B
+  gManageabilityPkgTokenSpaceGuid.PcdManageabilityPeiIpmiFrb|FALSE|BOOLEAN|0x1000000C
 
 [PcdsDynamic, PcdsDynamicEx]
   gManageabilityPkgTokenSpaceGuid.PcdFRB2EnabledFlag|TRUE|BOOLEAN|0x20000001

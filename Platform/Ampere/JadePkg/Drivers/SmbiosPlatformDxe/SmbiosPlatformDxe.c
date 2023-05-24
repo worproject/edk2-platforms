@@ -1,657 +1,46 @@
 /** @file
+  This driver parses the mSmbiosPlatformDxeDataTable structure
+  and reports any generated data using SMBIOS protocol.
 
-  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
+  Based on files under Nt32Pkg/MiscSubClassPlatformDxe/
 
+  Copyright (c) 2022, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2021, NUVIA Inc. All rights reserved.<BR>
+  Copyright (c) 2006 - 2011, Intel Corporation. All rights reserved.<BR>
+  Copyright (c) 2015, Hisilicon Limited. All rights reserved.<BR>
+  Copyright (c) 2015, Linaro Limited. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
 
-#include <Uefi.h>
-
-#include <Guid/SmBios.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/HiiLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PrintLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Protocol/Smbios.h>
 
-#define CHASSIS_VERSION_TEMPLATE    "None               \0"
-#define CHASSIS_SERIAL_TEMPLATE     "Serial Not Set     \0"
-#define CHASSIS_ASSET_TAG_TEMPLATE  "Asset Tag Not Set  \0"
+#include "SmbiosPlatformDxe.h"
 
-#define TYPE8_ADDITIONAL_STRINGS      \
-  "VGA1 - Rear VGA Connector\0"       \
-  "DB-15 Male (VGA)         \0"
+#define SIZE_OF_HII_DATABASE_DEFAULT_STRINGS \
+ADDITIONAL_STR_INDEX_MAX * SMBIOS_UNICODE_STRING_MAX_LENGTH
 
-#define TYPE9_ADDITIONAL_STRINGS       \
-  "Socket 0 Riser 1 x32 - Slot 1\0"
+STATIC EFI_HANDLE          mSmbiosPlatformDxeImageHandle;
+STATIC EFI_STRING          mDefaultHiiDatabaseStr;
+STATIC EFI_SMBIOS_PROTOCOL *mPlatformDxeSmbios = NULL;
 
-#define TYPE11_ADDITIONAL_STRINGS       \
-  "www.amperecomputing.com\0"
-
-#define TYPE41_ADDITIONAL_STRINGS       \
-  "Onboard VGA\0"
-
-#define ADDITIONAL_STR_INDEX_1    0x01
-#define ADDITIONAL_STR_INDEX_2    0x02
-#define ADDITIONAL_STR_INDEX_3    0x03
-#define ADDITIONAL_STR_INDEX_4    0x04
-#define ADDITIONAL_STR_INDEX_5    0x05
-#define ADDITIONAL_STR_INDEX_6    0x06
-
-//
-// Type definition and contents of the default SMBIOS table.
-// This table covers only the minimum structures required by
-// the SMBIOS specification (section 6.2, version 3.0)
-//
-#pragma pack(1)
-typedef struct {
-  SMBIOS_TABLE_TYPE8 Base;
-  CHAR8              Strings[sizeof (TYPE8_ADDITIONAL_STRINGS)];
-} ARM_TYPE8;
-
-typedef struct {
-  SMBIOS_TABLE_TYPE9 Base;
-  CHAR8              Strings[sizeof (TYPE9_ADDITIONAL_STRINGS)];
-} ARM_TYPE9;
-
-typedef struct {
-  SMBIOS_TABLE_TYPE11 Base;
-  CHAR8               Strings[sizeof (TYPE11_ADDITIONAL_STRINGS)];
-} ARM_TYPE11;
-
-typedef struct {
-  SMBIOS_TABLE_TYPE41 Base;
-  CHAR8               Strings[sizeof (TYPE41_ADDITIONAL_STRINGS)];
-} ARM_TYPE41;
-
-#pragma pack()
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8Vga = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,       // InternalReferenceDesignator String
-    PortConnectorTypeDB15Female,  // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,       // ExternalReferenceDesignator String
-    PortTypeOther,                // ExternalConnectorType;
-    PortTypeVideoPort,            // PortType;
-  },
-  "VGA1 - Rear VGA Connector\0" \
-  "DB-15 Male (VGA)\0"
-};
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8USBFront = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,       // InternalReferenceDesignator String
-    PortConnectorTypeUsb,         // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,       // ExternalReferenceDesignator String
-    PortTypeOther,                // ExternalConnectorType;
-    PortTypeUsb,                  // PortType;
-  },
-  "Front Panel USB 3.0\0"  \
-  "USB\0"
-};
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8USBRear = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,       // InternalReferenceDesignator String
-    PortConnectorTypeUsb,         // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,       // ExternalReferenceDesignator String
-    PortTypeOther,                // ExternalConnectorType;
-    PortTypeUsb,                  // PortType;
-  },
-  "Rear Panel USB 3.0\0"   \
-  "USB\0"
-};
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8NetRJ45 = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,       // InternalReferenceDesignator String
-    PortConnectorTypeRJ45,        // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,       // ExternalReferenceDesignator String
-    PortConnectorTypeRJ45,        // ExternalConnectorType;
-    PortTypeNetworkPort,          // PortType;
-  },
-  "RJ1 - BMC RJ45 Port\0" \
-  "RJ45 Connector\0"
-};
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8NetOcp = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,       // InternalReferenceDesignator String
-    PortTypeOther,                // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,       // ExternalReferenceDesignator String
-    PortTypeOther,                // ExternalConnectorType;
-    PortTypeNetworkPort,          // PortType;
-  },
-  "OCP1 - OCP NIC 3.0 Connector\0"  \
-  "OCP NIC 3.0\0"
-};
-
-// Type 8 Port Connector Information
-STATIC CONST ARM_TYPE8 mArmDefaultType8Uart = {
-  {
-    {                                             // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_PORT_CONNECTOR_INFORMATION, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE8),                // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,        // InternalReferenceDesignator String
-    PortTypeOther,                 // InternalConnectorType;
-    ADDITIONAL_STR_INDEX_2,        // ExternalReferenceDesignator String
-    PortConnectorTypeDB9Female,    // ExternalConnectorType;
-    PortTypeSerial16550Compatible, // PortType;
-  },
-  "UART1 - BMC UART5 Connector\0"  \
-  "DB-9 female\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk0RiserX32Slot1 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth16X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    0,
-    0,
-    0,
-  },
-  "S0 Riser 1 x32 - Slot 1\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk0RiserX32Slot2 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    4,
-    0,
-    0,
-  },
-  "S0 Riser x32 - Slot 2\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk0RiserX32Slot3 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    5,
-    0,
-    0,
-  },
-  "S0 Riser x32 - Slot 3\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1RiserX24Slot1 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    7,
-    0,
-    0,
-  },
-  "S1 Riser x24 - Slot 1\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1RiserX24Slot2 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    8,
-    0,
-    0,
-  },
-  "S1 Riser x24 - Slot 2\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1RiserX24Slot3 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    9,
-    0,
-    0,
-  },
-  "S1 Riser x24 - Slot 3\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1RiserX8Slot1 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth8X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    8,
-    0,
-    0,
-  },
-  "S1 Riser x8 - Slot 1\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk0OcpNic = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth16X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    1,
-    0,
-    0,
-  },
-  "S0 OCP NIC 3.0\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1NvmeM2Slot1 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth4X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    5,
-    0,
-    0,
-  },
-  "S1 NVMe M.2 - Slot 1\0"
-};
-
-// Type 9 System Slots
-STATIC ARM_TYPE9 mArmDefaultType9Sk1NvmeM2Slot2 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_SYSTEM_SLOTS, // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE9),  // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1,
-    SlotTypePciExpressGen3,
-    SlotDataBusWidth4X,
-    SlotUsageAvailable,
-    SlotLengthLong,
-    0,
-    {0, 0, 1}, // Provides 3.3 Volts
-    {1},       // PME
-    5,
-    0,
-    0,
-  },
-  "S1 NVMe M.2 - Slot 2\0"
-};
-
-// Type 11 OEM Strings
-STATIC ARM_TYPE11 mArmDefaultType11 = {
-  {
-    {                               // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_OEM_STRINGS,  // UINT8 Type
-      sizeof (SMBIOS_TABLE_TYPE11), // UINT8 Length
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    ADDITIONAL_STR_INDEX_1
-  },
-  TYPE11_ADDITIONAL_STRINGS
-};
-
-// Type 24 Hardware Security
-STATIC SMBIOS_TABLE_TYPE24 mArmDefaultType24 = {
-  {                                    // SMBIOS_STRUCTURE Hdr
-    EFI_SMBIOS_TYPE_HARDWARE_SECURITY, // UINT8 Type
-    sizeof (SMBIOS_TABLE_TYPE24),      // UINT8 Length
-    SMBIOS_HANDLE_PI_RESERVED,
-  },
-  0
-};
-
-// Type 38 IPMI Device Information
-STATIC SMBIOS_TABLE_TYPE38 mArmDefaultType38 = {
-  {                                          // SMBIOS_STRUCTURE Hdr
-    EFI_SMBIOS_TYPE_IPMI_DEVICE_INFORMATION, // UINT8 Type
-    sizeof (SMBIOS_TABLE_TYPE38),            // UINT8 Length
-    SMBIOS_HANDLE_PI_RESERVED,
-  },
-  IPMIDeviceInfoInterfaceTypeSSIF,
-  0x20,
-  0x20,
-  0xFF,
-  0x20
-};
-
-// Type 41 Onboard Devices Extended Information
-STATIC ARM_TYPE41 mArmDefaultType41 = {
-  {
-    { // SMBIOS_STRUCTURE Hdr
-      EFI_SMBIOS_TYPE_ONBOARD_DEVICES_EXTENDED_INFORMATION,
-      sizeof (SMBIOS_TABLE_TYPE41),
-      SMBIOS_HANDLE_PI_RESERVED,
-    },
-    1,
-    0x83,  // OnBoardDeviceExtendedTypeVideo, Enabled
-    1,
-    4,
-    2,
-    0,
-  },
-  TYPE41_ADDITIONAL_STRINGS
-};
-
-// Type 42 System Boot Information
-STATIC SMBIOS_TABLE_TYPE42 mArmDefaultType42 = {
-  { // SMBIOS_STRUCTURE Hdr
-    EFI_SMBIOS_TYPE_MANAGEMENT_CONTROLLER_HOST_INTERFACE,
-    sizeof (SMBIOS_TABLE_TYPE42),
-    SMBIOS_HANDLE_PI_RESERVED,
-  },
-  MCHostInterfaceTypeOemDefined,
-  4,
-  {0xFF, 0, 0, 0}
-};
-
-STATIC CONST VOID *DefaultCommonTables[] =
-{
-  &mArmDefaultType8Vga,
-  &mArmDefaultType8USBFront,
-  &mArmDefaultType8USBRear,
-  &mArmDefaultType8NetRJ45,
-  &mArmDefaultType8NetOcp,
-  &mArmDefaultType8Uart,
-  &mArmDefaultType9Sk0RiserX32Slot1,
-  &mArmDefaultType9Sk0RiserX32Slot2,
-  &mArmDefaultType9Sk0RiserX32Slot3,
-  &mArmDefaultType9Sk1RiserX24Slot1,
-  &mArmDefaultType9Sk1RiserX24Slot2,
-  &mArmDefaultType9Sk1RiserX24Slot3,
-  &mArmDefaultType9Sk1RiserX8Slot1,
-  &mArmDefaultType9Sk0OcpNic,
-  &mArmDefaultType9Sk1NvmeM2Slot1,
-  &mArmDefaultType9Sk1NvmeM2Slot2,
-  &mArmDefaultType11,
-  &mArmDefaultType24,
-  &mArmDefaultType38,
-  &mArmDefaultType41,
-  &mArmDefaultType42,
-  NULL
-};
-
-typedef struct {
-  CHAR8 MonthNameStr[4]; // example "Jan", Compiler build date, month
-  CHAR8 DigitStr[3];     // example "01", Smbios date format, month
-} MonthStringDig;
-
-STATIC
-UINTN
-GetStringPackSize (
-  CHAR8 *StringPack
-  )
-{
-  UINTN StrCount;
-  CHAR8 *StrStart;
-
-  if ((*StringPack == 0) && (*(StringPack + 1) == 0)) {
-    return 0;
-  }
-
-  // String section ends in double-null (0000h)
-  for (StrCount = 0, StrStart = StringPack;
-       ((*StrStart != 0) || (*(StrStart + 1) != 0)); StrStart++, StrCount++)
-  {
-  }
-
-  return StrCount + 2; // Included the double NULL
-}
-
-// Update String at String number to String Pack
-EFI_STATUS
-UpdateStringPack (
-  CHAR8 *StringPack,
-  CHAR8 *String,
-  UINTN StringNumber
-  )
-{
-  CHAR8 *StrStart;
-  UINTN StrIndex;
-  UINTN InputStrLen;
-  UINTN TargetStrLen;
-  UINTN BufferSize;
-  CHAR8 *Buffer;
-
-  StrStart = StringPack;
-  for (StrIndex = 1; StrIndex < StringNumber; StrStart++) {
-    // A string ends in 00h
-    if (*StrStart == 0) {
-      StrIndex++;
-    }
-    // String section ends in double-null (0000h)
-    if ((*StrStart == 0) && (*(StrStart + 1) == 0)) {
-      return EFI_NOT_FOUND;
-    }
-  }
-
-  if (*StrStart == 0) {
-    StrStart++;
-  }
-
-  InputStrLen = AsciiStrLen (String);
-  TargetStrLen = AsciiStrLen (StrStart);
-  BufferSize = GetStringPackSize (StrStart + TargetStrLen + 1);
-
-  // Replace the String if length matched
-  // OR this is the last string
-  if (InputStrLen == TargetStrLen || (BufferSize == 0)) {
-    CopyMem (StrStart, String, InputStrLen);
-  }
-  // Otherwise, buffer is needed to apply new string
-  else {
-    Buffer = AllocateZeroPool (BufferSize);
-    if (Buffer == NULL) {
-      return EFI_OUT_OF_RESOURCES;
-    }
-
-    CopyMem (Buffer, StrStart + TargetStrLen + 1, BufferSize);
-    CopyMem (StrStart, String, InputStrLen + 1);
-    CopyMem (StrStart + InputStrLen + 1, Buffer, BufferSize);
-
-    FreePool (Buffer);
-  }
-
-  return EFI_SUCCESS;
-}
+EFI_HII_HANDLE      mSmbiosPlatformDxeHiiHandle;
 
 /**
-   Install a whole table worth of structures
+  Standard EFI driver point. This driver parses the mSmbiosPlatformDataTable
+  structure and reports any generated data using SMBIOS protocol.
 
-   @param  Smbios               SMBIOS protocol.
-   @param  DefaultTables        A pointer to the default SMBIOS table structure.
-**/
-EFI_STATUS
-InstallStructures (
-  IN       EFI_SMBIOS_PROTOCOL *Smbios,
-  IN CONST VOID                *DefaultTables[]
-  )
-{
-  EFI_STATUS        Status = EFI_SUCCESS;
-  EFI_SMBIOS_HANDLE SmbiosHandle;
-  UINTN             TableIndex;
+  @param  ImageHandle          Handle for the image of this driver.
+  @param  SystemTable          Pointer to the EFI System Table.
 
-  ASSERT (Smbios != NULL);
-
-  for (TableIndex = 0; DefaultTables[TableIndex] != NULL; TableIndex++) {
-    SmbiosHandle = ((EFI_SMBIOS_TABLE_HEADER *)DefaultTables[TableIndex])->Handle;
-    Status = Smbios->Add (
-                       Smbios,
-                       NULL,
-                       &SmbiosHandle,
-                       (EFI_SMBIOS_TABLE_HEADER *)DefaultTables[TableIndex]
-                       );
-    if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: adding %d failed\n", __FUNCTION__, TableIndex));
-
-      // stop adding rather than continuing
-      return Status;
-    }
-  }
-
-  return EFI_SUCCESS;
-}
-
-/**
-   Install all structures from the DefaultTables structure
-
-   @param  Smbios               SMBIOS protocol
-
-**/
-EFI_STATUS
-InstallAllStructures (
-  IN EFI_SMBIOS_PROTOCOL *Smbios
-  )
-{
-  EFI_STATUS Status = EFI_SUCCESS;
-
-  ASSERT (Smbios != NULL);
-
-  // Install Tables
-  Status = InstallStructures (Smbios, DefaultCommonTables);
-  ASSERT_EFI_ERROR (Status);
-
-  return Status;
-}
-
-/**
-   Installs SMBIOS information for ARM platforms
-
-   @param ImageHandle     Module's image handle
-   @param SystemTable     Pointer of EFI_SYSTEM_TABLE
-
-   @retval EFI_SUCCESS    Smbios data successfully installed
-   @retval Other          Smbios data was not installed
-
+  @retval EFI_SUCCESS          The data was successfully stored.
+          EFI_OUT_OF_RESOURCES There is no remaining memory to satisfy the request.
 **/
 EFI_STATUS
 EFIAPI
@@ -660,24 +49,438 @@ SmbiosPlatformDxeEntry (
   IN EFI_SYSTEM_TABLE *SystemTable
   )
 {
-  EFI_STATUS          Status;
-  EFI_SMBIOS_PROTOCOL *Smbios;
+  UINTN      Index;
+  EFI_STATUS Status;
+
+  mSmbiosPlatformDxeImageHandle = ImageHandle;
 
   //
-  // Find the SMBIOS protocol
+  // Allocate buffer to save default strings of HII Database
+  //
+  mDefaultHiiDatabaseStr = AllocateZeroPool (SIZE_OF_HII_DATABASE_DEFAULT_STRINGS);
+  if (mDefaultHiiDatabaseStr == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] HII Database String allocates memory resource failed.\n",
+      __func__,
+      __LINE__
+      ));
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  //
+  // Locate SMBIOS protocol and get HII Database Handle
   //
   Status = gBS->LocateProtocol (
                   &gEfiSmbiosProtocolGuid,
                   NULL,
-                  (VOID **)&Smbios
+                  (VOID **)&mPlatformDxeSmbios
                   );
-
   if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Could not locate SMBIOS protocol. %r\n",
+      __func__,
+      __LINE__,
+      Status
+      ));
     return Status;
   }
 
-  Status = InstallAllStructures (Smbios);
-  DEBUG ((DEBUG_ERROR, "SmbiosPlatform install - %r\n", Status));
+  mSmbiosPlatformDxeHiiHandle = HiiAddPackages (
+                                  &gEfiCallerIdGuid,
+                                  mSmbiosPlatformDxeImageHandle,
+                                  SmbiosPlatformDxeStrings,
+                                  NULL
+                                  );
+  if (mSmbiosPlatformDxeHiiHandle == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  //
+  // Iterate through all Data Tables of each Type and call
+  // function pointer to create and add Table accordingly
+  //
+  for (Index = 0; Index < mSmbiosPlatformDxeDataTableEntries; Index++) {
+    Status = (*mSmbiosPlatformDxeDataTable[Index].Function)(
+                mSmbiosPlatformDxeDataTable[Index].RecordData,
+                mSmbiosPlatformDxeDataTable[Index].StrToken
+                );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "[%a]:[%dL] Could not install SMBIOS Table Type%d. %r\n",
+        __func__,
+        __LINE__,
+        ((EFI_SMBIOS_TABLE_HEADER *)(mSmbiosPlatformDxeDataTable[Index].RecordData))->Type,
+        Status
+        ));
+    }
+  }
+
+  //
+  // Free buffer after all Tables were installed
+  //
+  FreePool (mDefaultHiiDatabaseStr);
+
+  return Status;
+}
+
+/**
+  Adds an SMBIOS record.
+
+  @param  Buffer                 The data for the SMBIOS record.
+                                 The format of the record is determined by
+                                 EFI_SMBIOS_TABLE_HEADER.Type. The size of the
+                                 formatted area is defined by EFI_SMBIOS_TABLE_HEADER.Length
+                                 and either followed by a double-null (0x0000) or a set
+                                 of null terminated strings and a null.
+  @param  SmbiosHandle           A unique handle will be assigned to the SMBIOS record
+                                 if not NULL.
+
+  @retval EFI_SUCCESS            Record was added.
+  @retval EFI_OUT_OF_RESOURCES   Record was not added due to lack of system resources.
+  @retval EFI_ALREADY_STARTED    The SmbiosHandle passed in was already in use.
+  @retval EFI_INVALID_PARAMETER  Buffer is NULL.
+**/
+EFI_STATUS
+SmbiosPlatformDxeAddRecord (
+  IN UINT8                 *Buffer,
+  IN OUT EFI_SMBIOS_HANDLE *SmbiosHandle OPTIONAL
+  )
+{
+  EFI_STATUS        Status;
+  EFI_SMBIOS_HANDLE Handle;
+
+  if (Buffer == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Buffer is NULL - Invalid parameter. %r\n",
+      __func__,
+      __LINE__
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Handle = SMBIOS_HANDLE_PI_RESERVED;
+  if (SmbiosHandle != NULL) {
+    Handle = *SmbiosHandle;
+  }
+
+  Status = mPlatformDxeSmbios->Add (
+                                 mPlatformDxeSmbios,
+                                 NULL,
+                                 &Handle,
+                                 (EFI_SMBIOS_TABLE_HEADER *)Buffer
+                                 );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] SMBIOS Type%d Table Log Failed! %r\n",
+      __func__,
+      __LINE__,
+      ((EFI_SMBIOS_TABLE_HEADER *)Buffer)->Type,
+      Status
+      ));
+  }
+  if (SmbiosHandle != NULL) {
+    *SmbiosHandle = Handle;
+  }
+
+  return Status;
+}
+
+/**
+  Fetches the number of handles of the specified SMBIOS type.
+
+  @param  SmbiosType The type of SMBIOS record to look for.
+
+  @retval UINTN      The number of handles.
+**/
+STATIC
+UINTN
+GetHandleCount (
+  IN UINT8 SmbiosType
+  )
+{
+  UINTN                   HandleCount;
+  EFI_STATUS              Status;
+  EFI_SMBIOS_HANDLE       SmbiosHandle;
+  EFI_SMBIOS_TABLE_HEADER *Record;
+
+  HandleCount = 0;
+  SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
+  // Iterate through entries to get the number
+  do {
+    Status = mPlatformDxeSmbios->GetNext (
+                                   mPlatformDxeSmbios,
+                                   &SmbiosHandle,
+                                   &SmbiosType,
+                                   &Record,
+                                   NULL
+                                   );
+
+    if (Status == EFI_SUCCESS) {
+      HandleCount++;
+    }
+  } while (Status != EFI_NOT_FOUND);
+
+  return HandleCount;
+}
+
+/**
+  Fetches a list of the specified SMBIOS Table types.
+
+  @param[in]   SmbiosType   The type of table to fetch.
+  @param[out]  HandleArray  The array of handles.
+  @param[out]  HandleCount  Number of handles in the array.
+**/
+VOID
+SmbiosPlatformDxeGetLinkTypeHandle (
+  IN  UINT8         SmbiosType,
+  OUT SMBIOS_HANDLE **HandleArray,
+  OUT UINTN         *HandleCount
+  )
+{
+  UINTN                   Index;
+  EFI_STATUS              Status;
+  EFI_SMBIOS_HANDLE       SmbiosHandle;
+  EFI_SMBIOS_TABLE_HEADER *Record;
+
+  if (SmbiosType > END_OF_SMBIOS_TABLE_TYPE) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Invalid SMBIOS Type.\n",
+      __func__,
+      __LINE__
+      ));
+  }
+
+  *HandleCount = GetHandleCount (SmbiosType);
+  *HandleArray = AllocateZeroPool (sizeof (SMBIOS_HANDLE) * (*HandleCount));
+  if (*HandleArray == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] HandleArray allocates memory resource failed.\n",
+      __func__,
+      __LINE__
+      ));
+    *HandleCount = 0;
+    return;
+  }
+
+  SmbiosHandle = SMBIOS_HANDLE_PI_RESERVED;
+
+  for (Index = 0; Index < (*HandleCount); Index++) {
+    Status = mPlatformDxeSmbios->GetNext (
+                                   mPlatformDxeSmbios,
+                                   &SmbiosHandle,
+                                   &SmbiosType,
+                                   &Record,
+                                   NULL
+                                   );
+
+    if (Status == EFI_SUCCESS) {
+      (*HandleArray)[Index] = Record->Handle;
+    } else {
+      // It should never reach here
+      ASSERT (FALSE);
+      break;
+    }
+  }
+}
+
+/**
+  Create SMBIOS Table Record with additional strings.
+
+  @param[out]  TableRecord    Table Record is created.
+  @param[in]   InputData      Input Table from Data Table.
+  @param[in]   TableTypeSize  Size of Table with specified type.
+  @param[in]   StrToken       Pointer to Token of additional strings in HII Database.
+**/
+VOID
+SmbiosPlatformDxeCreateTable (
+  OUT VOID           **TableRecord,
+  IN  VOID           **InputData,
+  IN  UINT8          TableTypeSize,
+  IN  STR_TOKEN_INFO *StrToken
+  )
+{
+  CHAR8      *StrStart;
+  UINT8      TableSize;
+  UINT8      SmbiosAdditionalStrLen;
+  UINT8      Index;
+  EFI_STRING SmbiosAdditionalStr;
+
+  if (*InputData == NULL ||
+      StrToken == NULL ||
+      TableTypeSize < sizeof (EFI_SMBIOS_TABLE_HEADER)
+      )
+  {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Invalid parameter to create SMBIOS Table\n",
+      __func__,
+      __LINE__
+      ));
+    return;
+  }
+
+  //
+  // Calculate size of Table.
+  //
+  if (StrToken->TokenLen != 0) {
+    TableSize = TableTypeSize + 1; // Last byte is Null-terminated for Table with Null-terminated additional strings
+    for (Index = 0; Index < StrToken->TokenLen; Index++) {
+      SmbiosAdditionalStr = HiiGetPackageString (
+                              &gEfiCallerIdGuid,
+                              StrToken->TokenArray[Index],
+                              NULL
+                              );
+      TableSize += StrLen (SmbiosAdditionalStr) + 1;
+      FreePool (SmbiosAdditionalStr);
+    }
+  } else {
+    TableSize = TableTypeSize + 1 + 1; // Double-null for Table with no additional strings
+  }
+
+  //
+  // Allocate Table and copy strings from
+  // HII Database for additional strings.
+  //
+  *TableRecord = AllocateZeroPool (TableSize);
+  if (*TableRecord == NULL) {
+    return;
+  }
+  CopyMem (*TableRecord, *InputData, TableTypeSize);
+  StrStart = (CHAR8 *)(*TableRecord + TableTypeSize);
+  for (Index = 0; Index < StrToken->TokenLen; Index++) {
+    SmbiosAdditionalStr = HiiGetPackageString (
+                            &gEfiCallerIdGuid,
+                            StrToken->TokenArray[Index],
+                            NULL
+                            );
+    SmbiosAdditionalStrLen = StrLen (SmbiosAdditionalStr) + 1;
+    UnicodeStrToAsciiStrS (
+      SmbiosAdditionalStr,
+      StrStart,
+      SmbiosAdditionalStrLen
+    );
+    FreePool (SmbiosAdditionalStr);
+    StrStart += SmbiosAdditionalStrLen;
+  }
+}
+
+/**
+  Save default strings of HII Database in case multiple tables with the same type using
+  these data for setting additional strings. After using, default strings will be set
+  back again in HII Database by using SmbiosPlatformDxeRestoreHiiDefaultString function
+  for other tables with the same type to use. Before saving HII Database default strings,
+  buffer for saving need to be available. Otherwise, that means a certain SMBIOS Table used
+  this function but forget using SmbiosPlatformDxeRestoreHiiDefaultString function to free
+  buffer for other Tables to use so this check is for that purpose.
+
+  @param[in]  StrToken     Pointer to Token of additional strings in HII Database.
+
+  @retval     EFI_SUCCESS  Saved default strings of HII Database successfully.
+              Other        Failed to save default strings of HII Database.
+**/
+EFI_STATUS
+SmbiosPlatformDxeSaveHiiDefaultString (
+  IN STR_TOKEN_INFO *StrToken
+  )
+{
+  UINT8      Index;
+  UINT8      HiiDatabaseStrLen;
+  EFI_STRING HiiDatabaseStr;
+
+  if (StrToken == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Invalid String Tokens\n",
+      __func__,
+      __LINE__
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  //
+  // Start saving HII Default Strings
+  //
+  for (Index = 0; Index < StrToken->TokenLen; Index++) {
+    ASSERT (IsZeroBuffer ((VOID *)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH], SMBIOS_UNICODE_STRING_MAX_LENGTH - 1));
+    HiiDatabaseStr = HiiGetPackageString (
+                       &gEfiCallerIdGuid,
+                       StrToken->TokenArray[Index],
+                       NULL
+                       );
+    HiiDatabaseStrLen = (StrLen (HiiDatabaseStr) + 1) * sizeof (CHAR16);
+    ASSERT (HiiDatabaseStrLen <= SMBIOS_UNICODE_STRING_MAX_LENGTH);
+    UnicodeSPrint (
+      (CHAR16 *)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH],
+      HiiDatabaseStrLen,
+      HiiDatabaseStr
+      );
+    FreePool (HiiDatabaseStr);
+  }
+
+  return EFI_SUCCESS;
+}
+
+/**
+  Restore default strings of HII Database after using for setting additional strings.
+
+  @param[in]  StrToken     Pointer to Token of additional strings in HII Database.
+
+  @retval     EFI_SUCCESS  Restore default strings off HII Database successfully.
+              Other        Failed to restore default strings of HII Database.
+**/
+EFI_STATUS
+SmbiosPlatformDxeRestoreHiiDefaultString (
+  IN STR_TOKEN_INFO *StrToken
+  )
+{
+  UINT8      Index;
+  EFI_STATUS Status;
+
+  if (StrToken == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]:[%dL] Invalid String Tokens\n",
+      __func__,
+      __LINE__
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  for (Index = 0; Index < StrToken->TokenLen; Index++) {
+    if (IsZeroBuffer ((VOID *)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH], SMBIOS_UNICODE_STRING_MAX_LENGTH - 1)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "[%a]:[%dL] Default strings were not saved previously so failed to restore default strings.\n",
+        __func__,
+        __LINE__
+        ));
+      return EFI_INVALID_PARAMETER;
+    }
+
+    Status = HiiSetString (
+               mSmbiosPlatformDxeHiiHandle,
+               StrToken->TokenArray[Index],
+               (EFI_STRING)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH],
+               NULL
+               );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "[%a]:[%dL] Failed to restore default strings\n",
+        __func__,
+        __LINE__
+        ));
+      return Status;
+    }
+    ZeroMem ((VOID *)&mDefaultHiiDatabaseStr[Index * SMBIOS_STRING_MAX_LENGTH], SMBIOS_UNICODE_STRING_MAX_LENGTH - 1);
+  }
 
   return Status;
 }

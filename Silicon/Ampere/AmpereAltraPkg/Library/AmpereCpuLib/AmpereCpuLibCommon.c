@@ -556,6 +556,48 @@ GetScpBuild (
 }
 
 /**
+  Get information of DIMM List.
+
+  @param[out]   DimmList   Pointer contains information of DIMM List.
+**/
+VOID
+EFIAPI
+GetDimmList (
+  PLATFORM_DIMM_LIST **DimmList
+  )
+{
+  PLATFORM_INFO_HOB *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob != NULL) {
+    *DimmList = &PlatformHob->DimmList;
+  } else {
+    *DimmList = NULL;
+  }
+}
+
+/**
+  Get information of DRAM.
+
+  @param[out]   DramInfo   Pointer contains information of DRAM.
+**/
+VOID
+EFIAPI
+GetDramInfo (
+  PLATFORM_DRAM_INFO **DramInfo
+  )
+{
+  PLATFORM_INFO_HOB *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob != NULL) {
+    *DramInfo = &PlatformHob->DramInfo;
+  } else {
+    *DramInfo = NULL;
+  }
+}
+
+/**
   Set the number of configured CPM per socket.
 
   @param    SocketId        Socket index.

@@ -6,6 +6,8 @@
 
 **/
 
+#include <Guid/PlatformInfoHob.h>
+
 #ifndef AMPERE_CPU_LIB_H_
 #define AMPERE_CPU_LIB_H_
 
@@ -180,6 +182,28 @@ VOID
 EFIAPI
 GetScpBuild (
   UINT8 **ScpBuild
+  );
+
+/**
+  Get information of DIMM List.
+
+  @param[out]   DimmList   Pointer contains information of DIMM List.
+**/
+VOID
+EFIAPI
+GetDimmList (
+  PLATFORM_DIMM_LIST **DimmList
+  );
+
+/**
+  Get information of DRAM.
+
+  @param[out]   DramInfo   Pointer contains information of DRAM.
+**/
+VOID
+EFIAPI
+GetDramInfo (
+  PLATFORM_DRAM_INFO **DramInfo
   );
 
 /**

@@ -837,45 +837,35 @@ PlatformInitializeConsole (
   )
 {
   UINTN                              Index;
-  EFI_DEVICE_PATH_PROTOCOL           *VarConout;
-  EFI_DEVICE_PATH_PROTOCOL           *VarConin;
 
   //
-  // Connect RootBridge
+  // Do platform specific PCI Device check and add them to ConOut, ConIn, ErrOut
+  // Note: Why perform the ConIn/ConOut/ErrOut variables update without checking
+  //          whether "ConIn", "ConOut" or "ErrOut" is present in the variable store?
+  //       Because SerialPortTerminalLib.constructor() adds the serial terminal device
+  //          to "ConIn", "ConOut" and "ErrOut" variables always, checking presence of
+  //          the three variables will lead to the following update logic never runs.
   //
-  GetEfiGlobalVariable2 (EFI_CON_OUT_VARIABLE_NAME, (VOID **) &VarConout, NULL);
-  GetEfiGlobalVariable2 (EFI_CON_IN_VARIABLE_NAME, (VOID **) &VarConin, NULL);
-
-  if (VarConout == NULL || VarConin == NULL) {
+  DetectAndPreparePlatformPciDevicePaths (FALSE);
+  DetectAndPreparePlatformPciDevicePaths(TRUE);
+  //
+  // Have chance to connect the platform default console,
+  // the platform default console is the minimue device group
+  // the platform should support
+  //
+  for (Index = 0; PlatformConsole[Index].DevicePath != NULL; ++Index) {
     //
-    // Do platform specific PCI Device check and add them to ConOut, ConIn, ErrOut
+    // Update the console variable with the connect type
     //
-    DetectAndPreparePlatformPciDevicePaths (FALSE);
-    DetectAndPreparePlatformPciDevicePaths(TRUE);
-    //
-    // Have chance to connect the platform default console,
-    // the platform default console is the minimue device group
-    // the platform should support
-    //
-    for (Index = 0; PlatformConsole[Index].DevicePath != NULL; ++Index) {
-      //
-      // Update the console variable with the connect type
-      //
-      if ((PlatformConsole[Index].ConnectType & CONSOLE_IN) == CONSOLE_IN) {
-        EfiBootManagerUpdateConsoleVariable (ConIn, PlatformConsole[Index].DevicePath, NULL);
-      }
-      if ((PlatformConsole[Index].ConnectType & CONSOLE_OUT) == CONSOLE_OUT) {
-        EfiBootManagerUpdateConsoleVariable (ConOut, PlatformConsole[Index].DevicePath, NULL);
-      }
-      if ((PlatformConsole[Index].ConnectType & STD_ERROR) == STD_ERROR) {
-        EfiBootManagerUpdateConsoleVariable (ErrOut, PlatformConsole[Index].DevicePath, NULL);
-      }
+    if ((PlatformConsole[Index].ConnectType & CONSOLE_IN) == CONSOLE_IN) {
+      EfiBootManagerUpdateConsoleVariable (ConIn, PlatformConsole[Index].DevicePath, NULL);
     }
-  } else {
-    //
-    // Only detect VGA device and add them to ConOut
-    //
-    DetectAndPreparePlatformPciDevicePaths (TRUE);
+    if ((PlatformConsole[Index].ConnectType & CONSOLE_OUT) == CONSOLE_OUT) {
+      EfiBootManagerUpdateConsoleVariable (ConOut, PlatformConsole[Index].DevicePath, NULL);
+    }
+    if ((PlatformConsole[Index].ConnectType & STD_ERROR) == STD_ERROR) {
+      EfiBootManagerUpdateConsoleVariable (ErrOut, PlatformConsole[Index].DevicePath, NULL);
+    }
   }
 }
 

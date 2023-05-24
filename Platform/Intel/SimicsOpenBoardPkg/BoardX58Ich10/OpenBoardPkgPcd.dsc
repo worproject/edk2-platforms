@@ -69,6 +69,7 @@
   ######################################
   gNetworkFeaturePkgTokenSpaceGuid.PcdNetworkFeatureEnable|TRUE
   gSmbiosFeaturePkgTokenSpaceGuid.PcdSmbiosFeatureEnable|TRUE
+  gMinPlatformPkgTokenSpaceGuid.PcdSerialTerminalEnable|TRUE
 
 [PcdsFeatureFlag.X64]
   ######################################

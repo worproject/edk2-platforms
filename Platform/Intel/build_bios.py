@@ -421,6 +421,10 @@ def build(config):
         command.append("--pcd")
         command.append("gIntelFsp2WrapperTokenSpaceGuid.PcdFspModeSelection=1")
 
+    if config.get("PERFORMANCE_BUILD", "FALSE") == "TRUE":
+        command.append("--pcd")
+        command.append("gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable=True")
+
     shell = True
     if os.name == "posix":
         shell = False

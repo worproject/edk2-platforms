@@ -514,6 +514,48 @@ GetNumberOfConfiguredCPMs (
 }
 
 /**
+  Get version of SCP.
+
+  @param[out]   ScpVer   Pointer to contain version of SCP value.
+**/
+VOID
+EFIAPI
+GetScpVersion (
+  UINT8 **ScpVer
+  )
+{
+  PLATFORM_INFO_HOB *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob != NULL) {
+    *ScpVer = (UINT8 *)PlatformHob->SmPmProVer;
+  } else {
+    *ScpVer = NULL;
+  }
+}
+
+/**
+  Get date of build release for SCP.
+
+  @param[out]   ScpBuild   Pointer to contain date of build release for SCP.
+**/
+VOID
+EFIAPI
+GetScpBuild (
+  UINT8 **ScpBuild
+  )
+{
+  PLATFORM_INFO_HOB *PlatformHob;
+
+  PlatformHob = GetPlatformHob ();
+  if (PlatformHob != NULL) {
+    *ScpBuild = (UINT8 *)PlatformHob->SmPmProBuild;
+  } else {
+    *ScpBuild = NULL;
+  }
+}
+
+/**
   Set the number of configured CPM per socket.
 
   @param    SocketId        Socket index.

@@ -1,7 +1,7 @@
 /** @file
 *  OemMiscLib.c
 *
-*  Copyright (c) 2021, Ampere Computing LLC. All rights reserved.
+*  Copyright (c) 2021 - 2023, Ampere Computing LLC. All rights reserved.
 *  Copyright (c) 2021, NUVIA Inc. All rights reserved.
 *  Copyright (c) 2018, Hisilicon Limited. All rights reserved.
 *  Copyright (c) 2018, Linaro Limited. All rights reserved.
@@ -10,6 +10,7 @@
 *
 **/
 
+#include <PiPei.h>
 #include <Uefi.h>
 #include <IndustryStandard/ArmCache.h>
 #include <Library/AmpereCpuLib.h>
@@ -17,9 +18,20 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HiiLib.h>
+#include <Library/HobLib.h>
+#include <Library/MemoryAllocationLib.h>
 #include <Library/OemMiscLib.h>
+#include <Library/PrintLib.h>
+#include <Guid/PlatformInfoHob.h>
+
+#define PROCESSOR_VERSION_ALTRA       L"Ampere(R) Altra(R) Processor"
+#define PROCESSOR_VERSION_ALTRA_MAX   L"Ampere(R) Altra(R) Max Processor"
 
 #define MHZ_SCALE_FACTOR    1000000
+
+#define SCP_VERSION_STRING_MAX_LENGTH 32
+
+#define OEM_DEFAULT_INFORMATION L"To Be Filled By O.E.M."
 
 UINT32
 GetCacheConfig (
@@ -216,6 +228,74 @@ OemIsProcessorPresent (
   return FALSE;
 }
 
+/**
+  Update the firmware version in SMBIOS Type 0.
+  This is the combination of UEFI and Ampere system firmware version.
+
+**/
+VOID
+UpdateFirmwareVersionString (
+  OUT CHAR16  *Version
+  )
+{
+  UINT8   UnicodeStrLen;
+  UINT8   FirmwareVersionStrLen;
+  UINT8   FirmwareVersionStrSize;
+  UINT8   *ScpVersion;
+  UINT8   *ScpBuild;
+  CHAR16  UnicodeStr[SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16)];
+  CHAR16  *FirmwareVersionPcdPtr;
+
+  FirmwareVersionStrLen = 0;
+  ZeroMem (UnicodeStr, sizeof (UnicodeStr));
+  FirmwareVersionPcdPtr  = (CHAR16 *)FixedPcdGetPtr (PcdFirmwareVersionString);
+  FirmwareVersionStrSize = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
+
+  //
+  // Format of PcdFirmwareVersionString is
+  // "(MAJOR_VER).(MINOR_VER).(BUILD) Build YYYY.MM.DD", we only need
+  // "(MAJOR_VER).(MINOR_VER).(BUILD)" showed in BIOS version. Using
+  // space character to determine this string. Another case uses null
+  // character to end while loop.
+  //
+  while (*FirmwareVersionPcdPtr != ' ' && *FirmwareVersionPcdPtr != '\0') {
+    FirmwareVersionStrLen++;
+    FirmwareVersionPcdPtr++;
+  }
+
+  FirmwareVersionPcdPtr = (CHAR16 *)FixedPcdGetPtr (PcdFirmwareVersionString);
+  UnicodeStrLen         = FirmwareVersionStrLen * sizeof (CHAR16);
+  CopyMem (UnicodeStr, FirmwareVersionPcdPtr, UnicodeStrLen);
+
+  GetScpVersion (&ScpVersion);
+  GetScpBuild (&ScpBuild);
+  if ((ScpVersion == NULL) || (ScpBuild == NULL)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a:%d: Fail to get SMpro/PMpro information\n",
+      __func__,
+      __LINE__
+      ));
+    UnicodeSPrint (
+      Version,
+      FirmwareVersionStrSize,
+      L"TianoCore %.*s (SYS: 0.00.00000000)",
+      FirmwareVersionStrLen,
+      (UINT16 *)UnicodeStr
+      );
+  } else {
+    UnicodeSPrint (
+      Version,
+      FirmwareVersionStrSize,
+      L"TianoCore %.*s (SYS: %a.%a)",
+      FirmwareVersionStrLen,
+      (UINT16 *)UnicodeStr,
+      ScpVersion,
+      ScpBuild
+      );
+  }
+}
+
 /** Updates the HII string for the specified field.
 
   @param HiiHandle     The HII handle.
@@ -230,7 +310,91 @@ OemUpdateSmbiosInfo (
   IN OEM_MISC_SMBIOS_HII_STRING_FIELD Field
   )
 {
-  return;
+  EFI_STRING UnicodeString;
+  UINT8      StringLength;
+
+  StringLength = SMBIOS_STRING_MAX_LENGTH * sizeof (CHAR16);
+  UnicodeString = AllocatePool (StringLength);
+  if (UnicodeString == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a:%d: There is not enough memory remaining to satisfy the request\n",
+      __func__,
+      __LINE__));
+
+    goto Exit;
+  }
+
+  switch (Field) {
+    case ProductNameType01:
+    case SystemManufacturerType01:
+    case VersionType01:
+    case SerialNumType01:
+    case SkuNumberType01:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        OEM_DEFAULT_INFORMATION
+        );
+      break;
+
+    case FamilyType01:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        IsAc01Processor () ? L"Altra\0" : L"Altra Max\0"
+        );
+      break;
+
+    case ProductNameType02:
+    case AssetTagType02:
+    case VersionType02:
+    case SerialNumberType02:
+    case BoardManufacturerType02:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        OEM_DEFAULT_INFORMATION
+        );
+      break;
+
+    case ChassisLocationType02:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        L"Base of Chassis"
+        );
+      break;
+
+    case SerialNumberType03:
+    case VersionType03:
+    case ManufacturerType03:
+    case AssetTagType03:
+    case SkuNumberType03:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        OEM_DEFAULT_INFORMATION
+        );
+      break;
+
+    case BiosVersionType00:
+      UpdateFirmwareVersionString (UnicodeString);
+      break;
+
+    default:
+      UnicodeSPrint (
+        UnicodeString,
+        StringLength,
+        L"Not Specified"
+        );
+  }
+
+  // Update string value for respective token.
+  HiiSetString (HiiHandle, TokenToUpdate, UnicodeString, NULL);
+
+Exit:
+  FreePool (UnicodeString);
 }
 
 /** Fetches the Type 32 boot information status.
@@ -322,4 +486,82 @@ OemGetChassisNumPowerCords (
   )
 {
   return 2;
+}
+
+/** Fetches the BIOS release.
+
+  @return The BIOS release.
+**/
+UINT16
+EFIAPI
+OemGetBiosRelease (
+  VOID
+  )
+{
+  UINT16 BiosRelease;
+
+  BiosRelease = (UINT16)(((PcdGet8 (PcdSmbiosTables0MajorVersion)) << 8)
+                         | PcdGet8 (PcdSmbiosTables0MinorVersion));
+
+  return BiosRelease;
+}
+
+/**
+  Fetches the embedded controller firmware release.
+
+  @return   UINT16   The embedded controller firmware release.
+**/
+UINT16
+EFIAPI
+OemGetEmbeddedControllerFirmwareRelease (
+  VOID
+  )
+{
+  CHAR8  AsciiScpVer[SCP_VERSION_STRING_MAX_LENGTH];
+  UINT8  *ScpVer = NULL;
+  UINT8  Index;
+  UINT16 FirmwareRelease;
+
+  GetScpVersion (&ScpVer);
+  if (ScpVer == NULL) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a:%d: Fail to get SMpro/PMpro information\n",
+      __func__,
+      __LINE__));
+
+      return 0xFFFF;
+  }
+
+  CopyMem ((VOID *)AsciiScpVer, (VOID *)ScpVer, AsciiStrLen ((CHAR8 *)ScpVer));
+  /* The AsciiVersion is formated as "major.minor" */
+  for (Index = 0; Index < (UINTN)AsciiStrLen (AsciiScpVer); Index++) {
+    if (AsciiScpVer[Index] == '.') {
+      AsciiScpVer[Index] = '\0';
+      break;
+    }
+  }
+
+  FirmwareRelease = ((UINT8)AsciiStrDecimalToUintn (AsciiScpVer) << 8)
+                    + (UINT8)AsciiStrDecimalToUintn (AsciiScpVer + Index + 1);
+
+  return FirmwareRelease;
+}
+
+/**
+  Fetches the system UUID.
+
+  @param[out]   SystemUuid   The pointer to the buffer to store the System UUID.
+**/
+VOID
+EFIAPI
+OemGetSystemUuid (
+  OUT GUID  *SystemUuid
+  )
+{
+  if (SystemUuid == NULL) {
+    return;
+  }
+
+  CopyGuid (SystemUuid, &gZeroGuid);
 }

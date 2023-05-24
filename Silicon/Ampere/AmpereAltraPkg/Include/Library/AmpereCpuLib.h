@@ -161,6 +161,28 @@ GetNumberOfConfiguredCPMs (
   );
 
 /**
+  Get version of SCP.
+
+  @param[out]   ScpVer   Pointer to contain version of SCP value.
+**/
+VOID
+EFIAPI
+GetScpVersion (
+  UINT8 **ScpVer
+  );
+
+/**
+  Get date of build release for SCP.
+
+  @param[out]   ScpBuild   Pointer to contain date of build release for SCP.
+**/
+VOID
+EFIAPI
+GetScpBuild (
+  UINT8 **ScpBuild
+  );
+
+/**
   Set the number of configured CPM per socket.
 
   @param    SocketId        Socket index.

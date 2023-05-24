@@ -28,7 +28,6 @@
   BaseLib
   BaseMemoryLib
   DebugLib
-  HobLib
   MemoryAllocationLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
@@ -38,16 +37,7 @@
   gEfiSmbiosProtocolGuid                     ## CONSUMED
 
 [Pcd]
-  # Type 0
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0BiosReleaseDate
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
-
   gArmTokenSpaceGuid.PcdFdSize
-
-[Guids]
-  gPlatformInfoHobGuid
 
 [Depex]
   gEfiSmbiosProtocolGuid

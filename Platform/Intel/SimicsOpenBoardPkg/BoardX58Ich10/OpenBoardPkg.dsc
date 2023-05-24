@@ -265,6 +265,14 @@
       ShellLib|ShellPkg/Library/UefiShellLib/UefiShellLib.inf
   }
 
+
+!if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
+  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf {
+    <PcdsFixedAtBuild>
+      gEfiShellPkgTokenSpaceGuid.PcdShellLibAutoInitialize|FALSE
+  }
+!endif
+
   #######################################
   # Silicon Initialization Package
   #######################################

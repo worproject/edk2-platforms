@@ -227,6 +227,9 @@ FILE FREEFORM = 7BB28B99-61BB-11D5-9A5D-0090273FC14D {
 }
 
 INF  ShellPkg/Application/Shell/Shell.inf
+!if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
+INF  ShellPkg/DynamicCommand/DpDynamicCommand/DpDynamicCommand.inf
+!endif
 
 #
 # Network modules

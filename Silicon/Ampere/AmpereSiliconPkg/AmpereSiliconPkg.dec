@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -64,22 +64,16 @@
   gAmpereTokenSpaceGuid.PcdPmproDbBaseReg|0x100001540000|UINT64|0x00000004
 
   #
-  # SMBIOS Type 1 Pcd
+  # SMBIOS Type 0 Pcd
   #
-  gAmpereTokenSpaceGuid.PcdSmbiosTables1MajorVersion|0|UINT8|0x00000005
-  gAmpereTokenSpaceGuid.PcdSmbiosTables1MinorVersion|0|UINT8|0x00000006
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion|0|UINT8|0x00000005
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion|0|UINT8|0x00000006
 
 [PcdsFixedAtBuild, PcdsDynamic, PcdsDynamicEx]
   #
   # Firmware Volume Pcds
   #
   gAmpereTokenSpaceGuid.PcdFvBlockSize|0|UINT32|0xB0000001
-
-  #
-  # SMBIOS, default or template values
-  #
-  # SMBIOS Type 0 - BIOS Information
-  gAmpereTokenSpaceGuid.PcdSmbiosTables0BiosReleaseDate|"MM/DD/YYYY"|VOID*|0xB0000002 # Must follow this MM/DD/YYYY SMBIOS date format
 
   # Pcie HotPlug reset map
   gAmpereTokenSpaceGuid.PcdPcieHotPlugGpioResetMap|0x0|UINT8|0xB000000A

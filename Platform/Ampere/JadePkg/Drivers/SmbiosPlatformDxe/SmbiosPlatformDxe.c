@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+  Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -790,7 +790,7 @@ GetBiosVerMajor (
   VOID
   )
 {
-  return (PcdGet8 (PcdSmbiosTables1MajorVersion));
+  return (PcdGet8 (PcdSmbiosTables0MajorVersion));
 }
 
 STATIC
@@ -799,7 +799,7 @@ GetBiosVerMinor (
   VOID
   )
 {
-  return (PcdGet8 (PcdSmbiosTables1MinorVersion));
+  return (PcdGet8 (PcdSmbiosTables0MinorVersion));
 }
 
 STATIC

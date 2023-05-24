@@ -1,6 +1,6 @@
 ## @file
 #
-# Copyright (c) 2020 - 2021, Ampere Computing LLC. All rights reserved.<BR>
+# Copyright (c) 2020 - 2023, Ampere Computing LLC. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -40,8 +40,8 @@
 [Pcd]
   # Type 0
   gAmpereTokenSpaceGuid.PcdSmbiosTables0BiosReleaseDate
-  gAmpereTokenSpaceGuid.PcdSmbiosTables1MajorVersion
-  gAmpereTokenSpaceGuid.PcdSmbiosTables1MinorVersion
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MajorVersion
+  gAmpereTokenSpaceGuid.PcdSmbiosTables0MinorVersion
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString
 
   gArmTokenSpaceGuid.PcdFdSize

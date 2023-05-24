@@ -45,14 +45,11 @@
   BootLogoLib
   DevicePathLib
   PciLib
-  NvVarsFileLib
   DxeLoadLinuxLib
   UefiLib
   LogoLib
 
 [Pcd]
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdEmuVariableEvent
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdOvmfFlashVariablesEnable
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdShellFile

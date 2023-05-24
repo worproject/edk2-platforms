@@ -48,9 +48,6 @@
 
 [PcdsDynamic, PcdsDynamicEx]
 
-  # TODO: investigate whether next two Pcds are needed
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdEmuVariableEvent|0|UINT64|0x28
-  gSimicsOpenBoardPkgTokenSpaceGuid.PcdOvmfFlashVariablesEnable|FALSE|BOOLEAN|0x10
   gSimicsOpenBoardPkgTokenSpaceGuid.PcdSimicsX58HostBridgePciDevId|0|UINT16|0x1b
 
   ## The IO port aperture shared by all PCI root bridges.

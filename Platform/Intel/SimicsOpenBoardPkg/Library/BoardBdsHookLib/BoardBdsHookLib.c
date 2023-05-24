@@ -1111,119 +1111,6 @@ PciAcpiInitialization (
   Interrupt8259WriteMask(0xFFFF, 0x0000);
 }
 
-EFI_STATUS
-EFIAPI
-ConnectRecursivelyIfPciMassStorage (
-  IN EFI_HANDLE           Handle,
-  IN EFI_PCI_IO_PROTOCOL  *Instance,
-  IN PCI_TYPE00           *PciHeader
-  )
-{
-  EFI_STATUS                Status;
-  EFI_DEVICE_PATH_PROTOCOL  *DevicePath;
-  CHAR16                    *DevPathStr;
-
-  //
-  // Recognize PCI Mass Storage
-  //
-  if (IS_CLASS1 (PciHeader, PCI_CLASS_MASS_STORAGE)) {
-    DevicePath = NULL;
-    Status = gBS->HandleProtocol (
-                    Handle,
-                    &gEfiDevicePathProtocolGuid,
-                    (VOID*)&DevicePath
-                    );
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-
-    //
-    // Print Device Path
-    //
-    DevPathStr = ConvertDevicePathToText (DevicePath, FALSE, FALSE);
-    if (DevPathStr != NULL) {
-      DEBUG(( DEBUG_INFO, "Found Mass Storage device: %s\n", DevPathStr));
-      FreePool(DevPathStr);
-    }
-
-    Status = gBS->ConnectController (Handle, NULL, NULL, TRUE);
-    if (EFI_ERROR (Status)) {
-      return Status;
-    }
-
-   }
-
-  return EFI_SUCCESS;
-}
-
-
-/**
-  This notification function is invoked when the
-  EMU Variable FVB has been changed.
-
-  @param  Event                 The event that occurred
-  @param  Context               For EFI compatibility.  Not used.
-
-**/
-VOID
-EFIAPI
-EmuVariablesUpdatedCallback (
-  IN  EFI_EVENT Event,
-  IN  VOID      *Context
-  )
-{
-  DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
-  UpdateNvVarsOnFileSystem ();
-}
-
-
-EFI_STATUS
-EFIAPI
-VisitingFileSystemInstance (
-  IN EFI_HANDLE  Handle,
-  IN VOID        *Instance,
-  IN VOID        *Context
-  )
-{
-  EFI_STATUS      Status;
-  STATIC BOOLEAN  ConnectedToFileSystem = FALSE;
-
-  if (ConnectedToFileSystem) {
-    return EFI_ALREADY_STARTED;
-  }
-
-  Status = ConnectNvVarsToFileSystem (Handle);
-  if (EFI_ERROR (Status)) {
-    return Status;
-  }
-
-  ConnectedToFileSystem = TRUE;
-  mEmuVariableEvent =
-    EfiCreateProtocolNotifyEvent (
-      &gEfiDevicePathProtocolGuid,
-      TPL_CALLBACK,
-      EmuVariablesUpdatedCallback,
-      NULL,
-      &mEmuVariableEventReg
-      );
-  PcdSet64S (PcdEmuVariableEvent, (UINT64)(UINTN) mEmuVariableEvent);
-
-  return EFI_SUCCESS;
-}
-
-
-VOID
-PlatformBdsRestoreNvVarsFromHardDisk (
-  )
-{
-  VisitAllPciInstances (ConnectRecursivelyIfPciMassStorage);
-  VisitAllInstancesOfProtocol (
-    &gEfiSimpleFileSystemProtocolGuid,
-    VisitingFileSystemInstance,
-    NULL
-    );
-}
-
 /**
   Connect with predefined platform connect sequence.
 
@@ -1583,17 +1470,6 @@ BdsAfterConsoleReadyBeforeBootOptionCallback (
   EFI_BOOT_MODE                      BootMode;
 
   DEBUG ((DEBUG_INFO, "%a called\n", __FUNCTION__));
-
-  if (PcdGetBool (PcdOvmfFlashVariablesEnable)) {
-    DEBUG ((DEBUG_INFO, "PlatformBdsPolicyBehavior: not restoring NvVars "
-      "from disk since flash variables appear to be supported.\n"));
-  } else {
-    //
-    // Try to restore variables from the hard disk early so
-    // they can be used for the other BDS connect operations.
-    //
-    PlatformBdsRestoreNvVarsFromHardDisk ();
-  }
 
   //
   // Get current Boot Mode

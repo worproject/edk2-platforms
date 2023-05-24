@@ -132,7 +132,16 @@
   gEfiMdePkgTokenSpaceGuid.PcdMaximumGuidedExtractHandler|0x10
   gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|0x0
 !if gMinPlatformPkgTokenSpaceGuid.PcdPerformanceEnable == TRUE
-  gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|0x1
+  #  BIT0 - Enable Performance Measurement.<BR>
+  #  BIT1 - Disable Start Image Logging.<BR>
+  #  BIT2 - Disable Load Image logging.<BR>
+  #  BIT3 - Disable Binding Support logging.<BR>
+  #  BIT4 - Disable Binding Start logging.<BR>
+  #  BIT5 - Disable Binding Stop logging.<BR>
+  #  BIT6 - Disable all other general Perfs.<BR>
+  #  BIT1-BIT6 are evaluated when BIT0 is set.<BR>
+  #  Enable performance measurement but disable driver binding support logging.
+  gEfiMdePkgTokenSpaceGuid.PcdPerformanceLibraryPropertyMask|0x09
 !endif
 !if $(TARGET) == "RELEASE"
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x03

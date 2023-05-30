@@ -39,7 +39,7 @@ SetupIpmiTransportHardwareInformation (
 
   KcsHardwareInfo = AllocatePool (sizeof (MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO));
   if (KcsHardwareInfo == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -54,7 +54,7 @@ SetupIpmiTransportHardwareInformation (
     HardwareInformation->Kcs                      = KcsHardwareInfo;
     return EFI_SUCCESS;
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __func__));
     ASSERT (FALSE);
   }
 
@@ -131,7 +131,7 @@ SetupIpmiRequestTransportPacket (
       *PacketBodySize = 0;
     }
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __func__));
     ASSERT (FALSE);
   }
 
@@ -179,7 +179,7 @@ CommonIpmiSubmitCommand (
   UINT16                                     TrailerSize;
 
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: No transport toke for IPMI\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No transport toke for IPMI\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -188,7 +188,7 @@ CommonIpmiSubmitCommand (
                                                              &TransportAdditionalStatus
                                                              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Transport for IPMI has problem - (%r)\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Transport for IPMI has problem - (%r)\n", __func__, Status));
     return Status;
   }
 
@@ -208,7 +208,7 @@ CommonIpmiSubmitCommand (
                            &TrailerSize
                            );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __func__, Status));
     return Status;
   }
 
@@ -256,7 +256,7 @@ CommonIpmiSubmitCommand (
   Status                    = TransferToken.TransferStatus;
   TransportAdditionalStatus = TransferToken.TransportAdditionalStatus;
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to send IPMI command.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send IPMI command.\n", __func__));
     return Status;
   }
 

@@ -55,12 +55,12 @@ PldmSubmitCommand (
       //
       // Dxe PLDM Protocol is not installed. So, PLDM device is not present.
       //
-      DEBUG ((DEBUG_ERROR, "%a: EDKII PLDM protocol is not found - %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: EDKII PLDM protocol is not found - %r\n", __func__, Status));
       return EFI_NOT_FOUND;
     }
   }
 
-  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: PLDM Type: 0x%x, Command: 0x%x\n", __FUNCTION__, PldmType, Command));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: PLDM Type: 0x%x, Command: 0x%x\n", __func__, PldmType, Command));
   if ((RequestData != NULL) && (RequestDataSize != 0)) {
     HelperManageabilityDebugPrint ((VOID *)RequestData, RequestDataSize, "PLDM PLDM application layer Type/Command specific request payload\n");
   }

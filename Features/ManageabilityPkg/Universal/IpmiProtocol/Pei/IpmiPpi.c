@@ -96,13 +96,13 @@ PeiIpmiEntry (
   //
   PeiIpmiPpiinternal = (PEI_IPMI_PPI_INTERNAL *)AllocateZeroPool (sizeof (PEI_IPMI_PPI_INTERNAL));
   if (PeiIpmiPpiinternal == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for PEI_IPMI_PPI_INTERNAL.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for PEI_IPMI_PPI_INTERNAL.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   PpiDescriptor = (EFI_PEI_PPI_DESCRIPTOR *)AllocateZeroPool (sizeof (EFI_PEI_PPI_DESCRIPTOR));
   if (PpiDescriptor == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for EFI_PEI_PPI_DESCRIPTOR.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for EFI_PEI_PPI_DESCRIPTOR.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -118,26 +118,26 @@ PeiIpmiEntry (
              &PeiIpmiPpiinternal->TransportToken
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for IPMI protocol - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for IPMI protocol - %r\n", __func__, Status));
     return Status;
   }
 
   Status = GetTransportCapability (PeiIpmiPpiinternal->TransportToken, &PeiIpmiPpiinternal->TransportCapability);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __func__));
     return Status;
   }
 
   PeiIpmiPpiinternal->TransportMaximumPayload = MANAGEABILITY_TRANSPORT_PAYLOAD_SIZE_FROM_CAPABILITY (PeiIpmiPpiinternal->TransportCapability);
   if (PeiIpmiPpiinternal->TransportMaximumPayload  == (1 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE)) {
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __func__));
   } else {
     PeiIpmiPpiinternal->TransportMaximumPayload -= 1;
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for IPMI protocol has maximum payload 0x%x.\n", __FUNCTION__, PeiIpmiPpiinternal->TransportMaximumPayload));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for IPMI protocol has maximum payload 0x%x.\n", __func__, PeiIpmiPpiinternal->TransportMaximumPayload));
   }
 
   TransportName = HelperManageabilitySpecName (PeiIpmiPpiinternal->TransportToken->Transport->ManageabilityTransportSpecification);
-  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: IPMI protocol over %s.\n", __FUNCTION__, TransportName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: IPMI protocol over %s.\n", __func__, TransportName));
 
   //
   // Setup hardware information according to the transport interface.
@@ -147,7 +147,7 @@ PeiIpmiEntry (
              );
   if (EFI_ERROR (Status)) {
     if (Status == EFI_UNSUPPORTED) {
-      DEBUG ((DEBUG_ERROR, "%a: No hardware information of %s transport interface.\n", __FUNCTION__, TransportName));
+      DEBUG ((DEBUG_ERROR, "%a: No hardware information of %s transport interface.\n", __func__, TransportName));
     }
 
     return Status;
@@ -169,7 +169,7 @@ PeiIpmiEntry (
   //
   Status = PeiServicesInstallPpi (PpiDescriptor);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to install IPMI PPI - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to install IPMI PPI - %r\n", __func__, Status));
   }
 
   return Status;

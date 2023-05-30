@@ -49,7 +49,7 @@ HelperManageabilitySpecName (
   }
 
   if ((SpecificationGuid == NULL) || IsZeroGuid (SpecificationGuid)) {
-    DEBUG ((DEBUG_ERROR, "%a: Improper input GUIDs, could be NULL or zero GUID.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Improper input GUIDs, could be NULL or zero GUID.\n", __func__));
     return NULL;
   }
 
@@ -106,7 +106,7 @@ HelperManageabilityCheckSupportedSpec (
       IsZeroGuid (ManageabilityProtocolToCheck)
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: Improper input GUIDs, could be NULL or zero GUID.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Improper input GUIDs, could be NULL or zero GUID.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -120,7 +120,7 @@ HelperManageabilityCheckSupportedSpec (
       DEBUG ((
         DEBUG_MANAGEABILITY_INFO,
         "%a: Transport interface %s supports %s manageability specification.\n",
-        __FUNCTION__,
+        __func__,
         HelperManageabilitySpecName (TransportGuid),
         HelperManageabilitySpecName (ManageabilityProtocolToCheck)
         ));
@@ -133,7 +133,7 @@ HelperManageabilityCheckSupportedSpec (
   DEBUG ((
     DEBUG_ERROR,
     "%a: Transport interface %s doesn't support %s manageability specification.\n",
-    __FUNCTION__,
+    __func__,
     HelperManageabilitySpecName (TransportGuid),
     HelperManageabilitySpecName (ManageabilityProtocolToCheck)
     ));
@@ -163,16 +163,16 @@ HelperAcquireManageabilityTransport (
   CHAR16      *ManageabilityProtocolName;
   CHAR16      *ManageabilityTransportName;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __FUNCTION__));
+  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
   if ((TransportToken == NULL) || (ManageabilityProtocolSpec == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: One of the required input parameters is NULL.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: One of the required input parameters is NULL.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   *TransportToken           = NULL;
   ManageabilityProtocolName = HelperManageabilitySpecName (ManageabilityProtocolSpec);
   if (ManageabilityProtocolName == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Unsupported Manageability Protocol Specification.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unsupported Manageability Protocol Specification.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -180,7 +180,7 @@ HelperAcquireManageabilityTransport (
 
   Status = AcquireTransportSession (ManageabilityProtocolSpec, TransportToken);
   if (Status == EFI_UNSUPPORTED) {
-    DEBUG ((DEBUG_ERROR, "%a: No supported transport interface for %s packet.\n", __FUNCTION__, ManageabilityProtocolName));
+    DEBUG ((DEBUG_ERROR, "%a: No supported transport interface for %s packet.\n", __func__, ManageabilityProtocolName));
     return Status;
   }
 
@@ -188,7 +188,7 @@ HelperAcquireManageabilityTransport (
     DEBUG ((
       DEBUG_ERROR,
       "%a: Fail to acquire Manageability transport token for %s (%r).\n",
-      __FUNCTION__,
+      __func__,
       ManageabilityProtocolName,
       Status
       ));
@@ -197,11 +197,11 @@ HelperAcquireManageabilityTransport (
 
   ManageabilityTransportName = HelperManageabilitySpecName ((*TransportToken)->Transport->ManageabilityTransportSpecification);
   if (ManageabilityTransportName == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Unsupported Manageability Transport Interface Specification\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Unsupported Manageability Transport Interface Specification\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
-  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: This is the transfer session for %s over %s\n", __FUNCTION__, ManageabilityProtocolName, ManageabilityTransportName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: This is the transfer session for %s over %s\n", __func__, ManageabilityProtocolName, ManageabilityTransportName));
   return Status;
 }
 
@@ -227,7 +227,7 @@ HelperInitManageabilityTransport (
   EFI_STATUS  Status;
 
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: TransportToken is invalid.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: TransportToken is invalid.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -242,20 +242,20 @@ HelperInitManageabilityTransport (
                                                                  );
       if (EFI_ERROR (Status)) {
         if (Status == EFI_UNSUPPORTED) {
-          DEBUG ((DEBUG_ERROR, "%a: Transport interface doesn't have reset capability.\n", __FUNCTION__));
+          DEBUG ((DEBUG_ERROR, "%a: Transport interface doesn't have reset capability.\n", __func__));
         } else {
-          DEBUG ((DEBUG_ERROR, "%a: Fail to reset transport interface (%r).\n", __FUNCTION__, Status));
+          DEBUG ((DEBUG_ERROR, "%a: Fail to reset transport interface (%r).\n", __func__, Status));
         }
 
         Status = EFI_DEVICE_ERROR;
       } else {
         Status = TransportToken->Transport->Function.Version1_0->TransportInit (TransportToken, HardwareInfo);
         if (EFI_ERROR (Status)) {
-          DEBUG ((DEBUG_ERROR, "%a: Transport interface is not able to use after the reset (%r).\n", __FUNCTION__, Status));
+          DEBUG ((DEBUG_ERROR, "%a: Transport interface is not able to use after the reset (%r).\n", __func__, Status));
         }
       }
     } else {
-      DEBUG ((DEBUG_ERROR, "%a: Transport interface is not able to use (%r).\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: Transport interface is not able to use (%r).\n", __func__, Status));
     }
   }
 
@@ -343,7 +343,7 @@ HelperManageabilitySplitPayload (
     DEBUG ((
       DEBUG_ERROR,
       "%a: (Preamble 0x%x + PostambleSize 0x%x) is greater than MaximumTransferUnit 0x%x.\n",
-      __FUNCTION__,
+      __func__,
       PreambleSize,
       PostambleSize,
       MaximumTransferUnit
@@ -373,7 +373,7 @@ HelperManageabilitySplitPayload (
   }
 
   if (TotalPayloadRemaining != 0) {
-    DEBUG ((DEBUG_ERROR, "%a: Error processing multiple packages (TotalPayloadRemaining != 0)\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Error processing multiple packages (TotalPayloadRemaining != 0)\n", __func__));
     FreePool (ThisMultiplePackages);
     return EFI_INVALID_PARAMETER;
   }

@@ -104,17 +104,17 @@ SetupPldmRequestTransportPacket (
       (PacketTrailer == NULL) || (PacketTrailerSize == NULL)
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: One or more than one of the required parameters is NULL.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: One or more than one of the required parameters is NULL.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   if (CompareGuid (&gManageabilityTransportMctpGuid, TransportToken->Transport->ManageabilityTransportSpecification)) {
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Setup transport header for PLDM over MCTP.\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Setup transport header for PLDM over MCTP.\n", __func__));
 
     // This is MCTP transport interface.
     MctpHeader = AllocateZeroPool (sizeof (MANAGEABILITY_MCTP_TRANSPORT_HEADER));
     if (MctpHeader == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_MCTP_TRANSPORT_HEADER.\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_MCTP_TRANSPORT_HEADER.\n", __func__));
       return EFI_OUT_OF_RESOURCES;
     }
 
@@ -127,7 +127,7 @@ SetupPldmRequestTransportPacket (
     *PacketTrailer                           = NULL;
     *PacketTrailerSize                       = 0;
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.\n", __func__));
     ASSERT (FALSE);
   }
 
@@ -136,7 +136,7 @@ SetupPldmRequestTransportPacket (
   //
   PldmRequestHeader = (PLDM_REQUEST_HEADER *)AllocateZeroPool (sizeof (PLDM_REQUEST_HEADER) + *PacketBodySize);
   if (PldmRequestHeader == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for final PLDM request message.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Not enough memory for final PLDM request message.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -202,7 +202,7 @@ CommonPldmSubmitCommand (
   UINT16                                     TrailerSize;
 
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: No transport token for PLDM\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No transport token for PLDM\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -211,7 +211,7 @@ CommonPldmSubmitCommand (
                                                              &TransportAdditionalStatus
                                                              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Transport %s for PLDM has problem - (%r)\n", __FUNCTION__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Transport %s for PLDM has problem - (%r)\n", __func__, mTransportName, Status));
     return Status;
   }
 
@@ -233,7 +233,7 @@ CommonPldmSubmitCommand (
                            &TrailerSize
                            );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __func__, Status));
     return Status;
   }
 
@@ -274,7 +274,7 @@ CommonPldmSubmitCommand (
   DEBUG ((
     DEBUG_MANAGEABILITY_INFO,
     "%a: Send PLDM type: 0x%x, Command: 0x%x: Request size: 0x%x, Response size: 0x%x\n",
-    __FUNCTION__,
+    __func__,
     PldmType,
     PldmCommand,
     TransferToken.TransmitPackage.TransmitSizeInByte,
@@ -409,7 +409,7 @@ CommonPldmSubmitCommand (
 ErrorExit:
   Status = TransferToken.TransferStatus;
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to send PLDM command over %s\n", __FUNCTION__, mTransportName));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send PLDM command over %s\n", __func__, mTransportName));
   }
 
 ErrorExit2:

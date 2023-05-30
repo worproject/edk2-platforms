@@ -74,7 +74,7 @@ MctpSubmitMessage (
   EFI_STATUS  Status;
 
   if ((RequestData == NULL) && (ResponseData == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -127,26 +127,26 @@ DxeMctpEntry (
              &mTransportToken
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for MCTP protocol - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for MCTP protocol - %r\n", __func__, Status));
     return Status;
   }
 
   Status = GetTransportCapability (mTransportToken, &TransportCapability);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __func__));
     return Status;
   }
 
   mTransportMaximumPayload = MANAGEABILITY_TRANSPORT_PAYLOAD_SIZE_FROM_CAPABILITY (TransportCapability);
   if (mTransportMaximumPayload == (1 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE)) {
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __func__));
   } else {
     mTransportMaximumPayload -= 1;
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for MCTP protocol has maximum payload 0x%x.\n", __FUNCTION__, mTransportMaximumPayload));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for MCTP protocol has maximum payload 0x%x.\n", __func__, mTransportMaximumPayload));
   }
 
   mTransportName = HelperManageabilitySpecName (mTransportToken->Transport->ManageabilityTransportSpecification);
-  DEBUG ((DEBUG_ERROR, "%a: MCTP protocol over %s.\n", __FUNCTION__, mTransportName));
+  DEBUG ((DEBUG_ERROR, "%a: MCTP protocol over %s.\n", __func__, mTransportName));
 
   //
   // Setup hardware information according to the transport interface.
@@ -156,9 +156,9 @@ DxeMctpEntry (
              );
   if (EFI_ERROR (Status)) {
     if (Status == EFI_UNSUPPORTED) {
-      DEBUG ((DEBUG_ERROR, "%a: No hardware information of %s transport interface.\n", __FUNCTION__, mTransportName));
+      DEBUG ((DEBUG_ERROR, "%a: No hardware information of %s transport interface.\n", __func__, mTransportName));
     } else {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to setup hardware information of %s transport interface.\n", __FUNCTION__, mTransportName));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to setup hardware information of %s transport interface.\n", __func__, mTransportName));
     }
 
     return Status;
@@ -184,7 +184,7 @@ DxeMctpEntry (
                                               (VOID **)&mMctpProtocol
                                               );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to install EDKII MCTP protocol - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to install EDKII MCTP protocol - %r\n", __func__, Status));
   }
 
   return Status;

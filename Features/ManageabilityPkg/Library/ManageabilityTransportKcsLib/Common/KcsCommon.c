@@ -143,7 +143,7 @@ KcsTransportWrite (
       ((RequestData != NULL) && (RequestDataSize == 0))
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData or RequestDataSize.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData or RequestDataSize.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -152,7 +152,7 @@ KcsTransportWrite (
       ((TransmitHeader != NULL) && (TransmitHeaderSize == 0))
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitHeader or TransmitHeaderSize.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitHeader or TransmitHeaderSize.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -161,7 +161,7 @@ KcsTransportWrite (
       ((TransmitTrailer != NULL) && (TransmitTrailerSize == 0))
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitTrailer or TransmitTrailerSize.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of TransmitTrailer or TransmitTrailerSize.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -325,7 +325,7 @@ KcsTransportRead (
   UINT32      ReadLength;
 
   if ((DataByte == NULL) || (*Length == 0)) {
-    DEBUG ((DEBUG_ERROR, "%a: Either DataByte is NULL or Length is 0.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Either DataByte is NULL or Length is 0.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -430,12 +430,12 @@ KcsTransportSendCommand (
   CHAR16                    *CompletionCodeStr;
 
   if ((RequestData != NULL) && (RequestDataSize == 0)) {
-    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   if ((ResponseData != NULL) && ((ResponseDataSize != NULL) && (*ResponseDataSize == 0))) {
-    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of ResponseData and ResponseDataSize\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Mismatched values of ResponseData and ResponseDataSize\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 

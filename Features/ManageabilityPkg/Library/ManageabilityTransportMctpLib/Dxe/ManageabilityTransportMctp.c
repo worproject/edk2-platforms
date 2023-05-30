@@ -86,7 +86,7 @@ MctpTransportStatus (
   )
 {
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Invalid transport token.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Invalid transport token.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -161,7 +161,7 @@ MctpTransportTransmitReceive (
   MANAGEABILITY_MCTP_TRANSPORT_HEADER  *TransmitHeader;
 
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Invalid transport token.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Invalid transport token.\n", __func__));
     TransferToken->TransportAdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_NOT_AVAILABLE;
     return;
   }
@@ -183,7 +183,7 @@ MctpTransportTransmitReceive (
       //
       // Dxe MCTP Protocol is not installed.
       //
-      DEBUG ((DEBUG_ERROR, "%a: EDKII MCTP protocol is not found - %r\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: EDKII MCTP protocol is not found - %r\n", __func__, Status));
       return;
     }
   }
@@ -191,7 +191,7 @@ MctpTransportTransmitReceive (
   DEBUG ((
     DEBUG_MANAGEABILITY_INFO,
     "%a: MCTP message type: 0x%x, SourceEndpointId: 0x%x, DestinationEndpointId: 0x%x\n",
-    __FUNCTION__,
+    __func__,
     TransmitHeader->MessageHeader.MessageType,
     TransmitHeader->SourceEndpointId,
     TransmitHeader->DestinationEndpointId
@@ -242,7 +242,7 @@ AcquireTransportSession (
   MANAGEABILITY_TRANSPORT_MCTP  *MctpTransportToken;
 
   if (ManageabilityProtocolSpec == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: No Manageability protocol specification specified.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No Manageability protocol specification specified.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -253,25 +253,25 @@ AcquireTransportSession (
              ManageabilityProtocolSpec
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Protocol is not supported on this transport interface.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Protocol is not supported on this transport interface.\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
   if (mSingleSessionToken != NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: This manageability transport library only supports one session transport token.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: This manageability transport library only supports one session transport token.\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   MctpTransportToken = (MANAGEABILITY_TRANSPORT_MCTP *)AllocateZeroPool (sizeof (MANAGEABILITY_TRANSPORT_MCTP));
   if (MctpTransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_MCTP\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_MCTP\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
   MctpTransportToken->Token.Transport = AllocateZeroPool (sizeof (MANAGEABILITY_TRANSPORT));
   if (MctpTransportToken->Token.Transport == NULL) {
     FreePool (MctpTransportToken);
-    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT\n", __func__));
     return EFI_OUT_OF_RESOURCES;
   }
 
@@ -282,7 +282,7 @@ AcquireTransportSession (
   MctpTransportToken->Token.Transport->TransportName                       = L"MCTP";
   MctpTransportToken->Token.Transport->Function.Version1_0                 = AllocateZeroPool (sizeof (MANAGEABILITY_TRANSPORT_FUNCTION_V1_0));
   if (MctpTransportToken->Token.Transport->Function.Version1_0 == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_FUNCTION_V1_0\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to allocate memory for MANAGEABILITY_TRANSPORT_FUNCTION_V1_0\n", __func__));
     FreePool (MctpTransportToken);
     FreePool (MctpTransportToken->Token.Transport);
     return EFI_OUT_OF_RESOURCES;
@@ -360,7 +360,7 @@ ReleaseTransportSession (
   }
 
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fail to release MCTP transport token (%r).\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fail to release MCTP transport token (%r).\n", __func__, Status));
   }
 
   return Status;

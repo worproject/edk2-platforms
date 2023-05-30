@@ -52,7 +52,7 @@ SetupMctpTransportHardwareInformation (
   if (CompareGuid (&gManageabilityTransportKcsGuid, TransportToken->Transport->ManageabilityTransportSpecification)) {
     KcsHardwareInfo = AllocatePool (sizeof (MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO));
     if (KcsHardwareInfo == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO.\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Not enough memory for MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO.\n", __func__));
       return EFI_OUT_OF_RESOURCES;
     }
 
@@ -76,7 +76,7 @@ SetupMctpTransportHardwareInformation (
     HardwareInformation->Kcs = KcsHardwareInfo;
     return EFI_SUCCESS;
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No implementation of setting hardware information.", __func__));
     ASSERT (FALSE);
   }
 
@@ -140,20 +140,20 @@ SetupMctpRequestTransportPacket (
       (PacketTrailer == NULL) || (PacketTrailerSize == NULL)
       )
   {
-    DEBUG ((DEBUG_ERROR, "%a: One or more than one of the input parameter is invalid.\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: One or more than one of the input parameter is invalid.\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
   if (CompareGuid (&gManageabilityTransportKcsGuid, TransportToken->Transport->ManageabilityTransportSpecification)) {
     MctpKcsHeader = (MANAGEABILITY_MCTP_KCS_HEADER *)AllocateZeroPool (sizeof (MANAGEABILITY_MCTP_KCS_HEADER));
     if (MctpKcsHeader == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for MANAGEABILITY_MCTP_KCS_HEADER.\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for MANAGEABILITY_MCTP_KCS_HEADER.\n", __func__));
       return EFI_OUT_OF_RESOURCES;
     }
 
     Pec = (UINT8 *)AllocateZeroPool (sizeof (UINT8));
     if (Pec == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for PEC.\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for PEC.\n", __func__));
       FreePool (MctpKcsHeader);
       return EFI_OUT_OF_RESOURCES;
     }
@@ -165,7 +165,7 @@ SetupMctpRequestTransportPacket (
 
     ThisPackage = (UINT8 *)AllocateZeroPool (MctpKcsHeader->ByteCount);
     if (ThisPackage == NULL) {
-      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for package.\n", __FUNCTION__));
+      DEBUG ((DEBUG_ERROR, "%a: Not enough resource for package.\n", __func__));
       FreePool (MctpKcsHeader);
       FreePool (Pec);
       return EFI_OUT_OF_RESOURCES;
@@ -203,7 +203,7 @@ SetupMctpRequestTransportPacket (
     *PacketTrailerSize = 1;
     return EFI_SUCCESS;
   } else {
-    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __func__));
     ASSERT (FALSE);
   }
 
@@ -269,7 +269,7 @@ CommonMctpSubmitMessage (
   MANAGEABILITY_TRANSMISSION_PACKAGE_ATTR    *ThisPackage;
 
   if (TransportToken == NULL) {
-    DEBUG ((DEBUG_ERROR, "%a: No transport toke for MCTP\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: No transport toke for MCTP\n", __func__));
     return EFI_UNSUPPORTED;
   }
 
@@ -278,7 +278,7 @@ CommonMctpSubmitMessage (
                                                              AdditionalTransferError
                                                              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Transport %s for MCTP has problem - (%r)\n", __FUNCTION__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Transport %s for MCTP has problem - (%r)\n", __func__, mTransportName, Status));
     return Status;
   }
 
@@ -292,7 +292,7 @@ CommonMctpSubmitMessage (
                     &MultiPackages
                     );
   if (EFI_ERROR (Status) || (MultiPackages == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __FUNCTION__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Fails to split payload into multiple packages - (%r)\n", __func__, mTransportName, Status));
     return Status;
   }
 
@@ -342,7 +342,7 @@ CommonMctpSubmitMessage (
                &MctpTransportTrailerSize
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __FUNCTION__, Status));
+      DEBUG ((DEBUG_ERROR, "%a: Fail to build packets - (%r)\n", __func__, Status));
       return Status;
     }
 
@@ -373,7 +373,7 @@ CommonMctpSubmitMessage (
     DEBUG ((
       DEBUG_MANAGEABILITY_INFO,
       "%a: Send MCTP message type: 0x%x, from source endpoint ID: 0x%x to destination ID 0x%x: Request size: 0x%x, Response size: 0x%x\n",
-      __FUNCTION__,
+      __func__,
       MctpType,
       MctpSourceEndpointId,
       MctpDestinationEndpointId,
@@ -426,7 +426,7 @@ CommonMctpSubmitMessage (
     Status                   = TransferToken.TransferStatus;
     *AdditionalTransferError = TransferToken.TransportAdditionalStatus;
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s\n", __FUNCTION__, mTransportName));
+      DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s\n", __func__, mTransportName));
       FreePool (MultiPackages);
       return Status;
     }
@@ -449,7 +449,7 @@ CommonMctpSubmitMessage (
   DEBUG ((
     DEBUG_MANAGEABILITY_INFO,
     "%a: Retrieve MCTP message Response size: 0x%x\n",
-    __FUNCTION__,
+    __func__,
     TransferToken.ReceivePackage.ReceiveSizeInByte
     ));
   TransportToken->Transport->Function.Version1_0->TransportTransmitReceive (
@@ -464,7 +464,7 @@ CommonMctpSubmitMessage (
   *ResponseDataSize        = TransferToken.ReceivePackage.ReceiveSizeInByte;
   Status                   = TransferToken.TransferStatus;
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s: %r\n", __FUNCTION__, mTransportName, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s: %r\n", __func__, mTransportName, Status));
     return Status;
   }
 

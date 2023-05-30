@@ -57,7 +57,7 @@ PldmSubmitCommand (
   EFI_STATUS  Status;
 
   if ((RequestData == NULL) && (ResponseData == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
@@ -106,26 +106,26 @@ DxePldmProtocolEntry (
              &mTransportToken
              );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for PLDM protocol - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to acquire transport interface for PLDM protocol - %r\n", __func__, Status));
     return Status;
   }
 
   Status = GetTransportCapability (mTransportToken, &TransportCapability);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __FUNCTION__));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to GetTransportCapability().\n", __func__));
     return Status;
   }
 
   TransportMaximumPayload = MANAGEABILITY_TRANSPORT_PAYLOAD_SIZE_FROM_CAPABILITY (TransportCapability);
   if (TransportMaximumPayload == (1 << MANAGEABILITY_TRANSPORT_CAPABILITY_MAXIMUM_PAYLOAD_NOT_AVAILABLE)) {
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __FUNCTION__));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface maximum payload is undefined.\n", __func__));
   } else {
     TransportMaximumPayload -= 1;
-    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for PLDM protocol has maximum payload 0x%x.\n", __FUNCTION__, TransportMaximumPayload));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Transport interface for PLDM protocol has maximum payload 0x%x.\n", __func__, TransportMaximumPayload));
   }
 
   mTransportName = HelperManageabilitySpecName (mTransportToken->Transport->ManageabilityTransportSpecification);
-  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: PLDM protocol over %s.\n", __FUNCTION__, mTransportName));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: PLDM protocol over %s.\n", __func__, mTransportName));
 
   // Initial transport interface with the hardware information assigned.
   HardwareInfo.Pointer = NULL;
@@ -149,7 +149,7 @@ DxePldmProtocolEntry (
                                               (VOID **)&mPldmProtocol
                                               );
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "%a: Failed to install EDKII PLDM protocol - %r\n", __FUNCTION__, Status));
+    DEBUG ((DEBUG_ERROR, "%a: Failed to install EDKII PLDM protocol - %r\n", __func__, Status));
   }
 
   return Status;

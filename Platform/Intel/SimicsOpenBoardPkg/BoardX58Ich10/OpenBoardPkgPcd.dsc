@@ -1,7 +1,7 @@
 ## @file
 #  PCD configuration build description file for the X58Ich10 board.
 #
-# Copyright (c) 2019 - 2022, Intel Corporation. All rights reserved. <BR>
+# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -158,7 +158,6 @@
   gPcAtChipsetPkgTokenSpaceGuid.PcdAcpiIoPortBaseAddressMask|0xFFFC
   gPcAtChipsetPkgTokenSpaceGuid.PcdAcpiPm1TmrOffset|0x0008
   gUefiCpuPkgTokenSpaceGuid.PcdCpuApStackSize|0x1000
-  gUefiCpuPkgTokenSpaceGuid.PcdCpuInitIpiDelayInMicroSeconds|10
   gUefiCpuPkgTokenSpaceGuid.PcdCpuMaxLogicalProcessorNumber|512
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmApSyncTimeout|10000
   gUefiCpuPkgTokenSpaceGuid.PcdCpuSmmStackSize|0x4000

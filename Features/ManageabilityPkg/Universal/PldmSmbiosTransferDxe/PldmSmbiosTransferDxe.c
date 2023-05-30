@@ -147,7 +147,7 @@ GetSmbiosStructureTableMetaData (
   EFI_STATUS  Status;
   UINT32      ResponseSize;
 
-  DEBUG ((DEBUG_INFO, "%a: Set SMBIOS structure table metafile.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Set SMBIOS structure table metafile.\n", __func__));
 
   ResponseSize = sizeof (PLDM_SMBIOS_STRUCTURE_TABLE_METADATA);
   Status       = PldmSubmitCommand (
@@ -194,7 +194,7 @@ SetSmbiosStructureTableMetaData (
   UINT32      ResponseSize;
   UINT32      RequestSize;
 
-  DEBUG ((DEBUG_INFO, "%a: Get SMBIOS structure table metafile.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Get SMBIOS structure table metafile.\n", __func__));
 
   RequestSize  = sizeof (PLDM_SMBIOS_STRUCTURE_TABLE_METADATA);
   ResponseSize = 0;
@@ -236,7 +236,7 @@ GetSmbiosStructureTable (
   OUT  UINT32                               *BufferSize
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Unsupported.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Unsupported.\n", __func__));
   // Only support PLDM SMBIOS Transfer push mode.
   return EFI_UNSUPPORTED;
 }
@@ -272,7 +272,7 @@ SetSmbiosStructureTable (
   EFI_SMBIOS_TABLE_HEADER                  *Record;
   PLDM_SET_SMBIOS_STRUCTURE_TABLE_REQUEST  *PldmSetSmbiosStructureTable;
 
-  DEBUG ((DEBUG_INFO, "%a: Set SMBIOS structure table.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Set SMBIOS structure table.\n", __func__));
 
   Status = gBS->LocateProtocol (
                   &gEfiSmbiosProtocolGuid,
@@ -422,7 +422,7 @@ GetSmbiosStructureByType (
   OUT  UINT32                               *BufferSize
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Unsupported.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Unsupported.\n", __func__));
   // Only support PLDM SMBIOS Transfer push mode.
   return EFI_UNSUPPORTED;
 }
@@ -451,7 +451,7 @@ GetSmbiosStructureByHandle (
   OUT  UINT32                               *BufferSize
   )
 {
-  DEBUG ((DEBUG_INFO, "%a: Unsupported.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Unsupported.\n", __func__));
   // Only support PLDM SMBIOS Transfer push mode.
   return EFI_UNSUPPORTED;
 }
@@ -486,7 +486,7 @@ DxePldmSmbiosTransferEntry (
   EFI_HANDLE  Handle;
   EFI_STATUS  Status;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry.\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Entry.\n", __func__));
 
   SetSmbiosStructureTableHandle = 0;
 

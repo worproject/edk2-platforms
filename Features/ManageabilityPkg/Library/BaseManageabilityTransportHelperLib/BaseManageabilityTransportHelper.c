@@ -163,7 +163,7 @@ HelperAcquireManageabilityTransport (
   CHAR16      *ManageabilityProtocolName;
   CHAR16      *ManageabilityTransportName;
 
-  DEBUG ((DEBUG_INFO, "%a: Entry\n", __func__));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "%a: Entry\n", __func__));
   if ((TransportToken == NULL) || (ManageabilityProtocolSpec == NULL)) {
     DEBUG ((DEBUG_ERROR, "%a: One of the required input parameters is NULL.\n", __func__));
     return EFI_INVALID_PARAMETER;

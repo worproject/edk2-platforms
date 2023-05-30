@@ -16,6 +16,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/IpmiCommandLib.h>
 #include <IndustryStandard/Ipmi.h>
 
+#include <Library/ManageabilityTransportHelperLib.h>
+
 /**
   This routine disables the specified FRB timer.
 
@@ -159,7 +161,7 @@ ReportFrb2Status (
   //
   Status = IpmiGetWatchdogTimer (&GetWatchdogTimer);
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_INFO, "Failed to get Watchdog Timer info from BMC.\n"));
+    DEBUG ((DEBUG_ERROR, "Failed to get Watchdog Timer info from BMC.\n"));
     return Status;
   }
 
@@ -167,9 +169,9 @@ ReportFrb2Status (
   // Check if timer is running, report status to DEBUG_MODE output.
   //
   if (GetWatchdogTimer.TimerUse.Bits.TimerRunning == 1) {
-    DEBUG ((DEBUG_INFO, "FRB2 Timer is running.\n"));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "FRB2 Timer is running.\n"));
   } else {
-    DEBUG ((DEBUG_INFO, "FRB2 Timer is not running.\n"));
+    DEBUG ((DEBUG_MANAGEABILITY_INFO, "FRB2 Timer is not running.\n"));
   }
 
   return EFI_SUCCESS;

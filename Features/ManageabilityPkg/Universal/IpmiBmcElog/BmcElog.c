@@ -15,6 +15,8 @@ SPDX-License-Identifier: BSD-2-Clause-Patent
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/IpmiCommandLib.h>
 
+#include <Library/ManageabilityTransportHelperLib.h>
+
 EFI_STATUS
 EFIAPI
 CheckIfSelIsFull (
@@ -186,7 +188,7 @@ CheckIfSelIsFull (
   // Check the Bit7 of the OperationByte if SEL is OverFlow.
   //
   SelIsFull = (SelInfo.OperationSupport & 0x80);
-  DEBUG ((DEBUG_INFO, "SelIsFull - 0x%x\n", SelIsFull));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "SelIsFull - 0x%x\n", SelIsFull));
 
   return EFI_SUCCESS;
 }

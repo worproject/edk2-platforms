@@ -24,6 +24,8 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiLib.h>
 
+#include <Library/ManageabilityTransportHelperLib.h>
+
 #ifndef EFI_ACPI_CREATOR_ID
 #define EFI_ACPI_CREATOR_ID  SIGNATURE_32 ('M', 'S', 'F', 'T')
 #endif
@@ -140,7 +142,7 @@ UpdateDeviceSsdtTable (
   //
   // Update IO(Decode16, 0xCA2, 0xCA2, 0, 2)
   //
-  DEBUG ((DEBUG_INFO, "UpdateDeviceSsdtTable - IPMI\n"));
+  DEBUG ((DEBUG_MANAGEABILITY_INFO, "UpdateDeviceSsdtTable - IPMI\n"));
   for (DataPtr = (UINT8 *)(Table + 1);
        DataPtr < (UINT8 *)((UINT8 *)Table + Table->Length - 4);
        DataPtr++)
@@ -158,7 +160,7 @@ UpdateDeviceSsdtTable (
       ASSERT (IoRsc->Header.Bits.Type == ACPI_SMALL_ITEM_FLAG);
       ASSERT (IoRsc->Header.Bits.Name == ACPI_SMALL_IO_PORT_DESCRIPTOR_NAME);
       ASSERT (IoRsc->Header.Bits.Length == sizeof (EFI_ACPI_IO_PORT_DESCRIPTOR) - sizeof (ACPI_SMALL_RESOURCE_HEADER));
-      DEBUG ((DEBUG_INFO, "IPMI IO Base in ASL update - 0x%04x <= 0x%04x\n", IoRsc->BaseAddressMin, PcdGet16 (PcdIpmiKcsIoBaseAddress)));
+      DEBUG ((DEBUG_MANAGEABILITY_INFO, "IPMI IO Base in ASL update - 0x%04x <= 0x%04x\n", IoRsc->BaseAddressMin, PcdGet16 (PcdIpmiKcsIoBaseAddress)));
       IoRsc->BaseAddressMin = PcdGet16 (PcdIpmiKcsIoBaseAddress);
       IoRsc->BaseAddressMax = PcdGet16 (PcdIpmiKcsIoBaseAddress);
     }

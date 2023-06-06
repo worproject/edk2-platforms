@@ -40,6 +40,11 @@
 
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor
+
+  gArmTokenSpaceGuid.PcdGicDistributorBase
+  gArmTokenSpaceGuid.PcdGicRedistributorsBase
+
+
 [Depex]
   TRUE
 

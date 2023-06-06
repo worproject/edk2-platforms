@@ -558,6 +558,9 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisAssetTag|L"AT0000"
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisSKU|L"SK0000"
 
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor|0x0
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor|0x0
+
 ################################################################################
 #
 # Components Section - list of all EDK II Modules needed by this Platform

@@ -7,12 +7,14 @@
 *
 **/
 
+#include <Library/ArmSmcLib.h>
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/NonDiscoverableDeviceRegistrationLib.h>
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiDriverEntryPoint.h>
+#include <IndustryStandard/SbsaQemuSmc.h>
 
 #include <Protocol/FdtClient.h>
 
@@ -26,6 +28,10 @@ InitializeSbsaQemuPlatformDxe (
   EFI_STATUS                     Status;
   UINTN                          Size;
   VOID*                          Base;
+  UINTN                          Arg0;
+  UINTN                          Arg1;
+  UINTN                          SmcResult;
+  RETURN_STATUS                  Result;
 
   DEBUG ((DEBUG_INFO, "%a: InitializeSbsaQemuPlatformDxe called\n", __FUNCTION__));
 
@@ -51,5 +57,17 @@ InitializeSbsaQemuPlatformDxe (
     return Status;
   }
 
+  SmcResult = ArmCallSmc0 (SIP_SVC_VERSION, &Arg0, &Arg1, NULL);
+  if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
+    Result = PcdSet32S (PcdPlatformVersionMajor, Arg0);
+    ASSERT_RETURN_ERROR (Result);
+    Result = PcdSet32S (PcdPlatformVersionMinor, Arg1);
+    ASSERT_RETURN_ERROR (Result);
+  }
+
+  Arg0 = PcdGet32 (PcdPlatformVersionMajor);
+  Arg1 = PcdGet32 (PcdPlatformVersionMinor);
+
+  DEBUG ((DEBUG_INFO, "Platform version: %d.%d\n", Arg0, Arg1));
   return EFI_SUCCESS;
 }

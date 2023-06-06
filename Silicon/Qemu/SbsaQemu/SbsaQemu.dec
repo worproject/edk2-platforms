@@ -67,3 +67,6 @@
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisManufacturer|L""|VOID*|0x0000011B
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisAssetTag|L""|VOID*|0x0000011C
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdChassisSKU|L""|VOID*|0x0000011D
+
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor|0x0|UINT32|0x0000011E
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor|0x0|UINT32|0x0000011F

@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2017 - 2022, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2023, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -1380,26 +1380,38 @@ GetArmNameSpaceObject (
       break;
 
     case EArmObjPlatformGTBlockInfo:
-      Status = HandleCmObject (
-                 CmObjectId,
-                 PlatformRepo->GTBlockInfo,
-                 sizeof (PlatformRepo->GTBlockInfo),
-                 ARRAY_SIZE (PlatformRepo->GTBlockInfo),
-                 CmObject
-                 );
+      if (PlatformRepo->JunoRevision == JUNO_REVISION_R0) {
+        // Disable Memory Mapped Platform Timers for Juno R0
+        // due to Juno Erratum 832219.
+        Status = EFI_NOT_FOUND;
+      } else {
+        Status = HandleCmObject (
+                   CmObjectId,
+                   PlatformRepo->GTBlockInfo,
+                   sizeof (PlatformRepo->GTBlockInfo),
+                   ARRAY_SIZE (PlatformRepo->GTBlockInfo),
+                   CmObject
+                  );
+      }
       break;
 
     case EArmObjGTBlockTimerFrameInfo:
-      Status = HandleCmObjectRefByToken (
-                 This,
-                 CmObjectId,
-                 PlatformRepo->GTBlock0TimerInfo,
-                 sizeof (PlatformRepo->GTBlock0TimerInfo),
-                 ARRAY_SIZE (PlatformRepo->GTBlock0TimerInfo),
-                 Token,
-                 GetGTBlockTimerFrameInfo,
-                 CmObject
-                 );
+      if (PlatformRepo->JunoRevision == JUNO_REVISION_R0) {
+        // Disable Memory Mapped Platform Timers for Juno R0
+        // due to Juno Erratum 832219.
+        Status = EFI_NOT_FOUND;
+      } else {
+        Status = HandleCmObjectRefByToken (
+                   This,
+                   CmObjectId,
+                   PlatformRepo->GTBlock0TimerInfo,
+                   sizeof (PlatformRepo->GTBlock0TimerInfo),
+                   ARRAY_SIZE (PlatformRepo->GTBlock0TimerInfo),
+                   Token,
+                   GetGTBlockTimerFrameInfo,
+                   CmObject
+                   );
+      }
       break;
 
     case EArmObjGicCInfo:

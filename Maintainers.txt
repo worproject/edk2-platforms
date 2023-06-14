@@ -83,6 +83,11 @@ F: Platform/96Boards/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 
+AMD
+F: Platform/AMD
+M: Abner Chang <abner.chang@amd.com>
+M: Abdul Lateef Attar <abdattar@amd.com>
+
 AMD Seattle
 F: Platform/AMD/OverdriveBoard/
 F: Platform/LeMaker/CelloBoard/
@@ -90,11 +95,6 @@ F: Platform/SoftIron/
 F: Silicon/AMD/Styx/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
-
-AMD MinBoard package for MinPlatformPkg
-F: Platform/AMD/AmdMinBoardPkg
-M: Abner Chang <abner.chang@amd.com>
-M: Abdul Lateef Attar <abdattar@amd.com>
 
 Ampere Computing
 F: Platform/Ampere

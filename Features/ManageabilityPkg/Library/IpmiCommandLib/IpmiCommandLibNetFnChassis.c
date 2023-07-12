@@ -2,6 +2,7 @@
   IPMI Command - NetFnChassis.
 
   Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -152,17 +153,58 @@ IpmiSetSystemBootOptions (
   )
 {
   EFI_STATUS  Status;
-  UINT32      DataSize;
+  UINT32      RequestDataSize;
+  UINT32      ResponseDataSize;
 
-  DataSize = sizeof (*BootOptionsResponse);
-  Status   = IpmiSubmitCommand (
-               IPMI_NETFN_CHASSIS,
-               IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
-               (VOID *)BootOptionsRequest,
-               sizeof (*BootOptionsRequest),
-               (VOID *)BootOptionsResponse,
-               &DataSize
-               );
+  ResponseDataSize = sizeof (*BootOptionsResponse);
+  RequestDataSize  = sizeof (*BootOptionsRequest);
+
+  switch (BootOptionsRequest->ParameterValid.Bits.ParameterSelector) {
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SET_IN_PROGRESS:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_0);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SERVICE_PARTITION_SELECTOR:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_1);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SERVICE_PARTITION_SCAN:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_2);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_BMC_BOOT_FLAG:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_3);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INFO_ACK:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_INFO:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_6);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_MAILBOX:
+      RequestDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7);
+      break;
+
+    default:
+      return EFI_INVALID_PARAMETER;
+      break;
+  }
+
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_SET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)BootOptionsRequest,
+             RequestDataSize,
+             (VOID *)BootOptionsResponse,
+             &ResponseDataSize
+             );
   return Status;
 }
 
@@ -184,16 +226,55 @@ IpmiGetSystemBootOptions (
   )
 {
   EFI_STATUS  Status;
-  UINT32      DataSize;
+  UINT32      ResponseDataSize;
 
-  DataSize = sizeof (*BootOptionsResponse);
-  Status   = IpmiSubmitCommand (
-               IPMI_NETFN_CHASSIS,
-               IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS,
-               (VOID *)BootOptionsRequest,
-               sizeof (*BootOptionsRequest),
-               (VOID *)BootOptionsResponse,
-               &DataSize
-               );
+  ResponseDataSize = sizeof (*BootOptionsResponse);
+
+  switch (BootOptionsRequest->ParameterSelector.Bits.ParameterSelector) {
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SET_IN_PROGRESS:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_0);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SERVICE_PARTITION_SELECTOR:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_1);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_SERVICE_PARTITION_SCAN:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_2);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_SELECTOR_BMC_BOOT_FLAG:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_3);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INFO_ACK:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_4);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_FLAGS:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_5);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_INFO:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_6);
+      break;
+
+    case IPMI_BOOT_OPTIONS_PARAMETER_BOOT_INITIATOR_MAILBOX:
+      ResponseDataSize += sizeof (IPMI_BOOT_OPTIONS_RESPONSE_PARAMETER_7);
+      break;
+
+    default:
+      return EFI_INVALID_PARAMETER;
+      break;
+  }
+
+  Status = IpmiSubmitCommand (
+             IPMI_NETFN_CHASSIS,
+             IPMI_CHASSIS_GET_SYSTEM_BOOT_OPTIONS,
+             (VOID *)BootOptionsRequest,
+             sizeof (*BootOptionsRequest),
+             (VOID *)BootOptionsResponse,
+             &ResponseDataSize
+             );
   return Status;
 }

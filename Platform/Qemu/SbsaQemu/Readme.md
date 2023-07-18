@@ -97,7 +97,7 @@ Create a directory $WORKSPACE that would hold source code of the components.
   cd $WORKSPACE
   build -b RELEASE -a AARCH64 -t GCC5 -p edk2-platforms/Platform/Qemu/SbsaQemu/SbsaQemu.dsc
   ```
-  Copy SBSA_FLASH0.fd and SBSA_FLASH0.fd to top $WORKSPACE directory.
+  Copy SBSA_FLASH0.fd and SBSA_FLASH1.fd to top $WORKSPACE directory.
   Then extend the file size to match the machine flash size.
   ```
   cp Build/SbsaQemu/RELEASE_GCC5/FV/SBSA_FLASH[01].fd .

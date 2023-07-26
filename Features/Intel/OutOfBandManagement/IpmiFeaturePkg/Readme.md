@@ -35,6 +35,18 @@ to better understand the module source code.
 Each library in the feature should have a section that describes the library in a level of detail that is useful
 to better understand the library source code.
 
+#BmcInterfaceCommonAccess
+This Library provides the common API's functions among the different Interfaces such as BT, SSIF,and IPMB interface.
+
+#BtInterfaceLib
+This Library provides the API's function for the BT interface.
+
+#IpmbInterfaceLib
+This Library provides the API's function for the IPMB/I2C interface.
+
+#SsifInterfaceLib
+This Function provides the API's function for the SSIF interface.
+
 ## Key Functions
 *_TODO_*
 A bulleted list of key functions for interacting with the feature.
@@ -42,12 +54,24 @@ A bulleted list of key functions for interacting with the feature.
 Not all features need to be listed. Only functions exposed through external interfaces that are important for feature
 users to be aware of.
 
+* Some BMC may have various interface support, in this case IpmiTransport2Protocol will check the available interfaces Supports
+and initialize the Interface API for IPMI communication. it will check for multiple interfaces  such as KCS,BT,SSIF and IPMB/I2C interface.
+* PcdDefaultSystemInterface, helps to select the default Interface type to communicate with BMC.
+IpmiSubmitCommand2 API will send the IPMI command via by selected PcdDefaultSystemInterface Type.
+* We can able to send the IPMI command via the specific Interface type through IpmiSubmitCommand2Ex.
+* In case if the platform BMC doesn't have any interface support, we can disable the
+respective Interface support(PcdKcsInterfaceSupport,PcdBtInterfaceSupport,PcdSsifInterfaceSupport and PcdIpmbInterfaceSupport)
+
 ## Configuration
 *_TODO_*
 Information that is useful for configuring the feature.
 
 Not all configuration options need to be listed. This section is used to provide more background on configuration
 options than possible elsewhere.
+
+* While selecting Default Interface type on PcdDefaultSystemInterface, the respective Interface Support should need to be Enabled,
+else the IpmiTransport2Protocol will be unsupported. Example, for SysInterfaceKcs on PcdDefaultSystemInterface, PcdKcsInterfaceSupport Should be enable.
+
 
 ## Data Flows
 *_TODO_*

@@ -1,0 +1,38 @@
+## @file PeiIpmbInterfaceLib.inf
+#
+#  INF description file for IpmbInterfacePeiLib Library for PEIMs.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = PeiIpmbInterfaceLib
+  FILE_GUID         = 843DBE4E-4750-4335-9094-58645D897D62
+  MODULE_TYPE       = PEIM
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = IpmbInterfaceLib | PEIM
+
+[Sources]
+  PeiIpmbInterfaceLib.c
+  IpmbInterfaceLibCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  HobLib
+  DebugLib
+  BaseMemoryLib
+  PeiServicesTablePointerLib
+  BmcCommonInterfaceLib
+
+[Ppis]
+  gEfiPeiI2cMasterPpiGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcSlaveAddress

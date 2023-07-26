@@ -1,0 +1,41 @@
+## @file PeiSsifInterfaceLib.inf
+#
+#  INF description file for SsifInterfaceLib Library for PEIMs.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = PeiSsifInterfaceLib
+  FILE_GUID         = EDA631E3-DC66-4120-BADF-B6BA73B6ABD4
+  MODULE_TYPE       = PEIM
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = SsifInterfaceLib | PEIM
+
+[Sources]
+  PeiSsifInterfaceLib.c
+  SsifInterfaceLibCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  TimerLib
+  BaseMemoryLib
+  PeiServicesTablePointerLib
+  BmcCommonInterfaceLib
+
+[Ppis]
+  gEfiPeiSmbus2PpiGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifSlaveAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifRequestRetriesDelay
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifCommandtRetryCounter
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifRequestRetriesDelay

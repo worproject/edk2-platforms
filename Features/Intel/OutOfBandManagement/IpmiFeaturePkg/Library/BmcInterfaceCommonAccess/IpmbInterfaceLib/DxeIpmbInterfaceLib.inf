@@ -1,0 +1,38 @@
+## @file DxeIpmbInterfaceLib.inf
+#
+#  INF description file for IpmbInterfaceLib Library for DXE and UEFI drivers.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = DxeIpmbInterfaceLib
+  FILE_GUID         = 9068B213-4E53-427E-863C-8C7423509035
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = IpmbInterfaceLib | DXE_DRIVER DXE_RUNTIME_DRIVER UEFI_DRIVER UEFI_APPLICATION
+
+[Sources]
+  DxeIpmbInterfaceLib.c
+  IpmbInterfaceLibCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseMemoryLib
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  BmcCommonInterfaceLib
+
+[Protocols]
+  gEfiI2cMasterProtocolGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcSlaveAddress

@@ -1,0 +1,40 @@
+## @file DxeSsifInterfaceLib.inf
+#
+#  INF description file for SsifInterfaceLib Library for DXE and UEFI drivers.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = DxeSsifInterfaceLib
+  FILE_GUID         = AD66E7C3-FE13-4849-970E-118347FFE857
+  MODULE_TYPE       = DXE_DRIVER
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = SsifInterfaceLib | DXE_DRIVER DXE_RUNTIME_DRIVER UEFI_DRIVER UEFI_APPLICATION
+
+[Sources]
+  DxeSsifInterfaceLib.c
+  SsifInterfaceLibCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  UefiLib
+  MemoryAllocationLib
+  BmcCommonInterfaceLib
+
+[Protocols]
+  gEfiSmbusHcProtocolGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifSlaveAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifRequestRetriesDelay
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifCommandtRetryCounter
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifRequestRetriesDelay

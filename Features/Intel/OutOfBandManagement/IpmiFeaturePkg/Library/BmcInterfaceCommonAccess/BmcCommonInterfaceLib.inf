@@ -1,0 +1,26 @@
+## @file BmcCommonInterfaceLib.inf
+#
+#  INF description file for BmcCommonInterfaceLib Library.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = BmcCommonInterfaceLib
+  FILE_GUID         = D86308F8-5246-4B2F-AC25-E3D17170D6EF
+  MODULE_TYPE       = BASE
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = BmcCommonInterfaceLib
+
+[Sources]
+  BmcCommonInterfaceLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec

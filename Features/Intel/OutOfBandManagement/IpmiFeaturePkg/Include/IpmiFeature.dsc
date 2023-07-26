@@ -7,6 +7,7 @@
 # for the build infrastructure.
 #
 # Copyright (c) 2019 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -41,9 +42,23 @@
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]
   IpmiBaseLib|IpmiFeaturePkg/Library/PeiIpmiBaseLib/PeiIpmiBaseLib.inf
+  SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/PeiSsifInterfaceLib.inf
+  IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/PeiIpmbInterfaceLib.inf
 
 [LibraryClasses.common.DXE_DRIVER,LibraryClasses.common.UEFI_DRIVER]
   IpmiBaseLib|IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
+
+[LibraryClasses.common]
+  BmcCommonInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/BmcCommonInterfaceLib.inf
+  BtInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/BtInterfaceLib/BtInterfaceLib.inf
+
+[LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
+  SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/DxeSsifInterfaceLib.inf
+  IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/DxeIpmbInterfaceLib.inf
+
+[LibraryClasses.common.DXE_SMM_DRIVER]
+  SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/SmmSsifInterfaceLib.inf
+  IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/SmmIpmbInterfaceLib.inf
 
 ################################################################################
 #

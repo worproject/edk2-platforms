@@ -1,0 +1,39 @@
+## @file BtInterfaceLib.inf
+#
+#  INF description file for BtInterfaceLib common library.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = BtInterfaceLib
+  FILE_GUID         = DAFB6AEE-0275-45E4-A33C-E3348149C5BF
+  MODULE_TYPE       = BASE
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = BtInterfaceLib
+
+[Sources]
+  BtInterfaceLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  TimerLib
+  BmcCommonInterfaceLib
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtCommandRetryCounter
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtControlPort
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtBufferPort
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtDelayPerRetry
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtInterruptMaskPort
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtBufferSize
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBaseAddressRange
+  gIpmiFeaturePkgTokenSpaceGuid.PcdMmioBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiDefaultAccessType

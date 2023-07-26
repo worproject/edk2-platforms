@@ -1,0 +1,37 @@
+## @file SmmAmiIpmbInterfaceLib.inf
+#
+#  INF description file for SmmAmiIpmbInterfaceLib Library for DXE SMM drivers.
+#
+# @copyright
+# Copyright 2016 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION       = 0x00010005
+  BASE_NAME         = SmmIpmbInterfaceLib
+  FILE_GUID         = C39F9DC3-37C7-41C1-BE05-8C1524493947
+  MODULE_TYPE       = DXE_SMM_DRIVER
+  VERSION_STRING    = 1.1
+  LIBRARY_CLASS     = IpmbInterfaceLib | DXE_SMM_DRIVER
+
+[Sources]
+  SmmIpmbInterfaceLib.c
+  IpmbInterfaceLibCommon.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  BaseMemoryLib
+  SmmServicesTableLib
+  BmcCommonInterfaceLib
+
+[Protocols]
+  gEfiI2cMasterProtocolGuid
+
+[Pcd]
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBmcSlaveAddress

@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 1999 - 2021 Intel Corporation. <BR>
+  Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -24,17 +25,18 @@
 #include "IpmiBmcCommon.h"
 #include "IpmiBmc.h"
 #include <Library/TimerLib.h>
+#include <Library/BmcCommonInterfaceLib.h>
 
-IPMI_BMC_INSTANCE_DATA             *mIpmiInstance;
-EFI_HANDLE                         mImageHandle;
-
+IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
+EFI_HANDLE              mImageHandle;
 
 EFI_STATUS
 GetDeviceId (
-  IN      IPMI_BMC_INSTANCE_DATA       *IpmiInstance,
-  IN      EFI_STATUS_CODE_VALUE        StatusCodeValue[ ],
-  IN OUT  UINT8                        *ErrorCount
+  IN      IPMI_BMC_INSTANCE_DATA  *IpmiInstance,
+  IN      EFI_STATUS_CODE_VALUE   StatusCodeValue[],
+  IN OUT  UINT8                   *ErrorCount
   )
+
 /*++
 
 Routine Description:
@@ -51,12 +53,12 @@ Returns:
 
 --*/
 {
-  EFI_STATUS               Status;
-  UINT32                   DataSize;
-  SM_CTRL_INFO             *ControllerInfo;
-  UINT8                    TimeOut;
-  UINT8                    Retries;
-  UINT8                    TempData[MAX_TEMP_DATA];
+  EFI_STATUS    Status;
+  UINT32        DataSize;
+  SM_CTRL_INFO  *ControllerInfo;
+  UINT8         TimeOut;
+  UINT8         Retries;
+  UINT8         TempData[MAX_TEMP_DATA];
 
   TimeOut = 0;
   Retries = PcdGet8 (PcdIpmiBmcReadyDelayTimer);
@@ -66,16 +68,16 @@ Returns:
     // Get the device ID information for the BMC.
     //
     DataSize = MAX_TEMP_DATA;
-    Status = IpmiSendCommand (
-               &IpmiInstance->IpmiTransport,
-               IPMI_NETFN_APP,
-               0,
-               IPMI_APP_GET_DEVICE_ID,
-               NULL,
-               0,
-               TempData,
-               &DataSize
-               );
+    Status   = IpmiSendCommand (
+                                &IpmiInstance->IpmiTransport,
+                                IPMI_NETFN_APP,
+                                0,
+                                IPMI_APP_GET_DEVICE_ID,
+                                NULL,
+                                0,
+                                TempData,
+                                &DataSize
+                                );
     if (Status == EFI_SUCCESS) {
       DEBUG ((EFI_D_INFO, "IPMI: SendCommand success!\n"));
       break;
@@ -84,10 +86,10 @@ Returns:
       // Display message and retry.
       //
       DEBUG (
-        (EFI_D_ERROR | EFI_D_INFO,
-         "IPMI: Waiting for BMC (KCS 0x%x)...\n",
-         IpmiInstance->IpmiIoBase)
-        );
+             (DEBUG_WARN | EFI_D_INFO,
+              "IPMI: Waiting for BMC (KCS 0x%x)...\n",
+              IpmiInstance->IpmiIoBase)
+             );
       MicroSecondDelay (500 * 1000);
       TimeOut++;
     }
@@ -97,7 +99,7 @@ Returns:
   // If there is no error then proceed to check the data returned by the BMC
   //
   if (!EFI_ERROR (Status)) {
-    ControllerInfo = (SM_CTRL_INFO *) TempData;
+    ControllerInfo = (SM_CTRL_INFO *)TempData;
     //
     // If the controller is in Update Mode and the maximum number of errors has not been exceeded, then
     // save the error code to the StatusCode array and increment the counter.  Set the BMC Status to indicate
@@ -115,11 +117,143 @@ Returns:
   return Status;
 }
 
+/*++
+
+Routine Description:
+  Initialize the API and parameters for IPMI Transport2 Instance
+
+Arguments:
+  IpmiInstance    - Pointer to IPMI Instance.
+
+Returns:
+  VOID            - Nothing.
+
+--*/
+VOID
+InitIpmiTransport2 (
+  IN  IPMI_BMC_INSTANCE_DATA  *IpmiInstance
+  )
+{
+  IpmiInstance->IpmiTransport2.InterfaceType           = FixedPcdGet8 (PcdDefaultSystemInterface);
+  IpmiInstance->IpmiTransport2.IpmiTransport2BmcStatus = BmcStatusOk;
+  IpmiInstance->IpmiTransport2.IpmiSubmitCommand2      = IpmiSendCommand2;
+  IpmiInstance->IpmiTransport2.IpmiSubmitCommand2Ex    = IpmiSendCommand2Ex;
+
+  if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
+    InitBtInterfaceData (&IpmiInstance->IpmiTransport2);
+  }
+
+  if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+    InitSsifInterfaceData (&IpmiInstance->IpmiTransport2);
+  }
+
+  if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+    InitIpmbInterfaceData (&IpmiInstance->IpmiTransport2);
+  }
+}
+
+/*++
+
+Routine Description:
+  Notify call back to initialize the interfaces and install SMM IPMI
+  protocol.
+
+Arguments:
+  Protocol    - Pointer to the protocol guid.
+  Interface   - Pointer to the protocol instance.
+  Handle      - Handle on which the protocol is installed.
+
+Returns:
+  Status of Notify call back.
+
+--*/
+EFI_STATUS
+EFIAPI
+SmmNotifyCallback (
+  IN CONST  EFI_GUID    *Protocol,
+  IN        VOID        *Interface,
+  IN        EFI_HANDLE  Handle
+  )
+{
+  EFI_STATUS            Status;
+  IPMI_INTERFACE_STATE  InterfaceState;
+
+  InterfaceState = IpmiInterfaceNotReady;
+
+  if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+    InitSsifInterfaceData (&mIpmiInstance->IpmiTransport2);
+
+    if (mIpmiInstance->IpmiTransport2.Interface.Ssif.InterfaceState == IpmiInterfaceInitialized) {
+      InterfaceState = IpmiInterfaceInitialized;
+    }
+  }
+
+  if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+    InitIpmbInterfaceData (&mIpmiInstance->IpmiTransport2);
+  }
+
+  if (mIpmiInstance->IpmiTransport2.Interface.Ipmb.InterfaceState == IpmiInterfaceInitialized) {
+    InterfaceState = IpmiInterfaceInitialized;
+  }
+
+  if (InterfaceState != IpmiInterfaceInitialized) {
+    return EFI_SUCCESS;
+  }
+
+  // Default Interface data should be initialized to install Ipmi Transport2 Protocol.
+  if (InterfaceState == IpmiInterfaceInitialized) {
+    Handle = NULL;
+    Status = gSmst->SmmInstallProtocolInterface (
+                                                 &Handle,
+                                                 &gSmmIpmiTransport2ProtocolGuid,
+                                                 EFI_NATIVE_INTERFACE,
+                                                 &mIpmiInstance->IpmiTransport2
+                                                 );
+  }
+
+  return EFI_SUCCESS;
+}
+
+/*++
+
+Routine Description:
+  Registers Protocol call back.
+
+Arguments:
+  ProtocolGuid    - Pointer to Protocol GUID to register call back.
+
+Returns:
+  Status.
+
+--*/
+EFI_STATUS
+SmmRegisterProtocolCallback (
+  IN  EFI_GUID  *ProtocolGuid
+  )
+{
+  EFI_STATUS  Status;
+  VOID        *Registration;
+
+  if ((ProtocolGuid == NULL) ||
+      ((ProtocolGuid != NULL) && IsZeroBuffer (ProtocolGuid, sizeof (EFI_GUID))))
+  {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  Status = gSmst->SmmRegisterProtocolNotify (
+                                             ProtocolGuid,
+                                             SmmNotifyCallback,
+                                             &Registration
+                                             );
+  return Status;
+}
+
 EFI_STATUS
 SmmInitializeIpmiKcsPhysicalLayer (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
+
 /*++
 
 Routine Description:
@@ -138,23 +272,25 @@ Returns:
 
 --*/
 {
-  EFI_STATUS                       Status;
-  UINT8                            ErrorCount;
-  EFI_HANDLE                       Handle;
-  EFI_STATUS_CODE_VALUE            StatusCodeValue[MAX_SOFT_COUNT];
+  EFI_STATUS             Status;
+  UINT8                  ErrorCount;
+  EFI_HANDLE             Handle;
+  EFI_STATUS_CODE_VALUE  StatusCodeValue[MAX_SOFT_COUNT];
+  IPMI_INTERFACE_STATE   InterfaceState;
+  UINT8                  Index;
 
-  DEBUG ((DEBUG_INFO,"SmmInitializeIpmiKcsPhysicalLayer entry \n"));
-  ErrorCount = 0;
-  mImageHandle = ImageHandle;
+  DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer entry \n"));
+  ErrorCount     = 0;
+  mImageHandle   = ImageHandle;
+  InterfaceState = IpmiInterfaceNotReady;
 
   mIpmiInstance = AllocateZeroPool (sizeof (IPMI_BMC_INSTANCE_DATA));
   ASSERT (mIpmiInstance != NULL);
   if (mIpmiInstance == NULL) {
-    DEBUG ((EFI_D_ERROR, "ERROR!! Null Pointer returned by AllocateZeroPool ()\n"));
+    DEBUG ((DEBUG_ERROR, "ERROR!! Null Pointer returned by AllocateZeroPool ()\n"));
     ASSERT_EFI_ERROR (EFI_OUT_OF_RESOURCES);
     return EFI_OUT_OF_RESOURCES;
   } else {
-
     //
     // Initialize the KCS transaction timeout. Assume delay unit is 1000 us.
     //
@@ -163,36 +299,115 @@ Returns:
     //
     // Initialize IPMI IO Base, we still use SMS IO base to get device ID and Seltest result since SMM IF may have different cmds supported
     //
-    mIpmiInstance->IpmiIoBase                       = PcdGet16 (PcdIpmiSmmIoBaseAddress);
-    mIpmiInstance->Signature                        = SM_IPMI_BMC_SIGNATURE;
-    mIpmiInstance->SlaveAddress                     = BMC_SLAVE_ADDRESS;
-    mIpmiInstance->BmcStatus                        = BMC_NOTREADY;
-    mIpmiInstance->IpmiTransport.IpmiSubmitCommand  = IpmiSendCommand;
-    mIpmiInstance->IpmiTransport.GetBmcStatus       = IpmiGetBmcStatus;
+    mIpmiInstance->IpmiIoBase                      = PcdGet16 (PcdIpmiSmmIoBaseAddress);
+    mIpmiInstance->Signature                       = SM_IPMI_BMC_SIGNATURE;
+    mIpmiInstance->SlaveAddress                    = BMC_SLAVE_ADDRESS;
+    mIpmiInstance->BmcStatus                       = BMC_NOTREADY;
+    mIpmiInstance->IpmiTransport.IpmiSubmitCommand = IpmiSendCommand;
+    mIpmiInstance->IpmiTransport.GetBmcStatus      = IpmiGetBmcStatus;
 
-    DEBUG ((DEBUG_INFO,"IPMI: Waiting for Getting BMC DID in SMM \n"));
-    //
-    // Get the Device ID and check if the system is in Force Update mode.
-    //
-    // Just obey the Spec..
-    // If we want to improve performance, we're going to comment it.
-    //
-    Status = GetDeviceId (
-               mIpmiInstance,
-               StatusCodeValue,
-               &ErrorCount
-               );
-    ASSERT_EFI_ERROR (Status);
-    Handle = NULL;
-    Status = gSmst->SmmInstallProtocolInterface (
-                      &Handle,
-                      &gSmmIpmiTransportProtocolGuid,
-                      EFI_NATIVE_INTERFACE,
-                      &mIpmiInstance->IpmiTransport
-                      );
-    ASSERT_EFI_ERROR (Status);
+    if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
+      DEBUG ((DEBUG_INFO, "IPMI: Waiting for Getting BMC DID in SMM \n"));
+      //
+      // Get the Device ID and check if the system is in Force Update mode.
+      //
+      // Just obey the Spec..
+      // If we want to improve performance, we're going to comment it.
+      //
+      Status = GetDeviceId (
+                            mIpmiInstance,
+                            StatusCodeValue,
+                            &ErrorCount
+                            );
+      ASSERT_EFI_ERROR (Status);
+      Handle = NULL;
+      Status = gSmst->SmmInstallProtocolInterface (
+                                                   &Handle,
+                                                   &gSmmIpmiTransportProtocolGuid,
+                                                   EFI_NATIVE_INTERFACE,
+                                                   &mIpmiInstance->IpmiTransport
+                                                   );
+      ASSERT_EFI_ERROR (Status);
+    }
 
-    DEBUG ((DEBUG_INFO,"SmmInitializeIpmiKcsPhysicalLayer exit \n"));
+    InitIpmiTransport2 (mIpmiInstance);
+
+    // Check interface data initialized successfully else register notify protocol.
+    for (Index = SysInterfaceKcs; Index < SysInterfaceMax; Index++) {
+      switch (Index) {
+      if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
+          case SysInterfaceKcs:
+            if ((mIpmiInstance->BmcStatus != BMC_HARDFAIL) && (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS)) {
+              BMC_INTERFACE_STATUS  BmcStatus;
+              mIpmiInstance->IpmiTransport2.Interface.KcsInterfaceState = IpmiInterfaceInitialized;
+              Status                                                    = CheckSelfTestByInterfaceType (
+                                                                                                        &mIpmiInstance->IpmiTransport2,
+                                                                                                        &BmcStatus,
+                                                                                                        SysInterfaceKcs
+                                                                                                        );
+              if (!EFI_ERROR (Status) && (BmcStatus != BmcStatusHardFail)) {
+                InterfaceState = IpmiInterfaceInitialized;
+              } else {
+                mIpmiInstance->IpmiTransport2.Interface.KcsInterfaceState = IpmiInterfaceInitError;
+              }
+            }
+
+            break;
+      }
+
+      if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
+          case SysInterfaceBt:
+            if (mIpmiInstance->IpmiTransport2.Interface.Bt.InterfaceState == IpmiInterfaceInitialized) {
+              InterfaceState = IpmiInterfaceInitialized;
+            }
+
+            break;
+      }
+
+      if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+          case SysInterfaceSsif:
+            if (mIpmiInstance->IpmiTransport2.Interface.Ssif.InterfaceState == IpmiInterfaceInitialized) {
+              InterfaceState = IpmiInterfaceInitialized;
+            } else if (mIpmiInstance->IpmiTransport2.Interface.Ssif.InterfaceState == IpmiInterfaceInitError) {
+              // Register protocol notify for SMBUS Protocol.
+              Status = SmmRegisterProtocolCallback (&mIpmiInstance->IpmiTransport2.Interface.Ssif.SsifInterfaceApiGuid);
+            }
+
+            break;
+      }
+
+      if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+          case SysInterfaceIpmb:
+            if (mIpmiInstance->IpmiTransport2.Interface.Ipmb.InterfaceState == IpmiInterfaceInitialized) {
+              InterfaceState = IpmiInterfaceInitialized;
+            } else if (mIpmiInstance->IpmiTransport2.Interface.Ipmb.InterfaceState == IpmiInterfaceInitError) {
+              // Register protocol notify for SMBUS Protocol.
+              Status = SmmRegisterProtocolCallback (&mIpmiInstance->IpmiTransport2.Interface.Ipmb.IpmbInterfaceApiGuid);
+            }
+
+            break;
+      }
+
+        default:
+          break;
+      }
+    }
+
+    // Default Interface data should be initialized to install Ipmi Transport2 Protocol.
+    if (InterfaceState == IpmiInterfaceInitialized) {
+      Handle = NULL;
+      Status = gSmst->SmmInstallProtocolInterface (
+                                                   &Handle,
+                                                   &gSmmIpmiTransport2ProtocolGuid,
+                                                   EFI_NATIVE_INTERFACE,
+                                                   &mIpmiInstance->IpmiTransport2
+                                                   );
+      if (EFI_ERROR (Status)) {
+        DEBUG ((DEBUG_ERROR, "IPMI Transport2 protocol install Status = %r \n", Status));
+      }
+    }
+
+    DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer exit \n"));
 
     return EFI_SUCCESS;
   }
@@ -200,8 +415,8 @@ Returns:
 
 EFI_STATUS
 InitializeSmmGenericIpmi (
-  IN EFI_HANDLE             ImageHandle,
-  IN EFI_SYSTEM_TABLE       *SystemTable
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
   SmmInitializeIpmiKcsPhysicalLayer (ImageHandle, SystemTable);

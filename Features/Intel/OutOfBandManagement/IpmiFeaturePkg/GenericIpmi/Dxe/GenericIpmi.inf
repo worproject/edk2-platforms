@@ -3,6 +3,7 @@
 #
 # @copyright
 # Copyright 2010 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -49,16 +50,25 @@
   IoLib
   ReportStatusCodeLib
   TimerLib
+  BmcCommonInterfaceLib
+  BtInterfaceLib
+  SsifInterfaceLib
+  IpmbInterfaceLib
 
 [Protocols]
   gIpmiTransportProtocolGuid               # PROTOCOL ALWAYS_PRODUCED
   gEfiVideoPrintProtocolGuid
-
-[Guids]
+  gIpmiTransport2ProtocolGuid
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
+  gIpmiFeaturePkgTokenSpaceGuid.PcdDefaultSystemInterface
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmbInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdKcsInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtControlPort
 
 [Depex]
   gEfiRuntimeArchProtocolGuid AND

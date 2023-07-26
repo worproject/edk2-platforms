@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 1999 - 2021 Intel Corporation. <BR>
+  Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -21,23 +22,31 @@
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiBaseLib.h>
 #include <Protocol/IpmiTransportProtocol.h>
+#include <Protocol/IpmiTransport2Protocol.h>
 
 #include "IpmiBmcCommon.h"
 #include "KcsBmc.h"
-
 
 #define BMC_KCS_TIMEOUT  5   // [s] Single KSC request timeout
 
 //
 // IPMI Instance signature
 //
-#define SM_IPMI_BMC_SIGNATURE SIGNATURE_32 ('i', 'p', 'm', 'i')
+#define SM_IPMI_BMC_SIGNATURE        SIGNATURE_32 ('i', 'p', 'm', 'i')
 #define IPMI_SEND_COMMAND_MAX_RETRY  3   // Number of retries
 #define INSTANCE_FROM_SM_IPMI_BMC_THIS(a) \
   CR ( \
   a, \
   IPMI_BMC_INSTANCE_DATA, \
   IpmiTransport, \
+  SM_IPMI_BMC_SIGNATURE \
+  )
+
+#define INSTANCE_FROM_IPMI_TRANSPORT2_THIS(a) \
+  CR ( \
+  a, \
+  IPMI_BMC_INSTANCE_DATA, \
+  IpmiTransport2, \
   SM_IPMI_BMC_SIGNATURE \
   )
 

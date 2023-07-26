@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 2016 - 2021 Intel Corporation. <BR>
+  Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -25,13 +26,21 @@
 //
 // IPMI Instance signature
 //
-#define SM_IPMI_BMC_SIGNATURE SIGNATURE_32 ('i', 'p', 'm', 'i')
+#define SM_IPMI_BMC_SIGNATURE  SIGNATURE_32 ('i', 'p', 'm', 'i')
 
 #define INSTANCE_FROM_PEI_SM_IPMI_BMC_THIS(a) \
   CR ( \
   a, \
   PEI_IPMI_BMC_INSTANCE_DATA, \
   IpmiTransportPpi, \
+  SM_IPMI_BMC_SIGNATURE \
+  )
+
+#define INSTANCE_FROM_PEI_IPMI_TRANSPORT2_THIS(a) \
+  CR ( \
+  a, \
+  PEI_IPMI_BMC_INSTANCE_DATA, \
+  IpmiTransport2Ppi, \
   SM_IPMI_BMC_SIGNATURE \
   )
 

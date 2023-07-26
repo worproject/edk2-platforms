@@ -3,6 +3,7 @@
 #
 # @copyright
 # Copyright 2017 - 2021 Intel Corporation. <BR>
+# Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
@@ -30,6 +31,8 @@
   PeiIpmiBmcDef.h
   PeiGenericIpmi.c
   PeiGenericIpmi.h
+  PeiIpmiHooks.c
+  PeiIpmiHooks.h
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -44,17 +47,31 @@
   ReportStatusCodeLib
   TimerLib
   IpmiPlatformHookLib
+  HobLib
+  BmcCommonInterfaceLib
+  BtInterfaceLib
+  SsifInterfaceLib
+  IpmbInterfaceLib
 
 [Guids]
+  gPeiIpmiHobGuid
 
 [Ppis]
   gPeiIpmiTransportPpiGuid       #ALWAYS PRODUCE
+  gPeiIpmiTransport2PpiGuid
+  gEfiPeiMemoryDiscoveredPpiGuid #CONSUMES
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiIoBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiBmcReadyDelayTimer
   gIpmiFeaturePkgTokenSpaceGuid.PcdSioMailboxBaseAddress
   gIpmiFeaturePkgTokenSpaceGuid.PcdSignalPreBootToBmc
+  gIpmiFeaturePkgTokenSpaceGuid.PcdDefaultSystemInterface
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdKcsInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmbInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtControlPort
 
 [Depex]
   TRUE

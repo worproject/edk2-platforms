@@ -3,6 +3,7 @@
 
   @copyright
   Copyright 2017 - 2021 Intel Corporation. <BR>
+  Copyright (c) 1985 - 2023, American Megatrends International LLC. <BR>
   SPDX-License-Identifier: BSD-2-Clause-Patent
 **/
 
@@ -10,10 +11,208 @@
 #include "PeiGenericIpmi.h"
 #include <Library/ReportStatusCodeLib.h>
 #include <Library/IpmiPlatformHookLib.h>
+#include <Library/BmcCommonInterfaceLib.h>
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function Implementations
-//
+
+static EFI_PEI_NOTIFY_DESCRIPTOR  mNotifyList = {
+  EFI_PEI_PPI_DESCRIPTOR_NOTIFY_DISPATCH | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST,
+  &gEfiPeiMemoryDiscoveredPpiGuid,
+  UpdateIpmiInstancePtr
+};
+
+/**
+    Initialize the API and parameters for IPMI Transport2 Instance
+
+    @param[in] IpmiInstance         Pointer to IPMI Instance
+
+    @return VOID
+
+**/
+VOID
+InitIpmiTransport2 (
+  IN  PEI_IPMI_BMC_INSTANCE_DATA  *IpmiInstance
+  )
+{
+  IpmiInstance->IpmiTransport2Ppi.InterfaceType           = FixedPcdGet8 (PcdDefaultSystemInterface);
+  IpmiInstance->IpmiTransport2Ppi.IpmiTransport2BmcStatus = BmcStatusOk;
+  IpmiInstance->IpmiTransport2Ppi.IpmiSubmitCommand2      = PeiIpmiSendCommand2;
+  IpmiInstance->IpmiTransport2Ppi.IpmiSubmitCommand2Ex    = PeiIpmiSendCommand2Ex;
+
+  if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
+    if (!EFI_ERROR (PlatformIpmiIoRangeSet (FixedPcdGet16 (PcdBtControlPort)))) {
+      InitBtInterfaceData (&IpmiInstance->IpmiTransport2Ppi);
+    }
+  }
+
+  if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+    InitSsifInterfaceData (&IpmiInstance->IpmiTransport2Ppi);
+  }
+
+  if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+    InitIpmbInterfaceData (&IpmiInstance->IpmiTransport2Ppi);
+  }
+}
+
+/*++
+
+Routine Description:
+  Notify callback function for interfaces.
+
+Arguments:
+  PeiServices      - Describes the list of possible PEI Services.
+  NotifyDescriptor - Pointer to notify descriptor.
+  Ppi              - Pointer to Ppi.
+
+Returns:
+  Status
+
+--*/
+EFI_STATUS
+EFIAPI
+NotifyCallback (
+  IN EFI_PEI_SERVICES           **PeiServices,
+  IN EFI_PEI_NOTIFY_DESCRIPTOR  *NotifyDescriptor,
+  IN VOID                       *Ppi
+  )
+{
+  EFI_STATUS                  Status;
+  PEI_IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
+  PEI_IPMI_DATA_HOB           *IpmiInstancePtrHob;
+  EFI_HOB_GUID_TYPE           *GuidHob;
+  IPMI_INTERFACE_STATE        InterfaceState;
+
+  InterfaceState = IpmiInterfaceNotReady;
+
+  GuidHob = GetFirstGuidHob (&gPeiIpmiHobGuid);
+  ASSERT (GuidHob != NULL);
+  if (GuidHob == NULL) {
+    return EFI_NOT_FOUND;
+  }
+
+  IpmiInstancePtrHob = (PEI_IPMI_DATA_HOB *)GET_GUID_HOB_DATA (GuidHob);
+  IpmiInstance       = (PEI_IPMI_BMC_INSTANCE_DATA *)IpmiInstancePtrHob->IpmiInstance;
+
+  if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+    InitSsifInterfaceData (&IpmiInstance->IpmiTransport2Ppi);
+
+    if (IpmiInstance->IpmiTransport2Ppi.Interface.Ssif.InterfaceState == IpmiInterfaceInitialized) {
+      InterfaceState = IpmiInterfaceInitialized;
+    }
+  }
+
+  if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+    InitIpmbInterfaceData (&IpmiInstance->IpmiTransport2Ppi);
+
+    if (IpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.InterfaceState == IpmiInterfaceInitialized) {
+      InterfaceState = IpmiInterfaceInitialized;
+    }
+  }
+
+  // Default Interface data should be initialized to install Ipmi Transport2 Protocol.
+  if (InterfaceState != IpmiInterfaceInitialized) {
+    return EFI_UNSUPPORTED;
+  }
+
+  Status = PeiServicesInstallPpi (&IpmiInstance->PeiIpmi2BmcDataDesc);
+  return Status;
+}
+
+/*++
+
+Routine Description:
+  Registers callback for Ppi.
+
+Arguments:
+  PeiServices      - Describes the list of possible PEI Services.
+  PpiGuid          - Pointer to Ppi guid to register call back.
+
+Returns:
+  Status
+
+--*/
+EFI_STATUS
+RegisterPpiCallback (
+  IN CONST EFI_PEI_SERVICES  **PeiServices,
+  IN       EFI_GUID          *PpiGuid
+  )
+{
+  EFI_STATUS                 Status;
+  EFI_PEI_NOTIFY_DESCRIPTOR  *PpiNotifyDesc;
+
+  if ((PpiGuid == NULL) ||
+      ((PpiGuid != NULL) && IsZeroBuffer (PpiGuid, sizeof (EFI_GUID))))
+  {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PpiNotifyDesc = (EFI_PEI_NOTIFY_DESCRIPTOR *)AllocateZeroPool (sizeof (EFI_PEI_NOTIFY_DESCRIPTOR));
+  if (PpiNotifyDesc == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  PpiNotifyDesc->Flags  = EFI_PEI_PPI_DESCRIPTOR_NOTIFY_CALLBACK | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
+  PpiNotifyDesc->Guid   = PpiGuid;
+  PpiNotifyDesc->Notify = NotifyCallback;
+
+  Status = (*PeiServices)->NotifyPpi (PeiServices, PpiNotifyDesc);
+  return Status;
+}
+
+/*++
+
+Routine Description:
+  After memory is discovered, update the IPMI Instance pointer in Hob.
+
+Arguments:
+  PeiServices      - Describes the list of possible PEI Services.
+  NotifyDescriptor - PPointer to notify descriptor..
+  Ppi              - Pointer to Ppi.
+
+Returns:
+  Status
+
+--*/
+EFI_STATUS
+EFIAPI
+UpdateIpmiInstancePtr (
+  IN EFI_PEI_SERVICES           **PeiServices,
+  IN EFI_PEI_NOTIFY_DESCRIPTOR  *NotifyDescriptor,
+  IN VOID                       *Ppi
+  )
+{
+  PEI_IPMI_BMC_INSTANCE_DATA  *IpmiInstance;
+  PEI_IPMI_DATA_HOB           *IpmiInstancePtrHob;
+  EFI_HOB_GUID_TYPE           *GuidHob;
+
+  GuidHob = GetFirstGuidHob (&gPeiIpmiHobGuid);
+
+  ASSERT (GuidHob != NULL);
+  if (GuidHob == NULL) {
+    return EFI_NOT_FOUND;
+  }
+
+  IpmiInstancePtrHob = (PEI_IPMI_DATA_HOB *)GET_GUID_HOB_DATA (GuidHob);
+  IpmiInstance       = (PEI_IPMI_BMC_INSTANCE_DATA *)IpmiInstancePtrHob->IpmiInstance;
+
+  if (!IpmiInstance) {
+    return EFI_ABORTED;
+  }
+
+  DEBUG ((DEBUG_INFO, "IpmiInstance Signature in CAR Memory: %x\n", IpmiInstance->Signature));
+
+  if ((UINTN)IpmiInstancePtrHob >= (UINTN)IpmiInstancePtrHob->PreMemIpmiDataHobPtr) {
+    IpmiInstance = (PEI_IPMI_BMC_INSTANCE_DATA *)((UINT8 *)IpmiInstance + \
+                                                  (UINTN)((UINTN)IpmiInstancePtrHob - (UINTN)IpmiInstancePtrHob->PreMemIpmiDataHobPtr));
+  } else {
+    IpmiInstance = (PEI_IPMI_BMC_INSTANCE_DATA *)((UINT8 *)IpmiInstance - \
+                                                  (UINTN)((UINTN)IpmiInstancePtrHob->PreMemIpmiDataHobPtr - (UINTN)IpmiInstancePtrHob));
+  }
+
+  IpmiInstancePtrHob->IpmiInstance = (UINTN)IpmiInstance;
+  DEBUG ((DEBUG_INFO, "IpmiInstance Signature after Permanent Memory discovered: %x\n", IpmiInstance->Signature));
+  return EFI_SUCCESS;
+}
 
 /*****************************************************************************
  @brief
@@ -26,13 +225,17 @@
 EFI_STATUS
 EFIAPI
 PeiInitializeIpmiKcsPhysicalLayer (
-  IN CONST EFI_PEI_SERVICES             **PeiServices
+  IN CONST EFI_PEI_SERVICES  **PeiServices
   )
 {
-  EFI_STATUS                       Status;
-  PEI_IPMI_BMC_INSTANCE_DATA       *mIpmiInstance;
+  EFI_STATUS                  Status;
+  PEI_IPMI_BMC_INSTANCE_DATA  *mIpmiInstance;
+  PEI_IPMI_DATA_HOB           *IpmiInstancePtrHob;
+  IPMI_INTERFACE_STATE        InterfaceState;
+  UINT8                       Index;
 
-  mIpmiInstance = NULL;
+  mIpmiInstance  = NULL;
+  InterfaceState = IpmiInterfaceNotReady;
 
   //
   // Send Pre-Boot signal to BMC
@@ -50,63 +253,166 @@ PeiInitializeIpmiKcsPhysicalLayer (
   //
   Status = PlatformIpmiIoRangeSet (PcdGet16 (PcdIpmiIoBaseAddress));
   DEBUG ((DEBUG_INFO, "IPMI Peim:PlatformIpmiIoRangeSet - %r!\n", Status));
-  if (EFI_ERROR(Status)) {
+  if (EFI_ERROR (Status)) {
     return Status;
   }
 
   mIpmiInstance = AllocateZeroPool (sizeof (PEI_IPMI_BMC_INSTANCE_DATA));
   if (mIpmiInstance == NULL) {
-    DEBUG ((EFI_D_ERROR,"IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
+    DEBUG ((DEBUG_ERROR, "IPMI Peim:EFI_OUT_OF_RESOURCES of memory allocation\n"));
     return EFI_OUT_OF_RESOURCES;
+  }
+
+  if ((FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) || (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1)) {
+    // Create Guided hob to pass IPMI Instance data pointer to notify functions.
+    IpmiInstancePtrHob = BuildGuidHob (&gPeiIpmiHobGuid, sizeof (PEI_IPMI_DATA_HOB));
+    if (IpmiInstancePtrHob == NULL) {
+      DEBUG ((DEBUG_ERROR, "Failed to create Hob guid for IPMI Instance!!!\n"));
+      FreePool (mIpmiInstance);
+      return EFI_OUT_OF_RESOURCES;
+    }
+
+    IpmiInstancePtrHob->IpmiInstance         = (UINTN)mIpmiInstance;
+    IpmiInstancePtrHob->PreMemIpmiDataHobPtr = IpmiInstancePtrHob;
+
+    // Check for Memory initialization
+    Status = (*PeiServices)->LocatePpi (
+                                        PeiServices,
+                                        &gEfiPeiMemoryDiscoveredPpiGuid,
+                                        0,
+                                        NULL,
+                                        NULL
+                                        );
+
+    if (EFI_ERROR (Status)) {
+      /* Register Memory discovered PPI call back to update HOB with new
+      IpmiInstance pointer.*/
+      Status = (*PeiServices)->NotifyPpi (PeiServices, &mNotifyList);
+      if (EFI_ERROR (Status)) {
+        FreePool (mIpmiInstance);
+        return Status;
+      }
+    }
   }
 
   //
   // Calibrate TSC Counter.  Stall for 10ms, then multiply the resulting number of
   // ticks in that period by 100 to get the number of ticks in a 1 second timeout
   //
-  DEBUG ((DEBUG_INFO,"IPMI Peim:IPMI STACK Initialization\n"));
+  DEBUG ((DEBUG_INFO, "IPMI Peim:IPMI STACK Initialization\n"));
   mIpmiInstance->KcsTimeoutPeriod = (BMC_KCS_TIMEOUT_PEI *1000*1000) / KCS_DELAY_UNIT_PEI;
-  DEBUG ((EFI_D_INFO,"IPMI Peim:KcsTimeoutPeriod = 0x%x\n", mIpmiInstance->KcsTimeoutPeriod));
+  DEBUG ((DEBUG_INFO, "IPMI Peim:KcsTimeoutPeriod = 0x%x\n", mIpmiInstance->KcsTimeoutPeriod));
 
   //
   // Initialize IPMI IO Base.
   //
-  mIpmiInstance->IpmiIoBase                         = PcdGet16 (PcdIpmiIoBaseAddress);
-  DEBUG ((EFI_D_INFO,"IPMI Peim:IpmiIoBase=0x%x\n",mIpmiInstance->IpmiIoBase));
+  mIpmiInstance->IpmiIoBase = PcdGet16 (PcdIpmiIoBaseAddress);
+  DEBUG ((DEBUG_INFO, "IPMI Peim:IpmiIoBase=0x%x\n", mIpmiInstance->IpmiIoBase));
   mIpmiInstance->Signature                          = SM_IPMI_BMC_SIGNATURE;
   mIpmiInstance->SlaveAddress                       = BMC_SLAVE_ADDRESS;
   mIpmiInstance->BmcStatus                          = BMC_NOTREADY;
   mIpmiInstance->IpmiTransportPpi.IpmiSubmitCommand = PeiIpmiSendCommand;
   mIpmiInstance->IpmiTransportPpi.GetBmcStatus      = PeiGetIpmiBmcStatus;
 
-  mIpmiInstance->PeiIpmiBmcDataDesc.Flags         = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
-  mIpmiInstance->PeiIpmiBmcDataDesc.Guid          = &gPeiIpmiTransportPpiGuid;
-  mIpmiInstance->PeiIpmiBmcDataDesc.Ppi           = &mIpmiInstance->IpmiTransportPpi;
+  mIpmiInstance->PeiIpmiBmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
+  mIpmiInstance->PeiIpmiBmcDataDesc.Guid  = &gPeiIpmiTransportPpiGuid;
+  mIpmiInstance->PeiIpmiBmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransportPpi;
 
-  //
-  // Get the Device ID and check if the system is in Force Update mode.
-  //
-  Status = GetDeviceId (mIpmiInstance);
-  if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR,"IPMI Peim:Get BMC Device Id Failed. Status=%r\n",Status));
+  if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
+    //
+    // Get the Device ID and check if the system is in Force Update mode.
+    //
+    Status = GetDeviceId (mIpmiInstance);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "IPMI Peim:Get BMC Device Id Failed. Status=%r\n", Status));
+    }
+
+    //
+    // Do not continue initialization if the BMC is in Force Update Mode.
+    //
+    if ((mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS) && (mIpmiInstance->BmcStatus != BMC_HARDFAIL)) {
+      Status = PeiServicesInstallPpi (&mIpmiInstance->PeiIpmiBmcDataDesc);
+      if (EFI_ERROR (Status)) {
+        return Status;
+      }
+    }
   }
 
-  //
-  // Do not continue initialization if the BMC is in Force Update Mode.
-  //
-  if (mIpmiInstance->BmcStatus == BMC_UPDATE_IN_PROGRESS || mIpmiInstance->BmcStatus == BMC_HARDFAIL) {
-    return EFI_UNSUPPORTED;
+  InitIpmiTransport2 (mIpmiInstance);
+
+  // Check interface data initialized successfully else register notify protocol.
+  for (Index = SysInterfaceKcs; Index < SysInterfaceMax; Index++) {
+    switch (Index) {
+    if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
+        case SysInterfaceKcs:
+          if ((mIpmiInstance->BmcStatus != BMC_HARDFAIL) && (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS)) {
+            BMC_INTERFACE_STATUS  BmcStatus;
+            mIpmiInstance->IpmiTransport2Ppi.Interface.KcsInterfaceState = IpmiInterfaceInitialized;
+            Status                                                       = CheckSelfTestByInterfaceType (
+                                                                                                         &mIpmiInstance->IpmiTransport2Ppi,
+                                                                                                         &BmcStatus,
+                                                                                                         SysInterfaceKcs
+                                                                                                         );
+            if (!EFI_ERROR (Status) && (BmcStatus != BmcStatusHardFail)) {
+              InterfaceState = IpmiInterfaceInitialized;
+            } else {
+              mIpmiInstance->IpmiTransport2Ppi.Interface.KcsInterfaceState = IpmiInterfaceInitError;
+            }
+          }
+
+          break;
+    }
+
+    if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
+        case SysInterfaceBt:
+          if (mIpmiInstance->IpmiTransport2Ppi.Interface.Bt.InterfaceState == IpmiInterfaceInitialized) {
+            InterfaceState = IpmiInterfaceInitialized;
+          }
+
+          break;
+    }
+
+    if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
+        case SysInterfaceSsif:
+          if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.InterfaceState == IpmiInterfaceInitialized) {
+            InterfaceState = IpmiInterfaceInitialized;
+          } else if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.InterfaceState == IpmiInterfaceInitError) {
+            // Register protocol notify for SMBUS Protocol.
+            Status = RegisterPpiCallback (PeiServices, &mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.SsifInterfaceApiGuid);
+          }
+
+          break;
+    }
+
+    if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
+        case SysInterfaceIpmb:
+          if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.InterfaceState == IpmiInterfaceInitialized) {
+            InterfaceState = IpmiInterfaceInitialized;
+          } else if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.InterfaceState == IpmiInterfaceInitError) {
+            // Register protocol notify for SMBUS Protocol.
+            Status = RegisterPpiCallback (PeiServices, &mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.IpmbInterfaceApiGuid);
+          }
+
+          break;
+    }
+
+      default:
+        break;
+    }
   }
 
-  //
-  // Just produce PPI
-  //
-  Status = PeiServicesInstallPpi (&mIpmiInstance->PeiIpmiBmcDataDesc);
-  if (EFI_ERROR (Status)) {
-    return Status;
+  // Any one of the Interface data should be initialized to install Ipmi Transport2 Protocol.
+  if (InterfaceState != IpmiInterfaceInitialized) {
+    DEBUG ((DEBUG_INFO, "Interface not ready yet. \n"));
+    return EFI_SUCCESS;
   }
 
-  return EFI_SUCCESS;
+  mIpmiInstance->PeiIpmi2BmcDataDesc.Flags = EFI_PEI_PPI_DESCRIPTOR_PPI | EFI_PEI_PPI_DESCRIPTOR_TERMINATE_LIST;
+  mIpmiInstance->PeiIpmi2BmcDataDesc.Guid  = &gPeiIpmiTransport2PpiGuid;
+  mIpmiInstance->PeiIpmi2BmcDataDesc.Ppi   = &mIpmiInstance->IpmiTransport2Ppi;
+
+  Status = PeiServicesInstallPpi (&mIpmiInstance->PeiIpmi2BmcDataDesc);
+  return Status;
 }
 
 /*****************************************************************************
@@ -119,31 +425,31 @@ PeiInitializeIpmiKcsPhysicalLayer (
 **/
 EFI_STATUS
 SendPreBootSignaltoBmc (
-  IN CONST EFI_PEI_SERVICES             **PeiServices
+  IN CONST EFI_PEI_SERVICES  **PeiServices
   )
 {
-  EFI_STATUS                        Status;
-  EFI_PEI_CPU_IO_PPI                *CpuIoPpi;
-  UINT32                            ProvisionPort = 0;
-  UINT8                             PreBoot = 0;
+  EFI_STATUS          Status;
+  EFI_PEI_CPU_IO_PPI  *CpuIoPpi;
+  UINT32              ProvisionPort = 0;
+  UINT8               PreBoot       = 0;
 
   //
   // Locate CpuIo service
   //
-  CpuIoPpi = (**PeiServices).CpuIo;
+  CpuIoPpi      = (**PeiServices).CpuIo;
   ProvisionPort = PcdGet32 (PcdSioMailboxBaseAddress) + MBXDAT_B;
-  PreBoot = 0x01;// PRE-BOOT
+  PreBoot       = 0x01;// PRE-BOOT
 
   Status = CpuIoPpi->Io.Write (
-                          PeiServices,
-                          CpuIoPpi,
-                          EfiPeiCpuIoWidthUint8,
-                          ProvisionPort,
-                          1,
-                          &PreBoot
-                          );
+                               PeiServices,
+                               CpuIoPpi,
+                               EfiPeiCpuIoWidthUint8,
+                               ProvisionPort,
+                               1,
+                               &PreBoot
+                               );
   if (EFI_ERROR (Status)) {
-    DEBUG ((EFI_D_ERROR, "SendPreBootSignaltoBmc () Write PRE-BOOT Status=%r\n", Status));
+    DEBUG ((DEBUG_ERROR, "SendPreBootSignaltoBmc () Write PRE-BOOT Status=%r\n", Status));
     return Status;
   }
 
@@ -175,68 +481,13 @@ PeimIpmiInterfaceInit (
   return Status;
 } // PeimIpmiInterfaceInit()
 
-
-EFI_STATUS
-PeiIpmiSendCommand (
-  IN      PEI_IPMI_TRANSPORT_PPI       *This,
-  IN      UINT8                        NetFunction,
-  IN      UINT8                        Lun,
-  IN      UINT8                        Command,
-  IN      UINT8                        *CommandData,
-  IN      UINT32                       CommandDataSize,
-  IN OUT  UINT8                        *ResponseData,
-  IN OUT  UINT32                       *ResponseDataSize
-  )
-/*++
-
-Routine Description:
-
-  Send Ipmi Command in the right mode: HECI or KCS,  to the
-  appropiate device, ME or BMC.
-
-Arguments:
-
-  This              - Pointer to IPMI protocol instance
-  NetFunction       - Net Function of command to send
-  Lun               - LUN of command to send
-  Command           - IPMI command to send
-  CommandData       - Pointer to command data buffer, if needed
-  CommandDataSize   - Size of command data buffer
-  ResponseData      - Pointer to response data buffer
-  ResponseDataSize  - Pointer to response data buffer size
-
-Returns:
-
-  EFI_INVALID_PARAMETER - One of the input values is bad
-  EFI_DEVICE_ERROR      - IPMI command failed
-  EFI_BUFFER_TOO_SMALL  - Response buffer is too small
-  EFI_UNSUPPORTED       - Command is not supported by BMC
-  EFI_SUCCESS           - Command completed successfully
-
---*/
-{
-  //
-  // This Will be unchanged ( BMC/KCS style )
-  //
-  return PeiIpmiSendCommandToBmc (
-           This,
-           NetFunction,
-           Lun,
-           Command,
-           CommandData,
-           (UINT8) CommandDataSize,
-           ResponseData,
-           (UINT8 *) ResponseDataSize,
-           NULL
-           );
-} // IpmiSendCommand()
-
 EFI_STATUS
 PeiGetIpmiBmcStatus (
-  IN      PEI_IPMI_TRANSPORT_PPI       *This,
-  OUT BMC_STATUS                       *BmcStatus,
-  OUT SM_COM_ADDRESS                   *ComAddress
+  IN      PEI_IPMI_TRANSPORT_PPI  *This,
+  OUT BMC_STATUS                  *BmcStatus,
+  OUT SM_COM_ADDRESS              *ComAddress
   )
+
 /*++
 
 Routine Description:
@@ -256,18 +507,18 @@ Returns:
 --*/
 {
   return PeiIpmiBmcStatus (
-           This,
-           BmcStatus,
-           ComAddress,
-           NULL
-           );
+                           This,
+                           BmcStatus,
+                           ComAddress,
+                           NULL
+                           );
 }
-
 
 EFI_STATUS
 GetDeviceId (
-  IN      PEI_IPMI_BMC_INSTANCE_DATA   *mIpmiInstance
+  IN      PEI_IPMI_BMC_INSTANCE_DATA  *mIpmiInstance
   )
+
 /*++
 
 Routine Description:
@@ -284,11 +535,11 @@ Returns:
 
 --*/
 {
-  EFI_STATUS          Status;
-  UINT32              DataSize;
-  SM_CTRL_INFO        *pBmcInfo;
-  UINTN               Retries;
-  UINT8               TempData[MAX_TEMP_DATA];
+  EFI_STATUS    Status;
+  UINT32        DataSize;
+  SM_CTRL_INFO  *pBmcInfo;
+  UINTN         Retries;
+  UINT8         TempData[MAX_TEMP_DATA];
 
   //
   // Set up a loop to retry for up to PcdIpmiBmcReadyDelayTimer seconds. Calculate retries not timeout
@@ -300,32 +551,41 @@ Returns:
   // Get the device ID information for the BMC.
   //
   DataSize = sizeof (TempData);
-  while (EFI_ERROR (Status = PeiIpmiSendCommand (
-                               &mIpmiInstance->IpmiTransportPpi,
-                               IPMI_NETFN_APP,
-                               0,
-                               IPMI_APP_GET_DEVICE_ID,
-                               NULL,
-                               0,
-                               TempData,
-                               &DataSize
-                               ))) {
-    DEBUG ((EFI_D_ERROR, "[IPMI] BMC does not respond (status: %r), %d retries left\n",
-            Status, Retries));
+  while (EFI_ERROR (
+                    Status = PeiIpmiSendCommand (
+                                                 &mIpmiInstance->IpmiTransportPpi,
+                                                 IPMI_NETFN_APP,
+                                                 0,
+                                                 IPMI_APP_GET_DEVICE_ID,
+                                                 NULL,
+                                                 0,
+                                                 TempData,
+                                                 &DataSize
+                                                 )
+                    ))
+  {
+    DEBUG (
+           (DEBUG_WARN, "[IPMI] BMC does not respond (status: %r), %d retries left\n",
+            Status, Retries)
+           );
 
     if (Retries-- == 0) {
       ReportStatusCode (EFI_ERROR_CODE | EFI_ERROR_MAJOR, EFI_COMPUTING_UNIT_FIRMWARE_PROCESSOR | EFI_CU_FP_EC_COMM_ERROR);
       mIpmiInstance->BmcStatus = BMC_HARDFAIL;
       return Status;
     }
+
     //
     // Handle the case that BMC FW still not enable KCS channel after AC cycle. just stall 1 second
     //
     MicroSecondDelay (1*1000*1000);
   }
-  pBmcInfo = (SM_CTRL_INFO*) &TempData[0];
-  DEBUG ((DEBUG_INFO, "[IPMI PEI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n",
-          pBmcInfo->DeviceId, pBmcInfo->MajorFirmwareRev, pBmcInfo->MinorFirmwareRev, pBmcInfo->UpdateMode));
+
+  pBmcInfo = (SM_CTRL_INFO *)&TempData[0];
+  DEBUG (
+         (DEBUG_INFO, "[IPMI PEI] BMC Device ID: 0x%02X, firmware version: %d.%02X UpdateMode:%x\n",
+          pBmcInfo->DeviceId, pBmcInfo->MajorFirmwareRev, pBmcInfo->MinorFirmwareRev, pBmcInfo->UpdateMode)
+         );
   //
   // In OpenBMC, UpdateMode: the bit 7 of byte 4 in get device id command is used for the BMC status:
   // 0 means BMC is ready, 1 means BMC is not ready.
@@ -339,20 +599,20 @@ Returns:
     // Updatemode = 1 mean BMC is not ready, continue waiting.
     //
     while (Retries-- != 0) {
-      MicroSecondDelay(1*1000*1000); //delay 1 seconds
-      DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x \n",Retries));
+      MicroSecondDelay (1*1000*1000); // delay 1 seconds
+      DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x \n", Retries));
       Status = PeiIpmiSendCommand (
-                 &mIpmiInstance->IpmiTransportPpi,
-                 IPMI_NETFN_APP,
-                 0,
-                 IPMI_APP_GET_DEVICE_ID,
-                 NULL,
-                 0,
-                 TempData,
-                 &DataSize
-                 );
+                                   &mIpmiInstance->IpmiTransportPpi,
+                                   IPMI_NETFN_APP,
+                                   0,
+                                   IPMI_APP_GET_DEVICE_ID,
+                                   NULL,
+                                   0,
+                                   TempData,
+                                   &DataSize
+                                   );
       if (!EFI_ERROR (Status)) {
-        pBmcInfo = (SM_CTRL_INFO*) &TempData[0];
+        pBmcInfo = (SM_CTRL_INFO *)&TempData[0];
         DEBUG ((DEBUG_INFO, "[IPMI PEI] UpdateMode Retries:%x   pBmcInfo->UpdateMode:%x\n", Retries, pBmcInfo->UpdateMode));
         if (pBmcInfo->UpdateMode == BMC_READY) {
           mIpmiInstance->BmcStatus = BMC_OK;

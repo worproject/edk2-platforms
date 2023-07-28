@@ -500,24 +500,30 @@ EmacGetDmaStatus (
   UINT32  ErrorBit;
   UINT32  Mask = 0;
 
+  if (IrqStat != NULL) {
+    *IrqStat = 0;
+  }
+
   DmaStatus = MmioRead32 (MacBaseAddress +
                            DW_EMAC_DMAGRP_STATUS_OFST);
   if (DmaStatus & DW_EMAC_DMAGRP_STATUS_NIS_SET_MSK) {
     Mask |= DW_EMAC_DMAGRP_STATUS_NIS_SET_MSK;
     // Rx interrupt
     if (DmaStatus & DW_EMAC_DMAGRP_STATUS_RI_SET_MSK) {
-      *IrqStat |= EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT;
-      Mask |= DW_EMAC_DMAGRP_STATUS_RI_SET_MSK;
-    } else {
-      *IrqStat &= ~EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT;
+      if (IrqStat != NULL) {
+        *IrqStat |= EFI_SIMPLE_NETWORK_RECEIVE_INTERRUPT;
+        Mask |= DW_EMAC_DMAGRP_STATUS_RI_SET_MSK;
+      }
     }
+
     // Tx interrupt
     if (DmaStatus & DW_EMAC_DMAGRP_STATUS_TI_SET_MSK) {
-      *IrqStat |= EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT;
-      Mask |= DW_EMAC_DMAGRP_STATUS_TI_SET_MSK;
-    } else {
-      *IrqStat &= ~EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT;
+      if (IrqStat != NULL) {
+        *IrqStat |= EFI_SIMPLE_NETWORK_TRANSMIT_INTERRUPT;
+        Mask |= DW_EMAC_DMAGRP_STATUS_TI_SET_MSK;
+      }
     }
+
     // Tx Buffer
     if (DmaStatus & DW_EMAC_DMAGRP_STATUS_TU_SET_MSK){
       Mask |= DW_EMAC_DMAGRP_STATUS_TU_SET_MSK;

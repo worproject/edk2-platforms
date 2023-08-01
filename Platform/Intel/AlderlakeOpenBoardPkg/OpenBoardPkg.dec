@@ -1,0 +1,307 @@
+## @file
+#
+# The DEC files are used by the utilities that parse DSC and
+# INF files to generate AutoGen.c and AutoGen.h files
+# for the build infrastructure.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+DEC_SPECIFICATION = 0x00010017
+PACKAGE_NAME = OpenBoardPkg
+PACKAGE_VERSION = 0.1
+PACKAGE_GUID = A840FA72-FBF7-4357-B301-DAE2233F14AB
+
+[Includes]
+Include
+
+[Guids]
+  gBoardModuleTokenSpaceGuid      =  {0x72d1fff7, 0xa42a, 0x4219, {0xb9, 0x95, 0x5a, 0x67, 0x53, 0x6e, 0xa4, 0x2a}}
+  gPlatformModuleTokenSpaceGuid   =  {0x69d13bf0, 0xaf91, 0x4d96, {0xaa, 0x9f, 0x21, 0x84, 0xc5, 0xce, 0x3b, 0xc0}}
+  gPlatformInitFvLocationGuid     =  {0xa564010a, 0x1d90, 0x4b1c, {0x8d, 0x10, 0xcb, 0xba, 0xff, 0xb2, 0x55, 0x42}}
+  gVpdFfsGuid                     =  {0x338FA35A, 0xCA4A, 0x4DBC, {0xA6, 0xF4, 0x9B, 0xD1, 0x59, 0x3B, 0x61, 0xBC}}
+  gMemoryConfigVariableGuid             =  {0xc94f8c4d, 0x9b9a, 0x45fe, {0x8a, 0x55, 0x23, 0x8b, 0x67, 0x30, 0x26, 0x43}}
+
+#
+# FvImage File
+#
+  gFvAdvancedFileGuid                  =  {0xAD198BA5, 0xC330, 0x41CD, {0xB0, 0x97, 0x16, 0x48, 0x83, 0x28, 0xB7, 0x98}}
+  gFvOsBootFileGuid                    =  {0xB9020753, 0x84A8, 0x4BB6, {0x94, 0x7C, 0xCE, 0x7D, 0x41, 0xF5, 0xCE, 0x39}}
+  gFvUefiBootFileGuid                  =  {0x9E21FD93, 0x9C72, 0x4c15, {0x8C, 0x4B, 0xE7, 0x7F, 0x1D, 0xB2, 0xD7, 0x92}}
+  gTianoLogoGuid                        =  {0x7BB28B99, 0x61BB, 0x11D5, {0x9A, 0x5D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D}}
+
+  # gUefiShellFileGuid is FILE GUID for MinUefiShell.inf/UefiShell.inf/Shell.inf.
+  gUefiShellFileGuid                    =  {0x7c04a583, 0x9e3e, 0x4f1c, {0xad, 0x65, 0xe0, 0x52, 0x68, 0xd0, 0xb4, 0xd1}}
+
+[Ppis]
+  gReadyForGopConfigPpiGuid               =  {0x5f252c18, 0x1781, 0x4290, {0xa7, 0xb6, 0xfd, 0x99, 0x63, 0x4c, 0x6a, 0x8a}}
+
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+##
+## PcdSmbiosOemTypeFirmwareVersionInfo determines the SMBIOS OEM type (0x80 to 0xFF) defined in SMBIOS,
+## values 0-0x7F will be treated as disable FVI reporting.
+## FVI structure uses it as SMBIOS OEM type to provide version information.
+##
+gPlatformModuleTokenSpaceGuid.PcdSmbiosOemTypeFirmwareVersionInfo|0xDD|UINT8|0x20000001
+
+[PcdsFixedAtBuild]
+  gBoardModuleTokenSpaceGuid.PcdDefaultBoardId|0|UINT16|0x10101009
+
+  gBoardModuleTokenSpaceGuid.PcdLpcIoDecodeRange|0x0010|UINT16|0x10001010
+  gBoardModuleTokenSpaceGuid.PchLpcIoEnableDecoding|0x3c03|UINT16|0x10001011
+
+  ##
+  ## The Flash PCDs will be patched based on FDF definitions during build.
+  ## Set them to 0 here to prevent confusion.
+  ##
+
+  gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesBase|0x00000000|UINT32|0x20000040
+  gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesSize|0x00000000|UINT32|0x20000041
+  gBoardModuleTokenSpaceGuid.PcdFlashFvFirmwareBinariesOffset|0x00000000|UINT32|0x20000042
+  gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalBase|0x00000000|UINT32|0x2000004C
+  gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalSize|0x00000000|UINT32|0x2000004D
+  gBoardModuleTokenSpaceGuid.PcdFlashFvOptionalOffset|0x00000000|UINT32|0x2000004E
+
+  gBoardModuleTokenSpaceGuid.PcdFlashObbSize|0x00000000|UINT32|0xF0000A53
+  gBoardModuleTokenSpaceGuid.PcdFlashIbbOffset|0x00000000|UINT32|0xF0000A58
+  gBoardModuleTokenSpaceGuid.PcdFlashIbbSize|0x00000000|UINT32|0xF0000A59
+  gBoardModuleTokenSpaceGuid.PcdFlashFvRsvdOffset|0x00000000|UINT32|0x20000A5E
+  gBoardModuleTokenSpaceGuid.PcdFlashFvRsvdSize|0x00000000|UINT32|0x20000A5F
+  gBoardModuleTokenSpaceGuid.PcdFlashIbbROffset|0x00000000|UINT32|0x20000A61
+
+#(ACPI.inf)
+ gPlatformModuleTokenSpaceGuid.PcdApicLocalAddress|0xFEE00000|UINT64|0x9000000B
+ gPlatformModuleTokenSpaceGuid.PcdApicIoAddress|0xFEC00000|UINT64|0x9000000D
+ gPlatformModuleTokenSpaceGuid.PcdAcpiEnableSwSmi|0xF0|UINT8|0x90000012
+ gPlatformModuleTokenSpaceGuid.PcdAcpiDisableSwSmi|0xF1|UINT8|0x90000013
+ gPlatformModuleTokenSpaceGuid.PcdApicIoIdPch|0x02|UINT8|0x9000001E
+
+#(BaseMmioInitLib.inf)
+gPlatformModuleTokenSpaceGuid.PcdDmiBaseAddress|0xFEDA0000|UINT64|0x90000003
+gPlatformModuleTokenSpaceGuid.PcdEpBaseAddress|0xFEDA1000|UINT64|0x90000005
+
+## This PCD specifies whether StatusCode is reported via SerialIoUart
+gPlatformModuleTokenSpaceGuid.PcdStatusCodeUseSerialIoUart|FALSE|BOOLEAN|0xFF000002
+
+## This flag is used to initialize debug output interface.
+#  BIT0 - RAM debug interface.
+#  BIT1 - UART debug interface.
+#  BIT2 - USB debug interface.
+#  BIT3 - USB3 debug interface.
+#  BIT4 - Serial IO debug interface.
+#  BIT5 - TraceHub debug interface.
+#  BIT6 - Reserved.
+#  BIT7 - CMOS control.
+gPlatformModuleTokenSpaceGuid.PcdStatusCodeFlags|0x82|UINT8|0xF0000111
+
+gPlatformModuleTokenSpaceGuid.PcdGttMmAddress|0xAF000000|UINT64|0x9000000F
+gPlatformModuleTokenSpaceGuid.PcdGmAdrAddress|0xB0000000|UINT64|0x90000010
+
+gPlatformModuleTokenSpaceGuid.PcdEdramBaseAddress|0xFED80000|UINT64|0x90000009
+
+gPlatformModuleTokenSpaceGuid.PcdLzmaEnable          |FALSE|BOOLEAN|0xF000002B
+
+[PcdsDynamic]
+  # DRAM Configuration
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdData|0|UINT32|0x00000174
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdDataSize|0|UINT16|0x00000175
+  gBoardModuleTokenSpaceGuid.PcdMrcDqMapCpu2Dram|0|UINT32|0x00000072
+  gBoardModuleTokenSpaceGuid.PcdMrcDqMapCpu2DramSize|0|UINT16|0x00000073
+
+  # SPD Address Table
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable0|0|UINT8|0x00000199
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable1|0|UINT8|0x0000019A
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable2|0|UINT8|0x0000019B
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable3|0|UINT8|0x0000019C
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable4|0|UINT8|0x0000019D
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable5|0|UINT8|0x0000019E
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable6|0|UINT8|0x0000019F
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable7|0|UINT8|0x000001A0
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable8|0|UINT8|0x000001A1
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable9|0|UINT8|0x000001A2
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable10|0|UINT8|0x000001A3
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable11|0|UINT8|0x000001A4
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable12|0|UINT8|0x000001A5
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable13|0|UINT8|0x000001A6
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable14|0|UINT8|0x000001A7
+  gBoardModuleTokenSpaceGuid.PcdMrcSpdAddressTable15|0|UINT8|0x000001A8
+
+  # Root Port Clock Info
+  gBoardModuleTokenSpaceGuid.PcdPcieClock0|0|UINT64|0x0000009E
+  gBoardModuleTokenSpaceGuid.PcdPcieClock1|0|UINT64|0x0000009F
+  gBoardModuleTokenSpaceGuid.PcdPcieClock2|0|UINT64|0x000000A0
+  gBoardModuleTokenSpaceGuid.PcdPcieClock3|0|UINT64|0x000000A1
+  gBoardModuleTokenSpaceGuid.PcdPcieClock4|0|UINT64|0x000000A2
+  gBoardModuleTokenSpaceGuid.PcdPcieClock5|0|UINT64|0x000000A3
+  gBoardModuleTokenSpaceGuid.PcdPcieClock6|0|UINT64|0x000000A4
+  gBoardModuleTokenSpaceGuid.PcdPcieClock7|0|UINT64|0x000000A5
+  gBoardModuleTokenSpaceGuid.PcdPcieClock8|0|UINT64|0x000000A6
+  gBoardModuleTokenSpaceGuid.PcdPcieClock9|0|UINT64|0x000000A7
+  gBoardModuleTokenSpaceGuid.PcdPcieClock10|0|UINT64|0x000000A8
+  gBoardModuleTokenSpaceGuid.PcdPcieClock11|0|UINT64|0x000000A9
+  gBoardModuleTokenSpaceGuid.PcdPcieClock12|0|UINT64|0x000000AA
+  gBoardModuleTokenSpaceGuid.PcdPcieClock13|0|UINT64|0x000000AB
+  gBoardModuleTokenSpaceGuid.PcdPcieClock14|0|UINT64|0x000000AC
+  gBoardModuleTokenSpaceGuid.PcdPcieClock15|0|UINT64|0x000000AD
+  gBoardModuleTokenSpaceGuid.PcdPcieClock16|0|UINT64|0x000000AE
+  gBoardModuleTokenSpaceGuid.PcdPcieClock17|0|UINT64|0x000000AF
+
+
+  # GPIO Group Tier
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw0|0|UINT32|0x000000E9
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw1|0|UINT32|0x000000EA
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw2|0|UINT32|0x000000EB
+
+  # Display DDI
+  gBoardModuleTokenSpaceGuid.PcdSaDisplayConfigTable|0|UINT32|0x00100033
+  gBoardModuleTokenSpaceGuid.PcdSaDisplayConfigTableSize|0|UINT16|0x00100034
+
+  # MISC
+  gBoardModuleTokenSpaceGuid.PcdStackBase|0x0|UINT32|0x40000A10
+  gBoardModuleTokenSpaceGuid.PcdStackSize|0x0|UINT32|0x40000A11
+
+  # SA Misc Configuration
+  gBoardModuleTokenSpaceGuid.PcdSaMiscUserBd|0|UINT8|0x00000066
+  gBoardModuleTokenSpaceGuid.PcdSaMiscMmioSizeAdjustment|0|UINT16|0x00000067
+  gBoardModuleTokenSpaceGuid.PcdSaMiscFirstDimmBitMask|0|UINT8|0x0000A103
+  gBoardModuleTokenSpaceGuid.PcdSaMiscFirstDimmBitMaskEcc|0|UINT8|0x0000A104
+  gBoardModuleTokenSpaceGuid.PcdSaMiscDisableMrcRetrainingOnRtcPowerLoss|0|UINT8|0x0000A105
+
+  # Board Information
+  gBoardModuleTokenSpaceGuid.PcdSpdPresent|FALSE|BOOLEAN|0x00101012
+  gBoardModuleTokenSpaceGuid.PcdBoardRev|0x0|UINT16|0x00101016
+  gBoardModuleTokenSpaceGuid.PcdBoardBomId|0x0|UINT16|0x00101017
+  gBoardModuleTokenSpaceGuid.PcdBoardId|0|UINT16|0x00101018
+  gBoardModuleTokenSpaceGuid.PcdSkuType|0x0|UINT8|0x0010101F
+
+  # MRC Config
+  gBoardModuleTokenSpaceGuid.PcdMrcRcompResistor|0|UINT32|0x00000A68
+  gBoardModuleTokenSpaceGuid.PcdMrcRcompTarget|0|UINT32|0x00000A69
+  gBoardModuleTokenSpaceGuid.PcdMrcDqByteMap|0|UINT32|0x00000A6A
+  gBoardModuleTokenSpaceGuid.PcdMrcDqByteMapSize|0|UINT16|0x00000A6B
+  gBoardModuleTokenSpaceGuid.PcdMrcDqsMapCpu2Dram|0|UINT32|0x00000A6C
+  gBoardModuleTokenSpaceGuid.PcdMrcDqsMapCpu2DramSize|0|UINT16|0x00000A6D
+  gBoardModuleTokenSpaceGuid.PcdMrcDqPinsInterleavedControl|FALSE|BOOLEAN|0x00000A6E
+  gBoardModuleTokenSpaceGuid.PcdMrcDqPinsInterleaved|FALSE|BOOLEAN|0x00000A6F
+  gBoardModuleTokenSpaceGuid.PcdMrcLp5CccConfig|0|UINT8|0x00000A73
+  gBoardModuleTokenSpaceGuid.PcdMrcCmdMirror|0|UINT8|0x00000A74
+  gBoardModuleTokenSpaceGuid.PcdRootPortIndex|0xFF|UINT8|0x00000A78
+
+  # Pch SerialIo I2c Pads Termination
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c0PadInternalTerm|0x1|UINT8|0x00000020
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c1PadInternalTerm|0x1|UINT8|0x00000021
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c2PadInternalTerm|0x1|UINT8|0x00000022
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c3PadInternalTerm|0x1|UINT8|0x00000023
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c4PadInternalTerm|0x1|UINT8|0x00000030
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c5PadInternalTerm|0x1|UINT8|0x00000031
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c6PadInternalTerm|0x1|UINT8|0x00000032
+  gBoardModuleTokenSpaceGuid.PcdPchSerialIoI2c7PadInternalTerm|0x1|UINT8|0x00000033
+
+[PcdsDynamicEx]
+# Flag to Disable Vpd Gpio
+gBoardModuleTokenSpaceGuid.PcdDisableVpdGpioTable|FALSE|BOOLEAN|0x50000015
+# Pre-Mem GPIO table
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTablePreMem|{0}|GPIO_INIT_CONFIG_ARRAY|0x50000017 {
+  <HeaderFiles>
+    Pins/GpioPinsVer2Lp.h
+    Library/GpioLib.h
+    PlatformGpioConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeSiliconPkg/SiPkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+  gBoardModuleTokenSpaceGuid.VpdPcdBoardGpioTablePreMem|{0}|GPIO_INIT_CONFIG[]|0x50000018 {
+  <HeaderFiles>
+    Pins/GpioPinsVer2Lp.h
+    Library/GpioLib.h
+    Library/GpioConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeSiliconPkg/SiPkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+# GPIO table
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTable|{0}|GPIO_INIT_CONFIG_ARRAY|0x50000019 {
+  <HeaderFiles>
+    Pins/GpioPinsVer2Lp.h
+    Library/GpioLib.h
+    PlatformGpioConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeSiliconPkg/SiPkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+  gBoardModuleTokenSpaceGuid.VpdPcdBoardGpioTable|{0}|GPIO_INIT_CONFIG[]|0x5000001C {
+  <HeaderFiles>
+    Pins/GpioPinsVer2Lp.h
+    Library/GpioConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeSiliconPkg/SiPkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+# PCIE CLOCKS USAGE
+  gBoardModuleTokenSpaceGuid.VpdPcdPcieClkUsageMap|{0}|PCIE_CLOCKS_USAGE|0x50000022 {
+  <HeaderFiles>
+    PlatformBoardConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+#SBC SPD DATA
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcSpdData|{0}|SPD_DATA|0x50000025 {
+  <HeaderFiles>
+   PlatformBoardConfig.h
+  <Packages>
+   MdePkg/MdePkg.dec
+   AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+# SBC MRC DQS MAPPING
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcDqsMapCpu2Dram|{0}|MRC_DQS|0x50000026 {
+  <HeaderFiles>
+   PlatformBoardConfig.h
+  <Packages>
+   MdePkg/MdePkg.dec
+   AlderlakeSiliconPkg/SiPkg.dec
+   AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+# SBC MRC DQ MAPPING
+  gBoardModuleTokenSpaceGuid.VpdPcdMrcDqMapCpu2Dram|{0}|MRC_DQ|0x50000027 {
+  <HeaderFiles>
+    PlatformBoardConfig.h
+  <Packages>
+   MdePkg/MdePkg.dec
+   AlderlakeSiliconPkg/SiPkg.dec
+   AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+}
+
+# ACPI data
+  gBoardModuleTokenSpaceGuid.PcdBoardAcpiData|{0}|VOID*|0x5000001A
+
+# Early Pre-Mem GPIO table
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTableEarlyPreMem|{0}|GPIO_INIT_CONFIG_ARRAY|0x5000001B {
+  <HeaderFiles>
+    Pins/GpioPinsVer2Lp.h
+    Library/GpioLib.h
+    PlatformGpioConfig.h
+  <Packages>
+    MdePkg/MdePkg.dec
+    AlderlakeSiliconPkg/SiPkg.dec
+    AlderLakeOpenBoardPkg/OpenBoardPkg.dec
+}
+[PcdsDynamic, PcdsDynamicEx]
+
+[PcdsPatchableInModule]
+
+[PcdsFeatureFlag]
+  gBoardModuleTokenSpaceGuid.PcdIntelGopEnable          |FALSE|BOOLEAN|0xF0000B54

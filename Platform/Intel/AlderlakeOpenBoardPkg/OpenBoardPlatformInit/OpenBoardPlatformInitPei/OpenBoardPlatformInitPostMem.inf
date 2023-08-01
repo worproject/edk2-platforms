@@ -1,0 +1,75 @@
+### @file
+# Component information file for the OpenBoard Platform Init PEI module.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010017
+  BASE_NAME                      = OpenBoardPlatformInitPostMem
+  FILE_GUID                      = 314EE04C-1106-4DC6-ACBC-CF19C0DBC5CC
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = PEIM
+  ENTRY_POINT                    = OpenBoardPlatformInitPostMemEntryPoint
+
+[LibraryClasses]
+  PeimEntryPoint
+  DebugLib
+  IoLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  HobLib
+  PeiServicesLib
+  PciSegmentLib
+  MtrrLib
+  PchInfoLib
+  PostCodeLib
+  SiPolicyLib
+  FspCommonLib
+  PcdLib
+  PchPciBdfLib
+  GpioLib
+  PeiGetFvInfoLib
+
+[Packages]
+  AlderlakeSiliconPkg/SiPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  MdePkg/MdePkg.dec
+  UefiCpuPkg/UefiCpuPkg.dec
+  IntelFsp2Pkg/IntelFsp2Pkg.dec
+  IntelFsp2WrapperPkg/IntelFsp2WrapperPkg.dec
+  AlderLakeFspBinPkg/Client/AlderLakeP/AlderLakeFspBinPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
+
+[Sources]
+  OpenBoardPlatformInitPostMem.c
+
+[Ppis]
+  gEfiEndOfPeiSignalPpiGuid                     ## CONSUMES
+  gEfiPeiReadOnlyVariable2PpiGuid               ## CONSUMES
+  gPeiGraphicsPlatformPpiGuid                   ## PRODUCES
+  gFspSiliconInitDonePpiGuid                    ## CONSUMES
+
+[Protocols]
+
+[Guids]
+  gEfiSmmSmramMemoryGuid                        ## CONSUMES
+  gPlatformInitFvLocationGuid                   ## PRODUCES
+
+[Depex]
+  gEfiPeiMemoryDiscoveredPpiGuid
+
+[Pcd]
+  gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress               ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPciReservedIobase              ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPciReservedIoLimit             ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPciReservedMemAbove4GBBase     ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPciReservedMemAbove4GBLimit    ## CONSUMES
+  gMinPlatformPkgTokenSpaceGuid.PcdPciSegmentCount                ## CONSUMES
+
+  gIntelSiliconPkgTokenSpaceGuid.PcdIntelGraphicsVbtFileGuid      ## CONSUMES
+

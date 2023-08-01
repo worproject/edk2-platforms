@@ -1,0 +1,53 @@
+## @file
+# Component information file for Alderlake Multi-Board Initialization in PEI post memory phase.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiAdlPMultiBoardInitLib
+  FILE_GUID                      = C7D39F17-E5BA-41D9-8DFE-FF9017499280
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = NULL
+  CONSTRUCTOR                    = PeiAdlPMultiBoardInitLibConstructor
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PcdLib
+  MultiBoardInitSupportLib
+  PciSegmentLib
+  GpioLib
+  HobLib
+  BoardConfigLib
+
+[Packages]
+  MinPlatformPkg/MinPlatformPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+  SecurityPkg/SecurityPkg.dec
+
+[Sources]
+  PeiInitPostMemLib.c
+  PeiMultiBoardInitPostMemLib.c
+
+[Pcd]
+  # Board GPIO Table
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTable
+
+  # TPM interrupt
+  gMinPlatformPkgTokenSpaceGuid.PcdTpm2Enable           ## CONSUMES
+  #Misc Config
+  gBoardModuleTokenSpaceGuid.PcdBoardBomId
+
+  gBoardModuleTokenSpaceGuid.PcdBoardId
+  gBoardModuleTokenSpaceGuid.PcdSkuType
+  gBoardModuleTokenSpaceGuid.VpdPcdBoardGpioTable

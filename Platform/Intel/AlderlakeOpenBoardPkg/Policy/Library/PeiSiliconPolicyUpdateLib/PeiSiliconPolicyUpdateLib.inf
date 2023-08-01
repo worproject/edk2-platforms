@@ -1,0 +1,65 @@
+## @file
+#  Provide Silicon policy update functionality.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+################################################################################
+#
+# Defines Section - statements that will be processed to create a Makefile.
+#
+################################################################################
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SiliconPolicyUpdateLib
+  FILE_GUID                      = 34435831-33D7-4742-992F-3A3C7B860BC5
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SiliconPolicyUpdateLib
+
+
+#
+# The following information is for reference only and not required by the build tools.
+#
+#  VALID_ARCHITECTURES           = IA32 X64
+#
+
+################################################################################
+#
+# Sources Section - list of files that are required for the build to succeed.
+#
+################################################################################
+
+[Sources]
+  PeiSiliconPolicyUpdatePreMem.c
+  PeiSiliconPolicyUpdatePostMem.c
+
+################################################################################
+#
+# Package Dependency Section - list of Package files that are required for
+#                              this module.
+#
+################################################################################
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+
+[LibraryClasses.IA32]
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  PeiServicesTablePointerLib
+  PeiServicesLib
+  PcdLib
+  PeiPolicyUpdateLib
+
+[FixedPcd]
+
+[Ppis]
+
+[Guids]

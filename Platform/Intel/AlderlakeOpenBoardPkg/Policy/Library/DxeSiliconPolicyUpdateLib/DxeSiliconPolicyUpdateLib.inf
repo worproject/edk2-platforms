@@ -1,0 +1,53 @@
+## @file
+# Component information file for Silicon Policy Update Library
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DxeSiliconUpdateLib
+  FILE_GUID                      = C523609D-E354-416B-B24F-33468D4BD21D
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SiliconPolicyUpdateLib
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  PcdLib
+  DebugLib
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+  DxeSaPolicyLib
+  UefiLib
+  ConfigBlockLib
+  GraphicsInfoLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
+  IntelSiliconPkg/IntelSiliconPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+
+[Sources]
+  DxeSiliconPolicyUpdateLate.c
+  DxeSaPolicyInit.c
+
+[Pcd]
+  gBoardModuleTokenSpaceGuid.PcdIntelGopEnable
+  gIntelSiliconPkgTokenSpaceGuid.PcdIntelGraphicsVbtFileGuid
+  gPlatformModuleTokenSpaceGuid.PcdSmbiosOemTypeFirmwareVersionInfo     ## CONSUMES
+
+[Protocols]
+  gEfiFirmwareVolume2ProtocolGuid               ## CONSUMES
+  gSaPolicyProtocolGuid                         ## CONSUMES
+  gDxeSiPolicyProtocolGuid                      ## PRODUCES
+  gGopPolicyProtocolGuid                        ## PRODUCES
+
+[Depex]
+  gEfiVariableArchProtocolGuid

@@ -1,0 +1,34 @@
+### @file
+# Component description file for PeiGetFvInfo library.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010017
+  BASE_NAME                      = PeiGetFvInfoLib
+  FILE_GUID                      = C2584BE4-2CCD-418C-9205-A2031CE75861
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = PEIM
+  LIBRARY_CLASS                  = PeiGetFvInfoLib
+
+[LibraryClasses]
+  BaseMemoryLib
+  BaseLib
+  DebugLib
+  DebugPrintErrorLevelLib
+  HobLib
+  PeiServicesLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+
+[Sources]
+  PeiGetFvInfoLib.c
+
+[Guids]
+  gPlatformInitFvLocationGuid       ## CONSUMES

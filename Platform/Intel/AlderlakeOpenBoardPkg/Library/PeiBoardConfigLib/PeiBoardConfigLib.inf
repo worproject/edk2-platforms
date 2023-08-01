@@ -1,0 +1,56 @@
+### @file
+# Component information file for BaseBoardConfigLib.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiBoardConfigLib
+  FILE_GUID                      = AA9812A8-1BA6-40AD-A846-50D0BC29C38C
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardConfigLib|PEIM
+
+[LibraryClasses]
+  DebugLib
+  PcdLib
+  PostCodeLib
+  TimerLib
+  PeiServicesLib
+  PmcLib
+  GpioLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+  AlderlakeOpenBoardPkg/OpenBoardPkg.dec
+
+[Sources]
+  PeiBoardConfigLib.c
+
+[Ppis]
+  gEfiPeiReadOnlyVariable2PpiGuid               ## CONSUMES
+
+[Pcd]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiDefaultOemTableId ## PRODUCES  ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdBoardId                   ## PRODUCES  ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdBoardBomId                ## PRODUCES  ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdBoardRev                  ## PRODUCES  ## CONSUMES
+  gBoardModuleTokenSpaceGuid.PcdSpdPresent                ## PRODUCES  ## CONSUMES
+
+  # GPIO Group Tier
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw0
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw1
+  gBoardModuleTokenSpaceGuid.PcdGpioGroupToGpeDw2
+
+  gBoardModuleTokenSpaceGuid.PcdDisableVpdGpioTable
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTable
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTablePreMem
+  gBoardModuleTokenSpaceGuid.PcdBoardGpioTableEarlyPreMem
+
+[Depex]
+  gEfiPeiReadOnlyVariable2PpiGuid

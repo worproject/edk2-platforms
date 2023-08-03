@@ -3,7 +3,7 @@
   SPCR is abbreviation of Serial Port Console Redirection Table (SPCR).
 
   Copyright (c) 2004 - 2020, Intel Corporation. All rights reserved.<BR>
-  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.<BR>
+  Copyright (C) 2023 Advanced Micro Devices, Inc. All rights reserved.
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
 **/
@@ -83,8 +83,8 @@ EFI_ACPI_SERIAL_PORT_CONSOLE_REDIRECTION_TABLE gSpcrInfo = {
   },
 
   0x03,               //INTERRUPT_TYPE,
-  0x04,               //IRQ,
-  0x04,               //GLOBAL_SYSTEM_INTERRUPT,
+  FixedPcdGet8 (PcdSpcrInterrupt), // IRQ,
+  FixedPcdGet8 (PcdSpcrInterrupt), // GLOBAL_SYSTEM_INTERRUPT,
   0x07,               //BAUD_RATE,
   0x00,               //PARITY,
   0x01,               //STOP_BITS,
@@ -440,6 +440,7 @@ OutOfBandACPITableConstruction (
   if ((FlowControl & EFI_SERIAL_HARDWARE_FLOW_CONTROL_ENABLE) != 0) {
     gSpcrInfo.FlowControl = UART_FLOW_CONTROL_HARDWARE;
   }
+
 
   if (HasIsaSerialNode(SavedDevicePath)) {
     GetIsaTypeInfo (SavedDevicePath);

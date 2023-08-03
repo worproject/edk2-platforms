@@ -24,6 +24,7 @@
   UefiDriverEntryPoint
   UefiLib
   SpcrDeviceLib
+  PcdLib
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -50,6 +51,9 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterStride
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialUseMmio
+
+[FixedPcd]
+  gSpcrFeaturePkgTokenSpaceGuid.PcdSpcrInterrupt
 
 [Depex]
   TRUE

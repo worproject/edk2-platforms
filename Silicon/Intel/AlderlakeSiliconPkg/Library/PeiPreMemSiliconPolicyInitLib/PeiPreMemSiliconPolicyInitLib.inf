@@ -1,0 +1,36 @@
+## @file
+# Component information file for Silicon Policy Init Library
+# This library implements Silicon Policy Initialization for PreMemory.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = PeiPreMemSiliconPolicyInitLib
+  FILE_GUID                      = 1FB4B175-0BB6-4137-A4AC-EA48FCE83862
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SiliconPolicyInitLib
+
+[LibraryClasses]
+  BaseLib
+  PeiServicesLib
+  DebugLib
+  SiPolicyLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+
+[Sources]
+  PeiPreMemSiliconPolicyInitLib.c
+
+[Pcd]
+
+[Ppis]
+  gSiPreMemDefaultPolicyInitPpiGuid
+
+[Depex]
+  gSiPreMemDefaultPolicyInitPpiGuid

@@ -1405,7 +1405,7 @@ PFACounterRead (
         Ret = LINK_CHECK_FAILED;
         DEBUG ((
           DEBUG_ERROR,
-          "\tSocket%d RootComplex%d RP%d \t%s: %d \tGROUP:%d-EVENT:%d\n",
+          "\tSocket%d RootComplex%d RP%d \t: %d \tGROUP:%d-EVENT:%d\n",
           RootComplex->Socket,
           RootComplex->ID,
           PcieIndex,

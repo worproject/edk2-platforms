@@ -86,5 +86,15 @@ InitializeSbsaQemuPlatformDxe (
 
   DEBUG ((DEBUG_INFO, "GICR base: 0x%x\n", Arg0));
 
+  SmcResult = ArmCallSmc0 (SIP_SVC_GET_GIC_ITS, &Arg0, NULL, NULL);
+  if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
+    Result = PcdSet64S (PcdGicItsBase, Arg0);
+    ASSERT_RETURN_ERROR (Result);
+  }
+
+  Arg0 = PcdGet64 (PcdGicItsBase);
+
+  DEBUG ((DEBUG_INFO, "GICI base: 0x%x\n", Arg0));
+
   return EFI_SUCCESS;
 }

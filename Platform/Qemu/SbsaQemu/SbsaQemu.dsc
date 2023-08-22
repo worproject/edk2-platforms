@@ -523,6 +523,10 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   gArmTokenSpaceGuid.PcdGicDistributorBase|0x40060000
   gArmTokenSpaceGuid.PcdGicRedistributorsBase|0x40080000
 
+  # GIC ITS
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase|0
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdSmmuBase|0x60050000
+
   #
   # Set video resolution for boot options
   # PlatformDxe can set the former at runtime.

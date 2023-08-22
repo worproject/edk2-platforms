@@ -48,6 +48,8 @@
 
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdSmmuBase
 
 [Depex]
   gEfiAcpiTableProtocolGuid                       ## CONSUMES

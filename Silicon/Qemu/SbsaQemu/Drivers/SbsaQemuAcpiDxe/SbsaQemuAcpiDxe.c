@@ -8,6 +8,7 @@
 **/
 #include <IndustryStandard/Acpi.h>
 #include <IndustryStandard/AcpiAml.h>
+#include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
 #include <Library/AcpiLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -20,6 +21,36 @@
 #include <Library/UefiDriverEntryPoint.h>
 #include <Library/UefiLib.h>
 #include <Protocol/AcpiTable.h>
+
+#pragma pack(1)
+
+typedef struct {
+  EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE        Node;
+  UINT32                                    Identifiers;
+} SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE;
+
+typedef struct
+{
+  EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE     SmmuNode;
+  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE       SmmuIdMap;
+} SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE;
+
+typedef struct
+{
+  EFI_ACPI_6_0_IO_REMAPPING_RC_NODE        RcNode;
+  EFI_ACPI_6_0_IO_REMAPPING_ID_TABLE       RcIdMap;
+} SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE;
+
+typedef struct {
+  EFI_ACPI_6_0_IO_REMAPPING_TABLE           Iort;
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE   ItsNode;
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE SmmuNode;
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE    RcNode;
+} SBSA_IO_REMAPPING_STRUCTURE;
+
+static UINTN GicItsBase;
+
+#pragma pack ()
 
 /*
  * A Function to Compute the ACPI Table Checksum
@@ -38,6 +69,159 @@ AcpiPlatformChecksum (
   Buffer[ChecksumOffset] = 0;
 
   Buffer[ChecksumOffset] = CalculateCheckSum8(Buffer, Size);
+}
+
+/*
+ * A function that add the IORT ACPI table.
+  IN EFI_ACPI_COMMON_HEADER    *CurrentTable
+ */
+EFI_STATUS
+AddIortTable (
+  IN EFI_ACPI_TABLE_PROTOCOL   *AcpiTable
+  )
+{
+  EFI_STATUS            Status;
+  UINTN                 TableHandle;
+  UINT32                TableSize;
+  EFI_PHYSICAL_ADDRESS  PageAddress;
+  UINT8                 *New;
+
+  // Initialize IORT ACPI Header
+  EFI_ACPI_6_0_IO_REMAPPING_TABLE Header = {
+    SBSAQEMU_ACPI_HEADER(EFI_ACPI_6_0_IO_REMAPPING_TABLE_SIGNATURE,
+                         SBSA_IO_REMAPPING_STRUCTURE,
+                         EFI_ACPI_IO_REMAPPING_TABLE_REVISION_00),
+    3,
+    sizeof(EFI_ACPI_6_0_IO_REMAPPING_TABLE),        // NodeOffset
+    0 };
+
+  // Initialize SMMU3 Structure
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE Smmu3 = {
+    {
+      {
+        EFI_ACPI_IORT_TYPE_SMMUv3,
+        sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE),
+        2, // Revision
+        0, // Reserved
+        1, // NumIdMapping
+        OFFSET_OF (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE, SmmuIdMap) // IdReference
+      },
+      PcdGet64 (PcdSmmuBase), // Base address
+      EFI_ACPI_IORT_SMMUv3_FLAG_COHAC_OVERRIDE, // Flags
+      0,   // Reserved
+      0,   // VATOS address
+      EFI_ACPI_IORT_SMMUv3_MODEL_GENERIC, // SMMUv3 Model
+      74,  // Event
+      75,  // Pri
+      77,  // Gerror
+      76,  // Sync
+      0,  // Proximity domain
+      1   // DevIDMappingIndex
+    },
+      {
+        0x0000, // InputBase
+        0xffff, // NumIds
+        0x0000, // OutputBase
+        OFFSET_OF (SBSA_IO_REMAPPING_STRUCTURE, ItsNode), // OutputReference
+        0 // Flags
+      }
+  };
+
+//NOTE(hrw): update to IORT E.e?
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE Rc = {
+    {
+      {
+        EFI_ACPI_IORT_TYPE_ROOT_COMPLEX,  // Type
+        sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE),  // Length
+        0,  // Revision
+        0,  // Reserved
+        1,  // NumIdMappings
+        OFFSET_OF (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE, RcIdMap)  // IdReference
+      },
+      1,  // CacheCoherent
+      0,  // AllocationHints
+      0,  // Reserved
+      0,  // MemoryAccessFlags
+      EFI_ACPI_IORT_ROOT_COMPLEX_ATS_UNSUPPORTED,    // AtsAttribute
+      0x0,                                         // PciSegmentNumber
+      //0,       //MemoryAddressSizeLimit
+    },
+    {
+      0x0000,  // InputBase
+      0xffff,  // NumIds
+      0x0000,  // OutputBase
+      OFFSET_OF (SBSA_IO_REMAPPING_STRUCTURE, SmmuNode),  // OutputReference
+      0,       // Flags
+    }
+  };
+
+  SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE Its = {
+    // EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE
+    {
+      // EFI_ACPI_6_0_IO_REMAPPING_NODE
+      {
+        EFI_ACPI_IORT_TYPE_ITS_GROUP,  // Type
+        sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE), // Length
+        0,  // Revision
+        0,  // Identifier
+        0,  // NumIdMappings
+        0,  // IdReference
+      },
+      1,    // ITS count
+    },
+    0,      // GIC ITS Identifiers
+  };
+
+  // Calculate the new table size based on the number of cores
+  TableSize = sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE) +
+              sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE) +
+              sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE) +
+              sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE);
+
+  Status = gBS->AllocatePages (
+                  AllocateAnyPages,
+                  EfiACPIReclaimMemory,
+                  EFI_SIZE_TO_PAGES (TableSize),
+                  &PageAddress
+                  );
+  if (EFI_ERROR(Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to allocate pages for IORT table\n"));
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  New = (UINT8 *)(UINTN) PageAddress;
+  ZeroMem (New, TableSize);
+
+  // Add the  ACPI Description table header
+  CopyMem (New, &Header, sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE));
+  ((EFI_ACPI_DESCRIPTION_HEADER*) New)->Length = TableSize;
+  New += sizeof (EFI_ACPI_6_0_IO_REMAPPING_TABLE);
+
+  // ITS Node
+  CopyMem (New, &Its, sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE));
+  New += sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_ITS_NODE);
+
+  // SMMUv3 Node
+  CopyMem (New, &Smmu3, sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE));
+  New += sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_SMMU3_NODE);
+
+  // RC Node
+  CopyMem (New, &Rc, sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE));
+  New += sizeof (SBSA_EFI_ACPI_6_0_IO_REMAPPING_RC_NODE);
+
+  AcpiPlatformChecksum ((UINT8*) PageAddress, TableSize);
+
+  Status = AcpiTable->InstallAcpiTable (
+                        AcpiTable,
+                        (EFI_ACPI_COMMON_HEADER *)PageAddress,
+                        TableSize,
+                        &TableHandle
+                        );
+  if (EFI_ERROR(Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to install IORT table\n"));
+  }
+
+  return Status;
 }
 
 /*
@@ -100,6 +284,13 @@ AddMadtTable (
                sizeof (EFI_ACPI_6_0_GIC_DISTRIBUTOR_STRUCTURE) +
                sizeof (EFI_ACPI_6_0_GICR_STRUCTURE);
 
+  // Initialize GIC ITS Structure
+  EFI_ACPI_6_5_GIC_ITS_STRUCTURE Gic_Its = SBSAQEMU_MADT_GIC_ITS_INIT(0);
+
+  if (GicItsBase > 0) {
+    TableSize += sizeof (EFI_ACPI_6_5_GIC_ITS_STRUCTURE);
+  }
+
   Status = gBS->AllocatePages (
                   AllocateAnyPages,
                   EfiACPIReclaimMemory,
@@ -137,6 +328,12 @@ AddMadtTable (
   // GIC ReDistributor Structure
   CopyMem (New, &Gicr, sizeof (EFI_ACPI_6_0_GICR_STRUCTURE));
   New += sizeof (EFI_ACPI_6_0_GICR_STRUCTURE);
+
+  if (GicItsBase > 0) {
+    // GIC ITS Structure
+    CopyMem (New, &Gic_Its, sizeof (EFI_ACPI_6_5_GIC_ITS_STRUCTURE));
+    New += sizeof (EFI_ACPI_6_5_GIC_ITS_STRUCTURE);
+  }
 
   AcpiPlatformChecksum ((UINT8*) PageAddress, TableSize);
 
@@ -436,6 +633,15 @@ InitializeSbsaQemuAcpiDxe (
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Failed to locate ACPI Table Protocol\n"));
     return Status;
+  }
+
+  GicItsBase = PcdGet64 (PcdGicItsBase);
+
+  if (GicItsBase > 0) {
+     Status = AddIortTable (AcpiTable);
+     if (EFI_ERROR (Status)) {
+        DEBUG ((DEBUG_ERROR, "Failed to add IORT table\n"));
+     }
   }
 
   Status = AddMadtTable (AcpiTable);

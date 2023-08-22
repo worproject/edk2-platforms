@@ -70,3 +70,7 @@
 
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor|0x0|UINT32|0x0000011E
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor|0x0|UINT32|0x0000011F
+
+  # ARM Generic Interrupt Controller ITS
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase|0|UINT64|0x00000120
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdSmmuBase|0|UINT64|0x00000121

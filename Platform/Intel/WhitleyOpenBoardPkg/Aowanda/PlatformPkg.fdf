@@ -189,7 +189,7 @@ SET gMinPlatformPkgTokenSpaceGuid.PcdFlashAreaSize         = 0x01000000
   # This makes it easy to adjust the various sizes without having to manually calculate the offsets.
   # These are out of flash layout order because FvAdvanced gets any remaining space
   #
-  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize      = 0x00040000
+  SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize      = 0x00050000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize        = 0x00230000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize      = 0x0004C000
   SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvAdvancedSize      = gCpPlatFlashTokenSpaceGuid.PcdFlashFdMainSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvOsBootSize - gMinPlatformPkgTokenSpaceGuid.PcdFlashFvSecuritySize

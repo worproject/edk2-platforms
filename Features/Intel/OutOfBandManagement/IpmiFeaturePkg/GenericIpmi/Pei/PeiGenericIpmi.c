@@ -343,8 +343,8 @@ PeiInitializeIpmiKcsPhysicalLayer (
   // Check interface data initialized successfully else register notify protocol.
   for (Index = SysInterfaceKcs; Index < SysInterfaceMax; Index++) {
     switch (Index) {
-    if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
-        case SysInterfaceKcs:
+      case SysInterfaceKcs:
+        if (FixedPcdGet8 (PcdKcsInterfaceSupport) == 1) {
           if ((mIpmiInstance->BmcStatus != BMC_HARDFAIL) && (mIpmiInstance->BmcStatus != BMC_UPDATE_IN_PROGRESS)) {
             BMC_INTERFACE_STATUS  BmcStatus;
             mIpmiInstance->IpmiTransport2Ppi.Interface.KcsInterfaceState = IpmiInterfaceInitialized;
@@ -359,42 +359,38 @@ PeiInitializeIpmiKcsPhysicalLayer (
               mIpmiInstance->IpmiTransport2Ppi.Interface.KcsInterfaceState = IpmiInterfaceInitError;
             }
           }
+        }
+        break;
 
-          break;
-    }
-
-    if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
-        case SysInterfaceBt:
+      case SysInterfaceBt:
+        if (FixedPcdGet8 (PcdBtInterfaceSupport) == 1) {
           if (mIpmiInstance->IpmiTransport2Ppi.Interface.Bt.InterfaceState == IpmiInterfaceInitialized) {
             InterfaceState = IpmiInterfaceInitialized;
           }
+        }
+        break;
 
-          break;
-    }
-
-    if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
-        case SysInterfaceSsif:
+      case SysInterfaceSsif:
+        if (FixedPcdGet8 (PcdSsifInterfaceSupport) == 1) {
           if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.InterfaceState == IpmiInterfaceInitialized) {
             InterfaceState = IpmiInterfaceInitialized;
           } else if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.InterfaceState == IpmiInterfaceInitError) {
             // Register protocol notify for SMBUS Protocol.
             Status = RegisterPpiCallback (PeiServices, &mIpmiInstance->IpmiTransport2Ppi.Interface.Ssif.SsifInterfaceApiGuid);
           }
+        }
+        break;
 
-          break;
-    }
-
-    if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
-        case SysInterfaceIpmb:
+      case SysInterfaceIpmb:
+        if (FixedPcdGet8 (PcdIpmbInterfaceSupport) == 1) {
           if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.InterfaceState == IpmiInterfaceInitialized) {
             InterfaceState = IpmiInterfaceInitialized;
           } else if (mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.InterfaceState == IpmiInterfaceInitError) {
             // Register protocol notify for SMBUS Protocol.
             Status = RegisterPpiCallback (PeiServices, &mIpmiInstance->IpmiTransport2Ppi.Interface.Ipmb.IpmbInterfaceApiGuid);
           }
-
-          break;
-    }
+        }
+        break;
 
       default:
         break;

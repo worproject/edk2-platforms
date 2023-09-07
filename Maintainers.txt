@@ -99,11 +99,10 @@ M: Leif Lindholm <quic_llindhol@quicinc.com>
 Ampere Computing
 F: Platform/Ampere
 F: Silicon/Ampere
-R: Nhi Pham <nhi@os.amperecomputing.com>
-R: Vu Nguyen <vunguyen@os.amperecomputing.com>
-R: Thang Nguyen <thang@os.amperecomputing.com>
+M: Nhi Pham <nhi@os.amperecomputing.com>
 R: Chuong Tran <chuong@os.amperecomputing.com>
-M: Leif Lindholm <quic_llindhol@quicinc.com>
+R: Leif Lindholm <quic_llindhol@quicinc.com>
+R: Rebecca Cran <rebecca@os.amperecomputing.com>
 
 ARM
 F: Platform/ARM/

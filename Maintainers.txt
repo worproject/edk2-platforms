@@ -245,6 +245,13 @@ M: Sai Chaganty <rangasai.v.chaganty@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 R: Heng Luo <heng.luo@intel.com>
 
+Platform/Intel/AlderlakeOpenBoardPkg
+F: Platform/Intel/AlderlakeOpenBoardPkg/
+M: Sai Chaganty <rangasai.v.chaganty@intel.com>
+M: Nate DeSimone <nathaniel.l.desimone@intel.com>
+R: Rosen Chuang <rosen.chuang@intel.com>
+R: Saloni Kasbekar <saloni.kasbekar@intel.com>
+
 Platform/Intel/WhitleyOpenBoardPkg
 F: Platform/Intel/WhitleyOpenBoardPkg/
 M: Isaac Oram <isaac.w.oram@intel.com>
@@ -315,6 +322,13 @@ F: Silicon/Intel/TigerlakeSiliconPkg/
 M: Sai Chaganty <rangasai.v.chaganty@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 R: Heng Luo <heng.luo@intel.com>
+
+Platform/Intel/AlderlakeSiliconPkg
+F: Platform/Intel/AlderlakeSiliconPkg/
+M: Sai Chaganty <rangasai.v.chaganty@intel.com>
+M: Nate DeSimone <nathaniel.l.desimone@intel.com>
+R: Rosen Chuang <rosen.chuang@intel.com>
+R: Saloni Kasbekar <saloni.kasbekar@intel.com>
 
 Silicon/Intel/WhitleySiliconPkg
 F: Silicon/Intel/WhitleySiliconPkg/

@@ -254,6 +254,7 @@ they will be documented with the platform.
 * [Comet Lake](Platform/Intel/CometlakeOpenBoardPkg)
 * [Tiger Lake](Platform/Intel/TigerlakeOpenBoardPkg)
 * [Whitley/Cedar Island](Platform/Intel/WhitleyOpenBoardPkg)
+* [Alder Lake](Platform/Intel/AlderlakeOpenBoardPkg)
 
 For more information, see the
 [EDK II Minimum Platform Specification](https://edk2-docs.gitbooks.io/edk-ii-minimum-platform-specification).

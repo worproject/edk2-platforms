@@ -1,0 +1,33 @@
+## @file
+# Graphics information library.
+#
+# All function in this library is available for PEI, DXE, and SMM,
+# But do not support UEFI RUNTIME environment call.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+
+[Defines]
+INF_VERSION = 0x00010017
+BASE_NAME = PeiDxeSmmGraphicsInfoLib
+FILE_GUID = AE4D5DE8-F092-4B2A-8003-F1A4CCBDC3E4
+VERSION_STRING = 1.0
+MODULE_TYPE = BASE
+LIBRARY_CLASS = GraphicsInfoLib
+
+[LibraryClasses]
+BaseLib
+IoLib
+DebugLib
+BaseMemoryLib
+PciSegmentLib
+TimerLib
+
+[Packages]
+MdePkg/MdePkg.dec
+AlderlakeSiliconPkg/SiPkg.dec
+
+[Sources]
+GraphicsInfoLibVer1.c

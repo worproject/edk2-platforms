@@ -1,0 +1,26 @@
+### @file
+# Component information file for the Report CPU HOB library.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010017
+  BASE_NAME                      = PeiReportCpuHobLib
+  FILE_GUID                      = F19AA754-CE24-448D-B755-1F939B00C23D
+  VERSION_STRING                 = 1.0
+  MODULE_TYPE                    = PEIM
+  LIBRARY_CLASS                  = ReportCpuHobLib
+
+[LibraryClasses]
+  BaseLib
+  HobLib
+  CpuPlatformLib
+
+[Packages]
+  MdePkg/MdePkg.dec
+  AlderlakeSiliconPkg/SiPkg.dec
+
+[Sources]
+  PeiReportCpuHobLib.c

@@ -1,0 +1,29 @@
+## @file
+#  This file contains the Cpu Information for specific generation.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+
+[Defines]
+INF_VERSION = 0x00010017
+BASE_NAME = BaseCpuInfoFruLib
+FILE_GUID = 72E44627-C719-4B2D-8C5D-963E167E5AAC
+VERSION_STRING = 1.0
+MODULE_TYPE = BASE
+LIBRARY_CLASS = CpuInfoFruLib
+
+[LibraryClasses]
+BaseLib
+DebugLib
+PchInfoLib
+
+[Packages]
+MdePkg/MdePkg.dec
+UefiCpuPkg/UefiCpuPkg.dec
+AlderlakeSiliconPkg/SiPkg.dec
+
+[Sources]
+BaseCpuInfoFruLib.c
+

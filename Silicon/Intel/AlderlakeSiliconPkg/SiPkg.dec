@@ -1,0 +1,625 @@
+## @file
+# Component description file for the Silicon Reference Code.
+#
+#   Copyright (c) 2022, Intel Corporation. All rights reserved.<BR>
+#   SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+
+[Defines]
+DEC_SPECIFICATION = 0x00010017
+PACKAGE_NAME = SiPkg
+PACKAGE_VERSION = 0.1
+PACKAGE_GUID = F245E276-44A0-46b3-AEB5-9898BBCF008D
+
+[Includes.Common.Private]
+
+#
+# AlderLake Fru
+#
+Fru/AdlCpu/IncludePrivate
+Fru/AdlPch/IncludePrivate
+
+##
+# IpBlock IncludePrivate
+#
+IpBlock/Pmc/IncludePrivate
+IpBlock/Graphics/IncludePrivate
+IpBlock/PchDmi/IncludePrivate
+IpBlock/P2sb/IncludePrivate
+IpBlock/Spi/IncludePrivate
+IpBlock/Gpio/IncludePrivate
+IpBlock/HostBridge/IncludePrivate
+
+# Cpu
+Cpu/IncludePrivate
+
+IncludePrivate
+
+[Includes]
+Product/Alderlake/Include
+#
+# AlderLake
+#
+Fru/AdlCpu/Include
+Fru/AdlPch/Include
+
+
+# CPU PCIe
+IpBlock/CpuPcieRp/Include
+
+#
+# - Memory
+Include/ConfigBlock/Memory/Ver2
+#
+# - Graphics
+Include/ConfigBlock/Graphics/Gen12
+IpBlock/Graphics/Include
+
+#
+# - CPU PCIe
+Include/ConfigBlock/CpuPcieRp/Gen4
+
+#
+# HostBridge
+#
+Include/ConfigBlock/HostBridge/Ver1
+
+Include
+#
+# SystemAgent
+#
+SystemAgent/Include
+Include/ConfigBlock/PcieRp
+Include/ConfigBlock/Vmd
+Include/ConfigBlock/CpuPcieRp/Gen4
+Include/ConfigBlock/CpuPcieRp/Gen3
+
+#
+# Cpu
+#
+Cpu/Include
+
+
+#
+# Pch
+#
+Pch/Include
+Include/ConfigBlock/Espi
+Include/ConfigBlock/Smbus
+Include/ConfigBlock/Pmc
+Include/ConfigBlock/PchDmi
+Include/ConfigBlock/Wdt
+Include/ConfigBlock/PcieRp/PchPcieRp
+Include/ConfigBlock/PcieRp
+Include/ConfigBlock/SerialIo
+
+[Guids.common.Private]
+#
+# PCH
+#
+gGpioLibUnlockHobGuid        = { 0xA7892E49, 0x0F9F, 0x4166, { 0xB8, 0xD6, 0x8A, 0x9B, 0xD9, 0x8B, 0x17, 0x38 }}
+
+[Guids]
+gSmbiosProcessorInfoHobGuid        =  {0xe6d73d92, 0xff56, 0x4146, {0xaf, 0xac, 0x1c, 0x18, 0x81, 0x7d, 0x68, 0x71}}
+gSmbiosCacheInfoHobGuid            =  {0xd805b74e, 0x1460, 0x4755, {0xbb, 0x36, 0x1e, 0x8c, 0x8a, 0xd6, 0x78, 0xd7}}
+
+##
+## MdeModulePkg
+##
+gEfiMemoryTypeInformationGuid  =  {0x4c19049f, 0x4137, 0x4dd3, {0x9c, 0x10, 0x8b, 0x97, 0xa8, 0x3f, 0xfd, 0xfa}}
+gEfiCapsuleVendorGuid  =  {0x711c703f, 0xc285, 0x4b10, {0xa3, 0xb0, 0x36, 0xec, 0xbd, 0x3c, 0x8b, 0xe2}}
+gEfiConsoleOutDeviceGuid = { 0xd3b36f2c, 0xd551, 0x11d4, { 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d}}
+##
+## Common
+##
+## Include/ConfigBlock/SiConfig.h
+gSiConfigGuid = {0x4ed6d282, 0x22f3, 0x4fe1, {0xa6, 0x61, 0x6, 0x1a, 0x97, 0x38, 0x59, 0xd8}}
+##
+gSiPreMemConfigGuid = {0xb94c004c, 0xa0ab, 0x40f0, {0x9b, 0x61, 0x0b, 0x25, 0x88, 0xbe, 0xfd, 0xc6}}
+##
+##
+gPciePreMemConfigGuid = {0xd0f9c2a9, 0x7332, 0x4733, {0x8d, 0xb1, 0x98, 0x79, 0x27, 0x60, 0xda, 0xe6}}
+##
+gSiPkgTokenSpaceGuid  =  {0x977c97c1, 0x47e1, 0x4b6b, {0x96, 0x69, 0x43, 0x66, 0x99, 0xcb, 0xe4, 0x5b}}
+
+gSiConfigHobGuid = {0xb3903068, 0x7482, 0x4424, {0xba, 0x4b, 0x40, 0x5f, 0x8f, 0xd7, 0x65, 0x4e}}
+
+##
+##
+## SystemAgent
+##
+gSaDataHobGuid  =  {0xe07d0bda, 0xbf90, 0x46a9, { 0xb0, 0x0e, 0xb2, 0xc4, 0x4a, 0x0e, 0xd6, 0xd0}}
+gSaConfigHobGuid  = {0x762fa2e6, 0xea3b, 0x41c8, { 0x8c, 0x52, 0x63, 0x76, 0x6d, 0x70, 0x39, 0xe0}}
+gSaMiscPeiPreMemConfigGuid  =  {0x4a525577, 0x3469, 0x4f11, { 0x99, 0xcf, 0xfb, 0xcd, 0x5e, 0xf1, 0x84, 0xe4}}
+gCpuPciePeiPreMemConfigGuid  =  { 0x81baf3c9, 0xf295, 0x4572, { 0x8b, 0x21, 0x79, 0x3f, 0xa3, 0x1b, 0xa5, 0xdb}}
+gVmdPeiConfigGuid = { 0x79b52c74, 0xb9ba, 0x4f36, {0xa2, 0x40, 0xf2, 0x41, 0x0d, 0x20, 0x84, 0x8a}}
+gVmdInfoHobGuid            = { 0xccd0306e, 0x7fa1, 0x4df5, {0x99, 0x99, 0xc1, 0xf8, 0x9a, 0x1d, 0x1b, 0xa9}}
+gMemoryConfigGuid  =  { 0x26cf084c, 0xc9db, 0x41bb, { 0x92, 0xc6, 0xd1, 0x97, 0xb8, 0xa1, 0xe4, 0xbf}}
+gMemoryConfigNoCrcGuid  =  { 0xc56c73d0, 0x1cdb, 0x4c0c, { 0xa9, 0x57, 0xea, 0x62, 0xa9, 0xe6, 0xf5, 0x0c}}
+gMemoryDxeConfigGuid  =  {0xa5c7dda8, 0x686b, 0x404f, {0x86, 0x40, 0xf8, 0x2,  0xd,  0x84, 0x4c, 0x94}}
+gCpuPcieRpPrememConfigGuid = { 0x41aef892, 0xc800, 0x4ac0, {0xa9, 0x30, 0x84, 0xac, 0x47, 0xca, 0xca, 0x7e}}
+gCpuPcieRpConfigGuid = { 0x9749a5fb, 0x9130, 0x44f0, {0x8f, 0x61, 0xdb, 0xff, 0x8e, 0xf2, 0xca, 0xc7}}
+## IntelFsp2Pkg/IntelFsp2Pkg.dec gSiMemoryS3DataGuid is the same as gFspNonVolatileStorageHobGuid
+gSiMemoryS3DataGuid       = { 0x721acf02, 0x4d77, 0x4c2a, { 0xb3, 0xdc, 0x27, 0x0b, 0x7b, 0xa9, 0xe4, 0xb0 } }
+gSiMemoryInfoDataGuid     = { 0x9b2071d4, 0xb054, 0x4e0c, { 0x8d, 0x09, 0x11, 0xcf, 0x8b, 0x9f, 0x03, 0x23 } }
+gSiMemoryPlatformDataGuid = { 0x6210d62f, 0x418d, 0x4999, { 0xa2, 0x45, 0x22, 0x10, 0x0a, 0x5d, 0xea, 0x44 } }
+gSaPciePeiConfigGuid = { 0xdaa929a9, 0x5ec9, 0x486a, { 0xb0, 0xf7, 0x82, 0x3a, 0x55, 0xc7, 0xb5, 0xb3}}
+gSaPciePeiPreMemConfigGuid = { 0xfc5e01a3, 0x69f6, 0x4e35, { 0x9f, 0xcf, 0x6, 0x68, 0x7b, 0xab, 0x31, 0xd7}}
+
+#
+# Host Bridge
+#
+gHostBridgePeiPreMemConfigGuid  =  {0xbdef6805, 0x2080, 0x44ad, { 0x93, 0x2e, 0x00, 0x04, 0xf5, 0x2c, 0xb7, 0xa1}}
+gHostBridgePeiConfigGuid  =  {0x3b6d998e, 0x8b6e, 0x4f53, { 0xbe, 0x41, 0x7, 0x41, 0x95, 0x53, 0x8a, 0xaf}}
+gHostBridgeDataHobGuid  =  {0x3b682d57, 0xd402, 0x40a6, { 0xb1, 0x34, 0xa0, 0xc4, 0xf6, 0x31, 0x1d, 0x9}}
+
+#
+# Graphics
+#
+gGraphicsPeiConfigGuid  =  {0x04249ac0, 0x0088, 0x439f, { 0xa7, 0x4e, 0xa7, 0x04, 0x2a, 0x06, 0x2f, 0x5d}}
+gGraphicsDxeConfigGuid  =  {0x34d93161, 0xf78e, 0x4915, {0xad, 0xc4, 0xdb, 0x67, 0x16, 0x42, 0x39, 0x24}}
+
+## Include/SsaCommonConfig.h
+gSsaPostcodeHookGuid = {0xADF0A27B, 0x61A6, 0x4F18, {0x9E, 0xAC, 0x46, 0x87, 0xE7, 0x9E, 0x6F, 0xBB}}
+gSsaBiosVariablesGuid = {0x43eeffe8, 0xa978, 0x41dc, {0x9d, 0xb6, 0x54, 0xc4, 0x27, 0xf2, 0x7e, 0x2a}}
+gSsaBiosResultsGuid = {0x8f4e928, 0xf5f, 0x46d4, {0x84, 0x10, 0x47, 0x9f, 0xda, 0x27, 0x9d, 0xb6}}
+gHobUsageDataGuid = {0xc764a821, 0xec41, 0x450d, { 0x9c, 0x99, 0x27, 0x20, 0xfc, 0x7c, 0xe1, 0xf6 }}
+
+##
+## Cpu
+##
+gCpuAcpiTableStorageGuid  =  {0xc38fb0e2, 0x0c43, 0x49c9, {0xb5, 0x44, 0x9b, 0x17, 0xaa, 0x4d, 0xcb, 0xa3}}
+gCpuSecurityPreMemConfigGuid = {0xfd5c346, 0x8260, 0x4067, {0x94, 0x69, 0xcf, 0x91, 0x68, 0xa3, 0x42, 0x90}}
+gCpuConfigLibPreMemConfigGuid = {0xfc1c0ec2, 0xc6b4, 0x4f05, {0xbb, 0x85, 0xc8, 0x0, 0x8d, 0x5b, 0x4a, 0xb7}}
+gCpuConfigGuid = {0x48c3aac9, 0xd66c, 0x42e4, {0x9b, 0x1d, 0x39, 0x4, 0x5f, 0x46, 0x53, 0x41}}
+gCpuDataHobGuid = {0x1eec629f, 0xf3cf, 0x4b02, { 0xa9, 0xa5, 0x27, 0xa2, 0x33, 0x20, 0xbe, 0x5d}}
+##
+## Me
+##
+gPciImrHobGuid  =  {0x49b1eac3, 0x0cd6, 0x451e, {0x96, 0x30, 0x92, 0x4b, 0xc2, 0x69, 0x35, 0x86}}
+gTpm2AcpiTableStorageGuid  =  {0x7d279373, 0xeecc, 0x4d4f, {0xae, 0x2f, 0xce, 0xc4, 0xb7, 0x06, 0xb0, 0x6a}}
+gEdkiiTouchPanelGuid  =  {0x91b1d27b, 0xe126, 0x48d1, {0x82, 0x34, 0xd2, 0x8b, 0x81, 0xc8, 0x83, 0x62}}
+gMeDidSentHobGuid = {0x4c3d3af1, 0x1720, 0x4c3f, {0xab, 0x7c, 0x36, 0x50, 0xbb, 0x5b, 0x85, 0x7e}}
+
+##
+## PCH
+##
+gPchGlobalResetGuid  =  { 0x9db31b4c, 0xf5ef, 0x48bb, { 0x94, 0x2b, 0x18, 0x1f, 0x7e, 0x3a, 0x3e, 0x40 }}
+
+gPchGeneralPreMemConfigGuid  = {0xC65F62FA, 0x52B9, 0x4837, {0x86, 0xEB, 0x1A, 0xFB, 0xD4, 0xAD, 0xBB, 0x3E}}
+gWatchDogPreMemConfigGuid  =  {0xFBCE08CC, 0x60F2, 0x4BDF, {0xB7, 0x88, 0x09, 0xBB, 0x81, 0x65, 0x52, 0x2B}}
+gPcieRpPreMemConfigGuid  =  {0x8377AB38, 0xF8B0, 0x476A, { 0x9C, 0xA1, 0x68, 0xEA, 0x78, 0x57, 0xD8, 0x2A}}
+gSmbusPreMemConfigGuid  =  {0x77A6E62C, 0x716B, 0x4386, {0x9E, 0x9C, 0x23, 0xA0, 0x2E, 0x13, 0x7B, 0x3A}}
+gLpcPreMemConfigGuid  =  {0xA6E6032F, 0x1E58, 0x407E, {0x9A, 0xB8, 0xC6, 0x30, 0xC6, 0xC4, 0x11, 0x8E}}
+gPchDmiPreMemConfigGuid  =  {0x4DA4AA22, 0xB54A, 0x43D7, {0x87, 0xC8, 0xA3, 0xCF, 0x53, 0xE6, 0xC1, 0x8A}}
+
+gPchGeneralConfigGuid  =  {0x6ED94C8C, 0x25F7, 0x4686, {0xB2, 0x46, 0xCA, 0x4D, 0xE2, 0x95, 0x4B, 0x5D}}
+gPchPcieConfigGuid  =  {0x0A53B507, 0x988B, 0x475C, {0xBF, 0x76, 0x33, 0xDE, 0x10, 0x6D, 0x94, 0x84}}
+gPchPcieRpDxeConfigGuid  =  {0x475530EA, 0xBD72, 0x416F, {0x98, 0x9F,0x48, 0x70, 0x5F, 0x14, 0x4E, 0xD9}}
+gIoApicConfigGuid  =  {0x2873D0F1, 0x00F6, 0x40AB, {0xAC, 0x36, 0x9A, 0x68, 0xBA, 0x87, 0x3E, 0x6C}}
+gPchDmiConfigGuid  =  {0xB3A61210, 0x1CD3, 0x4797, {0x8E, 0xE6, 0xD3, 0x42, 0x9C, 0x4F, 0x17, 0xBD}}
+gSerialIoConfigGuid  =  {0x6CC06EBF, 0x0D34, 0x4340, {0xBC, 0x16, 0xDA, 0x09, 0xE5, 0x78, 0x3A, 0xDB}}
+
+##
+## SecurityPkg
+##
+## GUID used to "Tcg2PhysicalPresence" variable and "Tcg2PhysicalPresenceFlags" variable for TPM2 request and response.
+#  Include/Guid/Tcg2PhysicalPresenceData.h
+gEfiTcg2PhysicalPresenceGuid          = { 0xaeb9c5c1, 0x94f1, 0x4d02, { 0xbf, 0xd9, 0x46, 0x2, 0xdb, 0x2d, 0x3c, 0x54 }}
+
+##
+## FSP
+##
+gFspSiliconFvGuid             = { 0x1b5c27fe, 0xf01c, 0x4fbc, { 0xae, 0xae, 0x34, 0x1b, 0x2e, 0x99, 0x2a, 0x17 }}
+gFspTscFrequencyGuid          = { 0x0e3b622a, 0xedbb, 0x4e30, { 0x93, 0x60, 0x69, 0x5c, 0xd4, 0xb3, 0x20, 0xc9 }}
+gFspInfoGuid                  = { 0x067e0f25, 0x374f, 0x47c2, { 0x17, 0x92, 0x86, 0xdc, 0xdb, 0xc4, 0x8a, 0xc9 }}
+
+[Protocols]
+##
+## MdeModulePkg
+##
+gEdkiiSmmExitBootServicesProtocolGuid = { 0x296eb418, 0xc4c8, 0x4e05, { 0xab, 0x59, 0x39, 0xe8, 0xaf, 0x56, 0xf0, 0xa } }
+
+##
+## SystemAgent
+##
+gIgdOpRegionProtocolGuid        =  {0x9e67aecf, 0x4fbb, 0x4c84, {0x99, 0xa5, 0x10, 0x73, 0x40, 0x7,  0x6d, 0xb4}}
+gSaPolicyProtocolGuid           =  {0xc6aa1f27, 0x5597, 0x4802, {0x9f, 0x63, 0xd6, 0x28, 0x36, 0x59, 0x86, 0x35}}
+gGopPolicyProtocolGuid          =  {0xec2e931b, 0x3281, 0x48a5, {0x81, 0x07, 0xdf, 0x8a, 0x8b, 0xed, 0x3c, 0x5d}}
+
+##
+## PCH
+##
+gPchSpiProtocolGuid                   = {  0xc7d289, 0x1347, 0x4de0, {0xbf, 0x42,  0xe, 0x26, 0x9d,  0xe, 0xf3, 0x4a}}
+gWdtProtocolGuid                      = {0xb42b8d12, 0x2acb, 0x499a, {0xa9, 0x20, 0xdd, 0x5b, 0xe6, 0xcf, 0x09, 0xb1}}
+gEfiSmmSmbusProtocolGuid              = {0x72e40094, 0x2ee1, 0x497a, {0x8f, 0x33, 0x4c, 0x93, 0x4a, 0x9e, 0x9c, 0x0c}}
+gPchSmmSpiProtocolGuid                = {0x56521f06,  0xa62, 0x4822, {0x99, 0x63, 0xdf,  0x1, 0x9d, 0x72, 0xc7, 0xe1}}
+gPchSmmIoTrapControlGuid              = {0x514d2afd, 0x2096, 0x4283, {0x9d, 0xa6, 0x70, 0x0c, 0xd2, 0x7d, 0xc7, 0xa5}}
+gPchTcoSmiDispatchProtocolGuid        = {0x9e71d609, 0x6d24, 0x47fd, {0xb5, 0x72, 0x61, 0x40, 0xf8, 0xd9, 0xc2, 0xa4}}
+gPchPcieSmiDispatchProtocolGuid       = {0x3e7d2b56, 0x3f47, 0x42aa, {0x8f, 0x6b, 0x22, 0xf5, 0x19, 0x81, 0x8d, 0xab}}
+gPchAcpiSmiDispatchProtocolGuid       = {0xd52bb262, 0xf022, 0x49ec, {0x86, 0xd2, 0x7a, 0x29, 0x3a, 0x7a, 0x05, 0x4b}}
+gPchSmiDispatchProtocolGuid           = {0xE6A81BBF, 0x873D, 0x47FD, {0xB6, 0xBE, 0x61, 0xB3, 0xE5, 0x72, 0x09, 0x93}}
+gPchEspiSmiDispatchProtocolGuid       = {0xB3C14FF3, 0xBAE8, 0x456C, {0x86, 0x31, 0x27, 0xFE, 0x0C, 0xEB, 0x34, 0x0C}}
+gPchSmmPeriodicTimerControlGuid       = {0x6906E93B, 0x603B, 0x4A0F, {0x86, 0x92, 0x83, 0x20, 0x04, 0xAA, 0xF2, 0xDB}}
+##
+## Silicon Policy
+##
+## Include/Protocol/SiPolicyProtocol.h
+gDxeSiPolicyProtocolGuid = { 0xeca27516, 0x306c, 0x4e28, { 0x8c, 0x94, 0x4e, 0x52, 0x10, 0x96, 0x69, 0x5e }}
+
+[Ppis.common.Private]
+
+[Ppis]
+##
+## MdeModulePkg
+##
+gEdkiiPlatformSpecificResetFilterPpiGuid = { 0x8c9f4de3, 0x7b90, 0x47ef, { 0x93, 0x8, 0x28, 0x7c, 0xec, 0xd6, 0x6d, 0xe8 } }
+
+##
+## SecurityPkg
+##
+gPeiTpmInitializationDonePpiGuid = {0xa030d115, 0x54dd, 0x447b, { 0x90, 0x64, 0xf2, 0x6, 0x88, 0x3d, 0x7c, 0xcc}}
+##
+## Common
+##
+## Include/Ppi/SiPolicy.h
+gSiPolicyPpiGuid  =  {0xaebffa01, 0x7edc, 0x49ff, {0x8d, 0x88, 0xcb, 0x84, 0x8c, 0x5e, 0x86, 0x70}}
+## Include/Ppi/SiPolicy.h
+gSiPreMemPolicyPpiGuid = {0xc133fe57, 0x17c7, 0x4b09, {0x8b, 0x3c, 0x97, 0xc1, 0x89, 0xd0, 0xab, 0x8d}}
+## Silicon Initialization PPI is used to export End of Silicon init.
+gEndOfSiInitPpiGuid         = {0xE2E3D5D1, 0x8356, 0x4F96, {0x9C, 0x9E, 0x2E, 0xC3, 0x48, 0x1D, 0xEA, 0x88}}
+gEfiEndOfPeiSignal2PpiGuid  = {0x22918381, 0xd018, 0x4d7c, {0x9d, 0x62, 0xf5, 0xa5, 0x70, 0x1c, 0x66, 0x80}}
+gFspTempRamExitPpiGuid      = {0xbc1cfbdb, 0x7e50, 0x42be, {0xb4, 0x87, 0x22, 0xe0, 0xa9, 0x0c, 0xb0, 0x52}}
+gFspmArchConfigPpiGuid      = {0x824d5a3a, 0xaf92, 0x4c0c, {0x9f, 0x19, 0x19, 0x52, 0x6d, 0xca, 0x4a, 0xbb}}
+gSiPreMemDefaultPolicyInitPpiGuid =  {0xfec36242, 0xf8d8, 0x4b43, {0x87, 0x94, 0x4f, 0x1f, 0x9f, 0x63, 0x8d, 0xdc}}
+gSiPreMemPolicyReadyPpiGuid = {0x85270bef, 0x6984, 0x4375, {0xa6, 0xea, 0xb5, 0xaa, 0x90, 0x6e, 0xdd, 0x4a}}
+gSiDefaultPolicyInitPpiGuid = {0xf69abf86, 0x4048, 0x44ef, { 0xa8, 0xef, 0x6c, 0x7f, 0x20, 0x4a, 0xc8, 0xda}}
+gSiPolicyReadyPpiGuid       = {0xd570de8c, 0xb9c4, 0x4ffa, {0xad, 0xee, 0xa5, 0x82, 0x7c, 0xe3, 0x17, 0x79}}
+gPeiBeforeGraphicsDetectionPpiGuid = {0xa494060d, 0x98c5, 0x4948, {0x84, 0x57, 0x74, 0xd7, 0x1a, 0x3d, 0x0e, 0x85}}
+
+##
+## UEFI Variable Support (Override Until BP1.5)
+##
+gEdkiiVariableStoragePpiGuid  =  { 0x90d915c5, 0xe4c1, 0x4da8, {0xa7, 0x6f, 0x9,  0xe5, 0x78, 0x91, 0x65, 0x48}}
+gEdkiiVariableStorageSelectorPpiGuid  =  { 0x782546d1, 0x03ab, 0x41e4, {0xa0, 0x1d, 0x7a, 0x9b, 0x22, 0xba, 0x2e, 0x1e}}
+gReadOnlyVariablePreMemoryDescriptorPpiGuid  =  { 0xbe136fc9, 0xc277, 0x4dd1, {0xbe, 0x42, 0xce, 0xf0, 0x9f, 0xf4, 0x3f, 0x55}}
+gEfiReadyToInstallEndOfPei2PpiGuid = {0xeef72924, 0x2db2, 0x4569, { 0x86, 0x3f, 0xd4, 0x86, 0xae, 0x7a, 0xe4, 0x12}}
+
+##
+## SystemAgent
+##
+gEnablePeiGraphicsPpiGuid =  {0x8e3bb474, 0x545,  0x4902, {0x86, 0xb0, 0x6c, 0xb5, 0xe2, 0x64, 0xb4, 0xa5}}
+gPeiGraphicsFramebufferReadyPpiGuid = {0x590ad868, 0xb0b1, 0x4d20, {0x91, 0xff, 0xc2, 0xa9, 0xd6, 0x88, 0x81, 0x94}}
+gPeiGraphicsPlatformPpiGuid = {0x4eabcd09, 0x43d3, 0x4b4d, {0xb7, 0x3d, 0x43, 0xc8, 0xd9, 0x89, 0x99, 0x05}}
+## X Compatibility support PPI
+gCompatibleMemoryInitPpiGuid = {0xca311f82, 0xf490, 0x4b12, {0x9e, 0xe1, 0x2b, 0x66, 0xa3, 0x6c, 0x3e, 0xa}}
+gVmdInitDonePpiGuid =          {0x42a187c8, 0xca0a, 0x4750, {0x82, 0xfd, 0xc9, 0xa0, 0xd5, 0x9, 0xfe, 0xd1}}
+
+##
+## Cpu
+##
+gPeiCachePpiGuid  =  {0xC153205A, 0xE898, 0x4C24, {0x86, 0x89, 0xA4, 0xB4, 0xBC, 0xC5, 0xC8, 0xA2}}
+gPeiTxtMemoryUnlockedPpiGuid  =  {0x38cdd10b, 0x767d, 0x4f6e, {0xa7, 0x44, 0x67, 0xee, 0x1d, 0xfe, 0x2f, 0xa5}}
+gPeiTxtReadyToRunMemoryInitPpiGuid = {0x9ecafd30, 0x29e2, 0x42f6, {0xba, 0xf3, 0x8b, 0x7d, 0xb8, 0xfe, 0x1f, 0x22}}
+gPeiReadyToInstallMpPpiGuid = { 0x1a266768, 0xfd43, 0x4e18, { 0xa8, 0x8a, 0x35, 0xc7, 0x94, 0xc3, 0x91, 0x0e }}
+
+##
+## PCH
+##
+gWdtPpiGuid  =  {0xf38d1338, 0xaf7a, 0x4fb6, {0x91, 0xdb, 0x1a, 0x9c, 0x21, 0x83, 0x57, 0x0d}}
+gPchSpiPpiGuid  =  {0xdade7ce3, 0x6971, 0x4b75, {0x82, 0x5e, 0xe, 0xe0, 0xeb, 0x17, 0x72, 0x2d}}
+gPeiSmbusPolicyPpiGuid  =  {0x63b6e435, 0x32bc, 0x49c6, {0x81, 0xbd, 0xb7, 0xa1, 0xa0, 0xfe, 0x1a, 0x6c}}
+gPchIoExpanderInfoPpiGuid = { 0xf4a29776, 0x0ff9, 0x4b5c, { 0xb6, 0x9d, 0x88, 0x45, 0x09, 0x9b, 0x8d, 0xa5 }}
+
+##
+## TCSS
+##
+gTcssPeiInitDonePpiGuid = {0x5ad291b8, 0xace4, 0x416a, {0xb7, 0x50, 0x7, 0x63, 0x59, 0xfc, 0xc1, 0x5b}}
+
+##
+## ExtendedBiosDecodeReady PPI
+##
+gExtendedBiosDecodeReadyPpiGuid = {0x54b522bc, 0xbef2, 0x419b, {0xa9, 0x66, 0x7e, 0xc4, 0xf0, 0x15, 0xe8, 0x21}}
+
+##
+## FSP##
+gFsptUpdLocationPpiGuid                                 = { 0xfc4dd4f2, 0x179e, 0x41f8, { 0x9d, 0x6d, 0xfa, 0xd6, 0xf9, 0xd7, 0xb8, 0xb9 }}
+
+[LibraryClasses]
+## @libraryclass
+## Common
+##
+SiPolicyLib|Include/Library/SiPolicyLib.h
+PeiPolicyUpdateLib|Include/Library/PeiSiPolicyUpdateLib.h
+ProcessorTraceMemoryAllocationLib|Include/Library/ProcessorTraceMemoryAllocationLib.h
+PlatformSecLib|Include/Library/SecPlatformLib.h
+SiAssertErrorHandlerLib|Include/Library/SiAssertErrorHandlerLib.h
+SiConfigBlockLib|Include/Library/SiConfigBlockLib.h
+## @libraryclass
+## SampleCode
+##
+## CPU
+##
+CpuPlatformLib|Cpu/Include/Library/CpuPlatformLib.h
+
+
+## @libraryclass
+## Pch
+##
+GpioLib|Include/Library/GpioLib.h
+GpioLib|Include/Library/GpioNativeLib.h
+PchCycleDecodingLib|Pch/Include/Library/PchCycleDecodingLib.h
+EspiLib|Include/Library/EspiLib.h
+PchInfoLib|Pch/Include/Library/PchInfoLib.h
+PchPcieRpLib|Include/Library/PchPcieRpLib.h
+PchPcrLib|Include/Library/PchPcrLib.h
+PchSbiAccessLib|IpBlock/P2sb/IncludePrivate/Library/PchSbiAccessLib.h
+PchPciBdfLib|Pch/Include/Library/PchPciBdfLib.h
+PchRasLib|Pch/Include/Library/PchRasLib.h
+PchRtcLib|Pch/Include/Library/PchRtcLib.h
+ResetSystemLib|Include/Library/ResetSystemLib.h
+## @libraryclass
+## Sa
+##
+DxeSaPolicyLib|SystemAgent/Include/Library/DxeSaPolicyLib.h
+## @libraryclass
+## Fru
+##
+CpuInfoFruLib|Cpu/IncludePrivate/Library/CpuInfoFruLib.h
+## @libraryclass
+## IpBlock
+##
+PmcPrivateLib|IpBlock/Pmc/IncludePrivate/Library/PmcPrivateLib.h
+IehInitLib|IpBlock/Ieh/IncludePrivate/Library/PeiIehInitLib.h
+PeiIehPolicyLib|IpBlock/Ieh/IncludePrivate/Library/PeiIehPolicyLib.h
+DxeGraphicsPolicyLib|IpBlock/Graphics/IncludePrivate/Library/DxeGraphicsPolicyLib.h
+DxeIgdOpRegionInitLib|IpBlock/Graphics/IncludePrivate/Library/DxeIgdOpRegionInitLib.h
+PchDmiLib|IpBlock/PchDmi/IncludePrivate/Library/PchDmiLib.h
+P2SbSidebandAccessLib|IpBlock/P2sb/IncludePrivate/Library/P2SbSidebandAccessLib.h
+SpiCommonLib|IpBlock/Spi/IncludePrivate/Library/SpiCommonLib.h
+GpioHelpersLib|IpBlock/Gpio/IncludePrivate/Library/GpioHelpersLib.h
+GpioPrivateLib|IpBlock/Gpio/IncludePrivate/Library/GpioPrivateLib.h
+PeiDmiSipInitLib|IpBlock/PcieRp/IncludePrivate/Library/PeiDmiSipInitLib.h
+PeiEnterprisePcieRpInitLib|IpBlock/PcieRp/IncludePrivate/Library/PeiEnterprisePcieRpInitLib.h
+PeiDpInInitLib|IpBlock/Tcss/IncludePrivate/Library/PeiDpInInitLib.h
+CpuPcieRpLib|IpBlock/CpuPcieRp/Include/Library/CpuPcieRpLib.h
+GpioGsxLib|Include/Library/GpioGsxLib.h
+GraphicsInfoLib|Include/Library/GraphicsInfoLib.h
+HeciCommonLib|Include/Library/HeciCommonLib.h
+HeciConfigureLib|Include/Library/HeciConfigureLib.h
+HeciTraceLib|Include/Library/HeciTraceLib.h
+HeciTransportCoreLib|Include/Library/HeciTransportCoreLib.h
+OcPlatformLib|Include/Library/OcPlatformLib.h
+PeiSpsPreMemPolicyLib|Include/Library/PeiSpsPreMemPolicyLib.h
+PmcLib|Include/Library/PmcLib.h
+PmcSsramLib|Include/Library/PmcSsramLib.h
+SpiLib|Include/Library/SpiLib.h
+SpsDxeLib|Include/Library/SpsDxeLib.h
+SpsGetDxeConfigBlockLib|Include/Library/SpsGetDxeConfigBlock.h
+MeGetPeiConfigBlock|Include/Library/MeGetConfigBlock.h
+## @libraryclass
+## Fsp
+##
+FspHelperLib|Fsp/Include/Library/FspHelperLib.h
+FspInfoLib|Fsp/Include/Library/FspInfoLib.h
+FspSerialIoUartDebugHelperLib|Fsp/Include/Library/FspSerialIoUartDebugHelperLib.h
+
+
+CpuPcieInfoFruLib|Fru/AdlCpu/Include/Library/CpuPcieInfoFruLib.h
+
+[PcdsFixedAtBuild]
+## From MdeModulePkg.dec
+## Progress Code for S3 Suspend start.
+## PROGRESS_CODE_S3_SUSPEND_START   = (EFI_SOFTWARE_SMM_DRIVER | (EFI_OEM_SPECIFIC | 0x00000000))    = 0x03078000
+gSiPkgTokenSpaceGuid.PcdProgressCodeS3SuspendStart|0x03078000|UINT32|0x30001032
+## Progress Code for S3 Suspend end.
+## PROGRESS_CODE_S3_SUSPEND_END   = (EFI_SOFTWARE_SMM_DRIVER | (EFI_OEM_SPECIFIC | 0x00000001))    = 0x03078001
+gSiPkgTokenSpaceGuid.PcdProgressCodeS3SuspendEnd|0x03078001|UINT32|0x30001033
+##
+## PcdNemCodeCacheBase is usally the same as PEI FV Base address,
+## FLASH_BASE+FLASH_REGION_FV_RECOVERY_OFFSET from PlatformPkg.fdf.
+##
+## Restriction:
+## 1) PcdNemCodeCacheBase - (PcdTemporaryRamBase + PcdTemporaryRamSize) >= 4K
+## 2) PcdTemporaryRamBase >= 4G - 64M
+##
+gSiPkgTokenSpaceGuid.PcdNemCodeCacheBase|0xFFF80000|UINT32|0x20000009
+##
+## NemCodeCacheSize is usally the same as PEI FV Size,
+## FLASH_REGION_FV_RECOVERY_SIZE from PlatformPkg.fdf.
+##
+## Restriction:
+## 1) PcdNemTotalCacheSize = NemCodeCacheSize + PcdTemporaryRamSize
+## <= Maximun CPU NEM total size (Code + Data)
+## = LLC size - 0.5M
+## 2) PcdTemporaryRamSize  <= Maximum CPU NEM data size
+## =  MLC size
+## NOTE: The size restriction may be changed in next generation processor.
+## Please refer to Processor BWG for detail.
+##
+gSiPkgTokenSpaceGuid.PcdBiosAreaBaseAddress|0xFF800000|UINT32|0x10000001
+gSiPkgTokenSpaceGuid.PcdBiosSize|0x00800000|UINT32|0x10000002
+gSiPkgTokenSpaceGuid.PcdTemporaryRamBase|0xfef00000|UINT32|0x00010028
+gSiPkgTokenSpaceGuid.PcdTemporaryRamSize|0x2000|UINT32|0x00010029
+gSiPkgTokenSpaceGuid.PcdTopMemoryCacheSize|0x0|UINT32|0x0001002A
+gSiPkgTokenSpaceGuid.PcdFlashMicrocodeOffset|0x00000060|UINT32|0x30000013
+
+gSiPkgTokenSpaceGuid.PcdFspWrapperEnable    |FALSE|BOOLEAN|0x3000000F
+
+
+#
+# PCD is using for SOC core boot
+#
+
+#
+# PCD is using for AlderLakeL P/M/S
+#  True: ADL-P/M
+#  False: ADL-S
+#
+gSiPkgTokenSpaceGuid.PcdAdlLpSupport|TRUE|BOOLEAN|0x30000014
+
+#
+# PCD is using for AlderLakeL S
+#
+gSiPkgTokenSpaceGuid.PcdAdlSSupport|FALSE|BOOLEAN|0x30000015
+
+##
+## PcdEfiGcdAllocateType is using for EFI_GCD_ALLOCATE_TYPE selection
+## value of the struct
+##  0x00 EfiGcdAllocateAnySearchBottomUp
+##  0x01 EfiGcdAllocateMaxAddressSearchBottomUp
+##  0x03 EfiGcdAllocateAnySearchTopDown
+##  0x04 EfiGcdAllocateMaxAddressSearchTopDown
+##
+##  below value should not using in this situation
+##  0x05 EfiGcdMaxAllocateType : design for max value of struct
+##  0x02 EfiGcdAllocateAddress : design for speccification address allocate
+##
+gSiPkgTokenSpaceGuid.PcdEfiGcdAllocateType|0x01|UINT8|0x40000000
+
+
+##
+## Those PCDs are used to control build process.
+##
+gSiPkgTokenSpaceGuid.PcdSmmVariableEnable            |TRUE |BOOLEAN|0xF0000002
+gSiPkgTokenSpaceGuid.PcdAcpiEnable                   |TRUE |BOOLEAN|0xF0000009
+gSiPkgTokenSpaceGuid.PcdSourceDebugEnable            |FALSE|BOOLEAN|0xF000000B
+gSiPkgTokenSpaceGuid.PcdTxtEnable                    |FALSE|BOOLEAN|0xF000000D
+
+gSiPkgTokenSpaceGuid.PcdSmbiosEnable                 |TRUE |BOOLEAN|0xF0000014
+gSiPkgTokenSpaceGuid.PcdIgdEnable                    |TRUE |BOOLEAN|0xF000001A
+gSiPkgTokenSpaceGuid.PcdSaDmiEnable                  |TRUE |BOOLEAN|0xF000001C
+gSiPkgTokenSpaceGuid.PcdBdatEnable                   |TRUE |BOOLEAN|0xF0000023
+gSiPkgTokenSpaceGuid.PcdOptimizeCompilerEnable       |TRUE |BOOLEAN|0xF0000024
+gSiPkgTokenSpaceGuid.PcdPeiDisplayEnable             |TRUE |BOOLEAN|0xF0000025
+gSiPkgTokenSpaceGuid.PcdSerialIoUartEnable           |TRUE |BOOLEAN|0xF0000033
+gSiPkgTokenSpaceGuid.PcdSiCatalogDebugEnable         |FALSE|BOOLEAN|0xF0000037
+
+gSiPkgTokenSpaceGuid.PcdCpuPcieEnable                |TRUE |BOOLEAN|0xF0000043
+gSiPkgTokenSpaceGuid.PcdMrcTraceMessageSupported     |TRUE |BOOLEAN|0xF0000045
+
+[PcdsDynamic, PcdsPatchableInModule]
+## Default OEM Table ID for ACPI table creation, it is "EDK2    ".
+gSiPkgTokenSpaceGuid.PcdAcpiDefaultOemTableId|0x20202020324B4445|UINT64|0x30001035
+
+[PcdsFixedAtBuild, PcdsPatchableInModule]
+## This value is used to set the base address of PCH devices
+gSiPkgTokenSpaceGuid.PcdSmbusBaseAddress|0x0000EFA0|UINT16|0x00010031
+gSiPkgTokenSpaceGuid.PcdTcoBaseAddress|0x0400|UINT16|0x00010033
+gSiPkgTokenSpaceGuid.PcdAcpiBaseAddress|0x1800|UINT16|0x00010035
+
+##
+## FSP
+##
+## The PCD value here are either dummy or generic for all platforms
+## Some of them are expected to have different value in platform FSP package DSC.
+##
+## Examples:
+##   PcdFspImageIdString, PcdFspVersionRevision, PcdFspVersionBuild, PcdFspVersionMinor
+##
+gSiPkgTokenSpaceGuid.PcdFspImageIdString     |0x0|UINT64|0x0001005A
+gSiPkgTokenSpaceGuid.PcdFspVersionRevision   |0x00|UINT8|0x0001005C
+gSiPkgTokenSpaceGuid.PcdFspVersionBuild      |0x00|UINT8|0x0001005D
+gSiPkgTokenSpaceGuid.PcdFspVersionMinor      |0x00|UINT8|0x0001005E
+
+
+## This value is used to set the base address of MCH
+gSiPkgTokenSpaceGuid.PcdMchBaseAddress|0xFEDC0000|UINT64|0x00010030
+
+##
+## Allocate 56 KB [0x2000..0xFFFF] of I/O space for Pci Devices
+## If PcdPciReservedMemLimit =0  Pci Reserved default  MMIO Limit is 0xE0000000 else use PcdPciReservedMemLimit .
+##
+gSiPkgTokenSpaceGuid.PcdPciReservedMemLimit     |0x0000 |UINT32|0x00010043
+
+##
+## Default 8MB TSEG for Release build BIOS when IED disabled (Also a default)
+##
+gSiPkgTokenSpaceGuid.PcdTsegSize|0x00800000|UINT32|0x00010046
+
+##
+## Silicon Reference Code versions
+##
+gSiPkgTokenSpaceGuid.PcdSiliconInitVersionMajor   |0x0C|UINT8|0x00010049
+
+##Minor:the program that supported by same core generation.
+gSiPkgTokenSpaceGuid.PcdSiliconInitVersionMinor   |0x00|UINT8|0x00010050
+
+##Revision:Weekly build number
+gSiPkgTokenSpaceGuid.PcdSiliconInitVersionRevision|0x82|UINT8|0x00010051
+
+##Build[7:4]:Daily build number.
+##Build[3:0]:Patch build number.
+
+gSiPkgTokenSpaceGuid.PcdSiliconInitVersionBuild   |0x30|UINT8|0x00010052
+
+
+
+##
+## This PCD specifies the base address of the HPET timer.
+## The acceptable values are 0xFED00000, 0xFED01000, 0xFED02000, and 0xFED03000
+##
+gSiPkgTokenSpaceGuid.PcdSiHpetBaseAddress    |0xFED00000|UINT32|0x00010057
+##
+## This PCD specifies the base address of the IO APIC.
+## The acceptable values are 0xFECxx000.
+##
+gSiPkgTokenSpaceGuid.PcdSiIoApicBaseAddress  |0xFEC00000|UINT32|0x00010058
+
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+##
+## SerialIo Uart Configuration
+##
+gSiPkgTokenSpaceGuid.PcdSerialIoUartDebugEnable   |0          |UINT8 |0x00210001 # 0:Disable, 1:Enable and Initialize, 2:Enable without Initializing
+gSiPkgTokenSpaceGuid.PcdSerialIoUartNumber        |2          |UINT8 |0x00210002
+gSiPkgTokenSpaceGuid.PcdSerialIoUartMode          |2          |UINT8 |0x00210003 # 0:Disabled, 1:Enabled, 2:Hidden, 3:COM, 4:SkipInit
+gSiPkgTokenSpaceGuid.PcdSerialIoUartBaudRate      |115200     |UINT32|0x00210004 # 0:Default, Max:6000000
+gSiPkgTokenSpaceGuid.PcdSerialIoUartParity        |1          |UINT8 |0x00210008 # 0:DefaultParity, 1:NoParity, 2:EvenParity, 3:OddParity
+gSiPkgTokenSpaceGuid.PcdSerialIoUartDataBits      |8          |UINT8 |0x00210009 # 0:Default, 5,6,7,8
+gSiPkgTokenSpaceGuid.PcdSerialIoUartStopBits      |1          |UINT8 |0x0021000A # 0:DefaultStopBits, 1:OneStopBit, 2:OneFiveStopBits, 3:TwoStopBits
+gSiPkgTokenSpaceGuid.PcdSerialIoUartAutoFlow      |0          |UINT8 |0x0021000B # 0:No HW flow control, Only RX/TX Enabled; 1:HW Flow Control On, Rts/Cts lines enabled;
+gSiPkgTokenSpaceGuid.PcdSerialIoUartRxPinMux      |0x0        |UINT32|0x0021000C # Pin muxing config for UART Rx pin
+gSiPkgTokenSpaceGuid.PcdSerialIoUartTxPinMux      |0x0        |UINT32|0x00210010 # Pin muxing config for UART Tx pin
+gSiPkgTokenSpaceGuid.PcdSerialIoUartRtsPinMux     |0x0        |UINT32|0x00210014 # Pin muxing config for UART Rts pin
+gSiPkgTokenSpaceGuid.PcdSerialIoUartCtsPinMux     |0x0        |UINT32|0x00210018 # Pin muxing config for UART Cts pin
+gSiPkgTokenSpaceGuid.PcdSerialIoUartDebugMmioBase |0xFE036000 |UINT32|0x0021001C # PcdSerialIoUartMode = Enabled, need to assign MMIO Resource in SEC/PEI Phase
+
+gSiPkgTokenSpaceGuid.PcdLpcUartDebugEnable        |0x1        |UINT8 |0x00210026 # 0:Disable, 1:Enable
+gSiPkgTokenSpaceGuid.PcdDebugInterfaceFlags       |0x12       |UINT8 |0x00210027 # BIT0-RAM, BIT1-UART, BIT3-USB3, BIT4-Serial IO, BIT5-TraceHub, BIT2 - Not used.
+gSiPkgTokenSpaceGuid.PcdSerialDebugLevel          |0x3        |UINT8 |0x00210028 # {0:Disable, 1:Error Only, 2:Error and Warnings, 3:Load Error Warnings and Info, 4:Load Error Warnings and Info, 5:Load Error Warnings Info and Verbose
+gSiPkgTokenSpaceGuid.PcdIsaSerialUartBase         |0x0        |UINT8 |0x00210029 # 0:0x3F8, 1:0x2F8
+
+
+##
+## SerialIo 2nd Uart Configuration
+##
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartEnable    |0          |UINT8 |0x0021002A # 0:Disable, 1:Enable and Initialize, 2:Enable without Initializing
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartNumber    |2          |UINT8 |0x0021002B
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartMode      |2          |UINT8 |0x0021002C # 0:Disabled, 1:Enabled, 2:Hidden, 3:COM, 4:SkipInit
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartBaudRate  |115200     |UINT32|0x0021002D # 0:Default, Max:6000000
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartParity    |1          |UINT8 |0x00210031 # 0:DefaultParity, 1:NoParity, 2:EvenParity, 3:OddParity
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartDataBits  |8          |UINT8 |0x00210032 # 0:Default, 5,6,7,8
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartStopBits  |1          |UINT8 |0x00210033 # 0:DefaultStopBits, 1:OneStopBit, 2:OneFiveStopBits, 3:TwoStopBits
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartAutoFlow  |0          |UINT8 |0x00210034 # 0:No HW flow control, Only RX/TX Enabled; 1:HW Flow Control On, Rts/Cts lines enabled;
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartRxPinMux  |0x0        |UINT32|0x00210035 # Pin muxing config for UART Rx pin
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartTxPinMux  |0x0        |UINT32|0x00210039 # Pin muxing config for UART Tx pin
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartRtsPinMux |0x0        |UINT32|0x0021003D # Pin muxing config for UART Rts pin
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartCtsPinMux |0x0        |UINT32|0x00210041 # Pin muxing config for UART Cts pin
+gSiPkgTokenSpaceGuid.PcdSerialIo2ndUartMmioBase  |0xFE034000 |UINT32|0x00210045 # PcdSerialIoUartMode = Enabled, need to assign MMIO Resource in SEC/PEI Phase
+
+##
+## PCI Express MMIO region length
+## Valid settings: 0x20000000/512MB, 0x10000000/256MB, 0x8000000/128MB, 0x4000000/64MB
+##
+gSiPkgTokenSpaceGuid.PcdPciExpressRegionLength|0x10000000|UINT32|0x00200001
+##
+## Typically this should be the same with gEfiMdePkgTokenSpaceGuid.PcdPciExpressBaseAddress.
+## This PCD is added for supporting different PCD type in different phases.
+##
+gSiPkgTokenSpaceGuid.PcdSiPciExpressBaseAddress |0xC0000000|UINT64|0x00200002
+##
+## PCI Express MMIO temporary region length in SEC phase.
+## Valid settings: 0x20000000/512MB, 0x10000000/256MB, 0x8000000/128MB, 0x4000000/64MB
+##
+gSiPkgTokenSpaceGuid.PcdTemporaryPciExpressRegionLength|0x10000000|UINT32|0x00200005

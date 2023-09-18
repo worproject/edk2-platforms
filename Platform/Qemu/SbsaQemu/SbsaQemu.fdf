@@ -43,11 +43,11 @@ NumBlocks     = 0x200
 ################################################################################
 ## Place for Trusted Firmware
 # flash0 is secure so we put here the BL1
-0x00000000|0x00008000
+0x00000000|0x00012000
 FILE = Platform/Qemu/Sbsa/bl1.bin
 
 # and FIP (BL2 + BL31)
-0x00008000|0x00020000
+0x00012000|0x00020000
 FILE = Platform/Qemu/Sbsa/fip.bin
 
 ################################################################################

@@ -483,7 +483,7 @@ AddSsdtTable (
 }
 
 /*
- * A function that adds the SSDT ACPI table.
+ * A function that adds the PPTT ACPI table.
  */
 EFI_STATUS
 AddPpttTable (

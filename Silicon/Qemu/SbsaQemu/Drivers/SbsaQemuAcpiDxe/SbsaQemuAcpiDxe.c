@@ -11,6 +11,7 @@
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
 #include <Library/AcpiLib.h>
+#include <Library/ArmLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/FdtHelperLib.h>
@@ -586,6 +587,101 @@ AddPpttTable (
   return Status;
 }
 
+/*
+ * A function that adds the GTDT ACPI table.
+ */
+EFI_STATUS
+AddGtdtTable (
+  IN EFI_ACPI_TABLE_PROTOCOL   *AcpiTable
+  )
+{
+  EFI_STATUS            Status;
+  UINTN                 TableHandle;
+  UINT32                TableSize;
+  EFI_PHYSICAL_ADDRESS  PageAddress;
+  UINT8                 *New;
+
+  TableSize = sizeof (EFI_ACPI_6_5_GENERIC_TIMER_DESCRIPTION_TABLE) +
+    sizeof (EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG_STRUCTURE);
+
+  Status = gBS->AllocatePages (
+                  AllocateAnyPages,
+                  EfiACPIReclaimMemory,
+                  EFI_SIZE_TO_PAGES (TableSize),
+                  &PageAddress
+                  );
+
+  if (EFI_ERROR(Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to allocate pages for GTDT table\n"));
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE Gtdt = {
+
+    SBSAQEMU_ACPI_HEADER (
+      EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE_SIGNATURE,
+      GENERIC_TIMER_DESCRIPTION_TABLES,
+      EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE_REVISION),
+
+      SYSTEM_TIMER_BASE_ADDRESS,                    // UINT64  PhysicalAddress
+      0,                                            // UINT32  Reserved
+      FixedPcdGet32 (PcdArmArchTimerSecIntrNum),    // UINT32  SecurePL1TimerGSIV
+      GTDT_GTIMER_FLAGS,                            // UINT32  SecurePL1TimerFlags
+      FixedPcdGet32 (PcdArmArchTimerIntrNum),       // UINT32  NonSecurePL1TimerGSIV
+      GTDT_GTIMER_FLAGS,                            // UINT32  NonSecurePL1TimerFlags
+      FixedPcdGet32 (PcdArmArchTimerVirtIntrNum),   // UINT32  VirtualTimerGSIV
+      GTDT_GTIMER_FLAGS,                            // UINT32  VirtualTimerFlags
+      FixedPcdGet32 (PcdArmArchTimerHypIntrNum),    // UINT32  NonSecurePL2TimerGSIV
+      GTDT_GTIMER_FLAGS,                            // UINT32  NonSecurePL2TimerFlags
+      MAX_ADDRESS,                                  // UINT64  CntReadBasePhysicalAddress
+      SBSA_PLATFORM_TIMER_COUNT,                    // UINT32  PlatformTimerCount
+      sizeof(EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE),
+                                                    // UINT32  PlatformTimerOffset
+      FixedPcdGet32 (PcdArmArchTimerHypVirtIntrNum),// UINT32  VirtualPL2TimerGSIV
+      GTDT_GTIMER_FLAGS                             // UINT32  VirtualPL2TimerFlags
+  };
+
+  // Non-secure EL2 virtual timer requires VHE support (v8.1+)
+  if (! ArmHasVhe()) {
+    Gtdt.VirtualPL2TimerGSIV = 0;
+    Gtdt.VirtualPL2TimerFlags = 0;
+  }
+
+  EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG_STRUCTURE Gwdt = {
+    EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG,
+    sizeof(EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG_STRUCTURE),
+    EFI_ACPI_RESERVED_WORD,
+    SBSAQEMU_WDT_REFRESH_FRAME_BASE,
+    SBSAQEMU_WDT_CONTROL_FRAME_BASE,
+    SBSAQEMU_WDT_IRQ,
+    GTDT_WDTIMER_FLAGS
+  };
+
+  New = (UINT8 *)(UINTN) PageAddress;
+  ZeroMem (New, TableSize);
+
+  CopyMem (New, &Gtdt, sizeof (EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE));
+  New += sizeof (EFI_ACPI_6_3_GENERIC_TIMER_DESCRIPTION_TABLE);
+
+  CopyMem (New, &Gwdt, sizeof (EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG_STRUCTURE));
+  New += sizeof (EFI_ACPI_6_3_GTDT_SBSA_GENERIC_WATCHDOG_STRUCTURE);
+
+  // Perform Checksum
+  AcpiPlatformChecksum ((UINT8*) PageAddress, TableSize);
+
+  Status = AcpiTable->InstallAcpiTable (
+                        AcpiTable,
+                        (EFI_ACPI_COMMON_HEADER *)PageAddress,
+                        TableSize,
+                        &TableHandle
+                        );
+  if (EFI_ERROR(Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to install GTDT table\n"));
+  }
+
+  return Status;
+}
+
 EFI_STATUS
 EFIAPI
 InitializeSbsaQemuAcpiDxe (
@@ -635,6 +731,11 @@ InitializeSbsaQemuAcpiDxe (
   Status = AddPpttTable (AcpiTable);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Failed to add PPTT table\n"));
+  }
+
+  Status = AddGtdtTable (AcpiTable);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to add GTDT table\n"));
   }
 
   return EFI_SUCCESS;

@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2017 - 2021, Arm Limited. All rights reserved.<BR>
+  Copyright (c) 2017 - 2023, Arm Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -37,8 +37,8 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
   {
     // FADT Table
     {
-      EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
-      EFI_ACPI_6_3_FIXED_ACPI_DESCRIPTION_TABLE_REVISION,
+      EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_6_5_FIXED_ACPI_DESCRIPTION_TABLE_REVISION,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdFadt),
       NULL
     },
@@ -51,8 +51,8 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     },
     // MADT Table
     {
-      EFI_ACPI_6_3_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
-      EFI_ACPI_6_3_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_SIGNATURE,
+      EFI_ACPI_6_5_MULTIPLE_APIC_DESCRIPTION_TABLE_REVISION,
       CREATE_STD_ACPI_TABLE_GEN_ID (EStdAcpiTableIdMadt),
       NULL
     },
@@ -109,15 +109,15 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
   },
 
   // Boot architecture information
-  { EFI_ACPI_6_3_ARM_PSCI_COMPLIANT },              // BootArchFlags
+  { EFI_ACPI_6_5_ARM_PSCI_COMPLIANT },              // BootArchFlags
 
 #ifdef HEADLESS_PLATFORM
   // Fixed feature flag information
-  { EFI_ACPI_6_3_HEADLESS },                        // Fixed feature flags
+  { EFI_ACPI_6_5_HEADLESS },                        // Fixed feature flags
 #endif
 
   // Power management profile information
-  { EFI_ACPI_6_3_PM_PROFILE_ENTERPRISE_SERVER },    // PowerManagement Profile
+  { EFI_ACPI_6_5_PM_PROFILE_ENTERPRISE_SERVER },    // PowerManagement Profile
 
   /* GIC CPU Interface information
      GIC_ENTRY (CPUInterfaceNumber, Mpidr, PmuIrq, VGicIrq, EnergyEfficiency)
@@ -474,6 +474,8 @@ InitializePlatformRepository (
   )
 {
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINTN  Index;
+  UINT16 TrbeInterrupt;
 
   PlatformRepo = This->PlatRepoInfo;
 
@@ -491,6 +493,19 @@ InitializePlatformRepository (
     PlatformRepo->GicCInfo[6].MPIDR = GET_MPID_MT (1, 2, 0);
     PlatformRepo->GicCInfo[7].MPIDR = GET_MPID_MT (1, 3, 0);
   }
+
+  TrbeInterrupt = 0;
+
+  // The ID_AA64DFR0_EL1.TraceBuffer field identifies support for FEAT_TRBE.
+  if (ArmHasTrbe ()) {
+    // TRBE Interrupt is PPI 15 on FVP model.
+    TrbeInterrupt = 31;
+  }
+
+  for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
+    PlatformRepo->GicCInfo[Index].TrbeInterrupt = TrbeInterrupt;
+  }
+
   return EFI_SUCCESS;
 }
 

@@ -89,7 +89,7 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 
 /** The number of ACPI tables to install
 */
-#define PLAT_ACPI_TABLE_COUNT       9
+#define PLAT_ACPI_TABLE_COUNT       10
 
 /** The number of platform generic timer blocks
 */

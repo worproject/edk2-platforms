@@ -68,8 +68,8 @@
 
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciSize
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciBase
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciSize
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciSize
 
 [Pcd]
   gArmTokenSpaceGuid.PcdGicDistributorBase

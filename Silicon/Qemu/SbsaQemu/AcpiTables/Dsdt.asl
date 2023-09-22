@@ -68,18 +68,19 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
       }
     }
 
-    // USB EHCI Host Controller
+    // USB XHCI Host Controller
     Device (USB0) {
-        Name (_HID, "LNRO0D20")
-        Name (_CID, "PNP0D20")
+        Name (_HID, "PNP0D10")      // _HID: Hardware ID
+        Name (_UID, 0x00)            // _UID: Unique ID
+        Name (_CCA, 0x01)            // _CCA: Cache Coherency Attribute
         Method (_STA) {
           Return (0xF)
         }
         Method (_CRS, 0x0, Serialized) {
             Name (RBUF, ResourceTemplate() {
                 Memory32Fixed (ReadWrite,
-                               FixedPcdGet32 (PcdPlatformEhciBase),
-                               FixedPcdGet32 (PcdPlatformEhciSize))
+                               FixedPcdGet32 (PcdPlatformXhciBase),
+                               FixedPcdGet32 (PcdPlatformXhciSize))
                 Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 43 }
             })
             Return (RBUF)
@@ -146,7 +147,7 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                     Name (_ADR, 0x00000003)
                     Name (_UPC, Package() {
                         0xFF,        // Port is connectable
-                        0x00,        // Port connector is A
+                        0x09,        // Type C connector - USB2 and SS with Switch
                         0x00000000,
                         0x00000000
                     })
@@ -165,7 +166,7 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
                     Name (_ADR, 0x00000004)
                     Name (_UPC, Package() {
                         0xFF,        // Port is connectable
-                        0x00,        // Port connector is A
+                        0x09,        // Type C connector - USB2 and SS with Switch
                         0x00000000,
                         0x00000000
                     })

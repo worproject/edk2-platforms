@@ -429,11 +429,11 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   # Initial Device Tree Location
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdDeviceTreeBaseAddress|0x10000000000
 
-  # Non discoverable devices (AHCI,EHCI)
+  # Non discoverable devices (AHCI,XHCI)
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciBase|0x60100000
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformAhciSize|0x00010000
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciBase|0x60110000
-  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformEhciSize|0x00010000
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciBase|0x60110000
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformXhciSize|0x00010000
 
   # PL011 - Serial Terminal
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x60000000

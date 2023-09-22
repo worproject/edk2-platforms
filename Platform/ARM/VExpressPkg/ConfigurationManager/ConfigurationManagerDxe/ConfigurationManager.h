@@ -171,6 +171,8 @@ typedef struct PlatformRepositoryInfo {
   /// PCI configuration space information
   CM_ARM_PCI_CONFIG_SPACE_INFO          PciConfigInfo;
 
+  CM_ARM_ET_INFO                        EtInfo;
+
   /// System ID
   UINT32                                SysId;
 } EDKII_PLATFORM_REPOSITORY_INFO;

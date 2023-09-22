@@ -365,6 +365,11 @@ EDKII_PLATFORM_REPOSITORY_INFO VExpressPlatRepositoryInfo = {
     FixedPcdGet32 (PcdPciBusMin),
     FixedPcdGet32 (PcdPciBusMax)
   },
+
+  // Embedded Trace device info
+  {
+    ArmEtTypeEte
+  }
 };
 
 /** A helper function for returning the Configuration Manager Objects.
@@ -476,6 +481,7 @@ InitializePlatformRepository (
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
   UINTN  Index;
   UINT16 TrbeInterrupt;
+  CM_OBJECT_TOKEN EtToken;
 
   PlatformRepo = This->PlatRepoInfo;
 
@@ -495,6 +501,7 @@ InitializePlatformRepository (
   }
 
   TrbeInterrupt = 0;
+  EtToken = CM_NULL_TOKEN;
 
   // The ID_AA64DFR0_EL1.TraceBuffer field identifies support for FEAT_TRBE.
   if (ArmHasTrbe ()) {
@@ -502,8 +509,14 @@ InitializePlatformRepository (
     TrbeInterrupt = 31;
   }
 
+  // The ID_AA64DFR0_EL1.TraceVer field identifies the presence of FEAT_ETE.
+  if (ArmHasEte ()) {
+    EtToken = (CM_OBJECT_TOKEN)&PlatformRepo->EtInfo;
+  }
+
   for (Index = 0; Index < PLAT_CPU_COUNT; Index++) {
     PlatformRepo->GicCInfo[Index].TrbeInterrupt = TrbeInterrupt;
+    PlatformRepo->GicCInfo[Index].EtToken = EtToken;
   }
 
   return EFI_SUCCESS;
@@ -973,6 +986,18 @@ GetArmNameSpaceObject (
                  PciConfigSpaceCount,
                  CmObject
                  );
+      break;
+
+    case EArmObjEtInfo:
+      if (Token == (CM_OBJECT_TOKEN)&PlatformRepo->EtInfo) {
+        Status = HandleCmObject (
+                  CmObjectId,
+                  &PlatformRepo->EtInfo,
+                  sizeof (PlatformRepo->EtInfo),
+                  1,
+                  CmObject
+                  );
+      }
       break;
 
     default: {

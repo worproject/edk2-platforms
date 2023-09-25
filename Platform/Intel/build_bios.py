@@ -4,7 +4,7 @@
 # Builds BIOS using configuration files and dynamically
 # imported functions from board directory
 #
-# Copyright (c) 2019 - 2020, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
 # Copyright (c) 2021, American Megatrends International LLC.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -195,6 +195,27 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
         if return_code == 0 and result is not None and isinstance(result,
                                                                   dict):
             config.update(result)
+    else:
+        # UNIX environment variable setup
+        if os.environ.get("PYTHON_COMMAND") is not None:
+            config["PYTHON_COMMAND"] = os.environ.get("PYTHON_COMMAND")
+        else:
+            config["PYTHON_COMMAND"] = sys.executable
+
+        # Add BaseTools shell wrappers to the PATH
+        command = [sys.executable, "-c", "import edk2basetools"]
+        _, _, result, return_code = execute_script(command,
+                                                   config,
+                                                   enable_std_pipe=True,
+                                                   shell=False)
+        if return_code == 0:
+            config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
+                                        "BinPipWrappers", "PosixLike") + \
+                                            os.pathsep + config["PATH"]
+        else:
+            config["PATH"] = os.path.join(config["BASE_TOOLS_PATH"],
+                                        "BinWrappers", "PosixLike") + \
+                                            os.pathsep + config["PATH"]
 
     # nmake BaseTools source
     # and enable BaseTools source build
@@ -207,7 +228,22 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
 
     _, _, result, return_code = execute_script(command, config, shell=shell)
     if return_code != 0:
-        build_failed(config)
+        #
+        # If the BaseTools build fails, then run a clean build and retry
+        #
+        clean_command = ["nmake", "-f",
+                         os.path.join(config["BASE_TOOLS_PATH"], "Makefile"),
+                         "clean"]
+        if os.name == "posix":
+            clean_command = ["make", "-C",
+                             os.path.join(config["BASE_TOOLS_PATH"]), "clean"]
+        _, _, result, return_code = execute_script(clean_command, config,
+                                                   shell=shell)
+        if return_code != 0:
+            build_failed(config)
+        _, _, result, return_code = execute_script(command, config, shell=shell)
+        if return_code != 0:
+            build_failed(config)
 
     #
     # build platform silicon tools
@@ -341,8 +377,7 @@ def build(config):
             if re.search(pattern, item):
                 os.remove(os.path.join(file_dir, item))
 
-        command = [os.path.join(config['PYTHON_HOME'], "python"),
-                   os.path.join(config['WORKSPACE_PLATFORM'],
+        command = [sys.executable, os.path.join(config['WORKSPACE_PLATFORM'],
                                 config['PLATFORM_PACKAGE'],
                                 'Tools', 'Fsp',
                                 'RebaseFspBinBaseAddress.py'),

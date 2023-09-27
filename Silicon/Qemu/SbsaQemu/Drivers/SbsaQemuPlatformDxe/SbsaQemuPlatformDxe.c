@@ -57,6 +57,28 @@ InitializeSbsaQemuPlatformDxe (
     return Status;
   }
 
+  Base = (VOID*)(UINTN)PcdGet64 (PcdPlatformXhciBase);
+  ASSERT (Base != NULL);
+  Size = (UINTN)PcdGet32 (PcdPlatformXhciSize);
+  ASSERT (Size != 0);
+
+  DEBUG ((DEBUG_INFO, "%a: Got platform XHCI %llx %u\n",
+          __FUNCTION__, Base, Size));
+
+  Status = RegisterNonDiscoverableMmioDevice (
+                   NonDiscoverableDeviceTypeXhci,
+                   NonDiscoverableDeviceDmaTypeCoherent,
+                   NULL,
+                   NULL,
+                   1,
+                   Base, Size);
+
+  if (EFI_ERROR(Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: NonDiscoverable: Cannot install XHCI device @%p (Staus == %r)\n",
+            __FUNCTION__, Base, Status));
+    return Status;
+  }
+
   SmcResult = ArmCallSmc0 (SIP_SVC_VERSION, &Arg0, &Arg1, NULL);
   if (SmcResult == SMC_ARCH_CALL_SUCCESS) {
     Result = PcdSet32S (PcdPlatformVersionMajor, Arg0);

@@ -442,3 +442,71 @@ IpmiGetChannelInfo (
                                   );
   return Status;
 }
+
+/**
+  This function gets system interface capability
+
+  @param[in]  InterfaceCapabilityRequest    Get system interface capability request.
+  @param[out] InterfaceCapabilityResponse   The response of system interface capability.
+                                            That is caller's responsibility to allocate
+                                            memory for the response data.
+
+  @retval EFI_SUCCESS            Command is sent successfully.
+  @retval Other                  Failure.
+
+**/
+EFI_STATUS
+EFIAPI
+IpmiGetSystemInterfaceCapability (
+  IN  IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_REQUEST   *InterfaceCapabilityRequest,
+  OUT IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_RESPONSE  *InterfaceCapabilityResponse
+  )
+{
+  UINT8       InterfaceType;
+  UINT32      ResponseSize;
+  UINT32      ActualResponseSize;
+  UINT8       *ResponsePtr;
+  EFI_STATUS  Status;
+
+  if (InterfaceCapabilityRequest == NULL) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  InterfaceType = InterfaceCapabilityRequest->Bits.InterfaceType;
+  if ((InterfaceType != IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_INTERFACE_TYPE_SSIF) &&
+      (InterfaceType != IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_INTERFACE_TYPE_KCS) &&
+      (InterfaceType != IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_INTERFACE_TYPE_SMIC))
+  {
+    DEBUG ((DEBUG_ERROR, "%a: Unsupported given system interface type = 0x%x.\n", __func__, InterfaceType));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  if (InterfaceType == IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_INTERFACE_TYPE_SSIF) {
+    ResponseSize = sizeof (IPMI_GET_SYSTEM_INTERFACE_SSIF_CAPABILITIES_RESPONSE);
+    ResponsePtr  = (UINT8 *)InterfaceCapabilityResponse->InterfaceSsifCapability;
+  } else {
+    ResponseSize = sizeof (IPMI_GET_SYSTEM_INTERFACE_KCS_SMIC_CAPABILITIES_RESPONSE);
+    ResponsePtr  = (UINT8 *)InterfaceCapabilityResponse->InterfaceKcsSmicCapability;
+  }
+
+  ActualResponseSize = ResponseSize;
+  Status             = IpmiSubmitCommand (
+                         IPMI_NETFN_APP,
+                         IPMI_APP_GET_SYSTEM_INTERFACE_CAPABILITIES,
+                         (UINT8 *)InterfaceCapabilityRequest,
+                         sizeof (IPMI_GET_SYSTEM_INTERFACE_CAPABILITIES_REQUEST),
+                         ResponsePtr,
+                         &ActualResponseSize
+                         );
+  if (ActualResponseSize != ResponseSize) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: The expected response size 0x%x is not equal to the returned size 0x%x.\n",
+      __func__,
+      ResponseSize,
+      ActualResponseSize
+      ));
+  }
+
+  return Status;
+}

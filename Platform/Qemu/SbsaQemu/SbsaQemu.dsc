@@ -739,6 +739,12 @@ DEFINE NETWORK_HTTP_BOOT_ENABLE       = FALSE
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 
   #
+  # NVME support
+  #
+
+  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+  #
   # Video support (VGA)
   #
   OvmfPkg/QemuVideoDxe/QemuVideoDxe.inf

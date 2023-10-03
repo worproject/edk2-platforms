@@ -252,6 +252,11 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
 
   #
+  # NVME support
+  #
+  INF  MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
+
+  #
   # USB Support
   #
   INF MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf

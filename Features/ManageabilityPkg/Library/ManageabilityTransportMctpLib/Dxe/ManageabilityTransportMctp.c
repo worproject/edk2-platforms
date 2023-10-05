@@ -205,8 +205,8 @@ MctpTransportTransmitReceive (
   Status = mMctpProtocol->Functions.Version1_0->MctpSubmitCommand (
                                                   mMctpProtocol,
                                                   TransmitHeader->MessageHeader.MessageType,
-                                                  TransmitHeader->SourceEndpointId,
-                                                  TransmitHeader->DestinationEndpointId,
+                                                  &TransmitHeader->SourceEndpointId,
+                                                  &TransmitHeader->DestinationEndpointId,
                                                   (BOOLEAN)TransmitHeader->MessageHeader.IntegrityCheck,
                                                   TransferToken->TransmitPackage.TransmitPayload,
                                                   TransferToken->TransmitPackage.TransmitSizeInByte,

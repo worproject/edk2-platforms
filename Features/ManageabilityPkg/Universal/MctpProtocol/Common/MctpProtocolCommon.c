@@ -175,8 +175,8 @@ SetupMctpRequestTransportPacket (
     MctpTransportHeader                             = (MCTP_TRANSPORT_HEADER *)ThisPackage;
     MctpTransportHeader->Bits.Reserved              = 0;
     MctpTransportHeader->Bits.HeaderVersion         = MCTP_KCS_HEADER_VERSION;
-    MctpTransportHeader->Bits.DestinationEndpointId = PcdGet8 (PcdMctpDestinationEndpointId);
-    MctpTransportHeader->Bits.SourceEndpointIdId    = PcdGet8 (PcdMctpSourceEndpointId);
+    MctpTransportHeader->Bits.DestinationEndpointId = MctpDestinationEndpointId;
+    MctpTransportHeader->Bits.SourceEndpointId      = MctpSourceEndpointId;
     MctpTransportHeader->Bits.MessageTag            = MCTP_MESSAGE_TAG;
     MctpTransportHeader->Bits.TagOwner              = MCTP_MESSAGE_TAG_OWNER_REQUEST;
     MctpTransportHeader->Bits.PacketSequence        = mMctpPacketSequence & MCTP_PACKET_SEQUENCE_MASK;

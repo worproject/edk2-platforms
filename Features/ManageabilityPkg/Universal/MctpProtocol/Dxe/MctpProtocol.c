@@ -29,8 +29,12 @@ UINT32                         mTransportMaximumPayload;
 
   @param[in]         This                       EDKII_MCTP_PROTOCOL instance.
   @param[in]         MctpType                   MCTP message type.
-  @param[in]         MctpSourceEndpointId       MCTP source endpoint ID.
-  @param[in]         MctpDestinationEndpointId  MCTP source endpoint ID.
+  @param[in]         MctpSourceEndpointId       Pointer of MCTP source endpoint ID.
+                                                Set to NULL means use platform PCD value
+                                                (PcdMctpSourceEndpointId).
+  @param[in]         MctpDestinationEndpointId  Pointer of MCTP destination endpoint ID.
+                                                Set to NULL means use platform PCD value
+                                                (PcdMctpDestinationEndpointId).
   @param[in]         RequestDataIntegrityCheck  Indicates whether MCTP message has
                                                 integrity check byte.
   @param[in]         RequestData                Message Data.
@@ -59,8 +63,8 @@ EFIAPI
 MctpSubmitMessage (
   IN     EDKII_MCTP_PROTOCOL                        *This,
   IN     UINT8                                      MctpType,
-  IN     UINT8                                      MctpSourceEndpointId,
-  IN     UINT8                                      MctpDestinationEndpointId,
+  IN     UINT8                                      *MctpSourceEndpointId,
+  IN     UINT8                                      *MctpDestinationEndpointId,
   IN     BOOLEAN                                    RequestDataIntegrityCheck,
   IN     UINT8                                      *RequestData,
   IN     UINT32                                     RequestDataSize,
@@ -72,24 +76,42 @@ MctpSubmitMessage (
   )
 {
   EFI_STATUS  Status;
+  UINT8       SourceEid;
+  UINT8       DestinationEid;
 
   if ((RequestData == NULL) && (ResponseData == NULL)) {
     DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __func__));
     return EFI_INVALID_PARAMETER;
   }
 
+  if (MctpSourceEndpointId == NULL) {
+    SourceEid = PcdGet8 (PcdMctpSourceEndpointId);
+    DEBUG ((DEBUG_MANAGEABILITY, "%a: Use PcdMctpSourceEndpointId for MCTP source EID: %x\n", __func__, SourceEid));
+  } else {
+    SourceEid = *MctpSourceEndpointId;
+    DEBUG ((DEBUG_MANAGEABILITY, "%a: MCTP source EID: %x\n", __func__, SourceEid));
+  }
+
+  if (MctpDestinationEndpointId == NULL) {
+    DestinationEid = PcdGet8 (PcdMctpDestinationEndpointId);
+    DEBUG ((DEBUG_MANAGEABILITY, "%a: Use PcdMctpDestinationEndpointId for MCTP destination EID: %x\n", __func__, DestinationEid));
+  } else {
+    DestinationEid = *MctpDestinationEndpointId;
+    DEBUG ((DEBUG_MANAGEABILITY, "%a: MCTP destination EID: %x\n", __func__, DestinationEid));
+  }
+
   //
   // Check source EID and destination EID
   //
-  if ((MctpSourceEndpointId >= MCTP_RESERVED_ENDPOINT_START_ID) &&
-      (MctpSourceEndpointId <= MCTP_RESERVED_ENDPOINT_END_ID)
+  if ((SourceEid >= MCTP_RESERVED_ENDPOINT_START_ID) &&
+      (SourceEid <= MCTP_RESERVED_ENDPOINT_END_ID)
       ) {
     DEBUG ((DEBUG_ERROR, "%a: The value of MCTP source EID (%x) is reserved.\n", __func__, MctpSourceEndpointId));
     return EFI_INVALID_PARAMETER;
   }
 
-  if ((MctpDestinationEndpointId >= MCTP_RESERVED_ENDPOINT_START_ID) &&
-      (MctpDestinationEndpointId <= MCTP_RESERVED_ENDPOINT_END_ID)
+  if ((DestinationEid >= MCTP_RESERVED_ENDPOINT_START_ID) &&
+      (DestinationEid <= MCTP_RESERVED_ENDPOINT_END_ID)
       ) {
     DEBUG ((DEBUG_ERROR, "%a: The value of MCTP destination EID (%x) is reserved.\n", __func__, MctpDestinationEndpointId));
     return EFI_INVALID_PARAMETER;
@@ -98,8 +120,8 @@ MctpSubmitMessage (
   Status = CommonMctpSubmitMessage (
              mTransportToken,
              MctpType,
-             MctpSourceEndpointId,
-             MctpDestinationEndpointId,
+             SourceEid,
+             DestinationEid,
              RequestDataIntegrityCheck,
              RequestData,
              RequestDataSize,

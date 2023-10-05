@@ -321,15 +321,15 @@ CommonPldmSubmitCommand (
   //
   // Check the integrity of response. data.
   ResponseHeader = (PLDM_RESPONSE_HEADER *)FullPacketResponseData;
-  if ((ResponseHeader->PldmHeader.DatagramBit != 0) ||
-      (ResponseHeader->PldmHeader.RequestBit != 0) ||
+  if ((ResponseHeader->PldmHeader.DatagramBit != (!PLDM_MESSAGE_HEADER_IS_DATAGRAM)) ||
+      (ResponseHeader->PldmHeader.RequestBit != PLDM_MESSAGE_HEADER_IS_RESPONSE) ||
       (ResponseHeader->PldmHeader.InstanceId != mPldmRequestInstanceId) ||
       (ResponseHeader->PldmHeader.PldmType != PldmType) ||
       (ResponseHeader->PldmHeader.PldmTypeCommandCode != PldmCommand))
   {
     DEBUG ((DEBUG_ERROR, "PLDM integrity check of response data is failed.\n"));
-    DEBUG ((DEBUG_ERROR, "    Request bit  = %d (Expected value: 0)\n"));
-    DEBUG ((DEBUG_ERROR, "    Datagram     = %d (Expected value: 0)\n"));
+    DEBUG ((DEBUG_ERROR, "    Datagram     = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.DatagramBit, (!PLDM_MESSAGE_HEADER_IS_DATAGRAM)));
+    DEBUG ((DEBUG_ERROR, "    Request bit  = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.RequestBit, PLDM_MESSAGE_HEADER_IS_RESPONSE));
     DEBUG ((DEBUG_ERROR, "    Instance ID  = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.InstanceId, mPldmRequestInstanceId));
     DEBUG ((DEBUG_ERROR, "    Pldm Type    = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.PldmType, PldmType));
     DEBUG ((DEBUG_ERROR, "    Pldm Command = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.PldmTypeCommandCode, PldmCommand));

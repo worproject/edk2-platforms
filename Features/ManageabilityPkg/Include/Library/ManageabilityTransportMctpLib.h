@@ -51,8 +51,8 @@ typedef struct {
 // is not defined by the specification.
 #define MCTP_MESSAGE_TAG  0x1
 
-#define MCTP_MESSAGE_TAG_OWNER_REQUEST   0x01
-#define MCTP_MESSAGE_TAG_OWNER_RESPONSE  0x01
+#define MCTP_MESSAGE_TAG_OWNER_REQUEST   1
+#define MCTP_MESSAGE_TAG_OWNER_RESPONSE  0
 
 #define MCTP_PACKET_SEQUENCE_MASK  0x3
 

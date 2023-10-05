@@ -21,6 +21,7 @@
 
 [Packages]
   ManageabilityPkg/ManageabilityPkg.dec
+  MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
 
 [Pcd]

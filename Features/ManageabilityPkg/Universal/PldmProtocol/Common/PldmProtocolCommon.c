@@ -119,7 +119,7 @@ SetupPldmRequestTransportPacket (
     }
 
     MctpHeader->SourceEndpointId             = PcdGet8 (PcdMctpSourceEndpointId);
-    MctpHeader->SourceEndpointId             = PcdGet8 (PcdMctpDestinationEndpointId);
+    MctpHeader->DestinationEndpointId        = PcdGet8 (PcdMctpDestinationEndpointId);
     MctpHeader->MessageHeader.IntegrityCheck = FALSE;
     MctpHeader->MessageHeader.MessageType    = MCTP_MESSAGE_TYPE_PLDM;
     *PacketHeader                            = (MANAGEABILITY_TRANSPORT_HEADER *)MctpHeader;

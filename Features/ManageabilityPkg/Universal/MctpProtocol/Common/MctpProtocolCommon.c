@@ -524,6 +524,17 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+  if ((MctpTransportResponseHeader->Bits.StartOfMessage != 1) ||
+      (MctpTransportResponseHeader->Bits.EndOfMessage != 1) ||
+      (MctpTransportResponseHeader->Bits.PacketSequence != 0)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Multiple-packet MCTP responses are not supported by the current driver\n",
+      __func__
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_UNSUPPORTED;
+  }
 
   MctpMessageResponseHeader = (MCTP_MESSAGE_HEADER *)(MctpTransportResponseHeader + 1);
   if (MctpMessageResponseHeader->Bits.MessageType != MctpType) {

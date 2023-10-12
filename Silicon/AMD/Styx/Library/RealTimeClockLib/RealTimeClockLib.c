@@ -179,6 +179,31 @@ LibSetWakeupTime (
 }
 
 
+/**
+  Fixup internal data so that EFI can be call in virtual mode.
+  Call the passed in Child Notify event and convert any pointers in
+  lib to virtual mode.
+
+  @param[in]    Event   The Event that is being processed
+  @param[in]    Context Event Context
+**/
+STATIC
+VOID
+EFIAPI
+VirtualNotifyEvent (
+  IN EFI_EVENT        Event,
+  IN VOID             *Context
+  )
+{
+  //
+  // Only needed if you are going to support the OS calling RTC functions in virtual mode.
+  // You will need to call EfiConvertPointer (). To convert any stored physical addresses
+  // to virtual address. After the OS transistions to calling in virtual mode, all future
+  // runtime calls will be made in virtual mode.
+  //
+  EfiConvertPointer (0x0, (VOID**)&mRtcIscpDxeProtocol);
+}
+
 
 /**
   This is the declaration of an EFI image entry point. This can be the entry point to an application
@@ -218,7 +243,7 @@ LibRtcInitialize (
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
                   TPL_NOTIFY,
-                  LibRtcVirtualNotifyEvent,
+                  VirtualNotifyEvent,
                   NULL,
                   &gEfiEventVirtualAddressChangeGuid,
                   &mRtcVirtualAddrChangeEvent
@@ -227,31 +252,3 @@ LibRtcInitialize (
 
   return Status;
 }
-
-
-/**
-  Fixup internal data so that EFI can be call in virtual mode.
-  Call the passed in Child Notify event and convert any pointers in
-  lib to virtual mode.
-
-  @param[in]    Event   The Event that is being processed
-  @param[in]    Context Event Context
-**/
-VOID
-EFIAPI
-LibRtcVirtualNotifyEvent (
-  IN EFI_EVENT        Event,
-  IN VOID             *Context
-  )
-{
-  //
-  // Only needed if you are going to support the OS calling RTC functions in virtual mode.
-  // You will need to call EfiConvertPointer (). To convert any stored physical addresses
-  // to virtual address. After the OS transistions to calling in virtual mode, all future
-  // runtime calls will be made in virtual mode.
-  //
-  EfiConvertPointer (0x0, (VOID**)&mRtcIscpDxeProtocol);
-}
-
-
-

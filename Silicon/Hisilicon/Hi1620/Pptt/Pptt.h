@@ -14,6 +14,7 @@
 
 #include <PlatformArch.h>
 #include <IndustryStandard/Acpi.h>
+#include <Library/ArmLib.h>
 #include <Library/ArmLib/ArmLibPrivate.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>

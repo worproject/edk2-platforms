@@ -339,9 +339,10 @@ I2cMasterRegistrationEvent (
   @param[in]    Event   The Event that is being processed
   @param[in]    Context Event Context
 **/
+STATIC
 VOID
 EFIAPI
-LibRtcVirtualNotifyEvent (
+VirtualNotifyEvent (
   IN EFI_EVENT        Event,
   IN VOID             *Context
   )
@@ -394,7 +395,7 @@ LibRtcInitialize (
   // Register for the virtual address change event
   //
   Status = gBS->CreateEventEx (EVT_NOTIFY_SIGNAL, TPL_NOTIFY,
-                  LibRtcVirtualNotifyEvent, NULL,
+                  VirtualNotifyEvent, NULL,
                   &gEfiEventVirtualAddressChangeGuid,
                   &mRtcVirtualAddrChangeEvent);
   ASSERT_EFI_ERROR (Status);

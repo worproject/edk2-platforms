@@ -307,9 +307,10 @@ LibSetWakeupTime (
   @param[in]    Context Event Context
 
 **/
+STATIC
 VOID
 EFIAPI
-LibRtcVirtualNotifyEvent (
+VirtualNotifyEvent (
   IN EFI_EVENT        Event,
   IN VOID             *Context
   )
@@ -452,7 +453,7 @@ LibRtcInitialize (
   Status = gBS->CreateEventEx (
     EVT_NOTIFY_SIGNAL,
     TPL_NOTIFY,
-    LibRtcVirtualNotifyEvent,
+    VirtualNotifyEvent,
     NULL,
     &gEfiEventVirtualAddressChangeGuid,
     &mRtcVirtualAddrChangeEvent

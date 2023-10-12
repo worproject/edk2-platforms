@@ -455,14 +455,3 @@ LibRtcInitialize (
 
   return Status;
 }
-
-
-VOID
-EFIAPI
-LibRtcVirtualNotifyEvent (
-  IN EFI_EVENT        Event,
-  IN VOID             *Context
-  )
-{
-  return;
-}

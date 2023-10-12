@@ -69,19 +69,6 @@ typedef union {
 }CACHE_CONFIGURATION;
 
 //
-// Processor Status
-//
-typedef union {
-  struct {
-    UINT8 CpuStatus       :3; // Indicates the status of the processor.
-    UINT8 Reserved1       :3; // Reserved for future use. Should be set to zero.
-    UINT8 SocketPopulated :1; // Indicates if the processor socket is populated or not.
-    UINT8 Reserved2       :1; // Reserved for future use. Should be set to zero.
-  } Bits;
-  UINT8 Data;
-}PROCESSOR_STATUS_DATA;
-
-//
 // Processor Characteristics
 //
 typedef union {

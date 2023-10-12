@@ -51,12 +51,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000000
-[0004]             DeviceID mapping index : 00000002
+[0004]            Device ID Mapping Index : 00000002
 
 [0004]                         Input base : 00000000
 [0004]                           ID Count : 00004000
@@ -95,12 +95,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000000
-[0004]             DeviceID mapping index : 0001
+[0004]            Device ID Mapping Index : 0001
 
 [0004]                         Input base : 00007c00
 [0004]                           ID Count : 00000200
@@ -133,12 +133,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000000
-[0004]             DeviceID mapping index : 00000001
+[0004]            Device ID Mapping Index : 00000001
 
 [0004]                         Input base : 00007400
 [0004]                           ID Count : 00000300
@@ -171,12 +171,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000002
-[0004]             DeviceID mapping index : 00000002
+[0004]            Device ID Mapping Index : 00000002
 
 [0004]                         Input base : 00008000
 [0004]                           ID Count : 00002000
@@ -215,12 +215,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000002
-[0004]             DeviceID mapping index : 0001
+[0004]            Device ID Mapping Index : 0001
 
 [0004]                         Input base : 0000BC00
 [0004]                           ID Count : 00000200
@@ -253,12 +253,12 @@
 [0004]                           Reserved : 00000000
 [0008]                      VATOS Address : 0
 [0004]                              Model : 00000000
-[0004]                    Event Interrupt : 00000000
-[0004]                      PRI Interrupt : 00000000
-[0004]                     GERR Interrupt : 00000000
-[0004]                     Sync Interrupt : 00000000
+[0004]                         Event GSIV : 00000000
+[0004]                           PRI GSIV : 00000000
+[0004]                          GERR GSIV : 00000000
+[0004]                          Sync GSIV : 00000000
 [0004]                   Proximity Domain : 00000002
-[0004]             DeviceID mapping index : 00000001
+[0004]            Device ID Mapping Index : 00000001
 
 [0004]                         Input base : 0000B400
 [0004]                           ID Count : 00000300

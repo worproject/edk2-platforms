@@ -1747,7 +1747,6 @@ Ac01PcieCoreUpdateLink (
   PHYSICAL_ADDRESS          CfgBase;
   UINT8                     PcieIndex;
   UINT32                    Index;
-  UINT32                    Val;
 
   *IsNextRoundNeeded = FALSE;
   *FailedPcieCount   = 0;
@@ -1767,7 +1766,7 @@ Ac01PcieCoreUpdateLink (
     if (Pcie->Active && !Pcie->LinkUp) {
       if (PcieLinkUpCheck (Pcie)) {
         Pcie->LinkUp = TRUE;
-        Val = MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
+        (VOID)MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
 
         // Doing link checking and recovery if needed
         Ac01PcieCoreQoSLinkCheckRecovery (RootComplex, PcieIndex);

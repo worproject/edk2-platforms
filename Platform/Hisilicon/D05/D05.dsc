@@ -68,7 +68,7 @@
   #D05 RTC hardware is same as D03
   RealTimeClockLib|Platform/Hisilicon/D03/Library/DS3231RealTimeClockLib/DS3231RealTimeClockLib.inf
 
-  OemMiscLib|Platform/Hisilicon/D05/Library/OemMiscLibD05/OemMiscLibD05.inf
+  HisiOemMiscLib|Platform/Hisilicon/D05/Library/HisiOemMiscLibD05/HisiOemMiscLibD05.inf
   OemAddressMapLib|Platform/Hisilicon/D05/Library/OemAddressMapD05/OemAddressMapD05.inf
   PlatformSysCtrlLib|Silicon/Hisilicon/Hi1616/Library/PlatformSysCtrlLibHi1616/PlatformSysCtrlLibHi1616.inf
 

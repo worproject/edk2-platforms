@@ -10,7 +10,7 @@
 #include "PcieInit.h"
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/PcdLib.h>
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/PlatformPciLib.h>
 
 

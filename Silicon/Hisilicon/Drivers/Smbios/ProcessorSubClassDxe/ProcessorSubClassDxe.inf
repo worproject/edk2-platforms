@@ -40,7 +40,7 @@
   PcdLib
 
   PlatformSysCtrlLib
-  OemMiscLib
+  HisiOemMiscLib
 
 [Protocols]
   gEfiSmbiosProtocolGuid                       # PROTOCOL ALWAYS_CONSUMED

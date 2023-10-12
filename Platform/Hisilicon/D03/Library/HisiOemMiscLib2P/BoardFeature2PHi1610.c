@@ -14,7 +14,7 @@
 #include <IndustryStandard/SmBios.h>
 
 #include <PlatformArch.h>
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/I2CLib.h>
 #include <Library/HiiLib.h>
 
@@ -181,7 +181,7 @@ OemGetPackages (
     return HiiAddPackages (
                             &gEfiCallerIdGuid,
                             NULL,
-                            OemMiscLib2PStrings,
+                            HisiOemMiscLib2PStrings,
                             NULL,
                             NULL
                             );

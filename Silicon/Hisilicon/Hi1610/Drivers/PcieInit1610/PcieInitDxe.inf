@@ -36,7 +36,7 @@
   TimerLib
   PcdLib
   IoLib
-  OemMiscLib
+  HisiOemMiscLib
 
 [Protocols]
   #gEfiPcieRootBridgeProtocolGuid

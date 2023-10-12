@@ -11,7 +11,7 @@
 
 #include "SmbiosMisc.h"
 
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 
 extern SMBIOS_TABLE_TYPE9 MiscSystemSlotDesignationPcie0Data;
 extern SMBIOS_TABLE_TYPE9 MiscSystemSlotDesignationPcie1Data;

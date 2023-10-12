@@ -25,6 +25,6 @@
 #include <Library/PrintLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/MemoryAllocationLib.h>
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 
 #endif

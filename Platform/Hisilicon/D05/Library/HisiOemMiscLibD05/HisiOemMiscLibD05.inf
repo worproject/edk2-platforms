@@ -9,11 +9,11 @@
 
 [Defines]
   INF_VERSION                    = 0x00010019
-  BASE_NAME                      = OemMiscLibHi1616Evb
+  BASE_NAME                      = HisiOemMiscLibHi1616Evb
   FILE_GUID                      = 751C7627-D5F8-499C-AEEEE-C87858759612
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = OemMiscLib
+  LIBRARY_CLASS                  = HisiOemMiscLib
 
 [Sources.common]
   BoardFeatureD05.c

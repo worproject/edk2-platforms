@@ -12,10 +12,10 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/CpldD06.h>
 #include <Library/DebugLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/IoLib.h>
 #include <Library/LpcLib.h>
 #include <Library/OemAddressMapLib.h>
-#include <Library/OemMiscLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PlatformSysCtrlLib.h>
 #include <Library/SerialPortLib.h>

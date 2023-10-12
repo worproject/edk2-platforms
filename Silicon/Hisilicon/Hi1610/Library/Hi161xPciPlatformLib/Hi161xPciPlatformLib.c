@@ -10,8 +10,8 @@
 #include <Uefi.h>
 #include <IndustryStandard/Acpi.h>
 #include <Library/DebugLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/IoLib.h>
-#include <Library/OemMiscLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PciExpressLib.h>
 #include <Library/PlatformPciLib.h>

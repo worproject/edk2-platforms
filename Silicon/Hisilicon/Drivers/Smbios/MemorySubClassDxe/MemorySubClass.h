@@ -30,7 +30,7 @@
 #include <Guid/DebugMask.h>
 #include <Guid/MemoryMapData.h>
 #include <Library/PlatformSysCtrlLib.h>
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 
 //
 // This is the generated header file which includes whatever needs to be exported (strings + IFR)

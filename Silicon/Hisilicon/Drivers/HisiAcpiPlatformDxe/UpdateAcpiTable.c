@@ -8,13 +8,13 @@
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/HobLib.h>
 #include <Library/HwMemInitLib.h>
 #include <Library/OemConfigData.h>
-#include <Library/OemMiscLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
 
 #define CORECOUNT(X) ((X) * CORE_NUM_PER_SOCKET)
 

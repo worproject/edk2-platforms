@@ -14,7 +14,7 @@
 #include <Library/IoLib.h>
 #include <Library/TimerLib.h>
 #include <Library/SerialPortLib.h>
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <PlatformArch.h>
 #include <Library/PlatformSysCtrlLib.h>
 #include <Library/OemAddressMapLib.h>

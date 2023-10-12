@@ -61,7 +61,7 @@
   TimeBaseLib|EmbeddedPkg/Library/TimeBaseLib/TimeBaseLib.inf
   RealTimeClockLib|Platform/Hisilicon/D03/Library/DS3231RealTimeClockLib/DS3231RealTimeClockLib.inf
 
-  OemMiscLib|Platform/Hisilicon/D03/Library/OemMiscLib2P/OemMiscLib2PHi1610.inf
+  HisiOemMiscLib|Platform/Hisilicon/D03/Library/HisiOemMiscLib2P/HisiOemMiscLib2PHi1610.inf
   OemAddressMapLib|Platform/Hisilicon/D03/Library/OemAddressMap2P/OemAddressMap2PHi1610.inf
   PlatformSysCtrlLib|Silicon/Hisilicon/Hi1610/Library/PlatformSysCtrlLibHi1610/PlatformSysCtrlLibHi1610.inf
 

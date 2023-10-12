@@ -8,8 +8,8 @@
 **/
 
 
-#ifndef _OEM_MISC_LIB_H_
-#define _OEM_MISC_LIB_H_
+#ifndef HISI_OEM_MISC_LIB_H_
+#define HISI_OEM_MISC_LIB_H_
 
 #include <Uefi.h>
 

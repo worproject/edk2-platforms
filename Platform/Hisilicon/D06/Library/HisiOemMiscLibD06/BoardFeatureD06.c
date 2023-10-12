@@ -12,9 +12,9 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HiiLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/I2CLib.h>
 #include <Library/IoLib.h>
-#include <Library/OemMiscLib.h>
 #include <Protocol/Smbios.h>
 
 #include <PlatformArch.h>
@@ -416,7 +416,7 @@ OemGetPackages (
   return HiiAddPackages (
            &gEfiCallerIdGuid,
            NULL,
-           OemMiscLibStrings,
+           HisiOemMiscLibStrings,
            NULL,
            NULL
            );

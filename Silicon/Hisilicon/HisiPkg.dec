@@ -49,7 +49,7 @@
   PlatformSysCtrlLib|Include/Library/PlatformSysCtrlLib.h
   CpldIoLib|Include/Library/CpldIoLib.h
   OemAddressMapLib|Include/Library/OemAddressMapLib.h
-  OemMiscLib|Include/Library/OemMiscLib.h
+  HisiOemMiscLib|Include/Library/HisiOemMiscLib.h
   I2CLib|Include/Library/I2CLib.h
   PlatformPciLib|Include/Library/PlatformPciLib.h
   FdtUpdateLib|Include/Library/FdtUpdateLib.h

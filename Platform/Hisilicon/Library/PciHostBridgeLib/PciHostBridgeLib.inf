@@ -37,8 +37,8 @@
   BaseMemoryLib
   DebugLib
   DevicePathLib
+  HisiOemMiscLib
   MemoryAllocationLib
-  OemMiscLib
 
 [Pcd]
   gHisiTokenSpaceGuid.PcdPcieRootBridgeMask

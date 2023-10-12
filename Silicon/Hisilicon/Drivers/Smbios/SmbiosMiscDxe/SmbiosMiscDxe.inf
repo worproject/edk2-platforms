@@ -62,7 +62,7 @@
   BaseMemoryLib
   BaseLib
   DebugLib
-  OemMiscLib
+  HisiOemMiscLib
   UefiBootServicesTableLib
   UefiRuntimeServicesTableLib
   UefiDriverEntryPoint

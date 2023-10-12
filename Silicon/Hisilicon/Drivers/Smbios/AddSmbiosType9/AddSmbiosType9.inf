@@ -29,7 +29,7 @@
   DebugLib
   UefiLib
   UefiDriverEntryPoint
-  OemMiscLib
+  HisiOemMiscLib
 
 [Protocols]
   gEfiSmbiosProtocolGuid

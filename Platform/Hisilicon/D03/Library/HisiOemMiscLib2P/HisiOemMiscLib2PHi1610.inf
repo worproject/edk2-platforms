@@ -9,11 +9,11 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = OemMiscLib2P
+  BASE_NAME                      = HisiOemMiscLib2P
   FILE_GUID                      = B9CE7465-21A2-4ecd-B347-BBDDBD098CEE
   MODULE_TYPE                    = BASE
   VERSION_STRING                 = 1.0
-  LIBRARY_CLASS                  = OemMiscLib
+  LIBRARY_CLASS                  = HisiOemMiscLib
 
 [Sources.common]
   BoardFeature2PHi1610.c

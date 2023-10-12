@@ -11,9 +11,9 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/IoLib.h>
 #include <Library/MemoryAllocationLib.h>
-#include <Library/OemMiscLib.h>
 #include <Library/PcdLib.h>
 #include <Library/PciHostBridgeLib.h>
 #include <Library/PlatformPciLib.h>

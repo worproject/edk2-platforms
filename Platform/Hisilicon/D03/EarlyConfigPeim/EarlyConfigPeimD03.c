@@ -18,7 +18,7 @@
 #include <PlatformArch.h>
 #include <Library/PlatformSysCtrlLib.h>
 
-#include <Library/OemMiscLib.h>
+#include <Library/HisiOemMiscLib.h>
 #include <Library/OemAddressMapLib.h>
 #include <Library/ArmLib.h>
 

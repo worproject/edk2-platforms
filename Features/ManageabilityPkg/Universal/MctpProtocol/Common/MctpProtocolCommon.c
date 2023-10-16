@@ -267,6 +267,9 @@ CommonMctpSubmitMessage (
   MANAGEABILITY_TRANSPORT_TRAILER            MctpTransportTrailer;
   MANAGEABILITY_TRANSMISSION_MULTI_PACKAGES  *MultiPackages;
   MANAGEABILITY_TRANSMISSION_PACKAGE_ATTR    *ThisPackage;
+  UINT8                                      *ResponseBuffer;
+  MCTP_TRANSPORT_HEADER                      *MctpTransportResponseHeader;
+  MCTP_MESSAGE_HEADER                        *MctpMessageResponseHeader;
 
   if (TransportToken == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: No transport toke for MCTP\n", __func__));
@@ -435,11 +438,12 @@ CommonMctpSubmitMessage (
     ThisPackage++;
   }
 
+  ResponseBuffer = (UINT8 *)AllocatePool (*ResponseDataSize + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER));
   // Receive packet.
   TransferToken.TransmitPackage.TransmitPayload             = NULL;
   TransferToken.TransmitPackage.TransmitSizeInByte          = 0;
-  TransferToken.ReceivePackage.ReceiveBuffer                = ResponseData;
-  TransferToken.ReceivePackage.ReceiveSizeInByte            = *ResponseDataSize;
+  TransferToken.ReceivePackage.ReceiveBuffer                = ResponseBuffer;
+  TransferToken.ReceivePackage.ReceiveSizeInByte            = *ResponseDataSize + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER);
   TransferToken.TransmitHeader                              = NULL;
   TransferToken.TransmitHeaderSize                          = 0;
   TransferToken.TransmitTrailer                             = NULL;
@@ -461,8 +465,10 @@ CommonMctpSubmitMessage (
   // Return transfer status.
   //
   *AdditionalTransferError = TransferToken.TransportAdditionalStatus;
-  *ResponseDataSize        = TransferToken.ReceivePackage.ReceiveSizeInByte;
-  Status                   = TransferToken.TransferStatus;
+  *ResponseDataSize        = TransferToken.ReceivePackage.ReceiveSizeInByte - sizeof (MCTP_TRANSPORT_HEADER) - sizeof (MCTP_MESSAGE_HEADER);
+  CopyMem (ResponseData, ResponseBuffer + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER), *ResponseDataSize);
+  FreePool (ResponseBuffer);
+  Status = TransferToken.TransferStatus;
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s: %r\n", __func__, mTransportName, Status));
     return Status;

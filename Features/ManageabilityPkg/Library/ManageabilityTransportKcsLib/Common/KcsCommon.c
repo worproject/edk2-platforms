@@ -8,16 +8,19 @@
 **/
 #include <Uefi.h>
 #include <IndustryStandard/IpmiKcs.h>
+#include <IndustryStandard/Mctp.h>
 #include <Library/BaseMemoryLib.h>
 #include <Library/IoLib.h>
 #include <Library/DebugLib.h>
 #include <Library/ManageabilityTransportHelperLib.h>
+#include <Library/ManageabilityTransportMctpLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/TimerLib.h>
 
 #include "ManageabilityTransportKcs.h"
 
 extern MANAGEABILITY_TRANSPORT_KCS_HARDWARE_INFO  mKcsHardwareInfo;
+extern MANAGEABILITY_TRANSPORT_KCS                *mSingleSessionToken;
 
 /**
   This function waits for parameter Flag to set.
@@ -380,6 +383,218 @@ KcsTransportRead (
 }
 
 /**
+  This funciton checks the KCS response data according to
+  manageability protocol.
+
+  @param[in]      ResponseData        Pointer to response data.
+  @param[in]      ResponseDataSize    Size of response data.
+  @param[out]     AdditionalStatus    Pointer to receive the additional status.
+
+  @retval         EFI_SUCCESS         KCS response header is checked without error
+  @retval         EFI_DEVICE_ERROR    KCS response header has problem.
+**/
+EFI_STATUS
+KcsCheckResponseData (
+  IN UINT8                                       *ResponseData,
+  IN UINT32                                      ResponseDataSize,
+  OUT MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
+  )
+{
+  EFI_STATUS                      Status;
+  MANAGEABILITY_MCTP_KCS_TRAILER  MctpKcsPec;
+  UINT32                          PecSize;
+  UINT8                           CalculatedPec;
+  CHAR16                          *CompletionCodeStr;
+
+  Status            = EFI_SUCCESS;
+  *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_NO_ERRORS;
+  if (CompareGuid (&gManageabilityProtocolMctpGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+    //
+    // For MCTP over KCS, check PEC
+    //
+    PecSize = sizeof (MANAGEABILITY_MCTP_KCS_TRAILER) + 1;  // +1 to read last dummy byte that finishes KCS transfer
+    Status  = KcsTransportRead (&MctpKcsPec.Pec, &PecSize);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Error! Failed to read PEC with Status(%r)\n",
+        __func__,
+        Status
+        ));
+      *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_ERROR;
+      return Status;
+    }
+
+    if (PecSize != sizeof (MctpKcsPec)) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Error! Received PEC size is %d instead of %d\n",
+        __func__,
+        PecSize,
+        sizeof (MctpKcsPec)
+        ));
+      *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_ERROR;
+      return EFI_DEVICE_ERROR;
+    }
+
+    HelperManageabilityDebugPrint ((VOID *)&MctpKcsPec.Pec, PecSize - 1, "MCTP over KCS Response PEC:\n");
+    CalculatedPec = HelperManageabilityGenerateCrc8 (MCTP_KCS_PACKET_ERROR_CODE_POLY, 0, ResponseData, ResponseDataSize);
+    if (CalculatedPec != MctpKcsPec.Pec) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Error! Received PEC is 0x%02x instead of 0x%02x\n",
+        __func__,
+        MctpKcsPec.Pec,
+        CalculatedPec
+        ));
+      Status = EFI_DEVICE_ERROR;
+    }
+  } else if (CompareGuid (&gManageabilityProtocolIpmiGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+    //
+    // For IPMI over KCS
+    // Check and print Completion Code
+    //
+    Status = IpmiHelperCheckCompletionCode (*ResponseData, &CompletionCodeStr, AdditionalStatus);
+    if (!EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_MANAGEABILITY_INFO, "Cc: %02x %s.\n", *((UINT8 *)ResponseData), CompletionCodeStr));
+    } else if (Status == EFI_NOT_FOUND) {
+      DEBUG ((DEBUG_ERROR, "Cc: %02x not defined in IpmiCompletionCodeMapping or invalid.\n", *((UINT8 *)ResponseData)));
+    }
+  }
+
+  return Status;
+}
+
+/**
+  This funciton reads the KCS response header according to
+  manageability protocol. Caller has to free the memory
+  allocated for response header.
+
+  @param[in]      ResponseHeader         Pointer to receive the response header.
+  @param[out]     AdditionalStatus       Pointer to receive the additional status.
+
+  @retval         EFI_SUCCESS            KCS response header is checked and returned
+                                         to caller.
+  @retval         EFI_INVALID_PARAMETER  One of the given parameter is incorrect.
+  @retval         EFI_OUT_OF_RESOURCE    Memory allocation is failed for ResponseHeader.
+  @retval         EFI_DEVICE_ERROR       Incorrect response header.
+**/
+EFI_STATUS
+KcsReadResponseHeader (
+  IN   UINT8                                      **ResponseHeader,
+  OUT  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
+  )
+{
+  EFI_STATUS  Status;
+  UINT32      RspHeaderSize;
+  UINT32      ExpectedHeaderSize;
+  UINT8       *RspHeader;
+
+  if ((ResponseHeader == NULL) || (AdditionalStatus == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  *ResponseHeader = NULL;
+  if (CompareGuid (&gManageabilityProtocolMctpGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+
+    // For MCTP over KCS
+    ExpectedHeaderSize = sizeof (MANAGEABILITY_MCTP_KCS_HEADER);
+    DEBUG ((
+      DEBUG_MANAGEABILITY_INFO,
+      "%a: Reading MCTP over KCS response header.\n",
+      __func__
+      ));
+  } else if (CompareGuid (&gManageabilityProtocolIpmiGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+    // For IPMI over KCS
+
+    ExpectedHeaderSize = sizeof (IPMI_KCS_RESPONSE_HEADER);
+    DEBUG ((
+      DEBUG_MANAGEABILITY_INFO,
+      "%a: Reading IPMI over KCS response header.\n",
+      __func__
+      ));
+  } else {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Unsupportted manageability protocol over KCS: %g.\n",
+      __func__,
+      mSingleSessionToken->Token.ManageabilityProtocolSpecification
+      ));
+    return EFI_INVALID_PARAMETER;
+  }
+
+  RspHeader = (UINT8 *)AllocateZeroPool (ExpectedHeaderSize);
+  if (RspHeader == NULL) {
+    DEBUG ((DEBUG_ERROR, "Memory allocation failed for KCS response header!\n"));
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  RspHeaderSize = ExpectedHeaderSize;
+  Status        = KcsTransportRead (RspHeader, &RspHeaderSize);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Failed to read KCS response header Status(%r)\n",
+      __func__,
+      Status
+      ));
+    FreePool (RspHeader);
+    *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_ERROR;
+    return Status;
+  }
+
+  if (RspHeaderSize != 0) {
+    HelperManageabilityDebugPrint ((VOID *)RspHeader, RspHeaderSize, "KCS Response Header:\n");
+  }
+
+  if (ExpectedHeaderSize != RspHeaderSize) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "The size (%d bytes) of returned resposne header is not the same as expection (%d bytes)!\n",
+      RspHeaderSize,
+      ExpectedHeaderSize
+      ));
+    FreePool (RspHeader);
+    return EFI_DEVICE_ERROR;
+  }
+
+  if (CompareGuid (&gManageabilityProtocolMctpGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+    //
+    // MCTP over KCS
+    //
+    if (((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->NetFunc != MCTP_KCS_NETFN_LUN) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Error! MANAGEABILITY_MCTP_KCS_HEADER.NetFunc is equal 0x%02x instead of 0x%02x\n",
+        __func__,
+        ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->NetFunc,
+        MCTP_KCS_NETFN_LUN
+        ));
+      FreePool (RspHeader);
+      *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_ERROR;
+      return EFI_DEVICE_ERROR;
+    }
+
+    if (((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->DefiningBody != DEFINING_BODY_DMTF_PRE_OS_WORKING_GROUP) {
+      DEBUG ((
+        DEBUG_ERROR,
+        "%a: Error! MANAGEABILITY_MCTP_KCS_HEADER.DefiningBody is equal 0x%02x instead of 0x%02x\n",
+        __func__,
+        ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->DefiningBody,
+        DEFINING_BODY_DMTF_PRE_OS_WORKING_GROUP
+        ));
+      FreePool (RspHeader);
+      *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_ERROR;
+      return EFI_DEVICE_ERROR;
+    }
+  }
+
+  *ResponseHeader   = RspHeader;
+  *AdditionalStatus = MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS_NO_ERRORS;
+  return EFI_SUCCESS;
+}
+
+/**
   This service communicates with BMC using KCS protocol.
 
   @param[in]      TransmitHeader        KCS packet header.
@@ -423,11 +638,9 @@ KcsTransportSendCommand (
   OUT  MANAGEABILITY_TRANSPORT_ADDITIONAL_STATUS  *AdditionalStatus
   )
 {
-  EFI_STATUS                Status;
-  UINT32                    RspHeaderSize;
-  IPMI_KCS_RESPONSE_HEADER  RspHeader;
-  UINT32                    ExpectedResponseDataSize;
-  CHAR16                    *CompletionCodeStr;
+  EFI_STATUS  Status;
+  UINT8       *RspHeader;
+  UINT32      ExpectedResponseDataSize;
 
   if ((RequestData != NULL) && (RequestDataSize == 0)) {
     DEBUG ((DEBUG_ERROR, "%a: Mismatched values of RequestData and RequestDataSize\n", __func__));
@@ -467,56 +680,59 @@ KcsTransportSendCommand (
                RequestDataSize
                );
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "KCS Write Failed with Status(%r)", Status));
+      DEBUG ((DEBUG_ERROR, "KCS Write Failed with Status(%r)\n", Status));
       return Status;
     }
+  }
 
+  if ((ResponseData != NULL) && (ResponseDataSize != NULL) && (*ResponseDataSize != 0)) {
     //
     // Read the response header
-    RspHeaderSize = sizeof (IPMI_KCS_RESPONSE_HEADER);
-    Status        = KcsTransportRead ((UINT8 *)&RspHeader, &RspHeaderSize);
+    //
+    Status = KcsReadResponseHeader (&RspHeader, AdditionalStatus);
     if (EFI_ERROR (Status)) {
-      DEBUG ((
-        DEBUG_ERROR,
-        "KCS read response header failed Status(%r), " \
-        "RspNetFunctionLun = 0x%x, " \
-        "Comamnd = 0x%x \n",
-        Status,
-        RspHeader.NetFunc,
-        RspHeader.Command
-        ));
       return (Status);
     }
 
     //
-    // Print out the response payloads.
-    HelperManageabilityDebugPrint ((VOID *)&RspHeader, RspHeaderSize, "KCS Response Header:\n");
-  }
+    // Override ResposeDataSize if the manageability protocol is MCTP.
+    //
+    if (CompareGuid (&gManageabilityProtocolMctpGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
+      if (*ResponseDataSize < ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->ByteCount) {
+        DEBUG ((
+          DEBUG_ERROR,
+          "%a: Error! MANAGEABILITY_MCTP_KCS_HEADER.ByteCount (0x%02x) is bigger than provided buffer (0x%02x)\n",
+          __func__,
+          ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->ByteCount,
+          *ResponseDataSize
+          ));
+        return EFI_INVALID_PARAMETER;
+      }
 
-  if ((ResponseData != NULL) && (ResponseDataSize != NULL) && (*ResponseDataSize != 0)) {
+      *ResponseDataSize = ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->ByteCount;
+    }
+    FreePool (RspHeader);
+
     ExpectedResponseDataSize = *ResponseDataSize;
-    Status                   = KcsTransportRead ((UINT8 *)ResponseData, ResponseDataSize);
+    Status                   = KcsTransportRead (ResponseData, ResponseDataSize);
     if (EFI_ERROR (Status)) {
-      DEBUG ((DEBUG_ERROR, "KCS response read Failed with Status(%r)", Status));
+      DEBUG ((DEBUG_ERROR, "KCS response read Failed with Status(%r)\n", Status));
     }
 
-    //
     // Print out the response payloads.
     if (*ResponseDataSize != 0) {
       if (ExpectedResponseDataSize != *ResponseDataSize) {
-        DEBUG ((DEBUG_ERROR, "Expected KCS response size : %d is not matched to returned size : %d.\n", ExpectedResponseDataSize, *ResponseDataSize));
-        Status = EFI_DEVICE_ERROR;
+        DEBUG ((
+          DEBUG_ERROR,
+          "Expected KCS response size : %d is not matched to returned size : %d.\n",
+          ExpectedResponseDataSize,
+          *ResponseDataSize
+          ));
+        return EFI_DEVICE_ERROR;
       }
 
       HelperManageabilityDebugPrint ((VOID *)ResponseData, (UINT32)*ResponseDataSize, "KCS Response Data:\n");
-
-      // Print Completion Code
-      Status = IpmiHelperCheckCompletionCode (*((UINT8 *)ResponseData), &CompletionCodeStr, AdditionalStatus);
-      if (!EFI_ERROR (Status)) {
-        DEBUG ((DEBUG_MANAGEABILITY_INFO, "Cc: %02x %s.\n", *((UINT8 *)ResponseData), CompletionCodeStr));
-      } else if (Status == EFI_NOT_FOUND) {
-        DEBUG ((DEBUG_MANAGEABILITY_INFO, "Cc: %02x not defined in IpmiCompletionCodeMapping or invalid.\n", *((UINT8 *)ResponseData)));
-      }
+      Status = KcsCheckResponseData (ResponseData, *ResponseDataSize, AdditionalStatus);
     } else {
       DEBUG ((DEBUG_ERROR, "No response, can't determine Completion Code.\n"));
     }

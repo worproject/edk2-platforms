@@ -39,6 +39,11 @@ typedef struct {
   UINT8    DefiningBody; ///< Message type.
   UINT8    ByteCount;    ///< Byte count of payload.
 } MANAGEABILITY_MCTP_KCS_HEADER;
+
+typedef struct {
+  UINT8    Pec;  ///< MCTP over KCS Packet Error Code.
+} MANAGEABILITY_MCTP_KCS_TRAILER;
+
 #define MCTP_KCS_NETFN_LUN                       0xb0
 #define DEFINING_BODY_DMTF_PRE_OS_WORKING_GROUP  0x01
 

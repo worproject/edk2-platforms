@@ -132,7 +132,7 @@ SetupMctpRequestTransportPacket (
   MANAGEABILITY_MCTP_KCS_HEADER  *MctpKcsHeader;
   MCTP_TRANSPORT_HEADER          *MctpTransportHeader;
   MCTP_MESSAGE_HEADER            *MctpMessageHeader;
-  UINT8                          *Pec;
+  MANAGEABILITY_MCTP_KCS_TRAILER *MctpKcsTrailer;
   UINT8                          *ThisPackage;
 
   if ((PacketHeader == NULL) || (PacketHeaderSize == NULL) ||
@@ -151,8 +151,8 @@ SetupMctpRequestTransportPacket (
       return EFI_OUT_OF_RESOURCES;
     }
 
-    Pec = (UINT8 *)AllocateZeroPool (sizeof (UINT8));
-    if (Pec == NULL) {
+    MctpKcsTrailer = (MANAGEABILITY_MCTP_KCS_TRAILER *)AllocateZeroPool (sizeof (MANAGEABILITY_MCTP_KCS_TRAILER));
+    if (MctpKcsTrailer == NULL) {
       DEBUG ((DEBUG_ERROR, "%a: Not enough resource for PEC.\n", __func__));
       FreePool (MctpKcsHeader);
       return EFI_OUT_OF_RESOURCES;
@@ -167,7 +167,7 @@ SetupMctpRequestTransportPacket (
     if (ThisPackage == NULL) {
       DEBUG ((DEBUG_ERROR, "%a: Not enough resource for package.\n", __func__));
       FreePool (MctpKcsHeader);
-      FreePool (Pec);
+      FreePool (MctpKcsTrailer);
       return EFI_OUT_OF_RESOURCES;
     }
 
@@ -193,14 +193,14 @@ SetupMctpRequestTransportPacket (
 
     //
     // Generate PEC follow SMBUS 2.0 specification.
-    *Pec = HelperManageabilityGenerateCrc8 (MCTP_KCS_PACKET_ERROR_CODE_POLY, 0, ThisPackage, MctpKcsHeader->ByteCount);
+    MctpKcsTrailer->Pec = HelperManageabilityGenerateCrc8 (MCTP_KCS_PACKET_ERROR_CODE_POLY, 0, ThisPackage, MctpKcsHeader->ByteCount);
 
     *PacketBody        = (UINT8 *)ThisPackage;
     *PacketBodySize    = MctpKcsHeader->ByteCount;
-    *PacketTrailer     = (MANAGEABILITY_TRANSPORT_TRAILER)Pec;
+    *PacketTrailer     = (MANAGEABILITY_TRANSPORT_TRAILER)MctpKcsTrailer;
     *PacketHeader      = (MANAGEABILITY_TRANSPORT_HEADER)MctpKcsHeader;
     *PacketHeaderSize  = sizeof (MANAGEABILITY_MCTP_KCS_HEADER);
-    *PacketTrailerSize = 1;
+    *PacketTrailerSize = sizeof (MANAGEABILITY_MCTP_KCS_TRAILER);
     return EFI_SUCCESS;
   } else {
     DEBUG ((DEBUG_ERROR, "%a: No implementation of building up packet.", __func__));

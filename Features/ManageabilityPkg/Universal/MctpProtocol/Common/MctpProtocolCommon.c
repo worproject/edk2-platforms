@@ -461,6 +461,88 @@ CommonMctpSubmitMessage (
                                                     &TransferToken
                                                     );
 
+  MctpTransportResponseHeader = (MCTP_TRANSPORT_HEADER *)ResponseBuffer;
+  if (MctpTransportResponseHeader->Bits.HeaderVersion != MCTP_KCS_HEADER_VERSION) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response HeaderVersion (0x%02x) doesn't match MCTP_KCS_HEADER_VERSION (0x%02x)\n",
+      __func__,
+      MctpTransportResponseHeader->Bits.HeaderVersion,
+      MCTP_KCS_HEADER_VERSION
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+  if (MctpTransportResponseHeader->Bits.MessageTag != MCTP_MESSAGE_TAG) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response MessageTag (0x%02x) doesn't match MCTP_MESSAGE_TAG (0x%02x)\n",
+      __func__,
+      MctpTransportResponseHeader->Bits.MessageTag,
+      MCTP_MESSAGE_TAG
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+  if (MctpTransportResponseHeader->Bits.TagOwner != MCTP_MESSAGE_TAG_OWNER_RESPONSE) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response TagOwner (0x%02x) doesn't match MCTP_MESSAGE_TAG_OWNER_RESPONSE (0x%02x)\n",
+      __func__,
+      MctpTransportResponseHeader->Bits.TagOwner,
+      MCTP_MESSAGE_TAG_OWNER_RESPONSE
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+  if (MctpTransportResponseHeader->Bits.SourceEndpointId != MctpDestinationEndpointId) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response SrcEID (0x%02x) doesn't match sent EID (0x%02x)\n",
+      __func__,
+      MctpTransportResponseHeader->Bits.SourceEndpointId,
+      MctpDestinationEndpointId
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+  if (MctpTransportResponseHeader->Bits.DestinationEndpointId != MctpSourceEndpointId) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response DestEID (0x%02x) doesn't match local EID (0x%02x)\n",
+      __func__,
+      MctpTransportResponseHeader->Bits.DestinationEndpointId,
+      MctpSourceEndpointId
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+
+  MctpMessageResponseHeader = (MCTP_MESSAGE_HEADER *)(MctpTransportResponseHeader + 1);
+  if (MctpMessageResponseHeader->Bits.MessageType != MctpType) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response MessageType (0x%02x) doesn't match sent MessageType (0x%02x)\n",
+      __func__,
+      MctpMessageResponseHeader->Bits.MessageType,
+      MctpType
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+
+  if (MctpMessageResponseHeader->Bits.IntegrityCheck != (UINT8)RequestDataIntegrityCheck) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: Error! Response IntegrityCheck (%d) doesn't match sent IntegrityCheck (%d)\n",
+      __func__,
+      MctpMessageResponseHeader->Bits.IntegrityCheck,
+      (UINT8)RequestDataIntegrityCheck
+      ));
+    FreePool (ResponseBuffer);
+    return EFI_DEVICE_ERROR;
+  }
+
   //
   // Return transfer status.
   //

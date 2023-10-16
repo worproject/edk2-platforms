@@ -24,6 +24,31 @@ typedef struct  _EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL EDKII_PLDM_SMBIOS_TRANSFER_
                                                        EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL_VERSION_MINOR)
 
 /**
+  This function sets PLDM SMBIOS transfer source and destination
+  PLDM terminus ID.
+
+  @param [in]   This           EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL instance.
+  @param [in]   SourceId       PLDM source teminus ID.
+                               Set to PLDM_TERMINUS_ID_UNASSIGNED means use
+                               platform default PLDM terminus ID.
+                               (gManageabilityPkgTokenSpaceGuid.PcdPldmSourceTerminusId)
+  @param [in]   DestinationId  PLDM destination teminus ID.
+                               Set to PLDM_TERMINUS_ID_UNASSIGNED means use
+                               platform default PLDM terminus ID.
+                               (gManageabilityPkgTokenSpaceGuid.PcdPldmDestinationEndpointId)
+
+  @retval       EFI_SUCCESS            Get SMBIOS table metadata Successfully.
+  @retval       EFI_INVALID_PARAMETER  Invalid value of source or destination
+                                       PLDM terminus ID.
+**/
+typedef
+EFI_STATUS
+(EFIAPI *PLDM_GET_SMBIOS_TRANSFER_TERMINUS_ID)(
+  IN  UINT8  SourceId,
+  IN  UINT8  DestinationId
+  );
+
+/**
   This function gets SMBIOS table metadata.
 
   @param [in]   This         EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL instance.
@@ -151,6 +176,7 @@ EFI_STATUS
 // EDKII_PLDM_SMBIOS_TRANSFER_PROTOCOL
 //
 typedef struct {
+  PLDM_GET_SMBIOS_TRANSFER_TERMINUS_ID        SetPldmSmbiosTransferTerminusId;
   PLDM_GET_SMBIOS_STRUCTURE_TABLE_METADATA    GetSmbiosStructureTableMetaData;
   PLDM_SET_SMBIOS_STRUCTURE_TABLE_METADATA    SetSmbiosStructureTableMetaData;
   PLDM_GET_SMBIOS_STRUCTURE_TABLE             GetSmbiosStructureTable;

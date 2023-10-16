@@ -26,13 +26,15 @@ typedef struct  _EDKII_PLDM_PROTOCOL EDKII_PLDM_PROTOCOL;
 /**
   This service enables submitting commands via EDKII PLDM protocol.
 
-  @param[in]         This              EDKII_PLDM_PROTOCOL instance.
-  @param[in]         PldmType          PLDM message type.
-  @param[in]         Command           PLDM Command of PLDM message type.
-  @param[in]         RequestData       Command Request Data.
-  @param[in]         RequestDataSize   Size of Command Request Data.
-  @param[out]        ResponseData      Command Response Data. The completion code is the first byte of response data.
-  @param[in, out]    ResponseDataSize  Size of Command Response Data.
+  @param[in]         This                       EDKII_PLDM_PROTOCOL instance.
+  @param[in]         PldmType                   PLDM message type.
+  @param[in]         Command                    PLDM Command of PLDM message type.
+  @param[in]         PldmTerminusSourceId       PLDM source teminus ID.
+  @param[in]         PldmTerminusDestinationId  PLDM destination teminus ID.
+  @param[in]         RequestData                Command Request Data.
+  @param[in]         RequestDataSize            Size of Command Request Data.
+  @param[out]        ResponseData               Command Response Data. The completion code is the first byte of response data.
+  @param[in, out]    ResponseDataSize           Size of Command Response Data.
 
   @retval EFI_SUCCESS            The command byte stream was successfully submit to the device and a response was successfully received.
   @retval EFI_NOT_FOUND          The command was not successfully sent to the device or a response was not successfully received from the device.
@@ -49,6 +51,8 @@ EFI_STATUS
   IN     EDKII_PLDM_PROTOCOL  *This,
   IN     UINT8                PldmType,
   IN     UINT8                Command,
+  IN     UINT8                PldmTerminusSourceId,
+  IN     UINT8                PldmTerminusDestinationId,
   IN     UINT8                *RequestData,
   IN     UINT32               RequestDataSize,
   OUT    UINT8                *ResponseData,

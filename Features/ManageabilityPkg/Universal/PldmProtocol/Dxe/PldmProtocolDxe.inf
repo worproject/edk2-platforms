@@ -42,9 +42,5 @@
 [Protocols]
   gEdkiiPldmProtocolGuid
 
-[FixedPcd]
-  gManageabilityPkgTokenSpaceGuid.PcdMctpSourceEndpointId
-  gManageabilityPkgTokenSpaceGuid.PcdMctpDestinationEndpointId
-
 [Depex]
   TRUE

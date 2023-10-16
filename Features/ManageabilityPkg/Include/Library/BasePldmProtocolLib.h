@@ -10,6 +10,22 @@
 #define EDKII_PLDM_PROTOCOL_LIB_H_
 
 /**
+  This function sets the PLDM source termius and destination terminus
+  ID for SMBIOS PLDM transfer.
+
+  @param[in]         SourceId       PLDM source teminus ID.
+  @param[in]         DestinationId  PLDM destination teminus ID.
+
+  @retval EFI_SUCCESS            The terminus is set successfully.
+  @retval EFI_INVALID_PARAMETER  The terminus is set unsuccessfully.
+**/
+EFI_STATUS
+PldmSetTerminus (
+  IN  UINT8   SourceId,
+  IN  UINT8   DestinationId
+);
+
+/**
   This service enables submitting commands via EDKII PLDM protocol.
 
   @param[in]         PldmType          PLDM message type.

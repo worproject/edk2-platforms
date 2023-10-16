@@ -44,6 +44,8 @@ SetupPldmTransportHardwareInformation (
   @param[in]         TransportToken     The transport interface.
   @param[in]         PldmType           PLDM message type.
   @param[in]         PldmCommand        PLDM command of this PLDM type.
+  @param[in]         SourceId           PLDM source teminus ID.
+  @param[in]         DestinationId      PLDM destination teminus ID.
   @param[out]        PacketHeader       The pointer to receive header of request.
   @param[out]        PacketHeaderSize   Packet header size in bytes.
   @param[in, out]    PacketBody         The request body.
@@ -68,6 +70,8 @@ SetupPldmRequestTransportPacket (
   IN   MANAGEABILITY_TRANSPORT_TOKEN    *TransportToken,
   IN   UINT8                            PldmType,
   IN   UINT8                            PldmCommand,
+  IN   UINT8                            SourceId,
+  IN   UINT8                            DestinationId,
   OUT  MANAGEABILITY_TRANSPORT_HEADER   *PacketHeader,
   OUT  UINT16                           *PacketHeaderSize,
   IN OUT UINT8                          **PacketBody,
@@ -79,13 +83,15 @@ SetupPldmRequestTransportPacket (
 /**
   Common code to submit PLDM commands
 
-  @param[in]         TransportToken    Transport token.
-  @param[in]         PldmType          PLDM message type.
-  @param[in]         PldmCommand       PLDM command of this PLDM type.
-  @param[in]         RequestData       Command Request Data.
-  @param[in]         RequestDataSize   Size of Command Request Data.
-  @param[out]        ResponseData      Command Response Data. The completion code is the first byte of response data.
-  @param[in, out]    ResponseDataSize  Size of Command Response Data.
+  @param[in]         TransportToken             Transport token.
+  @param[in]         PldmType                   PLDM message type.
+  @param[in]         PldmCommand                PLDM command of this PLDM type.
+  @param[in]         PldmTerminusSourceId       PLDM source teminus ID.
+  @param[in]         PldmTerminusDestinationId  PLDM destination teminus ID.
+  @param[in]         RequestData                Command Request Data.
+  @param[in]         RequestDataSize            Size of Command Request Data.
+  @param[out]        ResponseData               Command Response Data. The completion code is the first byte of response data.
+  @param[in, out]    ResponseDataSize           Size of Command Response Data.
 
   @retval EFI_SUCCESS            The command byte stream was successfully submit to the device and a response was successfully received.
   @retval EFI_NOT_FOUND          The command was not successfully sent to the device or a response was not successfully received from the device.
@@ -100,6 +106,8 @@ CommonPldmSubmitCommand (
   IN     MANAGEABILITY_TRANSPORT_TOKEN  *TransportToken,
   IN     UINT8                          PldmType,
   IN     UINT8                          PldmCommand,
+  IN     UINT8                          PldmTerminusSourceId,
+  IN     UINT8                          PldmTerminusDestinationId,
   IN     UINT8                          *RequestData OPTIONAL,
   IN     UINT32                         RequestDataSize,
   OUT    UINT8                          *ResponseData OPTIONAL,

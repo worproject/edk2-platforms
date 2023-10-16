@@ -9,10 +9,34 @@
 #include <PiDxe.h>
 #include <Protocol/PldmProtocol.h>
 #include <Library/DebugLib.h>
+#include <Library/PcdLib.h>
 #include <Library/ManageabilityTransportHelperLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 
-EDKII_PLDM_PROTOCOL  *mEdkiiPldmProtocol = NULL;
+EDKII_PLDM_PROTOCOL  *mEdkiiPldmProtocol        = NULL;
+UINT8                mSourcePldmTerminusId      = 0;
+UINT8                mDestinationPldmTerminusId = 0;
+
+/**
+  This function sets the PLDM source termius and destination terminus
+  ID for SMBIOS PLDM transfer.
+
+  @param[in]         SourceId       PLDM source teminus ID.
+  @param[in]         DestinationId  PLDM destination teminus ID.
+
+  @retval EFI_SUCCESS            The terminus is set successfully.
+  @retval EFI_INVALID_PARAMETER  The terminus is set unsuccessfully.
+**/
+EFI_STATUS
+PldmSetTerminus (
+  IN  UINT8   SourceId,
+  IN  UINT8   DestinationId
+)
+{
+  mSourcePldmTerminusId      = SourceId;
+  mDestinationPldmTerminusId = DestinationId;
+  return EFI_SUCCESS;
+}
 
 /**
   This service enables submitting commands via EDKII PLDM protocol.
@@ -69,6 +93,8 @@ PldmSubmitCommand (
                                                        mEdkiiPldmProtocol,
                                                        PldmType,
                                                        Command,
+                                                       mSourcePldmTerminusId,
+                                                       mDestinationPldmTerminusId,
                                                        RequestData,
                                                        RequestDataSize,
                                                        ResponseData,
@@ -84,4 +110,25 @@ PldmSubmitCommand (
   }
 
   return Status;
+}
+/**
+
+  Initialize mSourcePldmTerminusId and mDestinationPldmTerminusId.
+
+  @param ImageHandle     The image handle.
+  @param SystemTable     The system table.
+
+  @retval  EFI_SUCCESS  Protocol listener is registered successfully.
+
+**/
+EFI_STATUS
+EFIAPI
+PldmProtocolLibConstructor (
+  IN EFI_HANDLE        ImageHandle,
+  IN EFI_SYSTEM_TABLE  *SystemTable
+  )
+{
+
+  PldmSetTerminus (PcdGet8(PcdPldmSourceTerminusId), PcdGet8(PcdPldmDestinationEndpointId));
+  return EFI_SUCCESS;
 }

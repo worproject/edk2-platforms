@@ -1744,7 +1744,6 @@ Ac01PcieCoreUpdateLink (
   )
 {
   AC01_PCIE_CONTROLLER      *Pcie;
-  PHYSICAL_ADDRESS          CfgBase;
   UINT8                     PcieIndex;
   UINT32                    Index;
 
@@ -1761,12 +1760,10 @@ Ac01PcieCoreUpdateLink (
   // Loop for all controllers
   for (PcieIndex = 0; PcieIndex < RootComplex->MaxPcieController; PcieIndex++) {
     Pcie = &RootComplex->Pcie[PcieIndex];
-    CfgBase = RootComplex->MmcfgBase + (RootComplex->Pcie[PcieIndex].DevNum << DEV_SHIFT);
 
     if (Pcie->Active && !Pcie->LinkUp) {
       if (PcieLinkUpCheck (Pcie)) {
         Pcie->LinkUp = TRUE;
-        (VOID)MmioRead32 (CfgBase + PCIE_CAPABILITY_BASE + LINK_CONTROL_LINK_STATUS_REG);
 
         // Doing link checking and recovery if needed
         Ac01PcieCoreQoSLinkCheckRecovery (RootComplex, PcieIndex);

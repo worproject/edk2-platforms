@@ -60,8 +60,17 @@ PldmSubmitCommand (
 {
   EFI_STATUS  Status;
 
-  if ((RequestData == NULL) && (ResponseData == NULL)) {
-    DEBUG ((DEBUG_ERROR, "%a: Both RequestData and ResponseData are NULL\n", __func__));
+  //
+  // Check the given input parameters.
+  //
+  if (RequestData == NULL && RequestDataSize != 0) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "%a: RequestDataSize != 0, however RequestData is NULL for PLDM type: 0x%x, Command: 0x%x.\n",
+      __func__,
+      PldmType,
+      Command
+      ));
     return EFI_INVALID_PARAMETER;
   }
 

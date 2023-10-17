@@ -12,6 +12,9 @@
 #include <IndustryStandard/Pldm.h>
 #include <Library/ManageabilityTransportLib.h>
 
+#define GET_PLDM_MESSAGE_PAYLOAD_SIZE(PayloadSize) (PayloadSize - sizeof (PLDM_RESPONSE_HEADER))
+#define GET_PLDM_MESSAGE_PAYLOAD_PTR(PayloadPtr) ((UINT8 *)PayloadPtr + sizeof (PLDM_RESPONSE_HEADER))
+
 typedef struct {
   UINT8     PldmType;
   UINT8     PldmCommand;

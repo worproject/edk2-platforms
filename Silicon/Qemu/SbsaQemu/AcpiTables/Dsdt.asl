@@ -190,7 +190,6 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
       Name (_CID, EISAID ("PNP0A03")) // Compatible PCI Root Bridge
       Name (_SEG, Zero) // PCI Segment Group number
       Name (_BBN, Zero) // PCI Base Bus Number
-      Name (_ADR, Zero)
       Name (_UID, "PCI0")
       Name (_CCA, One)    // Initially mark the PCI coherent (for JunoR1)
 

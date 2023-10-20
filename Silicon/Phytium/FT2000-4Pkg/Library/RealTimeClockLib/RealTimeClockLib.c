@@ -15,7 +15,6 @@
 #include <Library/TimeBaseLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeLib.h>
-#include <Protocol/RealTimeClock.h>
 #include "RealTimeClockLib.h"
 
 STATIC EFI_EVENT    mRtcVirtualAddrChangeEvent;
@@ -344,7 +343,6 @@ LibRtcInitialize (
   )
 {
   EFI_STATUS    Status;
-  EFI_HANDLE      Handle;
   INT16         TimeZone;
   UINTN         Size;
   EFI_TIME    Time;
@@ -436,17 +434,6 @@ LibRtcInitialize (
   if (EFI_ERROR (Status)) {
     return Status;
   }
-  //
-  // Install the protocol
-  //
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-    &Handle,
-    &gEfiRealTimeClockArchProtocolGuid,
-    NULL,
-    NULL
-    );
-  ASSERT_EFI_ERROR (Status);
   //
   // Register for the virtual address change event
   //

@@ -25,11 +25,8 @@
 #include <Library/IoLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/TimerLib.h>
 #include <Library/TimeBaseLib.h>
-#include <Protocol/RealTimeClock.h>
 #include <Library/I2CLib.h>
 #include "DS3231RealTimeClock.h"
 #include <Library/CpldD03.h>
@@ -433,19 +430,9 @@ LibRtcInitialize (
   )
 {
   EFI_STATUS    Status;
-  EFI_HANDLE    Handle;
-
-
   EFI_TIME      EfiTime;
 
-  // Setup the setters and getters
-  gRT->GetTime       = LibGetTime;
-  gRT->SetTime       = LibSetTime;
-  gRT->GetWakeupTime = LibGetWakeupTime;
-  gRT->SetWakeupTime = LibSetWakeupTime;
-
-
-  (VOID)gRT->GetTime (&EfiTime, NULL);
+  (VOID)LibGetTime (&EfiTime, NULL);
   if((EfiTime.Year < 2015) || (EfiTime.Year > 2099)){
       EfiTime.Year          = 2015;
       EfiTime.Month         = 1;
@@ -454,20 +441,12 @@ LibRtcInitialize (
       EfiTime.Minute        = 0;
       EfiTime.Second        = 0;
       EfiTime.Nanosecond    = 0;
-      Status = gRT->SetTime(&EfiTime);
+      Status = LibSetTime(&EfiTime);
       if (EFI_ERROR(Status))
       {
         DEBUG((EFI_D_ERROR, "[%a]:[%dL] Status : %r\n", __FUNCTION__, __LINE__, Status));
       }
   }
 
-  // Install the protocol
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &Handle,
-                  &gEfiRealTimeClockArchProtocolGuid,  NULL,
-                  NULL
-                 );
-
-  return Status;
+  return EFI_SUCCESS;
 }

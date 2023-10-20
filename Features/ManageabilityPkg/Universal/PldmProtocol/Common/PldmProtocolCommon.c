@@ -241,7 +241,7 @@ CommonPldmSubmitCommand (
   if (FullPacketResponseData == NULL) {
     DEBUG ((DEBUG_ERROR, "  Not enough memory for FullPacketResponseDataSize.\n"));
     Status = EFI_OUT_OF_RESOURCES;
-    goto ErrorExit2;
+    goto ErrorExit;
   }
 
   // Print out PLDM packet.
@@ -281,6 +281,7 @@ CommonPldmSubmitCommand (
       FullPacketResponseDataSize
       ));
     HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, TransferToken.ReceivePackage.ReceiveSizeInByte, "Failed response payload\n");
+    Status = EFI_DEVICE_ERROR;
     goto ErrorExit;
   }
 
@@ -303,6 +304,7 @@ CommonPldmSubmitCommand (
     DEBUG ((DEBUG_ERROR, "    Pldm Completion Code = 0x%x\n", ResponseHeader->PldmCompletionCode));
 
     HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, TransferToken.ReceivePackage.ReceiveSizeInByte, "Failed response payload\n");
+    Status = EFI_DEVICE_ERROR;
     goto ErrorExit;
   }
 
@@ -319,6 +321,7 @@ CommonPldmSubmitCommand (
       ));
 
     HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, TransferToken.ReceivePackage.ReceiveSizeInByte, "Failed response payload\n");
+    Status = EFI_DEVICE_ERROR;
     goto ErrorExit;
   }
 
@@ -332,6 +335,7 @@ CommonPldmSubmitCommand (
       ResponseHeader->PldmCompletionCode
       ));
     HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, GET_PLDM_MESSAGE_PAYLOAD_SIZE(TransferToken.ReceivePackage.ReceiveSizeInByte), "Failed response payload\n");
+    Status = EFI_DEVICE_ERROR;
     goto ErrorExit;
   }
 
@@ -350,13 +354,12 @@ CommonPldmSubmitCommand (
 
   // Return transfer status.
   //
-ErrorExit:
   Status = TransferToken.TransferStatus;
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to send PLDM command over %s\n", __func__, mTransportName));
   }
 
-ErrorExit2:
+ErrorExit:
   if (PldmTransportHeader != NULL) {
     FreePool ((VOID *)PldmTransportHeader);
   }

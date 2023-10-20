@@ -15,11 +15,8 @@
 #include <Library/RtcHelperLib.h>
 #include <Library/TimeBaseLib.h>
 #include <Library/TimerLib.h>
-#include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
 #include <Library/UefiRuntimeLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
-#include <Protocol/RealTimeClock.h>
 #include "RX8900RealTimeClock.h"
 
 extern I2C_DEVICE gRtcDevice;
@@ -417,16 +414,9 @@ LibRtcInitialize (
   )
 {
   EFI_STATUS    Status;
-  EFI_HANDLE    Handle;
   EFI_TIME      EfiTime;
 
-  // Setup the setters and getters
-  gRT->GetTime = LibGetTime;
-  gRT->SetTime = LibSetTime;
-  gRT->GetWakeupTime = LibGetWakeupTime;
-  gRT->SetWakeupTime = LibSetWakeupTime;
-
-  Status = gRT->GetTime (&EfiTime, NULL);
+  Status = LibGetTime (&EfiTime, NULL);
   if (EFI_ERROR (Status) || (EfiTime.Year < 2000) || (EfiTime.Year > 2099) ||
       (!IsTimeValid (&EfiTime))) {
        EfiTime.Year = 2000;
@@ -439,19 +429,11 @@ LibRtcInitialize (
        EfiTime.Daylight = 0;
        EfiTime.TimeZone = EFI_UNSPECIFIED_TIMEZONE;
 
-      Status = gRT->SetTime (&EfiTime);
+      Status = LibSetTime (&EfiTime);
       if (EFI_ERROR (Status)) {
         DEBUG ((DEBUG_ERROR, "SetTime Status : %r\n", Status));
       }
   }
 
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &Handle,
-                  &gEfiRealTimeClockArchProtocolGuid,
-                  NULL,
-                  NULL
-                 );
-
-  return Status;
+  return EFI_SUCCESS;
 }

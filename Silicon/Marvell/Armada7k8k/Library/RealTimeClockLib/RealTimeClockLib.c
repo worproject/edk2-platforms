@@ -24,7 +24,6 @@
 #include <Library/TimerLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeLib.h>
-#include <Protocol/RealTimeClock.h>
 #include "RealTimeClockLib.h"
 
 STATIC EFI_EVENT              mRtcVirtualAddrChangeEvent;
@@ -247,7 +246,6 @@ LibRtcInitialize (
   IN EFI_SYSTEM_TABLE                      *SystemTable
   )
 {
-  EFI_HANDLE    Handle;
   EFI_STATUS    Status;
 
   // Obtain RTC device base address
@@ -293,19 +291,6 @@ LibRtcInitialize (
           RTC_READ_OUTPUT_DELAY_DEFAULT
           );
 
-  // Install the protocol
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &Handle,
-                  &gEfiRealTimeClockArchProtocolGuid,
-                  NULL,
-                  NULL
-                 );
-  if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "RTC: Failed to install the protocol\n"));
-    goto ErrSetMem;
-  }
-
   // Register for the virtual address change event
   Status = gBS->CreateEventEx (
                   EVT_NOTIFY_SIGNAL,
@@ -317,13 +302,11 @@ LibRtcInitialize (
                   );
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "RTC: Failed to register virtual address change event\n"));
-    goto ErrEvent;
+    goto ErrSetMem;
   }
 
   return Status;
 
-ErrEvent:
-  gBS->UninstallProtocolInterface (Handle, &gEfiRealTimeClockArchProtocolGuid, NULL);
 ErrSetMem:
   gDS->RemoveMemorySpace (mArmadaRtcBase, SIZE_4KB);
 

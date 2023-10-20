@@ -10,11 +10,9 @@
 
 #include <Library/BaseMemoryLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/DebugLib.h>
 #include <Library/IoLib.h>
 
-#include <Protocol/RealTimeClock.h>
 #include <Protocol/EmbeddedExternalDevice.h>
 
 #include <Omap3530/Omap3530.h>
@@ -242,7 +240,6 @@ LibRtcInitialize (
   )
 {
   EFI_STATUS    Status;
-  EFI_HANDLE    Handle;
   UINT8         Data;
   EFI_TPL       OldTpl;
 
@@ -255,19 +252,5 @@ LibRtcInitialize (
   ASSERT_EFI_ERROR(Status);
   gBS->RestoreTPL(OldTpl);
 
-  // Setup the setters and getters
-  gRT->GetTime       = LibGetTime;
-  gRT->SetTime       = LibSetTime;
-  gRT->GetWakeupTime = LibGetWakeupTime;
-  gRT->SetWakeupTime = LibSetWakeupTime;
-
-  // Install the protocol
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &Handle,
-                  &gEfiRealTimeClockArchProtocolGuid,  NULL,
-                  NULL
-                 );
-
-  return Status;
+  return EFI_SUCCESS;
 }

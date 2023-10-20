@@ -18,7 +18,6 @@
 #include <Library/TimerLib.h>
 #include <Library/UefiLib.h>
 #include <Library/UefiRuntimeLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include "M41T83RealTimeClock.h"
 
 extern I2C_DEVICE gRtcDevice;
@@ -426,12 +425,6 @@ LibRtcInitialize (
   EFI_TIME      EfiTime;
 
   EfiInitializeLock (&mRtcLock, TPL_CALLBACK);
-
-  // Setup the setters and getters
-  gRT->GetTime       = LibGetTime;
-  gRT->SetTime       = LibSetTime;
-  gRT->GetWakeupTime = LibGetWakeupTime;
-  gRT->SetWakeupTime = LibSetWakeupTime;
 
   Status = InitializeM41T83 ();
   if (EFI_ERROR (Status)) {

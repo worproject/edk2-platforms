@@ -22,9 +22,7 @@
 #include <Library/RealTimeClockLib.h>
 #include <Library/TimeBaseLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiRuntimeLib.h>
-#include <Protocol/RealTimeClock.h>
 #include "LsRealTimeClock.h"
 
 STATIC BOOLEAN                mInitialized = FALSE;
@@ -294,7 +292,6 @@ LibRtcInitialize (
   )
 {
   EFI_STATUS    Status;
-  EFI_HANDLE    Handle;
 
   InitRtc ();
   Status = KvmtoolRtcMapMemory (ImageHandle, (mRtcBase & ~EFI_PAGE_MASK));
@@ -306,19 +303,6 @@ LibRtcInitialize (
       ));
     return Status;
   }
-
-  // Setup the setters and getters
-  gRT->GetTime       = LibGetTime;
-  gRT->SetTime       = LibSetTime;
-
-  // Install the protocol
-  Handle = NULL;
-  Status = gBS->InstallMultipleProtocolInterfaces (
-                  &Handle,
-                  &gEfiRealTimeClockArchProtocolGuid,  NULL,
-                  NULL
-                 );
-  ASSERT_EFI_ERROR (Status);
 
   //
   // Register for the virtual address change event

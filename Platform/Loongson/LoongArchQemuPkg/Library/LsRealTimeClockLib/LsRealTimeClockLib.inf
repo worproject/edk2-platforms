@@ -40,8 +40,5 @@
 [Guids]
   gEfiEventVirtualAddressChangeGuid
 
-[Protocols]
-  gEfiRealTimeClockArchProtocolGuid             # PROTOCOL ALWAYS_PRODUCED
-
 [Depex]
   TRUE

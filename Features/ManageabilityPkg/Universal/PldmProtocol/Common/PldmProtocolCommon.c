@@ -293,7 +293,8 @@ CommonPldmSubmitCommand (
       (ResponseHeader->PldmHeader.RequestBit != PLDM_MESSAGE_HEADER_IS_RESPONSE) ||
       (ResponseHeader->PldmHeader.InstanceId != mPldmRequestInstanceId) ||
       (ResponseHeader->PldmHeader.PldmType != PldmType) ||
-      (ResponseHeader->PldmHeader.PldmTypeCommandCode != PldmCommand))
+      (ResponseHeader->PldmHeader.PldmTypeCommandCode != PldmCommand) ||
+      (ResponseHeader->PldmCompletionCode != PLDM_COMPLETION_CODE_SUCCESS))
   {
     DEBUG ((DEBUG_ERROR, "PLDM integrity check of response data is failed.\n"));
     DEBUG ((DEBUG_ERROR, "    Datagram     = %d (Expected value: %d)\n", ResponseHeader->PldmHeader.DatagramBit, (!PLDM_MESSAGE_HEADER_IS_DATAGRAM)));

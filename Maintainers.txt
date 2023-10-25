@@ -148,7 +148,6 @@ R: Marvin Häuser <mhaeuser@posteo.de>
 Features/Intel
 F: Features/Intel/
 M: Sai Chaganty <rangasai.v.chaganty@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 
@@ -159,7 +158,6 @@ R: Liming Gao <gaoliming@byosoft.com.cn>
 
 Features/Intel/OutOfBandManagement/IpmiFeaturePkg
 F: Features/Intel/OutOfBandManagement/IpmiFeaturePkg
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 
@@ -171,14 +169,12 @@ R: Liming Gao <gaoliming@byosoft.com.cn>
 Features/ManageabilityPkg
 F: Features/ManageabilityPkg/
 M: Abner Chang <abner.chang@amd.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 R: Abdul Lateef Attar <AbdulLateef.Attar@amd.com>
 R: Nickle Wang <nicklew@nvidia.com>
 
 Platform/Intel
 F: Platform/Intel/
 M: Sai Chaganty <rangasai.v.chaganty@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
 Platform/Intel/QuarkPlatformPkg
@@ -196,7 +192,6 @@ R: Nate DeSimone <nathaniel.l.desimone@intel.com>
 Platform/Intel/BoardModulePkg
 F: Platform/Intel/BoardModulePkg/
 M: Eric Dong <eric.dong@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 
 Platform/Intel/KabylakeOpenBoardPkg
@@ -216,7 +211,6 @@ Platform/Intel/MinPlatformPkg
 F: Platform/Intel/MinPlatformPkg/
 M: Chasel Chiu <chasel.chiu@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 R: Liming Gao <gaoliming@byosoft.com.cn>
 R: Eric Dong <eric.dong@intel.com>
 
@@ -253,7 +247,6 @@ R: Saloni Kasbekar <saloni.kasbekar@intel.com>
 
 Platform/Intel/WhitleyOpenBoardPkg
 F: Platform/Intel/WhitleyOpenBoardPkg/
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 M: Chasel Chiu <chasel.chiu@intel.com>
 
@@ -279,14 +272,12 @@ M: Daniel Schaefer <git@danielschaefer.me>
 Silicon/Intel
 F: Silicon/Intel/
 M: Rangasai V Chaganty <rangasai.v.chaganty@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 
 Silicon/Intel/IntelSiliconPkg
 F: Silicon/Intel/IntelSiliconPkg/
 M: Ray Ni <ray.ni@intel.com>
 M: Rangasai V Chaganty <rangasai.v.chaganty@intel.com>
-M: Isaac Oram <isaac.w.oram@intel.com>
 R: Ashraf Ali S <ashraf.ali.s@intel.com>
 
 Silicon/Intel/QuarkSocPkg
@@ -331,7 +322,6 @@ R: Saloni Kasbekar <saloni.kasbekar@intel.com>
 
 Silicon/Intel/WhitleySiliconPkg
 F: Silicon/Intel/WhitleySiliconPkg/
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Nate DeSimone <nathaniel.l.desimone@intel.com>
 M: Chasel Chiu <chasel.chiu@intel.com>
 
@@ -377,7 +367,6 @@ R: Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
 
 QEMU EDK II Minimum Platform Specification implementation
 F: Platform/Qemu/QemuOpenBoardPkg/
-M: Isaac Oram <isaac.w.oram@intel.com>
 M: Pedro Falcato <pedro.falcato@gmail.com>
 R: Theo Jehl <theojehl76@gmail.com>
 

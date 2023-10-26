@@ -73,8 +73,9 @@ DefinitionBlock ("DsdtTable.aml", "DSDT",
         Name (_HID, "PNP0D10")      // _HID: Hardware ID
         Name (_UID, 0x00)            // _UID: Unique ID
         Name (_CCA, 0x01)            // _CCA: Cache Coherency Attribute
+        Name (XHCI, 0xF)            // will be set using AcpiLib
         Method (_STA) {
-          Return (0xF)
+          Return (XHCI)
         }
         Method (_CRS, 0x0, Serialized) {
             Name (RBUF, ResourceTemplate() {

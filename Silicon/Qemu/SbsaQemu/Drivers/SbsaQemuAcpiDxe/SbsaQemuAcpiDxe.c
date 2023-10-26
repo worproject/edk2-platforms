@@ -10,6 +10,7 @@
 #include <IndustryStandard/AcpiAml.h>
 #include <IndustryStandard/IoRemappingTable.h>
 #include <IndustryStandard/SbsaQemuAcpi.h>
+#include <IndustryStandard/SbsaQemuPlatformVersion.h>
 #include <Library/AcpiLib.h>
 #include <Library/ArmLib.h>
 #include <Library/BaseMemoryLib.h>
@@ -682,6 +683,72 @@ AddGtdtTable (
   return Status;
 }
 
+/*
+ * A function to disable XHCI node on Platform Version lower than 0.3
+ */
+STATIC
+EFI_STATUS
+DisableXhciOnOlderPlatVer (
+  VOID
+  )
+{
+  EFI_STATUS                   Status;
+  EFI_ACPI_SDT_PROTOCOL        *AcpiSdtProtocol;
+  EFI_ACPI_DESCRIPTION_HEADER  *Table;
+  UINTN                        TableKey;
+  UINTN                        TableIndex;
+  EFI_ACPI_HANDLE              TableHandle;
+
+  Status = EFI_SUCCESS;
+
+  if ( PLATFORM_VERSION_LESS_THAN (0, 3)) {
+    DEBUG ((DEBUG_ERROR, "Platform Version < 0.3 - disabling XHCI\n"));
+    Status = gBS->LocateProtocol (
+                                  &gEfiAcpiSdtProtocolGuid,
+                                  NULL,
+                                  (VOID **)&AcpiSdtProtocol
+                                  );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "Unable to locate ACPI table protocol\n"));
+      return Status;
+    }
+
+    Status = AcpiLocateTableBySignature (
+                                         AcpiSdtProtocol,
+                                         EFI_ACPI_6_3_DIFFERENTIATED_SYSTEM_DESCRIPTION_TABLE_SIGNATURE,
+                                         &TableIndex,
+                                         &Table,
+                                         &TableKey
+                                         );
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "ACPI DSDT table not found!\n"));
+      ASSERT_EFI_ERROR (Status);
+      return Status;
+    }
+
+    Status = AcpiSdtProtocol->OpenSdt (TableKey, &TableHandle);
+    if (EFI_ERROR (Status)) {
+      ASSERT_EFI_ERROR (Status);
+      AcpiSdtProtocol->Close (TableHandle);
+      return Status;
+    }
+
+    Status = AcpiAmlObjectUpdateInteger (AcpiSdtProtocol, TableHandle, "\\_SB.USB0.XHCI", 0x0);
+    if (EFI_ERROR (Status)) {
+      DEBUG ((DEBUG_ERROR, "Failed to disable XHCI!\n"));
+      ASSERT_EFI_ERROR (Status);
+      AcpiSdtProtocol->Close (TableHandle);
+      return Status;
+    }
+
+    AcpiSdtProtocol->Close (TableHandle);
+    AcpiUpdateChecksum ((UINT8 *)Table, Table->Length);
+  }
+
+  return Status;
+}
+
+
 EFI_STATUS
 EFIAPI
 InitializeSbsaQemuAcpiDxe (
@@ -736,6 +803,11 @@ InitializeSbsaQemuAcpiDxe (
   Status = AddGtdtTable (AcpiTable);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Failed to add GTDT table\n"));
+  }
+
+  Status = DisableXhciOnOlderPlatVer ();
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "Failed to handle XHCI enablement\n"));
   }
 
   return EFI_SUCCESS;

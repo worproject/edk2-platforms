@@ -29,6 +29,7 @@
   Silicon/Qemu/SbsaQemu/SbsaQemu.dec
 
 [LibraryClasses]
+  AcpiLib
   ArmLib
   BaseMemoryLib
   BaseLib
@@ -49,6 +50,8 @@
   gArmTokenSpaceGuid.PcdGicDistributorBase
   gArmTokenSpaceGuid.PcdGicRedistributorsBase
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdGicItsBase
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMajor
+  gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdPlatformVersionMinor
   gArmVirtSbsaQemuPlatformTokenSpaceGuid.PcdSmmuBase
 
 [Depex]
@@ -58,6 +61,7 @@
   gEdkiiPlatformHasAcpiGuid
 
 [Protocols]
+  gEfiAcpiSdtProtocolGuid
   gEfiAcpiTableProtocolGuid                       ## CONSUMES
 
 [FixedPcd]

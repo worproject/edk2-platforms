@@ -29,9 +29,9 @@ UINT8                mDestinationPldmTerminusId = 0;
 **/
 EFI_STATUS
 PldmSetTerminus (
-  IN  UINT8   SourceId,
-  IN  UINT8   DestinationId
-)
+  IN  UINT8  SourceId,
+  IN  UINT8  DestinationId
+  )
 {
   mSourcePldmTerminusId      = SourceId;
   mDestinationPldmTerminusId = DestinationId;
@@ -111,6 +111,7 @@ PldmSubmitCommand (
 
   return Status;
 }
+
 /**
 
   Initialize mSourcePldmTerminusId and mDestinationPldmTerminusId.
@@ -128,7 +129,6 @@ PldmProtocolLibConstructor (
   IN EFI_SYSTEM_TABLE  *SystemTable
   )
 {
-
-  PldmSetTerminus (PcdGet8(PcdPldmSourceTerminusId), PcdGet8(PcdPldmDestinationEndpointId));
+  PldmSetTerminus (PcdGet8 (PcdPldmSourceTerminusId), PcdGet8 (PcdPldmDestinationEndpointId));
   return EFI_SUCCESS;
 }

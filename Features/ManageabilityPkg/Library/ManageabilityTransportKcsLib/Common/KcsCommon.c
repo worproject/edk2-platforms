@@ -496,7 +496,6 @@ KcsReadResponseHeader (
 
   *ResponseHeader = NULL;
   if (CompareGuid (&gManageabilityProtocolMctpGuid, mSingleSessionToken->Token.ManageabilityProtocolSpecification)) {
-
     // For MCTP over KCS
     ExpectedHeaderSize = sizeof (MANAGEABILITY_MCTP_KCS_HEADER);
     DEBUG ((
@@ -711,6 +710,7 @@ KcsTransportSendCommand (
 
       *ResponseDataSize = ((MANAGEABILITY_MCTP_KCS_HEADER *)RspHeader)->ByteCount;
     }
+
     FreePool (RspHeader);
 
     ExpectedResponseDataSize = *ResponseDataSize;

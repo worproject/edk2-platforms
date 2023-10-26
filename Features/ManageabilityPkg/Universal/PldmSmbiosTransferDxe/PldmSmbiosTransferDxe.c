@@ -49,7 +49,7 @@ SetPldmSmbiosTransferTerminusId (
   IN  UINT8  DestinationId
   )
 {
-  return PldmSetTerminus(SourceId, DestinationId);
+  return PldmSetTerminus (SourceId, DestinationId);
 }
 
 /**

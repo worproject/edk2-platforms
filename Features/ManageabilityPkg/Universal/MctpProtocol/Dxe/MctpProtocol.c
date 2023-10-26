@@ -105,14 +105,16 @@ MctpSubmitMessage (
   //
   if ((SourceEid >= MCTP_RESERVED_ENDPOINT_START_ID) &&
       (SourceEid <= MCTP_RESERVED_ENDPOINT_END_ID)
-      ) {
+      )
+  {
     DEBUG ((DEBUG_ERROR, "%a: The value of MCTP source EID (%x) is reserved.\n", __func__, MctpSourceEndpointId));
     return EFI_INVALID_PARAMETER;
   }
 
   if ((DestinationEid >= MCTP_RESERVED_ENDPOINT_START_ID) &&
       (DestinationEid <= MCTP_RESERVED_ENDPOINT_END_ID)
-      ) {
+      )
+  {
     DEBUG ((DEBUG_ERROR, "%a: The value of MCTP destination EID (%x) is reserved.\n", __func__, MctpDestinationEndpointId));
     return EFI_INVALID_PARAMETER;
   }

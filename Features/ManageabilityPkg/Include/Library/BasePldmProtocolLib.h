@@ -21,9 +21,9 @@
 **/
 EFI_STATUS
 PldmSetTerminus (
-  IN  UINT8   SourceId,
-  IN  UINT8   DestinationId
-);
+  IN  UINT8  SourceId,
+  IN  UINT8  DestinationId
+  );
 
 /**
   This service enables submitting commands via EDKII PLDM protocol.

@@ -231,7 +231,7 @@ CommonPldmSubmitCommand (
   TransferToken.TransmitPackage.TransmitTimeoutInMillisecond = MANAGEABILITY_TRANSPORT_NO_TIMEOUT;
 
   // Set receive packet.
-  if (ResponseData == NULL && *ResponseDataSize == 0) {
+  if ((ResponseData == NULL) && (*ResponseDataSize == 0)) {
     FullPacketResponseDataSize = sizeof (PLDM_RESPONSE_HEADER);
   } else {
     FullPacketResponseDataSize = *ResponseDataSize + sizeof (PLDM_RESPONSE_HEADER);
@@ -326,16 +326,16 @@ CommonPldmSubmitCommand (
     goto ErrorExit;
   }
 
-  if (*ResponseDataSize < GET_PLDM_MESSAGE_PAYLOAD_SIZE(TransferToken.ReceivePackage.ReceiveSizeInByte)) {
+  if (*ResponseDataSize < GET_PLDM_MESSAGE_PAYLOAD_SIZE (TransferToken.ReceivePackage.ReceiveSizeInByte)) {
     DEBUG ((DEBUG_ERROR, "  The size of response is not matched to RequestDataSize assigned by caller.\n"));
     DEBUG ((
       DEBUG_ERROR,
       "Caller expects %d, the response size minus PLDM_RESPONSE_HEADER size is %d, Completion Code %d.\n",
       *ResponseDataSize,
-      GET_PLDM_MESSAGE_PAYLOAD_SIZE(TransferToken.ReceivePackage.ReceiveSizeInByte),
+      GET_PLDM_MESSAGE_PAYLOAD_SIZE (TransferToken.ReceivePackage.ReceiveSizeInByte),
       ResponseHeader->PldmCompletionCode
       ));
-    HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, GET_PLDM_MESSAGE_PAYLOAD_SIZE(TransferToken.ReceivePackage.ReceiveSizeInByte), "Failed response payload\n");
+    HelperManageabilityDebugPrint ((VOID *)FullPacketResponseData, GET_PLDM_MESSAGE_PAYLOAD_SIZE (TransferToken.ReceivePackage.ReceiveSizeInByte), "Failed response payload\n");
     Status = EFI_DEVICE_ERROR;
     goto ErrorExit;
   }
@@ -345,10 +345,10 @@ CommonPldmSubmitCommand (
 
   // Copy response data (without header) to caller's buffer.
   if ((ResponseData != NULL) && (*ResponseDataSize != 0)) {
-    *ResponseDataSize = GET_PLDM_MESSAGE_PAYLOAD_SIZE(TransferToken.ReceivePackage.ReceiveSizeInByte);
+    *ResponseDataSize = GET_PLDM_MESSAGE_PAYLOAD_SIZE (TransferToken.ReceivePackage.ReceiveSizeInByte);
     CopyMem (
       (VOID *)ResponseData,
-      GET_PLDM_MESSAGE_PAYLOAD_PTR(FullPacketResponseData),
+      GET_PLDM_MESSAGE_PAYLOAD_PTR (FullPacketResponseData),
       *ResponseDataSize
       );
   }

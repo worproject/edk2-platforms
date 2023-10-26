@@ -129,11 +129,11 @@ SetupMctpRequestTransportPacket (
   OUT  UINT16                           *PacketTrailerSize
   )
 {
-  MANAGEABILITY_MCTP_KCS_HEADER  *MctpKcsHeader;
-  MCTP_TRANSPORT_HEADER          *MctpTransportHeader;
-  MCTP_MESSAGE_HEADER            *MctpMessageHeader;
-  MANAGEABILITY_MCTP_KCS_TRAILER *MctpKcsTrailer;
-  UINT8                          *ThisPackage;
+  MANAGEABILITY_MCTP_KCS_HEADER   *MctpKcsHeader;
+  MCTP_TRANSPORT_HEADER           *MctpTransportHeader;
+  MCTP_MESSAGE_HEADER             *MctpMessageHeader;
+  MANAGEABILITY_MCTP_KCS_TRAILER  *MctpKcsTrailer;
+  UINT8                           *ThisPackage;
 
   if ((PacketHeader == NULL) || (PacketHeaderSize == NULL) ||
       (PacketBody == NULL) || (PacketBodySize == NULL) ||
@@ -462,7 +462,7 @@ CommonMctpSubmitMessage (
                                                     );
 
   *AdditionalTransferError = TransferToken.TransportAdditionalStatus;
-  Status = TransferToken.TransferStatus;
+  Status                   = TransferToken.TransferStatus;
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to send MCTP command over %s: %r\n", __func__, mTransportName, Status));
     return Status;
@@ -480,6 +480,7 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+
   if (MctpTransportResponseHeader->Bits.MessageTag != MCTP_MESSAGE_TAG) {
     DEBUG ((
       DEBUG_ERROR,
@@ -491,6 +492,7 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+
   if (MctpTransportResponseHeader->Bits.TagOwner != MCTP_MESSAGE_TAG_OWNER_RESPONSE) {
     DEBUG ((
       DEBUG_ERROR,
@@ -502,6 +504,7 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+
   if (MctpTransportResponseHeader->Bits.SourceEndpointId != MctpDestinationEndpointId) {
     DEBUG ((
       DEBUG_ERROR,
@@ -513,6 +516,7 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+
   if (MctpTransportResponseHeader->Bits.DestinationEndpointId != MctpSourceEndpointId) {
     DEBUG ((
       DEBUG_ERROR,
@@ -524,9 +528,11 @@ CommonMctpSubmitMessage (
     FreePool (ResponseBuffer);
     return EFI_DEVICE_ERROR;
   }
+
   if ((MctpTransportResponseHeader->Bits.StartOfMessage != 1) ||
       (MctpTransportResponseHeader->Bits.EndOfMessage != 1) ||
-      (MctpTransportResponseHeader->Bits.PacketSequence != 0)) {
+      (MctpTransportResponseHeader->Bits.PacketSequence != 0))
+  {
     DEBUG ((
       DEBUG_ERROR,
       "%a: Error! Multiple-packet MCTP responses are not supported by the current driver\n",
@@ -561,7 +567,7 @@ CommonMctpSubmitMessage (
     return EFI_DEVICE_ERROR;
   }
 
-  *ResponseDataSize        = TransferToken.ReceivePackage.ReceiveSizeInByte - sizeof (MCTP_TRANSPORT_HEADER) - sizeof (MCTP_MESSAGE_HEADER);
+  *ResponseDataSize = TransferToken.ReceivePackage.ReceiveSizeInByte - sizeof (MCTP_TRANSPORT_HEADER) - sizeof (MCTP_MESSAGE_HEADER);
   CopyMem (ResponseData, ResponseBuffer + sizeof (MCTP_TRANSPORT_HEADER) + sizeof (MCTP_MESSAGE_HEADER), *ResponseDataSize);
   FreePool (ResponseBuffer);
 

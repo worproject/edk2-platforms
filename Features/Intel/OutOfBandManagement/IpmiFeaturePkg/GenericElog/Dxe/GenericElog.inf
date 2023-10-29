@@ -1,0 +1,38 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION              = 0x00010005
+  BASE_NAME                = GenericElog
+  FILE_GUID                = FD2D7E66-C5A7-47de-BDCC-4F1B5DC6ADA8
+  MODULE_TYPE              = DXE_DRIVER
+  VERSION_STRING           = 1.0
+  ENTRY_POINT              = InitializeElogLayer
+
+[Sources]
+  GenericElog.c
+  GenericElog.h
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  DebugLib
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+
+[Protocols]
+  gEfiGenericElogProtocolGuid   # PROTOCOL ALWAYS_PRODUCED
+  gEfiRedirElogProtocolGuid       #PROTOCOL ALWAYS_COMSUMED
+
+[Depex]
+  gEfiRedirElogProtocolGuid

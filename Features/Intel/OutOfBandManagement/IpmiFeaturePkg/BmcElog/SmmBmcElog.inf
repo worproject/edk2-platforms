@@ -1,0 +1,44 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION              = 0x00010005
+  BASE_NAME                = SmBmcElog
+  FILE_GUID                = BE29A700-9D5A-4bb9-86B1-D1DB7A05D594
+  MODULE_TYPE              = DXE_SMM_DRIVER
+  PI_SPECIFICATION_VERSION = 0x0001000A
+  VERSION_STRING           = 1.0
+  ENTRY_POINT              = InitializeSmBmcElogLayer
+
+[Sources]
+  Smm/BmcElog.c
+  Smm/BmcElog.h
+  Common/BmcElogCommon.h
+  Common/BmcElogCommon.c
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  UefiBootServicesTableLib
+  ReportStatusCodeLib
+  SmmServicesTableLib
+  IpmiBaseLib
+
+[Protocols]
+  gSmmRedirElogProtocolGuid   # PROTOCOL ALWAYS_PRODUCED
+
+[Depex]
+  gEfiLoadedImageProtocolGuid AND
+  gSmmIpmiTransportProtocolGuid
+

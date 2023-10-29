@@ -1,11 +1,11 @@
 ### @file
-# Component description file for BMC ELOG.
 #
-# Copyright (c) 2018 - 2019, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ###
+
 
 [Defines]
   INF_VERSION              = 0x00010005
@@ -17,7 +17,10 @@
   ENTRY_POINT              = InitializeBmcElogLayer
 
 [Sources]
-  BmcElog.c
+  Dxe/BmcElog.c
+  Dxe/BmcElog.h
+  Common/BmcElogCommon.h
+  Common/BmcElogCommon.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -28,7 +31,13 @@
   UefiDriverEntryPoint
   DebugLib
   UefiBootServicesTableLib
-  IpmiCommandLib
+  ReportStatusCodeLib
+  MemoryAllocationLib
+  IpmiBaseLib
+
+[Protocols]
+  gEfiRedirElogProtocolGuid   # PROTOCOL ALWAYS_PRODUCED
 
 [Depex]
-  TRUE
+  gEfiLoadedImageProtocolGuid AND
+  gIpmiTransportProtocolGuid

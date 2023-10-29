@@ -1,0 +1,43 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION              = 0x00010005
+  BASE_NAME                = BmcElog
+  FILE_GUID                = FD2A000E-09EA-4899-B40E-32BE30A58EBD
+  MODULE_TYPE              = PEIM
+  VERSION_STRING           = 1.0
+  ENTRY_POINT              = InitializeBmcElogLayer
+
+[Sources]
+  Pei/BmcElog.c
+  Pei/BmcElog.h
+  Common/BmcElogCommon.h
+  Common/BmcElogCommon.c
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  DebugLib
+  ReportStatusCodeLib
+  MemoryAllocationLib
+  PeiServicesLib
+  PeimEntryPoint
+  IpmiBaseLib
+
+[Ppis]
+  gPeiRedirElogPpiGuid   # PPI ALWAYS_PRODUCED
+  gPeiIpmiTransportPpiGuid
+
+[Depex]
+  TRUE
+

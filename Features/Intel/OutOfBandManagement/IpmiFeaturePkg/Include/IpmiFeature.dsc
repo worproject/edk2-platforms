@@ -57,6 +57,7 @@
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/DxeIpmbInterfaceLib.inf
 
 [LibraryClasses.common.DXE_SMM_DRIVER]
+  IpmiBaseLib|IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/SmmSsifInterfaceLib.inf
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/SmmIpmbInterfaceLib.inf
 
@@ -96,6 +97,7 @@
   IpmiFeaturePkg/GenericIpmi/Pei/PeiGenericIpmi.inf
   IpmiFeaturePkg/Frb/FrbPei.inf
   IpmiFeaturePkg/IpmiInit/PeiIpmiInit.inf
+  IpmiFeaturePkg/BmcElog/PeiBmcElog.inf
 
 #
 # Feature DXE Components
@@ -119,7 +121,10 @@
   IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
   IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
-  IpmiFeaturePkg/BmcElog/BmcElog.inf
+  IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
+  IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
+  IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
+  IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
   IpmiFeaturePkg/IpmiFru/IpmiFru.inf
   IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf

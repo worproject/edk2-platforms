@@ -51,6 +51,7 @@
 [LibraryClasses.common]
   BmcCommonInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/BmcCommonInterfaceLib.inf
   BtInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/BtInterfaceLib/BtInterfaceLib.inf
+  ServerManagementLib|IpmiFeaturePkg/Library/ServerManagementLib/ServerManagementLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER, LibraryClasses.common.DXE_DRIVER]
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/DxeSsifInterfaceLib.inf

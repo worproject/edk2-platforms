@@ -122,6 +122,8 @@
   IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
   IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+  IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
+  IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
   IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
   IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf

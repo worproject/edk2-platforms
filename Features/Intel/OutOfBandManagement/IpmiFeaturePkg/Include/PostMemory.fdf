@@ -10,6 +10,8 @@
 INF IpmiFeaturePkg/GenericIpmi/Dxe/GenericIpmi.inf
 INF IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
 INF RuleOverride = DRIVER_ACPITABLE IpmiFeaturePkg/BmcAcpi/BmcAcpi.inf
+INF IpmiFeaturePkg/BmcAcpiState/BmcAcpiState.inf
+INF IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
 INF IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
 INF IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
 INF IpmiFeaturePkg/Frb/FrbDxe.inf

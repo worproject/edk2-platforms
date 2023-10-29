@@ -1,0 +1,42 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION                   = 0x00010005
+  BASE_NAME                     = GenericFru
+  FILE_GUID                     = 663FB335-25DE-45b0-A531-DF3627A13D29
+  MODULE_TYPE                   = DXE_RUNTIME_DRIVER
+  ENTRY_POINT                   = InitializeSmFruLayer
+
+[Sources]
+  GenericFruDriver.h
+  GenericFruDriver.c
+  GenericFru.c
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiRuntimeLib
+  UefiDriverEntryPoint
+  BaseMemoryLib
+  DebugLib
+
+[Protocols]
+  gEfiGenericFruProtocolGuid  ##Produces
+  gEfiRedirFruProtocolGuid    ##Consumes
+
+[Guids]
+
+[Depex]
+ gIpmiTransportProtocolGuid

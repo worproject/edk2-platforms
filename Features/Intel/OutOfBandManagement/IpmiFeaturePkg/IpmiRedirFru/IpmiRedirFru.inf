@@ -1,0 +1,51 @@
+### @file
+#
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
+#
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+###
+
+
+[Defines]
+  INF_VERSION              = 0x00010005
+  BASE_NAME                = IpmiRedirFru
+  FILE_GUID                = 3F1D6464-2B4C-4640-BAC4-3DD905D26CDA
+  MODULE_TYPE              = DXE_DRIVER
+  PI_SPECIFICATION_VERSION = 0x0001000A
+  VERSION_STRING           = 1.0
+  ENTRY_POINT              = InitializeSmRedirFruLayer
+
+[Sources]
+  FruSmbios.c
+  IpmiRedirFru.h
+  IpmiRedirFru.c
+
+[Packages]
+  IpmiFeaturePkg/IpmiFeaturePkg.dec
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  DebugLib
+  UefiBootServicesTableLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  UefiLib
+  IpmiBaseLib
+
+[Guids]
+  gEfiIpmiFormatFruGuid
+  gEfiSystemTypeFruGuid
+
+[Protocols]
+  gEfiSmbiosProtocolGuid
+  gEfiRedirFruProtocolGuid   # PROTOCOL ALWAYS_PRODUCED
+  gIpmiTransportProtocolGuid
+
+[Depex]
+  gIpmiTransportProtocolGuid AND
+  gEfiHiiDatabaseProtocolGuid AND
+  gEfiLoadedImageProtocolGuid
+

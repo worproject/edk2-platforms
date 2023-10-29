@@ -129,7 +129,8 @@
   IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
   IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
   IpmiFeaturePkg/Frb/FrbDxe.inf
-  IpmiFeaturePkg/IpmiFru/IpmiFru.inf
+  IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
+  IpmiFeaturePkg/GenericFru/GenericFru.inf
   IpmiFeaturePkg/IpmiInit/DxeIpmiInit.inf
   IpmiFeaturePkg/OsWdt/OsWdt.inf
   IpmiFeaturePkg/SolStatus/SolStatus.inf

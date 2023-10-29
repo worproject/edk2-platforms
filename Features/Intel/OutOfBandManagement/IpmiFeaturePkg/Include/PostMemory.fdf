@@ -15,8 +15,9 @@ INF IpmiFeaturePkg/BmcAcpiSwChild/BmcAcpiSwChild.inf
 INF IpmiFeaturePkg/BmcElog/DxeBmcElog.inf
 INF IpmiFeaturePkg/BmcElog/SmmBmcElog.inf
 INF IpmiFeaturePkg/Frb/FrbDxe.inf
-INF IpmiFeaturePkg/IpmiFru/IpmiFru.inf
+INF IpmiFeaturePkg/IpmiRedirFru/IpmiRedirFru.inf
 INF IpmiFeaturePkg/GenericElog/Dxe/GenericElog.inf
 INF IpmiFeaturePkg/GenericElog/Smm/GenericElog.inf
+INF IpmiFeaturePkg/GenericFru/GenericFru.inf
 INF IpmiFeaturePkg/OsWdt/OsWdt.inf
 INF IpmiFeaturePkg/SolStatus/SolStatus.inf

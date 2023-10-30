@@ -37,7 +37,7 @@
 [LibraryClasses]
   IpmiLib|MdeModulePkg/Library/BaseIpmiLibNull/BaseIpmiLibNull.inf
 
-  IpmiCommandLib|IpmiFeaturePkg/Library/IpmiCommandLib/IpmiCommandLib.inf
+  IpmiCommandLib|ManageabilityPkg/Library/IpmiCommandLib/IpmiCommandLib.inf
   IpmiPlatformHookLib|IpmiFeaturePkg/Library/IpmiPlatformHookLibNull/IpmiPlatformHookLibNull.inf
 
 [LibraryClasses.common.PEI_CORE,LibraryClasses.common.PEIM]

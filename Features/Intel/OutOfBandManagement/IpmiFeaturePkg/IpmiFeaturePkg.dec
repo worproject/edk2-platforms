@@ -32,10 +32,6 @@
   OsWdt
 
 [LibraryClasses]
-  ## @libraryclass  Provides services to send IPMI commands.
-  #
-  IpmiCommandLib|Include/Library/IpmiCommandLib.inf
-
   ## @libraryclass  Provides an API for platform-specific IPMI hooks.
   #
   IpmiCommandLib|Include/Library/IpmiPlatformHookLib.h

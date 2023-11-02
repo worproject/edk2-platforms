@@ -19,7 +19,7 @@
   MdeModulePkg/MdeModulePkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
   ArmPkg/ArmPkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   IoLib
@@ -38,12 +38,12 @@
   gMarvellBoardDescProtocolGuid
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdI2cSlaveAddresses
-  gMarvellTokenSpaceGuid.PcdI2cSlaveBuses
-  gMarvellTokenSpaceGuid.PcdI2cControllersEnabled
-  gMarvellTokenSpaceGuid.PcdI2cClockFrequency
-  gMarvellTokenSpaceGuid.PcdI2cBaudRate
-  gMarvellTokenSpaceGuid.PcdI2cBusCount
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveAddresses
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveBuses
+  gMarvellSiliconTokenSpaceGuid.PcdI2cControllersEnabled
+  gMarvellSiliconTokenSpaceGuid.PcdI2cClockFrequency
+  gMarvellSiliconTokenSpaceGuid.PcdI2cBaudRate
+  gMarvellSiliconTokenSpaceGuid.PcdI2cBusCount
 
 [Guids]
   gEfiEndOfDxeEventGroupGuid

@@ -20,7 +20,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
   ShellPkg/ShellPkg.dec
 
 [LibraryClasses]
@@ -39,8 +39,8 @@
   UefiRuntimeServicesTableLib
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdSpiFlashCs
-  gMarvellTokenSpaceGuid.PcdSpiFlashMode
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashCs
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashMode
 
 [Protocols]
   gEfiBlockIoProtocolGuid

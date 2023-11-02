@@ -24,7 +24,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   DebugLib

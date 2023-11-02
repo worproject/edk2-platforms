@@ -24,7 +24,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   ArmPlatformLib
@@ -36,9 +36,9 @@
   gEmbeddedTokenSpaceGuid.PcdPrePiProduceMemoryTypeInformationHob
 
 [FixedPcd]
-  gMarvellTokenSpaceGuid.PcdArmTFRegionBase
-  gMarvellTokenSpaceGuid.PcdArmTFRegionSize
-  gMarvellTokenSpaceGuid.PcdAuxiliaryReservedRegionBase
-  gMarvellTokenSpaceGuid.PcdAuxiliaryReservedRegionSize
-  gMarvellTokenSpaceGuid.PcdOpTeeRegionBase
-  gMarvellTokenSpaceGuid.PcdOpTeeRegionSize
+  gMarvellSiliconTokenSpaceGuid.PcdArmTFRegionBase
+  gMarvellSiliconTokenSpaceGuid.PcdArmTFRegionSize
+  gMarvellSiliconTokenSpaceGuid.PcdAuxiliaryReservedRegionBase
+  gMarvellSiliconTokenSpaceGuid.PcdAuxiliaryReservedRegionSize
+  gMarvellSiliconTokenSpaceGuid.PcdOpTeeRegionBase
+  gMarvellSiliconTokenSpaceGuid.PcdOpTeeRegionSize

@@ -19,7 +19,7 @@
   ArmPlatformPkg/ArmPlatformPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -36,11 +36,11 @@
   gMarvellPhyProtocolGuid
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdMdioControllersEnabled
-  gMarvellTokenSpaceGuid.PcdPhy2MdioController
-  gMarvellTokenSpaceGuid.PcdPhyDeviceIds
-  gMarvellTokenSpaceGuid.PcdPhySmiAddresses
-  gMarvellTokenSpaceGuid.PcdPhyStartupAutoneg
+  gMarvellSiliconTokenSpaceGuid.PcdMdioControllersEnabled
+  gMarvellSiliconTokenSpaceGuid.PcdPhy2MdioController
+  gMarvellSiliconTokenSpaceGuid.PcdPhyDeviceIds
+  gMarvellSiliconTokenSpaceGuid.PcdPhySmiAddresses
+  gMarvellSiliconTokenSpaceGuid.PcdPhyStartupAutoneg
 
 [Depex]
   TRUE

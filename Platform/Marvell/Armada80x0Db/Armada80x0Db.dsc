@@ -31,9 +31,6 @@
 
 !include MdePkg/MdeLibs.dsc.inc
 
-[Components.common]
-  Silicon/Marvell/Armada7k8k/DeviceTree/Armada80x0Db.inf
-
 [Components.AARCH64]
   Silicon/Marvell/Armada7k8k/AcpiTables/Armada80x0Db.inf
 
@@ -48,63 +45,63 @@
 ################################################################################
 [PcdsFixedAtBuild.common]
   #Platform description
-  gMarvellTokenSpaceGuid.PcdProductPlatformName|"Armada 8040 DB"
-  gMarvellTokenSpaceGuid.PcdProductVersion|"Rev. 1.4"
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName|"Armada 8040 DB"
+  gMarvellSiliconTokenSpaceGuid.PcdProductVersion|"Rev. 1.4"
 
   #MPP
-  gMarvellTokenSpaceGuid.PcdMppChipCount|3
+  gMarvellSiliconTokenSpaceGuid.PcdMppChipCount|3
 
   # APN806-A0 MPP SET
-  gMarvellTokenSpaceGuid.PcdChip0MppReverseFlag|FALSE
-  gMarvellTokenSpaceGuid.PcdChip0MppBaseAddress|0xF06F4000
-  gMarvellTokenSpaceGuid.PcdChip0MppPinCount|20
-  gMarvellTokenSpaceGuid.PcdChip0MppSel0|{ 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdChip0MppSel1|{ 0x1, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppReverseFlag|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppBaseAddress|0xF06F4000
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppPinCount|20
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel0|{ 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel1|{ 0x1, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3 }
 
   # CP110 MPP SET - master
-  gMarvellTokenSpaceGuid.PcdChip1MppReverseFlag|FALSE
-  gMarvellTokenSpaceGuid.PcdChip1MppBaseAddress|0xF2440000
-  gMarvellTokenSpaceGuid.PcdChip1MppPinCount|64
-  gMarvellTokenSpaceGuid.PcdChip1MppSel0|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel1|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel2|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel3|{ 0xFF, 0xFF, 0x7,  0x0,  0x7,  0xA,  0xA,  0x2,  0x2,  0x5  }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel4|{ 0x9,  0x9,  0x8,  0x8,  0x1,  0x1,  0x1,  0x1,  0x1,  0x1  }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel5|{ 0x1,  0x1,  0x1,  0x1,  0x1,  0x1,  0xE,  0xE,  0xE,  0xE  }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel6|{ 0xE,  0xE,  0xE,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppReverseFlag|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppBaseAddress|0xF2440000
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppPinCount|64
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel0|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel1|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel2|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel3|{ 0xFF, 0xFF, 0x7,  0x0,  0x7,  0xA,  0xA,  0x2,  0x2,  0x5  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel4|{ 0x9,  0x9,  0x8,  0x8,  0x1,  0x1,  0x1,  0x1,  0x1,  0x1  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel5|{ 0x1,  0x1,  0x1,  0x1,  0x1,  0x1,  0xE,  0xE,  0xE,  0xE  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel6|{ 0xE,  0xE,  0xE,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0  }
 
   # CP110 MPP SET - slave
-  gMarvellTokenSpaceGuid.PcdChip2MppReverseFlag|FALSE
-  gMarvellTokenSpaceGuid.PcdChip2MppBaseAddress|0xF4440000
-  gMarvellTokenSpaceGuid.PcdChip2MppPinCount|64
-  gMarvellTokenSpaceGuid.PcdChip2MppSel0|{ 0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3  }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel1|{ 0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel2|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x8,  0x9,  0xA  }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel3|{ 0xA,  0x8,  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel4|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel5|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
-  gMarvellTokenSpaceGuid.PcdChip2MppSel6|{ 0xFF, 0xFF, 0xFF, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppReverseFlag|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppBaseAddress|0xF4440000
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppPinCount|64
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel0|{ 0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel1|{ 0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0x3,  0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel2|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x8,  0x9,  0xA  }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel3|{ 0xA,  0x8,  0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel4|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel5|{ 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel6|{ 0xFF, 0xFF, 0xFF, 0x0,  0x0,  0x0,  0x0,  0x0,  0x0,  0x0  }
 
   # I2C
-  gMarvellTokenSpaceGuid.PcdI2cSlaveAddresses|{ 0x50, 0x57, 0x50, 0x57, 0x21, 0x25 }
-  gMarvellTokenSpaceGuid.PcdI2cSlaveBuses|{ 0x0, 0x0, 0x1, 0x1, 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdI2cControllersEnabled|{ 0x0, 0x1, 0x0, 0x0, 0x1 }
-  gMarvellTokenSpaceGuid.PcdEepromI2cAddresses|{ 0x50, 0x57, 0x50, 0x57 }
-  gMarvellTokenSpaceGuid.PcdEepromI2cBuses|{ 0x0, 0x0, 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdI2cClockFrequency|250000000
-  gMarvellTokenSpaceGuid.PcdI2cBaudRate|100000
-  gMarvellTokenSpaceGuid.PcdI2cBusCount|2
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveAddresses|{ 0x50, 0x57, 0x50, 0x57, 0x21, 0x25 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveBuses|{ 0x0, 0x0, 0x1, 0x1, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cControllersEnabled|{ 0x0, 0x1, 0x0, 0x0, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdEepromI2cAddresses|{ 0x50, 0x57, 0x50, 0x57 }
+  gMarvellSiliconTokenSpaceGuid.PcdEepromI2cBuses|{ 0x0, 0x0, 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cClockFrequency|250000000
+  gMarvellSiliconTokenSpaceGuid.PcdI2cBaudRate|100000
+  gMarvellSiliconTokenSpaceGuid.PcdI2cBusCount|2
 
   #SPI
-  gMarvellTokenSpaceGuid.PcdSpiRegBase|0xF4700680
-  gMarvellTokenSpaceGuid.PcdSpiMaxFrequency|10000000
-  gMarvellTokenSpaceGuid.PcdSpiClockFrequency|200000000
+  gMarvellSiliconTokenSpaceGuid.PcdSpiRegBase|0xF4700680
+  gMarvellSiliconTokenSpaceGuid.PcdSpiMaxFrequency|10000000
+  gMarvellSiliconTokenSpaceGuid.PcdSpiClockFrequency|200000000
 
-  gMarvellTokenSpaceGuid.PcdSpiFlashMode|3
-  gMarvellTokenSpaceGuid.PcdSpiFlashCs|0
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashMode|3
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashCs|0
 
   #ComPhy
-  gMarvellTokenSpaceGuid.PcdComPhyDevices|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdComPhyDevices|{ 0x1, 0x1 }
   # ComPhy0
   # 0: PCIE0         5 Gbps
   # 1: SATA0         5 Gbps
@@ -112,8 +109,8 @@
   # 3: SATA1         5 Gbps
   # 4: USB_HOST1     5 Gbps
   # 5: PCIE2         5 Gbps
-  gMarvellTokenSpaceGuid.PcdChip0ComPhyTypes|{ $(CP_PCIE0), $(CP_SATA0), $(CP_SFI), $(CP_SATA1), $(CP_USB3_HOST1), $(CP_PCIE2) }
-  gMarvellTokenSpaceGuid.PcdChip0ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_5G), $(CP_5G), $(CP_5G) }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhyTypes|{ $(CP_PCIE0), $(CP_SATA0), $(CP_SFI), $(CP_SATA1), $(CP_USB3_HOST1), $(CP_PCIE2) }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_5G), $(CP_5G), $(CP_5G) }
   # ComPhy1
   # 0: PCIE0         5 Gbps
   # 1: SATA0         5 Gbps
@@ -121,36 +118,36 @@
   # 3: SATA1         5 Gbps
   # 4: PCIE1         5 Gbps
   # 5: PCIE2         5 Gbps
-  gMarvellTokenSpaceGuid.PcdChip1ComPhyTypes|{ $(CP_PCIE0), $(CP_SATA2), $(CP_SFI), $(CP_SATA3), $(CP_PCIE1), $(CP_PCIE2) }
-  gMarvellTokenSpaceGuid.PcdChip1ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_5G), $(CP_5G), $(CP_5G) }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1ComPhyTypes|{ $(CP_PCIE0), $(CP_SATA2), $(CP_SFI), $(CP_SATA3), $(CP_PCIE1), $(CP_PCIE2) }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_5G), $(CP_5G), $(CP_5G) }
 
   #UtmiPhy
-  gMarvellTokenSpaceGuid.PcdUtmiControllersEnabled|{ 0x1, 0x1, 0x1, 0x0 }
-  gMarvellTokenSpaceGuid.PcdUtmiPortType|{ $(UTMI_USB_HOST0), $(UTMI_USB_HOST1), $(UTMI_USB_HOST0), $(UTMI_USB_HOST1) }
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiControllersEnabled|{ 0x1, 0x1, 0x1, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiPortType|{ $(UTMI_USB_HOST0), $(UTMI_USB_HOST1), $(UTMI_USB_HOST0), $(UTMI_USB_HOST1) }
 
   #MDIO
-  gMarvellTokenSpaceGuid.PcdMdioControllersEnabled|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdMdioControllersEnabled|{ 0x1, 0x1 }
 
   #PHY
-  gMarvellTokenSpaceGuid.PcdPhy2MdioController|{ 0x0, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPhyDeviceIds|{ 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdPhySmiAddresses|{ 0x1, 0x0 }
-  gMarvellTokenSpaceGuid.PcdPhyStartupAutoneg|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdPhy2MdioController|{ 0x0, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhyDeviceIds|{ 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhySmiAddresses|{ 0x1, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhyStartupAutoneg|FALSE
 
   #NET
-  gMarvellTokenSpaceGuid.PcdPp2GopIndexes|{ 0x0, 0x3, 0x0, 0x2 }
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceAlwaysUp|{ 0x0, 0x0, 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceSpeed|{ $(PHY_SPEED_10000), $(PHY_SPEED_1000), $(PHY_SPEED_10000), $(PHY_SPEED_1000) }
-  gMarvellTokenSpaceGuid.PcdPp2PhyConnectionTypes|{ $(PHY_SFI), $(PHY_RGMII), $(PHY_SFI), $(PHY_RGMII) }
-  gMarvellTokenSpaceGuid.PcdPp2PhyIndexes|{ 0xFF, 0x0, 0xFF, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPp2Port2Controller|{ 0x0, 0x0, 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPp2PortIds|{ 0x0, 0x2, 0x0, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPp2Controllers|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2GopIndexes|{ 0x0, 0x3, 0x0, 0x2 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceAlwaysUp|{ 0x0, 0x0, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceSpeed|{ $(PHY_SPEED_10000), $(PHY_SPEED_1000), $(PHY_SPEED_10000), $(PHY_SPEED_1000) }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyConnectionTypes|{ $(PHY_SFI), $(PHY_RGMII), $(PHY_SFI), $(PHY_RGMII) }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyIndexes|{ 0xFF, 0x0, 0xFF, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Port2Controller|{ 0x0, 0x0, 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PortIds|{ 0x0, 0x2, 0x0, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Controllers|{ 0x1, 0x1 }
 
   #PciEmulation
-  gMarvellTokenSpaceGuid.PcdPciEXhci|{ 0x1, 0x1, 0x1, 0x0 }
-  gMarvellTokenSpaceGuid.PcdPciEAhci|{ 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPciESdhci|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciEXhci|{ 0x1, 0x1, 0x1, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciEAhci|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciESdhci|{ 0x1, 0x1 }
 
   #RTC
-  gMarvellTokenSpaceGuid.PcdRtcBaseAddress|0xF4284000
+  gMarvellSiliconTokenSpaceGuid.PcdRtcBaseAddress|0xF4284000

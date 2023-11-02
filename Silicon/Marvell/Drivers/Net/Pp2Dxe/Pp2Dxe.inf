@@ -21,7 +21,7 @@
   MdeModulePkg/MdeModulePkg.dec
   NetworkPkg/NetworkPkg.dec
   ArmPkg/ArmPkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   DmaLib
@@ -47,13 +47,13 @@
   gMarvellPhyProtocolGuid
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdPp2GopIndexes
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceAlwaysUp
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceSpeed
-  gMarvellTokenSpaceGuid.PcdPp2PhyConnectionTypes
-  gMarvellTokenSpaceGuid.PcdPp2PhyIndexes
-  gMarvellTokenSpaceGuid.PcdPp2Port2Controller
-  gMarvellTokenSpaceGuid.PcdPp2PortIds
+  gMarvellSiliconTokenSpaceGuid.PcdPp2GopIndexes
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceAlwaysUp
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceSpeed
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyConnectionTypes
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyIndexes
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Port2Controller
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PortIds
 
 [Depex]
   TRUE

@@ -20,7 +20,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   BaseMemoryLib
@@ -29,7 +29,7 @@
   UefiDriverEntryPoint
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdEip76TrngBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdEip76TrngBaseAddress
 
 [Protocols]
   gEfiRngProtocolGuid              ## PRODUCES

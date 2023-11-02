@@ -18,7 +18,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -52,9 +52,9 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
-  gMarvellTokenSpaceGuid.PcdSpiMemoryBase
-  gMarvellTokenSpaceGuid.PcdSpiMemoryMapped
-  gMarvellTokenSpaceGuid.PcdSpiVariableOffset
+  gMarvellSiliconTokenSpaceGuid.PcdSpiMemoryBase
+  gMarvellSiliconTokenSpaceGuid.PcdSpiMemoryMapped
+  gMarvellSiliconTokenSpaceGuid.PcdSpiVariableOffset
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64

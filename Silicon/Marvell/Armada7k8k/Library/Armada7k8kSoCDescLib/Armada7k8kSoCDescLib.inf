@@ -21,7 +21,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   DebugLib
@@ -29,4 +29,4 @@
   PcdLib
 
 [FixedPcd]
-  gMarvellTokenSpaceGuid.PcdMaxCpCount
+  gMarvellSiliconTokenSpaceGuid.PcdMaxCpCount

@@ -18,7 +18,7 @@
   ArmPlatformPkg/ArmPlatformPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -36,8 +36,8 @@
   gMarvellEepromProtocolGuid
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdEepromI2cAddresses
-  gMarvellTokenSpaceGuid.PcdEepromI2cBuses
+  gMarvellSiliconTokenSpaceGuid.PcdEepromI2cAddresses
+  gMarvellSiliconTokenSpaceGuid.PcdEepromI2cBuses
 
 [Depex]
   TRUE

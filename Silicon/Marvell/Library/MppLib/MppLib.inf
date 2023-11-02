@@ -15,7 +15,7 @@
   MdeModulePkg/MdeModulePkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   ArmLib
@@ -28,57 +28,57 @@
   MppLib.c
 
 [FixedPcd]
-  gMarvellTokenSpaceGuid.PcdMppChipCount
+  gMarvellSiliconTokenSpaceGuid.PcdMppChipCount
 
-  gMarvellTokenSpaceGuid.PcdChip0MppReverseFlag
-  gMarvellTokenSpaceGuid.PcdChip0MppBaseAddress
-  gMarvellTokenSpaceGuid.PcdChip0MppPinCount
-  gMarvellTokenSpaceGuid.PcdChip0MppSel0
-  gMarvellTokenSpaceGuid.PcdChip0MppSel1
-  gMarvellTokenSpaceGuid.PcdChip0MppSel2
-  gMarvellTokenSpaceGuid.PcdChip0MppSel3
-  gMarvellTokenSpaceGuid.PcdChip0MppSel4
-  gMarvellTokenSpaceGuid.PcdChip0MppSel5
-  gMarvellTokenSpaceGuid.PcdChip0MppSel6
-  gMarvellTokenSpaceGuid.PcdChip0MppSel7
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppReverseFlag
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppPinCount
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel0
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel1
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel2
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel3
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel4
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel5
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel6
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel7
 
-  gMarvellTokenSpaceGuid.PcdChip1MppReverseFlag
-  gMarvellTokenSpaceGuid.PcdChip1MppBaseAddress
-  gMarvellTokenSpaceGuid.PcdChip1MppPinCount
-  gMarvellTokenSpaceGuid.PcdChip1MppSel0
-  gMarvellTokenSpaceGuid.PcdChip1MppSel1
-  gMarvellTokenSpaceGuid.PcdChip1MppSel2
-  gMarvellTokenSpaceGuid.PcdChip1MppSel3
-  gMarvellTokenSpaceGuid.PcdChip1MppSel4
-  gMarvellTokenSpaceGuid.PcdChip1MppSel5
-  gMarvellTokenSpaceGuid.PcdChip1MppSel6
-  gMarvellTokenSpaceGuid.PcdChip1MppSel7
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppReverseFlag
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppPinCount
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel0
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel1
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel2
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel3
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel4
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel5
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel6
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel7
 
-  gMarvellTokenSpaceGuid.PcdChip2MppReverseFlag
-  gMarvellTokenSpaceGuid.PcdChip2MppBaseAddress
-  gMarvellTokenSpaceGuid.PcdChip2MppPinCount
-  gMarvellTokenSpaceGuid.PcdChip2MppSel0
-  gMarvellTokenSpaceGuid.PcdChip2MppSel1
-  gMarvellTokenSpaceGuid.PcdChip2MppSel2
-  gMarvellTokenSpaceGuid.PcdChip2MppSel3
-  gMarvellTokenSpaceGuid.PcdChip2MppSel4
-  gMarvellTokenSpaceGuid.PcdChip2MppSel5
-  gMarvellTokenSpaceGuid.PcdChip2MppSel6
-  gMarvellTokenSpaceGuid.PcdChip2MppSel7
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppReverseFlag
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppPinCount
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel0
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel1
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel2
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel3
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel4
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel5
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel6
+  gMarvellSiliconTokenSpaceGuid.PcdChip2MppSel7
 
-  gMarvellTokenSpaceGuid.PcdChip3MppReverseFlag
-  gMarvellTokenSpaceGuid.PcdChip3MppBaseAddress
-  gMarvellTokenSpaceGuid.PcdChip3MppPinCount
-  gMarvellTokenSpaceGuid.PcdChip3MppSel0
-  gMarvellTokenSpaceGuid.PcdChip3MppSel1
-  gMarvellTokenSpaceGuid.PcdChip3MppSel2
-  gMarvellTokenSpaceGuid.PcdChip3MppSel3
-  gMarvellTokenSpaceGuid.PcdChip3MppSel4
-  gMarvellTokenSpaceGuid.PcdChip3MppSel5
-  gMarvellTokenSpaceGuid.PcdChip3MppSel6
-  gMarvellTokenSpaceGuid.PcdChip3MppSel7
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppReverseFlag
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppBaseAddress
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppPinCount
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel0
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel1
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel2
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel3
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel4
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel5
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel6
+  gMarvellSiliconTokenSpaceGuid.PcdChip3MppSel7
 
-  gMarvellTokenSpaceGuid.PcdPciESdhci
+  gMarvellSiliconTokenSpaceGuid.PcdPciESdhci
 
 [BuildOptions]
   *_*_*_CC_FLAGS = -fno-stack-protector

@@ -15,53 +15,53 @@
 ################################################################################
 [PcdsFixedAtBuild.common]
   # CP115 count
-  gMarvellTokenSpaceGuid.PcdMaxCpCount|1
+  gMarvellSiliconTokenSpaceGuid.PcdMaxCpCount|1
 
   # MPP
-  gMarvellTokenSpaceGuid.PcdMppChipCount|2
+  gMarvellSiliconTokenSpaceGuid.PcdMppChipCount|2
 
   # APN807 MPP
-  gMarvellTokenSpaceGuid.PcdChip0MppReverseFlag|FALSE
-  gMarvellTokenSpaceGuid.PcdChip0MppBaseAddress|0xF06F4000
-  gMarvellTokenSpaceGuid.PcdChip0MppPinCount|20
-  gMarvellTokenSpaceGuid.PcdChip0MppSel0|{ 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdChip0MppSel1|{ 0x1, 0x3, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppReverseFlag|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppBaseAddress|0xF06F4000
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppPinCount|20
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel0|{ 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0MppSel1|{ 0x1, 0x3, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x3 }
 
   # CP115 #0 MPP
-  gMarvellTokenSpaceGuid.PcdChip1MppReverseFlag|FALSE
-  gMarvellTokenSpaceGuid.PcdChip1MppBaseAddress|0xF2440000
-  gMarvellTokenSpaceGuid.PcdChip1MppPinCount|64
-  gMarvellTokenSpaceGuid.PcdChip1MppSel0|{ 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3 }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel1|{ 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x0, 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel2|{ 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x7, 0x7 }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel3|{ 0x7, 0x0, 0x0, 0x0, 0x0, 0x2, 0x2, 0x2, 0x2, 0x0 }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel4|{ 0x8, 0x8, 0x8, 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel5|{ 0x6, 0x6, 0x2, 0x0, 0x2, 0xB, 0xE, 0xE, 0xE, 0xE }
-  gMarvellTokenSpaceGuid.PcdChip1MppSel6|{ 0xE, 0xE, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppReverseFlag|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppBaseAddress|0xF2440000
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppPinCount|64
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel0|{ 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel1|{ 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x0, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel2|{ 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x7, 0x7 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel3|{ 0x7, 0x0, 0x0, 0x0, 0x0, 0x2, 0x2, 0x2, 0x2, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel4|{ 0x8, 0x8, 0x8, 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel5|{ 0x6, 0x6, 0x2, 0x0, 0x2, 0xB, 0xE, 0xE, 0xE, 0xE }
+  gMarvellSiliconTokenSpaceGuid.PcdChip1MppSel6|{ 0xE, 0xE, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
 
   # I2C
-  gMarvellTokenSpaceGuid.PcdI2cSlaveAddresses|{ 0x50 }
-  gMarvellTokenSpaceGuid.PcdI2cSlaveBuses|{ 0x0 }
-  gMarvellTokenSpaceGuid.PcdI2cControllersEnabled|{ 0x0, 0x1 }
-  gMarvellTokenSpaceGuid.PcdI2cClockFrequency|250000000
-  gMarvellTokenSpaceGuid.PcdI2cBaudRate|100000
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveAddresses|{ 0x50 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cSlaveBuses|{ 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cControllersEnabled|{ 0x0, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdI2cClockFrequency|250000000
+  gMarvellSiliconTokenSpaceGuid.PcdI2cBaudRate|100000
 
   # SPI
-  gMarvellTokenSpaceGuid.PcdSpiRegBase|0xF2700680
-  gMarvellTokenSpaceGuid.PcdSpiMaxFrequency|10000000
-  gMarvellTokenSpaceGuid.PcdSpiClockFrequency|200000000
+  gMarvellSiliconTokenSpaceGuid.PcdSpiRegBase|0xF2700680
+  gMarvellSiliconTokenSpaceGuid.PcdSpiMaxFrequency|10000000
+  gMarvellSiliconTokenSpaceGuid.PcdSpiClockFrequency|200000000
 
-  gMarvellTokenSpaceGuid.PcdSpiFlashMode|3
-  gMarvellTokenSpaceGuid.PcdSpiFlashCs|0
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashMode|3
+  gMarvellSiliconTokenSpaceGuid.PcdSpiFlashCs|0
 
   # NonDiscoverableDevices
-  gMarvellTokenSpaceGuid.PcdPciESdhci|{ 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciESdhci|{ 0x1 }
 
   # RTC
-  gMarvellTokenSpaceGuid.PcdRtcBaseAddress|0xF2284000
+  gMarvellSiliconTokenSpaceGuid.PcdRtcBaseAddress|0xF2284000
 
   # Variable store
-  gMarvellTokenSpaceGuid.PcdSpiMemoryBase|0xEF000000
+  gMarvellSiliconTokenSpaceGuid.PcdSpiMemoryBase|0xEF000000
 [PcdsDynamicDefault.common]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase64|0xEF3C0000
   gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase64|0xEF3E0000

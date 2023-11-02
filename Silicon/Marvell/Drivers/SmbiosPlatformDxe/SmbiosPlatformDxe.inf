@@ -22,7 +22,7 @@
 [Packages]
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   BaseLib
@@ -36,12 +36,12 @@
 
 [FixedPcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision
-  gMarvellTokenSpaceGuid.PcdProductManufacturer
-  gMarvellTokenSpaceGuid.PcdProductPlatformName
-  gMarvellTokenSpaceGuid.PcdProductSerial
-  gMarvellTokenSpaceGuid.PcdProductVersion
-  gMarvellTokenSpaceGuid.PcdFirmwareVendor
-  gMarvellTokenSpaceGuid.PcdFirmwareVersion
+  gMarvellSiliconTokenSpaceGuid.PcdProductManufacturer
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName
+  gMarvellSiliconTokenSpaceGuid.PcdProductSerial
+  gMarvellSiliconTokenSpaceGuid.PcdProductVersion
+  gMarvellSiliconTokenSpaceGuid.PcdFirmwareVendor
+  gMarvellSiliconTokenSpaceGuid.PcdFirmwareVersion
 
 [Protocols]
   gEfiSmbiosProtocolGuid                      # PROTOCOL ALWAYS_CONSUMED

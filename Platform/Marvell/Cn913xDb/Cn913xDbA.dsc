@@ -69,10 +69,10 @@
 [PcdsFixedAtBuild.common]
   #Platform description
   !if $(CN9130)
-  gMarvellTokenSpaceGuid.PcdProductPlatformName|"CN9130 DB-A"
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName|"CN9130 DB-A"
   !elseif $(CN9131)
-  gMarvellTokenSpaceGuid.PcdProductPlatformName|"CN9131 DB-A"
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName|"CN9131 DB-A"
   !elseif $(CN9132)
-  gMarvellTokenSpaceGuid.PcdProductPlatformName|"CN9132 DB-A"
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName|"CN9132 DB-A"
   !endif
-  gMarvellTokenSpaceGuid.PcdProductVersion|"Rev. 1.1"
+  gMarvellSiliconTokenSpaceGuid.PcdProductVersion|"Rev. 1.1"

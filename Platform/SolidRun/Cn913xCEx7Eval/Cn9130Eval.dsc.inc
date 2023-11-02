@@ -15,7 +15,7 @@
 ################################################################################
 [PcdsFixedAtBuild.common]
   # ComPhy
-  gMarvellTokenSpaceGuid.PcdComPhyDevices|{ 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdComPhyDevices|{ 0x1 }
   # ComPhy0
   # 0: PCIE0         5 Gbps
   # 1: PCIE0         5 Gbps
@@ -23,32 +23,32 @@
   # 3: PCIE0         5 Gbps
   # 4: SFI           10.31 Gbps
   # 5: SGMII2        3.125 Gbps
-  gMarvellTokenSpaceGuid.PcdChip0ComPhyTypes|{ $(CP_PCIE0), $(CP_PCIE0), $(CP_PCIE0), $(CP_PCIE0), $(CP_SFI), $(CP_SGMII2)}
-  gMarvellTokenSpaceGuid.PcdChip0ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_3_125G) }
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhyTypes|{ $(CP_PCIE0), $(CP_PCIE0), $(CP_PCIE0), $(CP_PCIE0), $(CP_SFI), $(CP_SGMII2)}
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhySpeeds|{ $(CP_5G), $(CP_5G), $(CP_5G), $(CP_5G), $(CP_10_3125G), $(CP_3_125G) }
 
   # UtmiPhy
-  gMarvellTokenSpaceGuid.PcdUtmiControllersEnabled|{ 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdUtmiPortType|{ $(UTMI_USB_HOST0), $(UTMI_USB_HOST1) }
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiControllersEnabled|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiPortType|{ $(UTMI_USB_HOST0), $(UTMI_USB_HOST1) }
 
   # MDIO
-  gMarvellTokenSpaceGuid.PcdMdioControllersEnabled|{ 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdMdioControllersEnabled|{ 0x1 }
 
   # PHY
-  gMarvellTokenSpaceGuid.PcdPhy2MdioController|{ 0x0 }
-  gMarvellTokenSpaceGuid.PcdPhyDeviceIds|{ 0x0 }
-  gMarvellTokenSpaceGuid.PcdPhySmiAddresses|{ 0x0 }
-  gMarvellTokenSpaceGuid.PcdPhyStartupAutoneg|FALSE
+  gMarvellSiliconTokenSpaceGuid.PcdPhy2MdioController|{ 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhyDeviceIds|{ 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhySmiAddresses|{ 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPhyStartupAutoneg|FALSE
 
   # NET
-  gMarvellTokenSpaceGuid.PcdPp2GopIndexes|{ 0x0, 0x2, 0x3 }
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceAlwaysUp|{ 0x0, 0x0, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPp2InterfaceSpeed|{ $(PHY_SPEED_10000), $(PHY_SPEED_1000), $(PHY_SPEED_2500) }
-  gMarvellTokenSpaceGuid.PcdPp2PhyConnectionTypes|{ $(PHY_SFI), $(PHY_RGMII), $(PHY_SGMII) }
-  gMarvellTokenSpaceGuid.PcdPp2PhyIndexes|{ 0xFF, 0x0, 0xFF }
-  gMarvellTokenSpaceGuid.PcdPp2Port2Controller|{ 0x0, 0x0, 0x0 }
-  gMarvellTokenSpaceGuid.PcdPp2PortIds|{ 0x0, 0x1, 0x2 }
-  gMarvellTokenSpaceGuid.PcdPp2Controllers|{ 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2GopIndexes|{ 0x0, 0x2, 0x3 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceAlwaysUp|{ 0x0, 0x0, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2InterfaceSpeed|{ $(PHY_SPEED_10000), $(PHY_SPEED_1000), $(PHY_SPEED_2500) }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyConnectionTypes|{ $(PHY_SFI), $(PHY_RGMII), $(PHY_SGMII) }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PhyIndexes|{ 0xFF, 0x0, 0xFF }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Port2Controller|{ 0x0, 0x0, 0x0 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2PortIds|{ 0x0, 0x1, 0x2 }
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Controllers|{ 0x1 }
 
   # NonDiscoverableDevices
-  gMarvellTokenSpaceGuid.PcdPciEXhci|{ 0x1, 0x1 }
-  gMarvellTokenSpaceGuid.PcdPciESdhci|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciEXhci|{ 0x1, 0x1 }
+  gMarvellSiliconTokenSpaceGuid.PcdPciESdhci|{ 0x1, 0x1 }

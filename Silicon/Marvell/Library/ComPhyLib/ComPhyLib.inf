@@ -17,7 +17,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   ArmPkg/ArmPkg.dec
   ArmPlatformPkg/ArmPlatformPkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   ArmLib
@@ -37,24 +37,24 @@
   gMarvellBoardDescProtocolGuid  ## CONSUMES
 
 [FixedPcd]
-  gMarvellTokenSpaceGuid.PcdComPhyDevices
+  gMarvellSiliconTokenSpaceGuid.PcdComPhyDevices
 
   #Chip0
-  gMarvellTokenSpaceGuid.PcdChip0ComPhyTypes
-  gMarvellTokenSpaceGuid.PcdChip0ComPhySpeeds
-  gMarvellTokenSpaceGuid.PcdChip0ComPhyInvFlags
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhyTypes
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhySpeeds
+  gMarvellSiliconTokenSpaceGuid.PcdChip0ComPhyInvFlags
 
   #Chip1
-  gMarvellTokenSpaceGuid.PcdChip1ComPhyTypes
-  gMarvellTokenSpaceGuid.PcdChip1ComPhySpeeds
-  gMarvellTokenSpaceGuid.PcdChip1ComPhyInvFlags
+  gMarvellSiliconTokenSpaceGuid.PcdChip1ComPhyTypes
+  gMarvellSiliconTokenSpaceGuid.PcdChip1ComPhySpeeds
+  gMarvellSiliconTokenSpaceGuid.PcdChip1ComPhyInvFlags
 
   #Chip2
-  gMarvellTokenSpaceGuid.PcdChip2ComPhyTypes
-  gMarvellTokenSpaceGuid.PcdChip2ComPhySpeeds
-  gMarvellTokenSpaceGuid.PcdChip2ComPhyInvFlags
+  gMarvellSiliconTokenSpaceGuid.PcdChip2ComPhyTypes
+  gMarvellSiliconTokenSpaceGuid.PcdChip2ComPhySpeeds
+  gMarvellSiliconTokenSpaceGuid.PcdChip2ComPhyInvFlags
 
   #Chip3
-  gMarvellTokenSpaceGuid.PcdChip3ComPhyTypes
-  gMarvellTokenSpaceGuid.PcdChip3ComPhySpeeds
-  gMarvellTokenSpaceGuid.PcdChip3ComPhyInvFlags
+  gMarvellSiliconTokenSpaceGuid.PcdChip3ComPhyTypes
+  gMarvellSiliconTokenSpaceGuid.PcdChip3ComPhySpeeds
+  gMarvellSiliconTokenSpaceGuid.PcdChip3ComPhyInvFlags

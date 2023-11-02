@@ -18,7 +18,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MdePkg/MdePkg.dec
-  Silicon/Marvell/Marvell.dec
+  Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
   ArmadaBoardDescLib
@@ -32,14 +32,14 @@
   gMarvellBoardDescProtocolGuid
 
 [Pcd]
-  gMarvellTokenSpaceGuid.PcdComPhyDevices
-  gMarvellTokenSpaceGuid.PcdI2cControllersEnabled
-  gMarvellTokenSpaceGuid.PcdPciEAhci
-  gMarvellTokenSpaceGuid.PcdPciESdhci
-  gMarvellTokenSpaceGuid.PcdPciEXhci
-  gMarvellTokenSpaceGuid.PcdPp2Controllers
-  gMarvellTokenSpaceGuid.PcdUtmiControllersEnabled
-  gMarvellTokenSpaceGuid.PcdUtmiPortType
+  gMarvellSiliconTokenSpaceGuid.PcdComPhyDevices
+  gMarvellSiliconTokenSpaceGuid.PcdI2cControllersEnabled
+  gMarvellSiliconTokenSpaceGuid.PcdPciEAhci
+  gMarvellSiliconTokenSpaceGuid.PcdPciESdhci
+  gMarvellSiliconTokenSpaceGuid.PcdPciEXhci
+  gMarvellSiliconTokenSpaceGuid.PcdPp2Controllers
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiControllersEnabled
+  gMarvellSiliconTokenSpaceGuid.PcdUtmiPortType
 
 [Depex]
   TRUE

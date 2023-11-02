@@ -21,7 +21,7 @@
  MdePkg/MdePkg.dec
  ShellPkg/ShellPkg.dec
  MdeModulePkg/MdeModulePkg.dec
- Silicon/Marvell/Marvell.dec
+ Silicon/Marvell/MarvellSiliconPkg/MarvellSiliconPkg.dec
 
 [LibraryClasses]
  UefiLib
@@ -39,8 +39,8 @@
  FileHandleLib
 
 [Pcd]
- gMarvellTokenSpaceGuid.PcdSpiFlashCs
- gMarvellTokenSpaceGuid.PcdSpiFlashMode
+ gMarvellSiliconTokenSpaceGuid.PcdSpiFlashCs
+ gMarvellSiliconTokenSpaceGuid.PcdSpiFlashMode
 
 [Protocols]
  gMarvellSpiFlashProtocolGuid

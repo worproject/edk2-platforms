@@ -52,6 +52,6 @@
 
 [PcdsFixedAtBuild.common]
   #Platform description
-  gMarvellTokenSpaceGuid.PcdProductManufacturer|"SolidRun"
-  gMarvellTokenSpaceGuid.PcdProductPlatformName|"CN913x CEx7 Evaluation Board"
-  gMarvellTokenSpaceGuid.PcdProductVersion|"Rev. 1.1"
+  gMarvellSiliconTokenSpaceGuid.PcdProductManufacturer|"SolidRun"
+  gMarvellSiliconTokenSpaceGuid.PcdProductPlatformName|"CN913x CEx7 Evaluation Board"
+  gMarvellSiliconTokenSpaceGuid.PcdProductVersion|"Rev. 1.1"

@@ -407,7 +407,7 @@ M: Daniel Schaefer <git@danielschaefer.me>
 
 Phytium platforms and silicon
 F: Platform/Phytium/
-F: Silicon/silicon/
+F: Silicon/Phytium/
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 R: Peng Xie <xiepeng@phytium.com.cn>
 R: Ling Jia <jialing@phytium.com.cn>

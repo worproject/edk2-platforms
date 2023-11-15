@@ -91,7 +91,7 @@ typedef struct {
       1,          /* AssociativityValid */                                    \
       1,          /* AllocationTypeValid */                                   \
       1,          /* CacheTypeValid */                                        \
-      0,          /* WritePolicyValid */                                      \
+      1,          /* WritePolicyValid */                                      \
       1,          /* LineSizeValid */                                         \
     },                                                                        \
     0,            /* NextLevelOfCache */                                      \

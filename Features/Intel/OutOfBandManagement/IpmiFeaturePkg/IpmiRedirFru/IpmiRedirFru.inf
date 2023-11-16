@@ -25,6 +25,7 @@
   IpmiFeaturePkg/IpmiFeaturePkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
+  MinPlatformPkg/MinPlatformPkg.dec
 
 [LibraryClasses]
   UefiDriverEntryPoint
@@ -32,12 +33,12 @@
   UefiBootServicesTableLib
   BaseMemoryLib
   MemoryAllocationLib
-  UefiLib
   IpmiBaseLib
 
 [Guids]
   gEfiIpmiFormatFruGuid
   gEfiSystemTypeFruGuid
+  gBdsEventAfterConsoleReadyBeforeBootOptionGuid
 
 [Protocols]
   gEfiSmbiosProtocolGuid

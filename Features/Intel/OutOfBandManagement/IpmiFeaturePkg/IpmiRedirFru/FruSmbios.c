@@ -454,15 +454,17 @@ GenerateFruSmbiosData (
 
   mFruRedirProtocol = This;
 
-  Status = EfiCreateEventReadyToBootEx (
-             TPL_CALLBACK,
-             GenerateFruSmbiosType123DataNotified,
-             NULL,
-             &Event
-             );
+  Status = gBS->CreateEventEx (
+                  EVT_NOTIFY_SIGNAL,
+                  TPL_CALLBACK,
+                  GenerateFruSmbiosType123DataNotified,
+                  NULL,
+                  &gBdsEventAfterConsoleReadyBeforeBootOptionGuid,
+                  &Event
+                  );
 
   if (EFI_ERROR (Status)) {
-    DEBUG ((DEBUG_ERROR, "GenerateFruSmbiosData(): EfiCreateEventReadyToBootEx failed with return value: %r\n", Status));
+    DEBUG ((DEBUG_ERROR, "GenerateFruSmbiosData(): Create AfterConsole event failed with return value: %r\n", Status));
   }
 
   return;

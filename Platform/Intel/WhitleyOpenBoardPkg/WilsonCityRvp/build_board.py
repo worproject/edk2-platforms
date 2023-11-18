@@ -1,7 +1,7 @@
 # @ build_board.py
 # Extensions for building WilsonCityRvp using build_bios.py
 #
-# Copyright (c) 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2021 - 2023, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 
@@ -105,7 +105,7 @@ def pre_build_ex(config, functions):
     if not os.path.exists(out_file_dir):
         os.mkdir(out_file_dir)
 
-    command = ["python",
+    command = [sys.executable,
                os.path.join(config["MIN_PACKAGE_TOOLS"], "AmlGenOffset", "AmlGenOffset.py"),
                "-d", "--aml_filter", config["AML_FILTER"],
                "-o", out_file_path,

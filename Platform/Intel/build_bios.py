@@ -109,6 +109,8 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
                                                config["WORKSPACE_SILICON"])
     config["WORKSPACE_FEATURES"] = os.path.join(config["WORKSPACE"],
                                                config["WORKSPACE_FEATURES"])
+    config["WORKSPACE_FEATURES_INTEL"] = os.path.join(config["WORKSPACE"],
+                                            config["WORKSPACE_FEATURES_INTEL"])
     config["WORKSPACE_DRIVERS"] = os.path.join(config["WORKSPACE"],
                                                config["WORKSPACE_DRIVERS"])
     config["WORKSPACE_PLATFORM_BIN"] = \
@@ -123,9 +125,10 @@ def pre_build(build_config, build_type="DEBUG", silent=False, toolchain=None):
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_SILICON_BIN"]
     config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_FEATURES"]
-    # add all feature domains in WORKSPACE_FEATURES to package path
-    for filename in os.listdir(config["WORKSPACE_FEATURES"]):
-        filepath = os.path.join(config["WORKSPACE_FEATURES"], filename)
+    config["PACKAGES_PATH"] += os.pathsep + config["WORKSPACE_FEATURES_INTEL"]
+    # add all feature domains in WORKSPACE_FEATURES_INTEL to package path
+    for filename in os.listdir(config["WORKSPACE_FEATURES_INTEL"]):
+        filepath = os.path.join(config["WORKSPACE_FEATURES_INTEL"], filename)
         # feature domains folder does not contain dec file
         if os.path.isdir(filepath) and \
           not glob.glob(os.path.join(filepath, "*.dec")):

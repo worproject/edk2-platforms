@@ -1,7 +1,7 @@
 ## @file
 #  The main build description file for the MtOlympus board.
 #
-# Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2018 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -195,6 +195,7 @@
   $(PLATFORM_PACKAGE)/PlatformInit/PlatformInitSmm/PlatformInitSmm.inf
 
   $(PLATFORM_BOARD_PACKAGE)/Policy/S3NvramSave/S3NvramSave.inf
+  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
 
   #
   # Shell

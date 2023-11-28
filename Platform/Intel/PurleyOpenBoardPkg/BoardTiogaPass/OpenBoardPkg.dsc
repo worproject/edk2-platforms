@@ -1,7 +1,7 @@
 ## @file
 #  The main build description file for the TiogaPass board.
 #
-# Copyright (c) 2018, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2018 - 2023, Intel Corporation. All rights reserved.<BR>
 # Copyright (c) 2021, American Megatrends International LLC.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -226,6 +226,7 @@
 
   $(PLATFORM_BOARD_PACKAGE)/Policy/S3NvramSave/S3NvramSave.inf
   BoardModulePkg/BoardBdsHookDxe/BoardBdsHookDxe.inf
+  MdeModulePkg/Universal/LockBox/SmmLockBox/SmmLockBox.inf
 
   #
   # Shell

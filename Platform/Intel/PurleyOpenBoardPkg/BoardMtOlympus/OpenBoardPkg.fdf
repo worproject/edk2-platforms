@@ -1,7 +1,7 @@
 ## @file
 #  FDF file for the MtOlympus board.
 #
-# Copyright (c) 2018 - 2021, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2018 - 2023, Intel Corporation. All rights reserved.<BR>
 #
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -43,11 +43,11 @@ FV = FvOsBoot
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspUSize
 FV = FvLateSiliconCompressed
 
-0x00900000|0x00400000
+0x00900000|0x00300000
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvUefiBootSize
 FV = FvUefiBoot
 
-0x00D00000|0x0007C000
+0x00C00000|0x0007C000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageVariableSize
 #NV_VARIABLE_STORE
 DATA = {
@@ -86,10 +86,10 @@ DATA = {
   0x5A, 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 }
 
-0x00D7C000|0x00002000
+0x00C7C000|0x00002000
 #NV_EVENT_LOG
 
-0x00D7E000|0x00002000
+0x00C7E000|0x00002000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwWorkingSize
 #NV_FTW_WORKING
 DATA = {
@@ -103,28 +103,28 @@ DATA = {
   0xE0, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 }
 
-0x00D80000|0x00080000
+0x00C80000|0x00080000
 gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareBase|gEfiMdeModulePkgTokenSpaceGuid.PcdFlashNvStorageFtwSpareSize
 #NV_FTW_SPARE
 
 
-0x00E00000|0x00010000
+0x00D00000|0x00030000
 gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase|gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
 FV = MICROCODE_FV
 
-0x00E10000|0x00010000
+0x00D30000|0x00010000
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPostMemorySize
 FV = FvPostMemory
 
-0x00E20000|0x00030000
+0x00D40000|0x00020000
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspSSize
 FILE = $(PLATFORM_SI_BIN_PACKAGE)/FV/FvPostMemorySilicon/$(TARGET)/FvPostMemorySilicon.Fv
 
-0x00E50000|0x00060000
+0x00D60000|0x00050000
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemoryBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvPreMemorySize
 FV = FvPreMemory
 
-0x00EB0000|0x00130000
+0x00DB0000|0x00230000
 gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMBase|gMinPlatformPkgTokenSpaceGuid.PcdFlashFvFspMSize
 FILE = $(PLATFORM_SI_BIN_PACKAGE)/FV/FvPreMemorySilicon/$(TARGET)/FvPreMemorySilicon.Fv
 
@@ -134,6 +134,9 @@ FILE = $(PLATFORM_SI_BIN_PACKAGE)/FV/FvTempMemorySilicon/$(TARGET)/FvTempMemoryS
 
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeBase    = gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress + gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
 SET gMinPlatformPkgTokenSpaceGuid.PcdFlashFvMicrocodeSize    = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
+
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvBase   = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase
+SET gIntelSiliconPkgTokenSpaceGuid.PcdFlashMicrocodeFvSize   = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize
 
 SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchAddress    = gEfiPchTokenSpaceGuid.PcdFlashAreaBaseAddress + gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeBase + 0x60
 SET gUefiCpuPkgTokenSpaceGuid.PcdCpuMicrocodePatchRegionSize = gCpuUncoreTokenSpaceGuid.PcdFlashNvStorageMicrocodeSize - 0x60

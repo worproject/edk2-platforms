@@ -47,7 +47,7 @@ A UEFI firmware implementation using MinPlatformPkg is constructed using the fol
 |                                    |
 |------------------------------------|
 | [EDK II](https://github.com/tianocore/edk2)                                                                              |
-| [Intel(r) FSP](https://github.com/IntelFsp/FSP)                                                                            |
+| [Intel(r) FSP](https://github.com/intel/FSP)                                                                            |
 | [Minimum Platform (`MinPlatformPkg`)](https://github.com/tianocore/edk2-platforms/tree/master/Platform/Intel/MinPlatformPkg)                        |
 | [Board Support (\<xxx\>OpenBoardPkg)](https://github.com/tianocore/edk2-platforms/tree/master/Platform/Intel)  |
 

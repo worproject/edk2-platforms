@@ -1,29 +1,31 @@
 ## @file
-#  User Authentication Smm Driver.
+#  User Authentication Standalone Mm Driver.
 #
 #  This driver provides SMM services for DXE user authentication module.
+#  This Standalone Mm driver lacks of the ability to lock the password
+#  variables. Need to rely on UserAuthenticationStandaloneMmDxe to lock
+#  the variables.
 #
-# Copyright (c) 2019 - 2023, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2023, Intel Corporation. All rights reserved.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
 ##
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = UserAuthenticationSmm
-  FILE_GUID                      = 8fc6aaaa-4561-4815-8cf7-b87312992dce
-  MODULE_TYPE                    = DXE_SMM_DRIVER
+  BASE_NAME                      = UserAuthenticationStandaloneMm
+  FILE_GUID                      = 80130611-a67a-4631-becb-87ce22d6f165
+  MODULE_TYPE                    = MM_STANDALONE
   VERSION_STRING                 = 1.0
-  PI_SPECIFICATION_VERSION       = 0x0001000A
+  PI_SPECIFICATION_VERSION       = 0x00010032
   ENTRY_POINT                    = UserAuthenticationMmEntry
 
 [Sources]
   UserAuthenticationSmm.c
-  UserAuthenticationTraditionalMm.c
+  UserAuthenticationStandaloneMm.c
   UserAuthenticationSmm.h
   KeyService.c
   KeyService.h
-  UserAuthenticationVariableLock.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -32,8 +34,7 @@
   UserAuthFeaturePkg/UserAuthFeaturePkg.dec
 
 [LibraryClasses]
-  UefiBootServicesTableLib
-  UefiDriverEntryPoint
+  StandaloneMmDriverEntryPoint
   DebugLib
   BaseLib
   BaseMemoryLib
@@ -42,17 +43,16 @@
   MemoryAllocationLib
   BaseCryptLib
   PlatformPasswordLib
-  VariablePolicyHelperLib
 
 [Guids]
   gUserAuthenticationGuid                       ## CONSUMES  ## GUID
   gEfiEventExitBootServicesGuid                 ## CONSUMES  ## Event
 
 [Protocols]
-  gEdkiiVariablePolicyProtocolGuid              ## CONSUMES
+  gEdkiiVariableLockProtocolGuid                ## CONSUMES
   gEfiSmmVariableProtocolGuid                   ## CONSUMES
   gEdkiiSmmExitBootServicesProtocolGuid         ## CONSUMES
   gEdkiiSmmLegacyBootProtocolGuid               ## CONSUMES
 
 [Depex]
-  gEfiSmmVariableProtocolGuid AND gEfiVariableWriteArchProtocolGuid
+  gEfiSmmVariableProtocolGuid

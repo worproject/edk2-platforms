@@ -14,7 +14,7 @@
   FILE_GUID         = C39F9DC3-37C7-41C1-BE05-8C1524493947
   MODULE_TYPE       = DXE_SMM_DRIVER
   VERSION_STRING    = 1.1
-  LIBRARY_CLASS     = IpmbInterfaceLib | DXE_SMM_DRIVER
+  LIBRARY_CLASS     = IpmbInterfaceLib | DXE_SMM_DRIVER MM_STANDALONE
 
 [Sources]
   SmmIpmbInterfaceLib.c
@@ -27,7 +27,7 @@
 [LibraryClasses]
   DebugLib
   BaseMemoryLib
-  SmmServicesTableLib
+  MmServicesTableLib
   BmcCommonInterfaceLib
 
 [Protocols]

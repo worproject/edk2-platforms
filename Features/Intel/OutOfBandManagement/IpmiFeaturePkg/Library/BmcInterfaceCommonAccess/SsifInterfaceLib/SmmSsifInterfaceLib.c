@@ -8,7 +8,7 @@
 **/
 
 #include <Library/DebugLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Library/BmcCommonInterfaceLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/SsifInterfaceLib.h>
@@ -54,14 +54,14 @@ IpmiSmbusSendCommand (
 
   if (EfiSmbusHcProtocol != NULL) {
     Status = EfiSmbusHcProtocol->Execute (
-                                          EfiSmbusHcProtocol,
-                                          SlaveAddress,
-                                          Command,
-                                          Operation,
-                                          PecCheck,
-                                          Length,
-                                          Buffer
-                                          );
+                                   EfiSmbusHcProtocol,
+                                   SlaveAddress,
+                                   Command,
+                                   Operation,
+                                   PecCheck,
+                                   Length,
+                                   Buffer
+                                   );
   }
 
   DEBUG ((DEBUG_INFO, "%a EfiSmbusHcProtocol->Execute Status = %r\n", __func__, Status));
@@ -95,13 +95,13 @@ IpmiGetSmbusApiPtr (
   IpmiTransport2->Interface.Ssif.SsifInterfaceApiGuid = gEfiSmbusHcProtocolGuid;
   HandleCount                                         = 0;
 
-  Status = gSmst->SmmLocateHandle (
-                                   ByProtocol,
-                                   &gEfiSmbusHcProtocolGuid,
-                                   NULL,
-                                   &HandleCount,
-                                   HandleBuffer
-                                   );
+  Status = gMmst->MmLocateHandle (
+                    ByProtocol,
+                    &gEfiSmbusHcProtocolGuid,
+                    NULL,
+                    &HandleCount,
+                    HandleBuffer
+                    );
   if (EFI_ERROR (Status) && (Status == EFI_BUFFER_TOO_SMALL)) {
     // Allocate memory for Handle buffer
     HandleBuffer = AllocateZeroPool (HandleCount);
@@ -109,13 +109,13 @@ IpmiGetSmbusApiPtr (
       return EFI_NOT_FOUND;
     }
 
-    Status = gSmst->SmmLocateHandle (
-                                     ByProtocol,
-                                     &gEfiSmbusHcProtocolGuid,
-                                     NULL,
-                                     &HandleCount,
-                                     HandleBuffer
-                                     );
+    Status = gMmst->MmLocateHandle (
+                      ByProtocol,
+                      &gEfiSmbusHcProtocolGuid,
+                      NULL,
+                      &HandleCount,
+                      HandleBuffer
+                      );
     if (EFI_ERROR (Status)) {
       // Free HandleBuffer memory
       FreePool (HandleBuffer);
@@ -124,11 +124,11 @@ IpmiGetSmbusApiPtr (
   }
 
   for (Index = 0; Index < HandleCount; Index++) {
-    Status = gSmst->SmmHandleProtocol (
-                                       HandleBuffer[Index],
-                                       &gEfiSmbusHcProtocolGuid,
-                                       (VOID **)&EfiSmbusHcProtocol
-                                       );
+    Status = gMmst->MmHandleProtocol (
+                      HandleBuffer[Index],
+                      &gEfiSmbusHcProtocolGuid,
+                      (VOID **)&EfiSmbusHcProtocol
+                      );
     if (EFI_ERROR (Status)) {
       continue;
     }
@@ -137,10 +137,10 @@ IpmiGetSmbusApiPtr (
     IpmiTransport2->Interface.Ssif.SsifInterfaceApiPtr = (UINTN)EfiSmbusHcProtocol;
 
     Status = CheckSelfTestByInterfaceType (
-                                           IpmiTransport2,
-                                           &BmcStatus,
-                                           SysInterfaceSsif
-                                           );
+               IpmiTransport2,
+               &BmcStatus,
+               SysInterfaceSsif
+               );
     if (EFI_ERROR (Status) || (BmcStatus == BmcStatusHardFail)) {
       IpmiTransport2->Interface.Ssif.InterfaceState = IpmiInterfaceInitError;
       continue;

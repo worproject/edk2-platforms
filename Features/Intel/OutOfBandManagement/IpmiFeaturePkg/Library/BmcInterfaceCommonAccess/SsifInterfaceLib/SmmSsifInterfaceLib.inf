@@ -14,7 +14,7 @@
   FILE_GUID         = DB817B63-FA26-44FA-BF84-8D48596F982B
   MODULE_TYPE       = DXE_SMM_DRIVER
   VERSION_STRING    = 1.1
-  LIBRARY_CLASS     = SsifInterfaceLib | DXE_SMM_DRIVER
+  LIBRARY_CLASS     = SsifInterfaceLib | DXE_SMM_DRIVER MM_STANDALONE
 
 [Sources]
   SmmSsifInterfaceLib.c
@@ -26,7 +26,7 @@
   IpmiFeaturePkg/IpmiFeaturePkg.dec
 
 [LibraryClasses]
-  SmmServicesTableLib
+  MmServicesTableLib
   MemoryAllocationLib
   BmcCommonInterfaceLib
 

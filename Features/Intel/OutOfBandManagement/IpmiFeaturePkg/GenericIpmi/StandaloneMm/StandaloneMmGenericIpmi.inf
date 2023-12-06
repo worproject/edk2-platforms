@@ -38,14 +38,24 @@
   IoLib
   ReportStatusCodeLib
   TimerLib
+  BmcCommonInterfaceLib
+  BtInterfaceLib
+  SsifInterfaceLib
+  IpmbInterfaceLib
 
 [Protocols]
   gSmmIpmiTransportProtocolGuid                     # PROTOCOL ALWAYS_PRODUCED
+  gSmmIpmiTransport2ProtocolGuid                    # PROTOCOL ALWAYS_PRODUCED
 
 [Guids]
 
 [Pcd]
   gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiSmmIoBaseAddress
+  gIpmiFeaturePkgTokenSpaceGuid.PcdDefaultSystemInterface
+  gIpmiFeaturePkgTokenSpaceGuid.PcdBtInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdSsifInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdKcsInterfaceSupport
+  gIpmiFeaturePkgTokenSpaceGuid.PcdIpmbInterfaceSupport
 
 [Depex]
   gIpmiTransportProtocolGuid

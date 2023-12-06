@@ -57,7 +57,7 @@
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/DxeSsifInterfaceLib.inf
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/DxeIpmbInterfaceLib.inf
 
-[LibraryClasses.common.DXE_SMM_DRIVER]
+[LibraryClasses.common.DXE_SMM_DRIVER,LibraryClasses.common.MM_STANDALONE]
   IpmiBaseLib|IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
   SsifInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/SsifInterfaceLib/SmmSsifInterfaceLib.inf
   IpmbInterfaceLib|IpmiFeaturePkg/Library/BmcInterfaceCommonAccess/IpmbInterfaceLib/SmmIpmbInterfaceLib.inf

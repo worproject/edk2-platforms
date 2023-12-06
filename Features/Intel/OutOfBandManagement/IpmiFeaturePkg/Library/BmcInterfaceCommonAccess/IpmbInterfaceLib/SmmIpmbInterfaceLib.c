@@ -8,7 +8,7 @@
 **/
 
 #include <Library/DebugLib.h>
-#include <Library/SmmServicesTableLib.h>
+#include <Library/MmServicesTableLib.h>
 #include <Library/BmcCommonInterfaceLib.h>
 #include <Library/IpmbInterfaceLib.h>
 #include <Protocol/I2cMaster.h>
@@ -76,7 +76,7 @@ IpmiGetI2cApiPtr (
   IpmiTransport2->Interface.Ipmb.IpmbInterfaceApiGuid = gEfiI2cMasterProtocolGuid;
 
   // Locate the I2C SMM Protocol for Communication.
-  Status = gSmst->SmmLocateProtocol (
+  Status = gMmst->MmLocateProtocol (
                                      &gEfiI2cMasterProtocolGuid,
                                      NULL,
                                      (VOID **)&I2cMasterTransmit

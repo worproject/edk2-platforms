@@ -189,6 +189,10 @@
   # The "segment lib" provides the CAM accessors/etc when they aren't ECAM standard
   PciSegmentLib|Silicon/Broadcom/Bcm27xx/Library/Bcm2711PciSegmentLib/PciSegmentLib.inf
 
+  FdtPlatformLib|Platform/RaspberryPi/Library/FdtPlatformLib/FdtPlatformLib.inf
+  BoardInfoLib|Platform/RaspberryPi/Library/BoardInfoLib/BoardInfoLib.inf
+  BoardRevisionHelperLib|Platform/RaspberryPi/Library/BoardRevisionHelperLib/BoardRevisionHelperLib.inf
+
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf

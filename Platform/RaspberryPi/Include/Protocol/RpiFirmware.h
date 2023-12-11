@@ -113,39 +113,9 @@ EFI_STATUS
   );
 
 typedef
-CHAR8*
-(EFIAPI *GET_MODEL_NAME) (
-  INTN ModelId
-  );
-
-typedef
-EFI_STATUS
-(EFIAPI *GET_MODEL_FAMILY) (
-  UINT32 *ModelFamily
-  );
-
-typedef
 EFI_STATUS
 (EFIAPI *GET_FIRMWARE_REVISION) (
   UINT32 *Revision
-  );
-
-typedef
-EFI_STATUS
-(EFIAPI *GET_MODEL_INSTALLED_MB) (
-  UINT32 *InstalledMB
-  );
-
-typedef
-CHAR8*
-(EFIAPI *GET_MANUFACTURER_NAME) (
-  INTN ManufacturerId
-  );
-
-typedef
-CHAR8*
-(EFIAPI *GET_CPU_NAME) (
-  INTN CpuId
   );
 
 typedef
@@ -186,13 +156,8 @@ typedef struct {
   GET_SERIAL             GetSerial;
   GET_MODEL              GetModel;
   GET_MODEL_REVISION     GetModelRevision;
-  GET_MODEL_NAME         GetModelName;
-  GET_MODEL_FAMILY       GetModelFamily;
   GET_FIRMWARE_REVISION  GetFirmwareRevision;
-  GET_MANUFACTURER_NAME  GetManufacturerName;
-  GET_CPU_NAME           GetCpuName;
   GET_ARM_MEM            GetArmMem;
-  GET_MODEL_INSTALLED_MB GetModelInstalledMB;
   NOTIFY_XHCI_RESET      NotifyXhciReset;
   GET_CLOCK_STATE        GetClockState;
   SET_CLOCK_STATE        SetClockState;

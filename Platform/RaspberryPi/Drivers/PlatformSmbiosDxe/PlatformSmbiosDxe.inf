@@ -41,6 +41,8 @@
   DebugLib
   PrintLib
   TimeBaseLib
+  BoardInfoLib
+  BoardRevisionHelperLib
 
 [Protocols]
   gEfiSmbiosProtocolGuid           # PROTOCOL SOMETIMES_CONSUMED

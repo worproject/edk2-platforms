@@ -28,6 +28,8 @@
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/PcdLib.h>
+#include <Library/BoardInfoLib.h>
+#include <Library/BoardRevisionHelperLib.h>
 #include <Protocol/AcpiTable.h>
 #include <Protocol/BcmGenetPlatformDevice.h>
 #include <Protocol/RpiFirmware.h>
@@ -935,26 +937,22 @@ ConfigInitialize (
     return Status;
   }
 
-  Status = mFwProtocol->GetModelFamily (&mModelFamily);
-  if (Status != EFI_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi model family: %r\n", Status));
-  } else {
-    DEBUG ((DEBUG_INFO, "Current Raspberry Pi model family is %d\n", mModelFamily));
-  }
-
-  Status = mFwProtocol->GetModelInstalledMB (&mModelInstalledMB);
-  if (Status != EFI_SUCCESS) {
-    DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi installed RAM size: %r\n", Status));
-  } else {
-    DEBUG ((DEBUG_INFO, "Current Raspberry Pi installed RAM size is %d MB\n", mModelInstalledMB));
-  }
-
-  Status = mFwProtocol->GetModelRevision (&mModelRevision);
-  if (Status != EFI_SUCCESS) {
+  Status = BoardInfoGetRevisionCode (&mModelRevision);
+  if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi revision: %r\n", Status));
   } else {
     DEBUG ((DEBUG_INFO, "Current Raspberry Pi revision %x\n", mModelRevision));
   }
+
+  mModelFamily = BoardRevisionGetModelFamily (mModelRevision);
+  if (mModelFamily == 0) {
+    DEBUG ((DEBUG_ERROR, "Couldn't get the Raspberry Pi model family\n"));
+  } else {
+    DEBUG ((DEBUG_INFO, "Current Raspberry Pi model family is %d\n", mModelFamily));
+  }
+
+  mModelInstalledMB = BoardRevisionGetMemorySize (mModelRevision) / 1024 / 1024;
+  DEBUG ((DEBUG_INFO, "Current Raspberry Pi installed RAM size is %d MB\n", mModelInstalledMB));
 
   Status = mFwProtocol->GetClockRate (RPI_MBOX_CLOCK_RATE_CORE, &mCoreClockRate);
   if (Status != EFI_SUCCESS) {

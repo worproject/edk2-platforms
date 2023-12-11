@@ -1,0 +1,27 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = BoardInfoLib
+  FILE_GUID                      = 88b5ad3d-d7a0-4525-932b-af97f0fe1310
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardInfoLib
+
+[Sources]
+  BoardInfoLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/RaspberryPi/RaspberryPi.dec
+
+[LibraryClasses]
+  FdtPlatformLib
+  FdtLib

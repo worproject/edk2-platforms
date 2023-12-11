@@ -1,0 +1,30 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = FdtPlatformLib
+  FILE_GUID                      = 473305de-3504-4efb-b223-65b845e08ac0
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = FdtPlatformLib
+
+[Sources]
+  FdtPlatformLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  EmbeddedPkg/EmbeddedPkg.dec
+  Platform/RaspberryPi/RaspberryPi.dec
+
+[LibraryClasses]
+  DebugLib
+  FdtLib
+
+[Pcd]
+  gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress

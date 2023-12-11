@@ -1,0 +1,22 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = BoardRevisionHelperLib
+  FILE_GUID                      = 6c0bda11-145b-4dc1-a923-5595135e597c
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = BoardRevisionHelperLib
+
+[Sources]
+  BoardRevisionHelperLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Platform/RaspberryPi/RaspberryPi.dec

@@ -181,6 +181,10 @@
   VariablePolicyHelperLib|MdeModulePkg/Library/VariablePolicyHelperLib/VariablePolicyHelperLib.inf
   GpioLib|Silicon/Broadcom/Bcm283x/Library/GpioLib/GpioLib.inf
 
+  FdtPlatformLib|Platform/RaspberryPi/Library/FdtPlatformLib/FdtPlatformLib.inf
+  BoardInfoLib|Platform/RaspberryPi/Library/BoardInfoLib/BoardInfoLib.inf
+  BoardRevisionHelperLib|Platform/RaspberryPi/Library/BoardRevisionHelperLib/BoardRevisionHelperLib.inf
+
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf

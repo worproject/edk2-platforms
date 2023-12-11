@@ -50,6 +50,7 @@
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq1|0x0|UINT32|0x00000034
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq2|0x0|UINT32|0x00000035
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq3|0x0|UINT32|0x00000036
+  gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0x0|UINT64|0x00000037
 
 [PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
   gRaspberryPiTokenSpaceGuid.PcdCpuClock|0|UINT32|0x0000000d

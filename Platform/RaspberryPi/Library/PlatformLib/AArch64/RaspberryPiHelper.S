@@ -12,6 +12,7 @@
 #include <AsmMacroIoLibV8.h>
 #include <Library/ArmLib.h>
 #include <IndustryStandard/Bcm2836.h>
+#include <IndustryStandard/Bcm2836Mbox.h>
 #include <IndustryStandard/RpiMbox.h>
 
     .macro  drain

@@ -41,7 +41,8 @@
   gRaspberryPiFirmwareProtocolGuid    ## PRODUCES
 
 [FixedPcd]
-  gBcm283xTokenSpaceGuid.PcdBcm283xRegistersAddress
+  gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress
+  gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset
 
 [Depex]
   TRUE

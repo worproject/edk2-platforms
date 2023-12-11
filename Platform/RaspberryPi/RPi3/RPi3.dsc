@@ -446,6 +446,11 @@
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq2|0x09
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq3|0x09
 
+  #
+  # Mailbox
+  #
+  gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0x3f00b880
+
   ## Default Terminal Type
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4

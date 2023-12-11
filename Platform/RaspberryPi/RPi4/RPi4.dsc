@@ -453,6 +453,11 @@
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq3|0x33
 
   #
+  # Mailbox
+  #
+  gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0xfe00b880
+
+  #
   # Fixed CPU settings.
   #
   gRaspberryPiTokenSpaceGuid.PcdCpuLowSpeedMHz|800

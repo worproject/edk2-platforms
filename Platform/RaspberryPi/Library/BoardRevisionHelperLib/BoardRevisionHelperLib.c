@@ -57,6 +57,8 @@ BoardRevisionGetModelFamily (
       case 0x13:          // Raspberry Pi 400
       case 0x14:          // Raspberry Pi Computer Module 4
         return 4;
+      case 0x17:          // Raspberry Pi 5 Model B
+        return 5;
     }
   }
   return 0;
@@ -102,6 +104,8 @@ BoardRevisionGetModelName (
         return "Raspberry Pi 400";
       case 0x14:
         return "Raspberry Pi Compute Module 4";
+      case 0x17:
+        return "Raspberry Pi 5 Model B";
     }
   }
   return "Unknown Raspberry Pi Model";
@@ -147,6 +151,8 @@ BoardRevisionGetProcessorName (
         return "BCM2837 (Arm Cortex-A53)";
       case 0x03:
         return "BCM2711 (Arm Cortex-A72)";
+      case 0x04:
+        return "BCM2712 (Arm Cortex-A76)";
     }
   }
   return "Unknown CPU Model";

@@ -754,7 +754,7 @@ RpiFirmwareAllocFb (
   }
 
   *Pitch = Cmd->Pitch.Pitch;
-  *FbBase = Cmd->AllocFb.AlignmentBase - PcdGet64 (PcdDmaDeviceOffset);
+  *FbBase = Cmd->AllocFb.AlignmentBase & ~PcdGet64 (PcdDmaDeviceOffset);
   *FbSize = Cmd->AllocFb.Size;
   ReleaseSpinLock (&mMailboxLock);
 

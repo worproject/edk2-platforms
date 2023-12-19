@@ -185,12 +185,10 @@ Returns:
 **/
 {
   EFI_STATUS            Status;
-  UINT8                 ErrorCount;
   IPMI_INTERFACE_STATE  InterfaceState;
   UINT8                 Index;
 
   DEBUG ((DEBUG_INFO, "SmmInitializeIpmiKcsPhysicalLayer entry \n"));
-  ErrorCount     = 0;
   InterfaceState = IpmiInterfaceNotReady;
 
   Status = gMmst->MmAllocatePool (

@@ -10,16 +10,16 @@
 [Defines]
   INF_VERSION              = 0x00010005
   BASE_NAME                = BmcAcpiSwChild
-  FILE_GUID                = BB5BEBD1-CE71-4cd0-9E2F-C07886502661
-  MODULE_TYPE              = DXE_SMM_DRIVER
-  PI_SPECIFICATION_VERSION = 0x0001000A
+  FILE_GUID                = 81657b09-61ea-4f4a-ac6a-9f7f4cdd7450
+  MODULE_TYPE              = MM_STANDALONE
+  PI_SPECIFICATION_VERSION = 0x00010032
   VERSION_STRING           = 1.0
-  ENTRY_POINT              = BmcAcpiSwChildSmmEntry
+  ENTRY_POINT              = BmcAcpiSwChildMmEntry
 
 [Sources]
   BmcAcpiSwChild.c
   BmcAcpiSwChild.h
-  BmcAcpiSwChildTraditionalMm.c
+  BmcAcpiSwChildStandaloneMm.c
 
 [Packages]
   IpmiFeaturePkg/IpmiFeaturePkg.dec
@@ -27,7 +27,7 @@
   MdeModulePkg/MdeModulePkg.dec
 
 [LibraryClasses]
-  UefiDriverEntryPoint
+  StandaloneMmDriverEntryPoint
   DebugLib
   MmServicesTableLib
   ServerManagementLib

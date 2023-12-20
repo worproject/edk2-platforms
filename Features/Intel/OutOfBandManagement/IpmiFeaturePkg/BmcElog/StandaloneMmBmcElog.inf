@@ -9,17 +9,17 @@
 
 [Defines]
   INF_VERSION              = 0x00010005
-  BASE_NAME                = SmBmcElog
-  FILE_GUID                = BE29A700-9D5A-4bb9-86B1-D1DB7A05D594
-  MODULE_TYPE              = DXE_SMM_DRIVER
-  PI_SPECIFICATION_VERSION = 0x0001000A
+  BASE_NAME                = SmBmcElogStandaloneMm
+  FILE_GUID                = 802bc368-2f35-4fb5-9675-bf76a7601690
+  MODULE_TYPE              = MM_STANDALONE
+  PI_SPECIFICATION_VERSION = 0x00010032
   VERSION_STRING           = 1.0
-  ENTRY_POINT              = InitializeSmBmcElogLayerSmm
+  ENTRY_POINT              = InitializeSmBmcElogLayerStandaloneMm
 
 [Sources]
   Smm/BmcElog.c
   Smm/BmcElog.h
-  Smm/BmcElogTraditionalMm.c
+  Smm/BmcElogStandaloneMm.c
   Common/BmcElogCommon.h
   Common/BmcElogCommon.c
 
@@ -29,7 +29,7 @@
   MdeModulePkg/MdeModulePkg.dec
 
 [LibraryClasses]
-  UefiDriverEntryPoint
+  StandaloneMmDriverEntryPoint
   DebugLib
   ReportStatusCodeLib
   MmServicesTableLib

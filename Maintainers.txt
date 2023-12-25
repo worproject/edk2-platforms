@@ -347,9 +347,9 @@ M: Chao Li <lichao@loongson.cn>
  
 Marvell platforms and silicon
 F: Platform/Marvell/
-F: Platform/SolidRun/Armada80x0McBin/
+F: Platform/SolidRun/
 F: Silicon/Marvell/
-R: Marcin Wojtas <mw@semihalf.com>
+R: Marcin Wojtas <marcin.s.wojtas@gmail.com>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
 
 Miscellaneous drivers

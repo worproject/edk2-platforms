@@ -88,6 +88,7 @@
 
   BoardModulePkg/Library/BiosIdLib/DxeBiosIdLib.inf
   BoardModulePkg/Library/BiosIdLib/PeiBiosIdLib.inf
+  BoardModulePkg/Library/BiosIdLib/StandaloneMmBiosIdLib.inf
 
   BoardModulePkg/Library/PeiFirmwareBootMediaInfoLib/PeiFirmwareBootMediaInfoLib.inf
   BoardModulePkg/Library/BdsPs2KbcLib/BdsPs2KbcLib.inf

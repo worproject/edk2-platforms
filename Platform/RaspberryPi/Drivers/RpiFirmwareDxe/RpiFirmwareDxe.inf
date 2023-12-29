@@ -11,7 +11,7 @@
   INF_VERSION                    = 0x0001001A
   BASE_NAME                      = RpiFirmwareDxe
   FILE_GUID                      = 6d4628df-49a0-4b67-a325-d5af35c65745
-  MODULE_TYPE                    = DXE_DRIVER
+  MODULE_TYPE                    = DXE_RUNTIME_DRIVER
   VERSION_STRING                 = 1.0
   ENTRY_POINT                    = RpiFirmwareDxeInitialize
 
@@ -29,13 +29,19 @@
   ArmLib
   BaseLib
   BaseMemoryLib
+  CacheMaintenanceLib
   DebugLib
   DmaLib
+  DxeServicesTableLib
   IoLib
   SynchronizationLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
   UefiLib
+  UefiRuntimeLib
+
+[Guids]
+  gEfiEventVirtualAddressChangeGuid
 
 [Protocols]
   gRaspberryPiFirmwareProtocolGuid    ## PRODUCES

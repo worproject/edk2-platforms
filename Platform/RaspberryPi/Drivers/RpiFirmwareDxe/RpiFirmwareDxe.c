@@ -16,25 +16,29 @@
 #include <Library/DmaLib.h>
 #include <Library/BaseLib.h>
 #include <Library/BaseMemoryLib.h>
+#include <Library/CacheMaintenanceLib.h>
 #include <Library/DebugLib.h>
+#include <Library/DxeServicesTableLib.h>
 #include <Library/IoLib.h>
 #include <Library/SynchronizationLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
+#include <Library/UefiRuntimeLib.h>
 
 #include <IndustryStandard/Bcm2836Mbox.h>
 #include <IndustryStandard/RpiMbox.h>
 
 #include <Protocol/RpiFirmware.h>
 
-#define MBOX_BASE_ADDRESS     PcdGet64 (PcdFwMailboxBaseAddress)
-
 //
 // The number of statically allocated buffer pages
 //
 #define NUM_PAGES   1
 
+STATIC UINTN mMboxBaseAddress;
+
 STATIC VOID  *mDmaBuffer;
+STATIC UINTN mDmaBufferSize;
 STATIC VOID  *mDmaBufferMapping;
 STATIC UINTN mDmaBufferBusAddress;
 
@@ -54,12 +58,12 @@ DrainMailbox (
   //
   Tries = 0;
   do {
-    Val = MmioRead32 (MBOX_BASE_ADDRESS + BCM2836_MBOX_STATUS_OFFSET);
+    Val = MmioRead32 (mMboxBaseAddress + BCM2836_MBOX_STATUS_OFFSET);
     if (Val & (1U << BCM2836_MBOX_STATUS_EMPTY)) {
       return TRUE;
     }
     ArmDataSynchronizationBarrier ();
-    MmioRead32 (MBOX_BASE_ADDRESS + BCM2836_MBOX_READ_OFFSET);
+    MmioRead32 (mMboxBaseAddress + BCM2836_MBOX_READ_OFFSET);
   } while (++Tries < RPI_MBOX_MAX_TRIES);
 
   return FALSE;
@@ -79,7 +83,7 @@ MailboxWaitForStatusCleared (
   //
   Tries = 0;
   do {
-    Val = MmioRead32 (MBOX_BASE_ADDRESS + BCM2836_MBOX_STATUS_OFFSET);
+    Val = MmioRead32 (mMboxBaseAddress + BCM2836_MBOX_STATUS_OFFSET);
     if ((Val & StatusMask) == 0) {
       return TRUE;
     }
@@ -119,12 +123,20 @@ MailboxTransaction (
     return EFI_TIMEOUT;
   }
 
+  //
+  // The DMA buffer is initially mapped as WC/Normal-NC, but it
+  // somehow ends up being cached at runtime.
+  //
+  if (EfiAtRuntime ()) {
+    WriteBackDataCacheRange (mDmaBuffer, mDmaBufferSize);
+  }
+
   ArmDataSynchronizationBarrier ();
 
   //
   // Start the mailbox transaction
   //
-  MmioWrite32 (MBOX_BASE_ADDRESS + BCM2836_MBOX_WRITE_OFFSET,
+  MmioWrite32 (mMboxBaseAddress + BCM2836_MBOX_WRITE_OFFSET,
     (UINT32)((UINTN)mDmaBufferBusAddress | Channel));
 
   ArmDataSynchronizationBarrier ();
@@ -138,11 +150,15 @@ MailboxTransaction (
     return EFI_TIMEOUT;
   }
 
+  if (EfiAtRuntime ()) {
+    InvalidateDataCacheRange (mDmaBuffer, mDmaBufferSize);
+  }
+
   //
   // Read back the result
   //
   ArmDataSynchronizationBarrier ();
-  *Result = MmioRead32 (MBOX_BASE_ADDRESS + BCM2836_MBOX_READ_OFFSET);
+  *Result = MmioRead32 (mMboxBaseAddress + BCM2836_MBOX_READ_OFFSET);
   ArmDataSynchronizationBarrier ();
 
   return EFI_SUCCESS;
@@ -1463,6 +1479,20 @@ STATIC RASPBERRY_PI_FIRMWARE_PROTOCOL mRpiFirmwareProtocol = {
   RpiFirmwareSetRtc,
 };
 
+STATIC
+VOID
+EFIAPI
+RpiFirmwareVirtualAddressChangeNotify (
+  IN EFI_EVENT        Event,
+  IN VOID             *Context
+  )
+{
+  EfiConvertPointer (0x0, (VOID **)&mMboxBaseAddress);
+  EfiConvertPointer (0x0, (VOID **)&mDmaBuffer);
+  EfiConvertPointer (0x0, (VOID **)&mRpiFirmwareProtocol.GetRtc);
+  EfiConvertPointer (0x0, (VOID **)&mRpiFirmwareProtocol.SetRtc);
+}
+
 /**
   Initialize the state information for the CPU Architectural Protocol
 
@@ -1481,7 +1511,10 @@ RpiFirmwareDxeInitialize (
   )
 {
   EFI_STATUS      Status;
-  UINTN           BufferSize;
+  UINTN           AlignedMboxAddress;
+  EFI_EVENT       VirtualAddressChangeEvent = NULL;
+
+  mMboxBaseAddress = PcdGet64 (PcdFwMailboxBaseAddress);
 
   //
   // We only need one of these
@@ -1490,14 +1523,14 @@ RpiFirmwareDxeInitialize (
 
   InitializeSpinLock (&mMailboxLock);
 
-  Status = DmaAllocateBuffer (EfiBootServicesData, NUM_PAGES, &mDmaBuffer);
+  Status = DmaAllocateBuffer (EfiRuntimeServicesData, NUM_PAGES, &mDmaBuffer);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: failed to allocate DMA buffer (Status == %r)\n", __FUNCTION__));
     return Status;
   }
 
-  BufferSize = EFI_PAGES_TO_SIZE (NUM_PAGES);
-  Status = DmaMap (MapOperationBusMasterCommonBuffer, mDmaBuffer, &BufferSize,
+  mDmaBufferSize = EFI_PAGES_TO_SIZE (NUM_PAGES);
+  Status = DmaMap (MapOperationBusMasterCommonBuffer, mDmaBuffer, &mDmaBufferSize,
              &mDmaBufferBusAddress, &mDmaBufferMapping);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: failed to map DMA buffer (Status == %r)\n", __FUNCTION__));
@@ -1517,6 +1550,42 @@ RpiFirmwareDxeInitialize (
     DEBUG ((DEBUG_ERROR,
       "%a: failed to install RPI firmware protocol (Status == %r)\n",
       __FUNCTION__, Status));
+    goto UnmapBuffer;
+  }
+
+  AlignedMboxAddress = mMboxBaseAddress & ~(EFI_PAGE_SIZE - 1);
+
+  Status = gDS->AddMemorySpace (
+                  EfiGcdMemoryTypeMemoryMappedIo,
+                  AlignedMboxAddress,
+                  EFI_PAGE_SIZE,
+                  EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: AddMemorySpace failed. Status=%r\n",
+            __FUNCTION__, Status));
+    goto UnmapBuffer;
+  }
+
+  Status = gDS->SetMemorySpaceAttributes (
+                  AlignedMboxAddress,
+                  EFI_PAGE_SIZE,
+                  EFI_MEMORY_UC | EFI_MEMORY_RUNTIME);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: SetMemorySpaceAttributes failed. Status=%r\n",
+            __FUNCTION__, Status));
+    goto UnmapBuffer;
+  }
+
+  Status = gBS->CreateEventEx (
+                  EVT_NOTIFY_SIGNAL,
+                  TPL_NOTIFY,
+                  RpiFirmwareVirtualAddressChangeNotify,
+                  NULL,
+                  &gEfiEventVirtualAddressChangeGuid,
+                  &VirtualAddressChangeEvent);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to register for virtual address change. Status=%r\n",
+            __func__, Status));
     goto UnmapBuffer;
   }
 

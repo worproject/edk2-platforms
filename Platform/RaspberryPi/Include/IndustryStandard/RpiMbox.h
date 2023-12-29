@@ -93,6 +93,7 @@
 #define RPI_MBOX_GET_POE_HAT_VAL                              0x00030049
 #define RPI_MBOX_SET_POE_HAT_VAL                              0x00030050
 #define RPI_MBOX_NOTIFY_XHCI_RESET                            0x00030058
+#define RPI_MBOX_GET_RTC_REG                                  0x00030087
 
 #define RPI_MBOX_SET_CLOCK_STATE                              0x00038001
 #define RPI_MBOX_SET_CLOCK_RATE                               0x00038002
@@ -104,6 +105,7 @@
 #define RPI_MBOX_SET_SDHOST_CLOCK                             0x00038042
 #define RPI_MBOX_SET_GPIO_CONFIG                              0x00038043
 #define RPI_MBOX_SET_PERIPH_REG                               0x00038045
+#define RPI_MBOX_SET_RTC_REG                                  0x00038087
 
 #define RPI_MBOX_ALLOC_FB                                     0x00040001
 #define RPI_MBOX_FB_BLANK                                     0x00040002

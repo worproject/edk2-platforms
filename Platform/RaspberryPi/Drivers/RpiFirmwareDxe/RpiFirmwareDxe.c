@@ -1,5 +1,6 @@
 /** @file
  *
+ *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
  *  Copyright (c) 2020, Pete Batard <pete@akeo.ie>
  *  Copyright (c) 2019, ARM Limited. All rights reserved.
  *  Copyright (c) 2017-2020, Andrei Warkentin <andrey.warkentin@gmail.com>
@@ -1332,6 +1333,111 @@ RpiFirmwareNotifyGpioSetCfg (
   return Status;
 }
 
+
+#pragma pack()
+typedef struct {
+  UINT32                    Register;
+  UINT32                    Value;
+} RPI_FW_RTC_TAG;
+
+typedef struct {
+  RPI_FW_BUFFER_HEAD        BufferHead;
+  RPI_FW_TAG_HEAD           TagHead;
+  RPI_FW_RTC_TAG            TagBody;
+  UINT32                    EndTag;
+} RPI_FW_RTC_CMD;
+#pragma pack()
+
+STATIC
+EFI_STATUS
+EFIAPI
+RpiFirmwareGetRtc (
+  IN   RASPBERRY_PI_RTC_REGISTER  Register,
+  OUT  UINT32                     *Value
+  )
+{
+  RPI_FW_RTC_CMD               *Cmd;
+  EFI_STATUS                   Status;
+  UINT32                       Result;
+
+  if (!AcquireSpinLockOrFail (&mMailboxLock)) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to acquire spinlock\n", __FUNCTION__));
+    return EFI_DEVICE_ERROR;
+  }
+
+  Cmd = mDmaBuffer;
+  ZeroMem (Cmd, sizeof (*Cmd));
+
+  Cmd->BufferHead.BufferSize  = sizeof (*Cmd);
+  Cmd->BufferHead.Response    = 0;
+  Cmd->TagHead.TagId          = RPI_MBOX_GET_RTC_REG;
+  Cmd->TagHead.TagSize        = sizeof (Cmd->TagBody);
+  Cmd->TagHead.TagValueSize   = 0;
+  Cmd->TagBody.Register       = Register;
+  Cmd->TagBody.Value          = 0;
+  Cmd->EndTag                 = 0;
+
+  Status = MailboxTransaction (Cmd->BufferHead.BufferSize, RPI_MBOX_VC_CHANNEL, &Result);
+
+  if (EFI_ERROR (Status) ||
+      Cmd->BufferHead.Response != RPI_MBOX_RESP_SUCCESS) {
+    DEBUG ((DEBUG_ERROR,
+      "%a: mailbox  transaction error: Status == %r, Response == 0x%x\n",
+      __FUNCTION__, Status, Cmd->BufferHead.Response));
+    Status = EFI_DEVICE_ERROR;
+  } else {
+    *Value = Cmd->TagBody.Value;
+  }
+
+  ReleaseSpinLock (&mMailboxLock);
+
+  return Status;
+}
+
+STATIC
+EFI_STATUS
+EFIAPI
+RpiFirmwareSetRtc (
+  IN   RASPBERRY_PI_RTC_REGISTER  Register,
+  IN   UINT32                     Value
+  )
+{
+  RPI_FW_RTC_CMD               *Cmd;
+  EFI_STATUS                   Status;
+  UINT32                       Result;
+
+  if (!AcquireSpinLockOrFail (&mMailboxLock)) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to acquire spinlock\n", __FUNCTION__));
+    return EFI_DEVICE_ERROR;
+  }
+
+  Cmd = mDmaBuffer;
+  ZeroMem (Cmd, sizeof (*Cmd));
+
+  Cmd->BufferHead.BufferSize  = sizeof (*Cmd);
+  Cmd->BufferHead.Response    = 0;
+  Cmd->TagHead.TagId          = RPI_MBOX_SET_RTC_REG;
+  Cmd->TagHead.TagSize        = sizeof (Cmd->TagBody);
+  Cmd->TagHead.TagValueSize   = 0;
+  Cmd->TagBody.Register       = Register;
+  Cmd->TagBody.Value          = Value;
+  Cmd->EndTag                 = 0;
+
+  Status = MailboxTransaction (Cmd->BufferHead.BufferSize, RPI_MBOX_VC_CHANNEL, &Result);
+
+  if (EFI_ERROR (Status) ||
+      Cmd->BufferHead.Response != RPI_MBOX_RESP_SUCCESS) {
+    DEBUG ((DEBUG_ERROR,
+      "%a: mailbox  transaction error: Status == %r, Response == 0x%x\n",
+      __FUNCTION__, Status, Cmd->BufferHead.Response));
+    Status = EFI_DEVICE_ERROR;
+  }
+
+  ReleaseSpinLock (&mMailboxLock);
+
+  return Status;
+}
+
 STATIC RASPBERRY_PI_FIRMWARE_PROTOCOL mRpiFirmwareProtocol = {
   RpiFirmwareSetPowerState,
   RpiFirmwareGetMacAddress,
@@ -1352,7 +1458,9 @@ STATIC RASPBERRY_PI_FIRMWARE_PROTOCOL mRpiFirmwareProtocol = {
   RpiFirmwareNotifyXhciReset,
   RpiFirmwareGetCurrentClockState,
   RpiFirmwareSetClockState,
-  RpiFirmwareNotifyGpioSetCfg
+  RpiFirmwareNotifyGpioSetCfg,
+  RpiFirmwareGetRtc,
+  RpiFirmwareSetRtc,
 };
 
 /**

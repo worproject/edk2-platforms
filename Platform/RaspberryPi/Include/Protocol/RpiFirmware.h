@@ -1,5 +1,6 @@
 /** @file
  *
+ *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
  *  Copyright (c) 2019, ARM Limited. All rights reserved.
  *  Copyright (c) 2017 - 2020, Andrei Warkentin <andrey.warkentin@gmail.com>
  *  Copyright (c) 2016, Linaro Limited. All rights reserved.
@@ -13,6 +14,17 @@
 
 #define RASPBERRY_PI_FIRMWARE_PROTOL_GUID \
   { 0x0ACA9535, 0x7AD0, 0x4286, { 0xB0, 0x2E, 0x87, 0xFA, 0x7E, 0x2A, 0x57, 0x11 } }
+
+typedef enum {
+	RpiRtcTime = 0,
+	RpiRtcAlarm,
+	RpiRtcAlarmPending,
+	RpiRtcAlarmEnable,
+	RpiRtcBatteryChargeVoltage,
+	RpiRtcBatteryChargeVoltageMin,
+	RpiRtcBatteryChargeVoltageMax,
+	RpiRtcBatteryVoltage,
+} RASPBERRY_PI_RTC_REGISTER;
 
 typedef
 EFI_STATUS
@@ -141,6 +153,20 @@ EFI_STATUS
   UINTN State
   );
 
+typedef
+EFI_STATUS
+(EFIAPI *GET_RTC) (
+  IN   RASPBERRY_PI_RTC_REGISTER  Register,
+  OUT  UINT32                     *Value
+  );
+
+typedef
+EFI_STATUS
+(EFIAPI *SET_RTC) (
+  IN   RASPBERRY_PI_RTC_REGISTER  Register,
+  IN   UINT32                     Value
+  );
+
 typedef struct {
   SET_POWER_STATE        SetPowerState;
   GET_MAC_ADDRESS        GetMacAddress;
@@ -162,6 +188,8 @@ typedef struct {
   GET_CLOCK_STATE        GetClockState;
   SET_CLOCK_STATE        SetClockState;
   GPIO_SET_CFG           SetGpioConfig;
+  GET_RTC                GetRtc;
+  SET_RTC                SetRtc;
 } RASPBERRY_PI_FIRMWARE_PROTOCOL;
 
 extern EFI_GUID gRaspberryPiFirmwareProtocolGuid;

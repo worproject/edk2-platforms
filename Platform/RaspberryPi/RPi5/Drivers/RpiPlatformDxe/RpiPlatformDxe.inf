@@ -16,6 +16,9 @@
 
 [Sources]
   RpiPlatformDxe.c
+  RpiPlatformDxeHii.uni
+  RpiPlatformDxeHii.vfr
+  ConfigTable.c
   Peripherals.c
 
 [Packages]
@@ -23,18 +26,29 @@
   MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   Platform/RaspberryPi/RaspberryPi.dec
+  Platform/RaspberryPi/RPi5/RPi5.dec
   Silicon/Broadcom/BroadcomPkg.dec
   Silicon/Broadcom/Bcm27xx/Bcm27xx.dec
 
 [LibraryClasses]
+  AcpiLib
   DebugLib
+  DevicePathLib
+  HiiLib
   UefiLib
   UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
   UefiDriverEntryPoint
   Bcm2712GpioLib
 
+[Guids]
+  gRpiPlatformFormSetGuid
+
 [Protocols]
+  gEfiAcpiSdtProtocolGuid                     ## CONSUMES
   gBrcmStbSdhciDeviceProtocolGuid             ## PRODUCES
 
 [Depex]
-  TRUE
+  gEfiVariableArchProtocolGuid
+  AND gEfiVariableWriteArchProtocolGuid
+  AND gEfiAcpiSdtProtocolGuid

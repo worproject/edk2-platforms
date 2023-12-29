@@ -9,6 +9,15 @@
 #ifndef __BCM2712_H__
 #define __BCM2712_H__
 
+#define BCM2712_IO_BASE                                   0x1000000000
+#define BCM2712_IO_LENGTH                                 0x1000000000
+
+#define BCM2712_LEGACY_BUS_BASE                           0x107c000000
+#define BCM2712_LEGACY_BUS_LENGTH                         0x4000000
+
+#define BCM2712_PL011_UART0_BASE                          0x107d001000
+#define BCM2712_PL011_LENGTH                              0x200
+
 #define BCM2712_BRCMSTB_GIO_BASE                          0x107d508500
 #define BCM2712_BRCMSTB_GIO_LENGTH                        0x40
 #define BCM2712_BRCMSTB_GIO_AON_BASE                      0x107d517c00

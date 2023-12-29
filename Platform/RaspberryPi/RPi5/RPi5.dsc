@@ -416,6 +416,7 @@
 
   # UARTs
   gArmPlatformTokenSpaceGuid.PL011UartClkInHz|44000000
+  gArmPlatformTokenSpaceGuid.PL011UartInterrupt|153
   gEfiMdePkgTokenSpaceGuid.PcdUartDefaultBaudRate|115200
   gEfiMdeModulePkgTokenSpaceGuid.PcdSerialRegisterBase|0x107d001000
 
@@ -581,7 +582,7 @@
   #
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-  # Platform/RaspberryPi/AcpiTables/AcpiTables.inf
+  Platform/RaspberryPi/RPi5/AcpiTables/AcpiTables.inf
 
   #
   # SMBIOS Support

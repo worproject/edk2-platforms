@@ -1,0 +1,44 @@
+/** @file
+ *
+ *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ **/
+
+#langdef en-US  "English"
+
+#string STR_NULL_STRING                                    #language en-US ""
+
+#string STR_FORM_SET_TITLE                                 #language en-US "Raspberry Pi Configuration"
+#string STR_FORM_SET_TITLE_HELP                            #language en-US "Configure various platform settings."
+#string STR_FORM_SET_TITLE_SUBTITLE                        #language en-US "Configuration Options"
+
+/*
+ * ACPI / Device Tree configuration
+ */
+#string STR_CONFIG_TABLE_FORM_TITLE                        #language en-US "ACPI / Device Tree"
+#string STR_CONFIG_TABLE_FORM_HELP                         #language en-US "Configure the ACPI and Device Tree system tables support."
+
+#string STR_CONFIG_TABLE_ACPI_SUBTITLE                     #language en-US "ACPI Configuration"
+
+#string STR_ACPI_SD_SUBTITLE                               #language en-US "Broadcom SD Host Controller"
+
+#string STR_ACPI_SD_COMPAT_MODE_PROMPT                     #language en-US "Compatibility Mode"
+#string STR_ACPI_SD_COMPAT_MODE_HELP                       #language en-US "Configure how the device presents to the OS.\n\n"
+                                                                           "This SD controller shares some quirks with the Intel Bay Trail series and can reuse its existing OS driver support.\n"
+                                                                           "The modes available are:\n"
+                                                                           " - BRCMSTB + Bay Trail: the device is exposed primarily as a Broadcom controller but compatible with Bay Trail. Provides maximum compatibility at reduced speed, while allowing OSes to provide tailored driver support in the future. Validated with Windows, Linux and FreeBSD.\n"
+                                                                           " - Full Bay Trail: the device is exposed as fully compliant to Bay Trail. This is only necessary for Linux to use the appropriate workarounds and unlock higher speeds (DDR50). However, it will prevent drivers from identifying the device as Broadcom and potentially offering more specific support."
+
+#string STR_ACPI_SD_COMPAT_BRCMSTB_BAYTRAIL                #language en-US "BRCMSTB + Bay Trail"
+#string STR_ACPI_SD_COMPAT_FULL_BAYTRAIL                   #language en-US "Full Bay Trail"
+
+#string STR_ACPI_SD_LIMIT_UHS_PROMPT                       #language en-US "Limit UHS-I Modes"
+#string STR_ACPI_SD_LIMIT_UHS_HELP                         #language en-US "Limit UHS-I modes to the maximum supported default.\n\n"
+                                                                           "Due to another bug in the SD controller, modes that require tuning (SDR104/50) need hardware retuning to be disabled by the host driver.\n\n"
+                                                                           "For Windows: speed is limited to DDR50. Disabling this limit is not safe and will crash the system when an UHS-I SDR card is connected. A 3rd party driver is required instead.\n\n"
+                                                                           "For Linux:\n"
+                                                                           "- in 'BRCMSTB + Bay Trail' mode, speed is limited to HS. Disabling this limit is not possible.\n"
+                                                                           "- in 'Full Bay Trail' mode, speed is increased to DDR50. It also becomes possible to disable all other UHS-I limitations.\n\n"
+                                                                           "For FreeBSD: speed falls back to HS. This option has no effect."

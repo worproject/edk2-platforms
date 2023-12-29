@@ -1,0 +1,19 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = RPi5
+  PACKAGE_GUID                   = d4f34c69-5f19-4dbc-a4cb-02163197e35e
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gRpiPlatformFormSetGuid = { 0x677a7ac5, 0x7d92, 0x4288, { 0x8b, 0xf0, 0x97, 0x04, 0x81, 0x02, 0xd1, 0x1c } }

@@ -1,0 +1,22 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = BroadcomPkg
+  PACKAGE_GUID                   = b25a0fef-f089-420f-98f2-adb9b9a34b18
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gBroadcomTokenSpaceGuid = { 0xe49c8829, 0xfd87, 0x40cd, { 0x99, 0xf4, 0x61, 0x08, 0x15, 0x92, 0x76, 0x4e } }
+
+[Protocols]
+  gBrcmStbSdhciDeviceProtocolGuid = { 0xd6c196f9, 0x9c8c, 0x448f, { 0xbd, 0x21, 0xd9, 0x76, 0xa8, 0x3a, 0x82, 0x7f } }

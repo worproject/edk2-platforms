@@ -1,0 +1,39 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = BrcmStbSdhciDxe
+  FILE_GUID                      = d72a2469-f274-48e1-9bcb-3a28a2a09234
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = BrcmStbSdhciDxeInitialize
+
+[Sources]
+  BrcmStbSdhciDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Broadcom/BroadcomPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  NonDiscoverableDeviceRegistrationLib
+  UefiLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Protocols]
+  gEdkiiNonDiscoverableDeviceProtocolGuid         ## PRODUCES
+  gEdkiiSdMmcOverrideProtocolGuid                 ## PRODUCES
+  gBrcmStbSdhciDeviceProtocolGuid                 ## CONSUMES
+
+[Depex]
+  TRUE

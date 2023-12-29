@@ -1,0 +1,26 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = Bcm2712GpioLib
+  FILE_GUID                      = 86a00ea0-6c21-4408-b8c7-3ae675c4678b
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = Bcm2712GpioLib
+
+[Sources]
+  Bcm2712GpioLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  Silicon/Broadcom/Bcm27xx/Bcm27xx.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib

@@ -186,6 +186,8 @@
   BoardInfoLib|Platform/RaspberryPi/Library/BoardInfoLib/BoardInfoLib.inf
   BoardRevisionHelperLib|Platform/RaspberryPi/Library/BoardRevisionHelperLib/BoardRevisionHelperLib.inf
 
+  NonDiscoverableDeviceRegistrationLib|MdeModulePkg/Library/NonDiscoverableDeviceRegistrationLib/NonDiscoverableDeviceRegistrationLib.inf
+
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
   BaseMemoryLib|MdePkg/Library/BaseMemoryLib/BaseMemoryLib.inf
@@ -434,6 +436,11 @@
   #
   gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0x107c013880
 
+  #
+  # RP1 BAR1 preconfigured by the VPU
+  #
+  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar|0x1f00000000
+
   ## Default Terminal Type
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
   gEfiMdePkgTokenSpaceGuid.PcdDefaultTerminalType|4
@@ -634,11 +641,17 @@
   ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
   # MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
+  MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
   EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf {
     <PcdsFixedAtBuild>
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset|0x00000000
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0xbfffffff
   }
+
+  #
+  # RP1 I/O bridge
+  #
+  Silicon/RaspberryPi/RpiSiliconPkg/Drivers/Rp1BusDxe/Rp1BusDxe.inf
 
   #
   # NVMe boot devices

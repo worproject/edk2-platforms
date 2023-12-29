@@ -1,0 +1,39 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001A
+  BASE_NAME                      = Rp1BusDxe
+  FILE_GUID                      = 7d4843f2-f474-40b1-87de-4d67fad8b00f
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = Rp1BusDxeEntryPoint
+
+[Sources]
+  Rp1BusDxe.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/RaspberryPi/RpiSiliconPkg/RpiSiliconPkg.dec
+
+[LibraryClasses]
+  DebugLib
+  IoLib
+  NonDiscoverableDeviceRegistrationLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+
+[Protocols]
+
+[Pcd]
+  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar
+
+[Depex]
+  TRUE

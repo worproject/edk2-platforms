@@ -1,0 +1,22 @@
+#/** @file
+#
+#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  DEC_SPECIFICATION              = 0x0001001A
+  PACKAGE_NAME                   = RpiSiliconPkg
+  PACKAGE_GUID                   = 6dd4364e-9b8a-449e-b0a7-60095c5a0f15
+  PACKAGE_VERSION                = 1.0
+
+[Includes]
+  Include
+
+[Guids]
+  gRpiSiliconTokenSpaceGuid = { 0x0b3ce57a, 0xa82b, 0x4ada, { 0x8f, 0xb5, 0x52, 0xc8, 0x72, 0x30, 0x1f, 0xdb } }
+
+[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
+  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar|0x0|UINT64|0x00000001

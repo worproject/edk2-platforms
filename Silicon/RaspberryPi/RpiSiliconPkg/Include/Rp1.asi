@@ -1,0 +1,60 @@
+/** @file
+ *
+ *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ **/
+
+#include <Rp1.h>
+
+#define RP1_QWORDMEMORY_BUF(Index)                              \
+  QWordMemory (ResourceConsumer,,                               \
+    MinFixed, MaxFixed, NonCacheable, ReadWrite,                \
+    0x0, 0x0, 0x0, 0x0, 0x1,,, RB ## Index)
+
+#define RP1_QWORDMEMORY_SET(Index, Offset, Length)              \
+  CreateQwordField (RBUF, RB ## Index._MIN, MI ## Index)        \
+  CreateQwordField (RBUF, RB ## Index._MAX, MA ## Index)        \
+  CreateQwordField (RBUF, RB ## Index._LEN, LE ## Index)        \
+  LE ## Index = Length                                          \
+  MI ## Index = PBAR + Offset                                   \
+  MA ## Index = MI ## Index + LE ## Index - 1
+
+#define RP1_INTERRUPT_BUF(Index)                                \
+  Interrupt (ResourceConsumer, Level, ActiveHigh, Shared,,,     \
+             RB ## Index) { 0 }                                 \
+
+#define RP1_INTERRUPT_SET(Index)                                \
+  CreateDwordField (RBUF, RB ## Index._INT, IN ## Index)        \
+  IN ## Index = PINT
+
+Device (XHC0) {
+  Name (_HID, "PNP0D10")
+  Name (_UID, 0x0)
+
+  Method (_CRS, 0, Serialized) {
+    Name (RBUF, ResourceTemplate () {
+      RP1_QWORDMEMORY_BUF (00)
+      RP1_INTERRUPT_BUF (01)
+    })
+    RP1_QWORDMEMORY_SET (00, RP1_USBHOST0_BASE, RP1_USBHOST_SIZE)
+    RP1_INTERRUPT_SET (01)
+    Return (RBUF)
+  }
+}
+
+Device (XHC1) {
+  Name (_HID, "PNP0D10")
+  Name (_UID, 0x1)
+
+  Method (_CRS, 0, Serialized) {
+    Name (RBUF, ResourceTemplate () {
+      RP1_QWORDMEMORY_BUF (00)
+      RP1_INTERRUPT_BUF (01)
+    })
+    RP1_QWORDMEMORY_SET (00, RP1_USBHOST1_BASE, RP1_USBHOST_SIZE)
+    RP1_INTERRUPT_SET (01)
+    Return (RBUF)
+  }
+}

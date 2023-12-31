@@ -31,6 +31,9 @@
 
 !include MdePkg/MdeLibs.dsc.inc
 
+[Components.common]
+  Silicon/Marvell/Armada7k8k/DeviceTree/Armada80x0Db.inf
+
 [Components.AARCH64]
   Silicon/Marvell/Armada7k8k/AcpiTables/Armada80x0Db.inf
 

@@ -228,6 +228,9 @@
   # Platform driver
   Platform/ARM/N1Sdp/Drivers/PlatformDxe/PlatformDxe.inf
 
+  # PEI Phase modules
+  Silicon/ARM/NeoverseN1Soc/Library/N1SdpNtFwConfigPei/NtFwConfigPei.inf
+
   # Human Interface Support
   MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 

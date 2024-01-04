@@ -1,0 +1,41 @@
+## @file
+#  This PEI module parse the NtFwConfig for N1Sdp platform and produce
+#  the PPI and HOB.
+#
+#  Copyright (c) 2024, ARM Limited. All rights reserved.<BR>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+##
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = N1SdpNtFwConfigPei
+  FILE_GUID                      = CE76D56C-D3A5-4763-9138-DF09E1D1B614
+  MODULE_TYPE                    = PEIM
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = NtFwConfigPeEntryPoint
+
+[Sources]
+  NtFwConfigPei.c
+
+[Packages]
+  EmbeddedPkg/EmbeddedPkg.dec
+  MdePkg/MdePkg.dec
+  Silicon/ARM/NeoverseN1Soc/NeoverseN1Soc.dec
+
+[LibraryClasses]
+  DebugLib
+  FdtLib
+  HobLib
+  PeimEntryPoint
+
+[Ppis]
+  gArmNeoverseN1SocPlatformInfoDescriptorPpiGuid
+  gArmNeoverseN1SocParameterPpiGuid
+
+[Guids]
+  gArmNeoverseN1SocPlatformInfoDescriptorGuid
+
+[Depex]
+  gArmNeoverseN1SocParameterPpiGuid

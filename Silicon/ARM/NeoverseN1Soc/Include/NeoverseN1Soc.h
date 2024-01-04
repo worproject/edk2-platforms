@@ -1,6 +1,6 @@
 /** @file
 *
-* Copyright (c) 2018 - 2020, ARM Limited. All rights reserved.
+* Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.
 *
 * SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -55,12 +55,15 @@
 typedef struct {
   /*! 0 - Single Chip, 1 - Chip to Chip (C2C) */
   UINT8   MultichipMode;
-  /*! Slave count in C2C mode */
-  UINT8   SlaveCount;
+  /*! Secondary chip count in C2C mode */
+  UINT8   SecondaryChipCount;
   /*! Local DDR memory size in GigaBytes */
   UINT8   LocalDdrSize;
   /*! Remote DDR memory size in GigaBytes */
   UINT8   RemoteDdrSize;
 } NEOVERSEN1SOC_PLAT_INFO;
 
+typedef struct {
+  CONST VOID    *NtFwConfig;
+} NEOVERSEN1SOC_EL3_FW_HANDOFF_PARAM_PPI;
 #endif

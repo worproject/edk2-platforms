@@ -1,7 +1,7 @@
 ## @file
 #  Describes the entire platform configuration.
 #
-#  Copyright (c) 2018 - 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -83,3 +83,6 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio32Translation|0x40000000000|UINT64|0x0000004F
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio64Translation|0x40000000000|UINT64|0x00000050
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieSegmentNumber|2|UINT32|0x00000051
+
+[Ppis]
+  gArmNeoverseN1SocParameterPpiGuid = { 0x4DDD5A72, 0x31AD, 0x4B20, { 0x8F, 0x5F, 0xB3, 0xE8, 0x24, 0x6F, 0x80, 0x2B } }

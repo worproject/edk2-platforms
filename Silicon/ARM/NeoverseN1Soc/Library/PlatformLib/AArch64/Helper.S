@@ -1,6 +1,6 @@
 /** @file
 *
-*  Copyright (c) 2019 - 2020, ARM Limited. All rights reserved.
+*  Copyright (c) 2019 - 2024, ARM Limited. All rights reserved.
 *
 *  SPDX-License-Identifier: BSD-2-Clause-Patent
 *
@@ -25,6 +25,8 @@ GCC_ASM_EXPORT(ArmPlatformIsPrimaryCore)
 // the UEFI firmware through the CPU registers.
 //
 ASM_PFX(ArmPlatformPeiBootAction):
+  adr  x10, gArgNtFwConfigDtPtr
+  str  x0, [x10]
   ret
 
 //

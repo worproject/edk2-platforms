@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2018-2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -8,7 +8,11 @@
 
 #include <Library/ArmPlatformLib.h>
 #include <Library/BaseLib.h>
+#include <NeoverseN1Soc.h>
 #include <Ppi/ArmMpCoreInfo.h>
+
+UINT64  gArgNtFwConfigDtPtr;
+STATIC  NEOVERSEN1SOC_EL3_FW_HANDOFF_PARAM_PPI mNeoverseN1SocParameterPpi;
 
 STATIC ARM_CORE_INFO mCoreInfoTable[] = {
   { 0x0, 0x0 }, // Cluster 0, Core 0
@@ -46,6 +50,7 @@ ArmPlatformInitialize (
   IN     UINTN                  MpId
   )
 {
+  mNeoverseN1SocParameterPpi.NtFwConfig = (VOID *)gArgNtFwConfigDtPtr;
   return RETURN_SUCCESS;
 }
 
@@ -80,6 +85,11 @@ EFI_PEI_PPI_DESCRIPTOR gPlatformPpiTable[] = {
     EFI_PEI_PPI_DESCRIPTOR_PPI,
     &gArmMpCoreInfoPpiGuid,
     &mMpCoreInfoPpi
+  },
+  {
+    EFI_PEI_PPI_DESCRIPTOR_PPI,
+    &gArmNeoverseN1SocParameterPpiGuid,
+    &mNeoverseN1SocParameterPpi
   }
 };
 

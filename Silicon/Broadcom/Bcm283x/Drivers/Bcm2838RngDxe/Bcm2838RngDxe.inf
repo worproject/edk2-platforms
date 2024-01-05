@@ -40,7 +40,7 @@
   gEfiRngAlgorithmRaw
 
 [FixedPcd]
-  gBcm283xTokenSpaceGuid.PcdBcm283xRegistersAddress
+  gBcm283xTokenSpaceGuid.PcdBcm2838RngBaseAddress
 
 [Depex]
   TRUE

@@ -439,6 +439,11 @@
   gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0x107c013880
 
   #
+  # RNG
+  #
+  gBcm283xTokenSpaceGuid.PcdBcm2838RngBaseAddress|0x107d208000
+
+  #
   # RP1 BAR1 preconfigured by the VPU
   #
   gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar|0x1f00000000
@@ -643,7 +648,7 @@
   #
   # RNG
   #
-  # Silicon/Broadcom/Bcm283x/Drivers/Bcm2838RngDxe/Bcm2838RngDxe.inf
+  Silicon/Broadcom/Bcm283x/Drivers/Bcm2838RngDxe/Bcm2838RngDxe.inf
 
   #
   # PCI Support

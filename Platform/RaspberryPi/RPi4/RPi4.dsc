@@ -462,6 +462,11 @@
   gRaspberryPiTokenSpaceGuid.PcdFwMailboxBaseAddress|0xfe00b880
 
   #
+  # RNG
+  #
+  gBcm283xTokenSpaceGuid.PcdBcm2838RngBaseAddress|0x7e104000
+
+  #
   # Fixed CPU settings.
   #
   gRaspberryPiTokenSpaceGuid.PcdCpuLowSpeedMHz|800

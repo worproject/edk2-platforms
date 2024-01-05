@@ -24,6 +24,8 @@
 #define RNG_WARMUP_COUNT        0x40000
 #define RNG_MAX_RETRIES         0x100         // arbitrary upper bound
 
+STATIC EFI_PHYSICAL_ADDRESS     mRngBase;
+
 /**
   Returns information about the random number generation implementation.
 
@@ -110,7 +112,7 @@ Bcm2838RngReadValue (
 
   ASSERT (Val != NULL);
 
-  Avail = MmioRead32 (RNG_FIFO_COUNT) & RNG_FIFO_DATA_AVAIL_MASK;
+  Avail = MmioRead32 (mRngBase + RNG_FIFO_COUNT) & RNG_FIFO_DATA_AVAIL_MASK;
 
   //
   // If we don't have a value ready, wait 1 us and retry.
@@ -131,13 +133,13 @@ Bcm2838RngReadValue (
   //
   for (i = 0; Avail < 1 && i < RNG_MAX_RETRIES; i++) {
     MicroSecondDelay (1);
-    Avail = MmioRead32 (RNG_FIFO_COUNT) & RNG_FIFO_DATA_AVAIL_MASK;
+    Avail = MmioRead32 (mRngBase + RNG_FIFO_COUNT) & RNG_FIFO_DATA_AVAIL_MASK;
   }
   if (Avail < 1) {
     return EFI_NOT_READY;
   }
 
-  *Val = MmioRead32 (RNG_FIFO_DATA);
+  *Val = MmioRead32 (mRngBase + RNG_FIFO_DATA);
 
   return EFI_SUCCESS;
 }
@@ -246,6 +248,8 @@ Bcm2838RngEntryPoint (
 {
   EFI_STATUS      Status;
 
+  mRngBase = PcdGet64 (PcdBcm2838RngBaseAddress);
+
   Status = gBS->InstallMultipleProtocolInterfaces (&ImageHandle,
                   &gEfiRngProtocolGuid, &mBcm2838RngProtocol,
                   NULL);
@@ -257,7 +261,7 @@ Bcm2838RngEntryPoint (
   // This results in the RNG holding off from populating any value into the
   // FIFO until the value below has been reached in RNG_BIT_COUNT.
   //
-  MmioWrite32 (RNG_BIT_COUNT_THRESHOLD, RNG_WARMUP_COUNT);
+  MmioWrite32 (mRngBase + RNG_BIT_COUNT_THRESHOLD, RNG_WARMUP_COUNT);
 
   //
   // We would disable RNG interrupts here... if we had access to the datasheet.
@@ -278,7 +282,7 @@ Bcm2838RngEntryPoint (
   // instead of single bits, which may be unintended. But since we don't have
   // any public documentation on what each of these bits do, we follow suit.
   //
-  MmioWrite32 (RNG_CTRL,
+  MmioWrite32 (mRngBase + RNG_CTRL,
     RNG_CTRL_ENABLE_MASK | (3 << RNG_CTRL_SAMPLE_RATE_DIVISOR_SHIFT));
 
   return EFI_SUCCESS;

@@ -14,6 +14,7 @@
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Protocol/AcpiSystemDescriptionTable.h>
 #include <RpiPlatformVarStoreData.h>
+#include <ConfigVars.h>
 
 #include "ConfigTable.h"
 
@@ -108,6 +109,12 @@ ApplyConfigTableVariables (
 {
   EFI_STATUS Status;
 
+  if (PcdGet32 (PcdSystemTableMode) != SYSTEM_TABLE_MODE_ACPI
+      && PcdGet32 (PcdSystemTableMode) != SYSTEM_TABLE_MODE_BOTH) {
+    // FDT is taken care of by FdtDxe.
+    return;
+  }
+
   Status = LocateAndInstallAcpiFromFvConditional (&mAcpiTableFile, NULL);
   if (EFI_ERROR (Status)) {
     DEBUG ((DEBUG_ERROR, "%a: Failed to install ACPI tables!\n"));
@@ -128,6 +135,7 @@ SetupConfigTableVariables (
 {
   EFI_STATUS    Status;
   UINTN         Size;
+  UINT32        Var32;
 
   AcpiSdCompatMode.Value = ACPI_SD_COMPAT_MODE_DEFAULT;
   AcpiSdLimitUhs.Value = ACPI_SD_LIMIT_UHS_DEFAULT;
@@ -157,6 +165,15 @@ SetupConfigTableVariables (
                     EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS,
                     Size,
                     &AcpiSdLimitUhs);
+    ASSERT_EFI_ERROR (Status);
+  }
+
+  Size = sizeof (UINT32);
+  Status = gRT->GetVariable (L"SystemTableMode",
+                  &gRpiPlatformFormSetGuid,
+                  NULL, &Size, &Var32);
+  if (EFI_ERROR (Status)) {
+    Status = PcdSet32S (PcdSystemTableMode, PcdGet32 (PcdSystemTableMode));
     ASSERT_EFI_ERROR (Status);
   }
 }

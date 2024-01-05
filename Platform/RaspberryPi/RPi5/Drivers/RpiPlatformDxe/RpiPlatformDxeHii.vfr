@@ -10,6 +10,7 @@
 #include <Guid/HiiPlatformSetupFormset.h>
 #include <Guid/RpiPlatformFormSetGuid.h>
 #include <RpiPlatformVarStoreData.h>
+#include <ConfigVars.h>
 
 #include "ConfigTable.h"
 
@@ -19,15 +20,20 @@ formset
     help      = STRING_TOKEN(STR_FORM_SET_TITLE_HELP),
     classguid = EFI_HII_PLATFORM_SETUP_FORMSET_GUID,
 
+    efivarstore SYSTEM_TABLE_MODE_VARSTORE_DATA,
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = SystemTableMode,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
+
     efivarstore ACPI_SD_COMPAT_MODE_VARSTORE_DATA,
-    attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
-    name  = AcpiSdCompatMode,
-    guid  = RPI_PLATFORM_FORMSET_GUID;
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = AcpiSdCompatMode,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
 
     efivarstore ACPI_SD_LIMIT_UHS_VARSTORE_DATA,
-    attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
-    name  = AcpiSdLimitUhs,
-    guid  = RPI_PLATFORM_FORMSET_GUID;
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = AcpiSdLimitUhs,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
 
     form formid = 1,
       title  = STRING_TOKEN(STR_FORM_SET_TITLE);
@@ -36,32 +42,45 @@ formset
       subtitle text = STRING_TOKEN(STR_NULL_STRING);
 
       goto 0x1000,
-        prompt = STRING_TOKEN(STR_CONFIG_TABLE_FORM_TITLE),
-        help = STRING_TOKEN(STR_CONFIG_TABLE_FORM_HELP);
+        prompt = STRING_TOKEN(STR_SYSTEM_TABLE_FORM_TITLE),
+        help = STRING_TOKEN(STR_SYSTEM_TABLE_FORM_HELP);
     endform;
 
     form formid = 0x1000,
-        title  = STRING_TOKEN(STR_CONFIG_TABLE_FORM_TITLE);
+        title  = STRING_TOKEN(STR_SYSTEM_TABLE_FORM_TITLE);
 
-        subtitle text = STRING_TOKEN(STR_CONFIG_TABLE_ACPI_SUBTITLE);
-
-        subtitle text = STRING_TOKEN(STR_NULL_STRING);
-        subtitle text = STRING_TOKEN(STR_ACPI_SD_SUBTITLE);
-
-        oneof varid = AcpiSdCompatMode.Value,
-          prompt      = STRING_TOKEN(STR_ACPI_SD_COMPAT_MODE_PROMPT),
-          help        = STRING_TOKEN(STR_ACPI_SD_COMPAT_MODE_HELP),
-          flags       = NUMERIC_SIZE_1 | INTERACTIVE | RESET_REQUIRED,
-          default     = ACPI_SD_COMPAT_MODE_DEFAULT,
-          option text = STRING_TOKEN(STR_ACPI_SD_COMPAT_BRCMSTB_BAYTRAIL), value = ACPI_SD_COMPAT_MODE_BRCMSTB_BAYTRAIL, flags = 0;
-          option text = STRING_TOKEN(STR_ACPI_SD_COMPAT_FULL_BAYTRAIL), value = ACPI_SD_COMPAT_MODE_FULL_BAYTRAIL, flags = 0;
+        oneof varid = SystemTableMode.Mode,
+          prompt      = STRING_TOKEN(STR_SYSTEM_TABLE_MODE_PROMPT),
+          help        = STRING_TOKEN(STR_SYSTEM_TABLE_MODE_HELP),
+          flags       = NUMERIC_SIZE_4 | INTERACTIVE | RESET_REQUIRED,
+          default     = SYSTEM_TABLE_MODE_ACPI,
+          option text = STRING_TOKEN(STR_SYSTEM_TABLE_MODE_ACPI), value = SYSTEM_TABLE_MODE_ACPI, flags = 0;
+          option text = STRING_TOKEN(STR_SYSTEM_TABLE_MODE_FDT), value = SYSTEM_TABLE_MODE_DT, flags = 0;
+          option text = STRING_TOKEN(STR_SYSTEM_TABLE_MODE_ACPI_FDT), value = SYSTEM_TABLE_MODE_BOTH, flags = 0;
         endoneof;
 
-        checkbox varid = AcpiSdLimitUhs.Value,
-          prompt      = STRING_TOKEN(STR_ACPI_SD_LIMIT_UHS_PROMPT),
-          help        = STRING_TOKEN(STR_ACPI_SD_LIMIT_UHS_HELP),
-          flags       = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
-          default     = ACPI_SD_LIMIT_UHS_DEFAULT,
-        endcheckbox;
+        suppressif (get(SystemTableMode.Mode) != SYSTEM_TABLE_MODE_ACPI AND get(SystemTableMode.Mode) != SYSTEM_TABLE_MODE_BOTH);
+          subtitle text = STRING_TOKEN(STR_NULL_STRING);
+          subtitle text = STRING_TOKEN(STR_SYSTEM_TABLE_ACPI_SUBTITLE);
+
+          subtitle text = STRING_TOKEN(STR_NULL_STRING);
+          subtitle text = STRING_TOKEN(STR_ACPI_SD_SUBTITLE);
+
+          oneof varid = AcpiSdCompatMode.Value,
+            prompt      = STRING_TOKEN(STR_ACPI_SD_COMPAT_MODE_PROMPT),
+            help        = STRING_TOKEN(STR_ACPI_SD_COMPAT_MODE_HELP),
+            flags       = NUMERIC_SIZE_1 | INTERACTIVE | RESET_REQUIRED,
+            default     = ACPI_SD_COMPAT_MODE_DEFAULT,
+            option text = STRING_TOKEN(STR_ACPI_SD_COMPAT_BRCMSTB_BAYTRAIL), value = ACPI_SD_COMPAT_MODE_BRCMSTB_BAYTRAIL, flags = 0;
+            option text = STRING_TOKEN(STR_ACPI_SD_COMPAT_FULL_BAYTRAIL), value = ACPI_SD_COMPAT_MODE_FULL_BAYTRAIL, flags = 0;
+          endoneof;
+
+          checkbox varid = AcpiSdLimitUhs.Value,
+            prompt      = STRING_TOKEN(STR_ACPI_SD_LIMIT_UHS_PROMPT),
+            help        = STRING_TOKEN(STR_ACPI_SD_LIMIT_UHS_HELP),
+            flags       = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+            default     = ACPI_SD_LIMIT_UHS_DEFAULT,
+          endcheckbox;
+        endif;
     endform;
 endformset;

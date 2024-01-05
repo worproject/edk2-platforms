@@ -17,10 +17,16 @@
 /*
  * ACPI / Device Tree configuration
  */
-#string STR_CONFIG_TABLE_FORM_TITLE                        #language en-US "ACPI / Device Tree"
-#string STR_CONFIG_TABLE_FORM_HELP                         #language en-US "Configure the ACPI and Device Tree system tables support."
+#string STR_SYSTEM_TABLE_FORM_TITLE                        #language en-US "ACPI / Device Tree"
+#string STR_SYSTEM_TABLE_FORM_HELP                         #language en-US "Configure the ACPI and Device Tree system tables support."
 
-#string STR_CONFIG_TABLE_ACPI_SUBTITLE                     #language en-US "ACPI Configuration"
+#string STR_SYSTEM_TABLE_MODE_PROMPT                       #language en-US "System Table Mode"
+#string STR_SYSTEM_TABLE_MODE_HELP                         #language en-US "Choose what system tables to expose to the OS.\n\nACPI - provides basic hardware support (USB, SD) for most OS/kernel versions.\n\nDevice Tree - provides extensive hardware support specific to a kernel version.\nUEFI hands over the DTB and overlays passed by the VPU firmware, which reside in the boot partition.\n\nIf both are exposed, the OS will decide which one to use."
+#string STR_SYSTEM_TABLE_MODE_ACPI                         #language en-US "ACPI"
+#string STR_SYSTEM_TABLE_MODE_FDT                          #language en-US "Device Tree"
+#string STR_SYSTEM_TABLE_MODE_ACPI_FDT                     #language en-US "Both"
+
+#string STR_SYSTEM_TABLE_ACPI_SUBTITLE                     #language en-US "ACPI Configuration"
 
 #string STR_ACPI_SD_SUBTITLE                               #language en-US "Broadcom SD Host Controller"
 

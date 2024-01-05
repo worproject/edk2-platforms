@@ -48,6 +48,9 @@
   gEfiAcpiSdtProtocolGuid                     ## CONSUMES
   gBrcmStbSdhciDeviceProtocolGuid             ## PRODUCES
 
+[Pcd]
+  gRaspberryPiTokenSpaceGuid.PcdSystemTableMode
+
 [Depex]
   gEfiVariableArchProtocolGuid
   AND gEfiVariableWriteArchProtocolGuid

@@ -27,9 +27,12 @@
 
 [LibraryClasses]
   BaseLib
+  BoardInfoLib
+  BoardRevisionHelperLib
   DebugLib
   DxeServicesLib
   FdtLib
+  FdtPlatformLib
   MemoryAllocationLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
@@ -49,7 +52,6 @@
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioAdr
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioLen
   gBcm27xxTokenSpaceGuid.PcdBcm27xxPciCpuMmioAdr
-
 
 [Pcd]
   gRaspberryPiTokenSpaceGuid.PcdSystemTableMode

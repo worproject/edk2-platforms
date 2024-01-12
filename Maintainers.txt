@@ -107,7 +107,6 @@ R: Rebecca Cran <rebecca@os.amperecomputing.com>
 ARM
 F: Platform/ARM/
 F: Silicon/ARM/
-R: Ard Biesheuvel <ardb+tianocore@kernel.org>
 R: Thomas Abraham <thomas.abraham@arm.com>
 M: Sami Mujawar <sami.mujawar@arm.com>
 

@@ -113,9 +113,9 @@ Create a directory $WORKSPACE that would hold source code of the components.
   ```
   $INSTALL_PATH/qemu-system-aarch64 -m 1024 -M sbsa-ref -pflash SBSA_FLASH0.fd -pflash SBSA_FLASH1.fd -serial stdio
   ```
-  You can add XHCI controller with keyboard and mouse by:
+  You can add keyboard and mouse by:
   ```
-  -device qemu-xhci -device usb-mouse -device usb-kbd
+  -device usb-mouse -device usb-kbd
   ```
   You can add the hard drive to platform AHCI controller by `hda` parameter:
   ```

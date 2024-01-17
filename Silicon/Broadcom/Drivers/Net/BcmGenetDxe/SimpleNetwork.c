@@ -731,6 +731,9 @@ GenetSimpleNetworkReceive (
   UINT8               *Frame;
   UINTN               FrameLength;
 
+  DescIndex   = 0;
+  FrameLength = 0;
+
   if (This == NULL || Buffer == NULL) {
     DEBUG ((DEBUG_ERROR, "%a: Invalid parameter (missing handle or buffer)\n",
       __FUNCTION__));

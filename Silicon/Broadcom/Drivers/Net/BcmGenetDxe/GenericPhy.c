@@ -381,6 +381,8 @@ GenericPhyUpdateConfig (
   BOOLEAN             LinkUp;
 
   Status = GenericPhyGetLinkStatus (Phy);
+  Speed  = 0;
+  Duplex = 0;
   LinkUp = EFI_ERROR (Status) ? FALSE : TRUE;
 
   if (Phy->LinkUp != LinkUp) {

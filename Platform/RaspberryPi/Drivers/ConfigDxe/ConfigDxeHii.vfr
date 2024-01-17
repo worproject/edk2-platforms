@@ -196,7 +196,7 @@ formset
         endoneof;
 
 #if (RPI_MODEL == 4)
-        grayoutif NOT ideqval SystemTableMode.Mode == SYSTEM_TABLE_MODE_ACPI;
+        grayoutif ideqval SystemTableMode.Mode == SYSTEM_TABLE_MODE_DT;
           oneof varid = FanOnGpio.Enabled,
               prompt      = STRING_TOKEN(STR_ADVANCED_FANONGPIO_PROMPT),
               help        = STRING_TOKEN(STR_ADVANCED_FANONGPIO_HELP),
@@ -207,7 +207,7 @@ formset
           endoneof;
         endif;
 
-        grayoutif ideqval FanOnGpio.Enabled == 0;
+        grayoutif ideqval FanOnGpio.Enabled == 0 OR ideqval SystemTableMode.Mode == SYSTEM_TABLE_MODE_DT;
           numeric varid = FanTemp.Value,
               prompt      = STRING_TOKEN(STR_ADVANCED_FANTEMP_PROMPT),
               help        = STRING_TOKEN(STR_ADVANCED_FANTEMP_HELP),
@@ -219,7 +219,7 @@ formset
         endif;
 
         suppressif ideqval XhciPci.Value == 2;
-          grayoutif NOT ideqval SystemTableMode.Mode == SYSTEM_TABLE_MODE_ACPI;
+          grayoutif ideqval SystemTableMode.Mode == SYSTEM_TABLE_MODE_DT;
             oneof varid = XhciPci.Value,
               prompt      = STRING_TOKEN(STR_ADVANCED_XHCIPCI_PROMPT),
               help        = STRING_TOKEN(STR_ADVANCED_XHCIPCI_HELP),

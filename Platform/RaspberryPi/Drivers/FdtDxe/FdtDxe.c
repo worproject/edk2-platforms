@@ -375,6 +375,28 @@ SyncPcie (
     return EFI_NOT_FOUND;
   }
 
+  // move the MMIO window too
+  DmaRanges[0] = cpu_to_fdt32 (0x02000000); // non prefetchable 32-bit
+  DmaRanges[1] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) >> 32); // bus addr @ 0x0f8000000
+  DmaRanges[2] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciBusMmioAdr) & MAX_UINT32);
+  DmaRanges[3] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) >> 32); // cpu addr @ 0x600000000
+  DmaRanges[4] = cpu_to_fdt32 (FixedPcdGet64 (PcdBcm27xxPciCpuMmioAdr) & MAX_UINT32);
+  DmaRanges[5] = cpu_to_fdt32 (0x00000000);
+  DmaRanges[6] = cpu_to_fdt32 (FixedPcdGet32 (PcdBcm27xxPciBusMmioLen) + 1); // len = 0x4000 0000
+
+  DEBUG ((DEBUG_INFO, "%a: Updating PCIe ranges\n",  __func__));
+
+  /*
+   * Match ranges (BAR/MMIO) with the EDK2+ACPI setup we are using.
+   */
+  Retval = fdt_setprop (mFdtImage, Node, "ranges",
+                        DmaRanges,  sizeof DmaRanges);
+  if (Retval != 0) {
+    DEBUG ((DEBUG_ERROR, "%a: failed to locate PCIe MMIO 'ranges' property (%d)\n",
+      __func__, Retval));
+    return EFI_NOT_FOUND;
+  }
+
   if (PcdGet32 (PcdXhciReload) != 1) {
     return EFI_SUCCESS;
   }

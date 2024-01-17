@@ -23,6 +23,7 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   Platform/RaspberryPi/RaspberryPi.dec
+  Silicon/Broadcom/Bcm27xx/Bcm27xx.dec
 
 [LibraryClasses]
   BaseLib
@@ -44,6 +45,11 @@
 
 [FixedPcd]
   gRaspberryPiTokenSpaceGuid.PcdFdtBaseAddress
+  gBcm27xxTokenSpaceGuid.PcdBcm27xxPciRegBase
+  gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioAdr
+  gBcm27xxTokenSpaceGuid.PcdBcm27xxPciBusMmioLen
+  gBcm27xxTokenSpaceGuid.PcdBcm27xxPciCpuMmioAdr
+
 
 [Pcd]
   gRaspberryPiTokenSpaceGuid.PcdSystemTableMode

@@ -96,6 +96,7 @@
   gRaspberryPiTokenSpaceGuid.PcdUartInUse
   gRaspberryPiTokenSpaceGuid.PcdXhciPci
   gRaspberryPiTokenSpaceGuid.PcdMiniUartClockRate
+  gRaspberryPiTokenSpaceGuid.PcdXhciReload
 
 [Depex]
   gPcdProtocolGuid AND gRaspberryPiFirmwareProtocolGuid

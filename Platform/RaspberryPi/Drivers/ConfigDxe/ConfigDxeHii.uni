@@ -62,6 +62,11 @@
 #string STR_ADVANCED_XHCIPCI_XHCI     #language en-US "XHCI"
 #string STR_ADVANCED_XHCIPCI_PCIE     #language en-US "PCIe"
 
+#string STR_ADVANCED_XHCIRELOAD_PROMPT  #language en-US "DT Reload XHCI firmware"
+#string STR_ADVANCED_XHCIRELOAD_HELP    #language en-US "OS should reload XHCI firmware on reset"
+#string STR_ADVANCED_XHCIRELOAD_DISABLE #language en-US "Disabled"
+#string STR_ADVANCED_XHCIRELOAD_RELOAD  #language en-US "Reload"
+
 #string STR_ADVANCED_ASSET_TAG_PROMPT #language en-US "Asset Tag"
 #string STR_ADVANCED_ASSET_TAG_HELP   #language en-US "Set the system Asset Tag"
 

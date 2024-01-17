@@ -47,3 +47,4 @@
 
 [Pcd]
   gRaspberryPiTokenSpaceGuid.PcdSystemTableMode
+  gRaspberryPiTokenSpaceGuid.PcdXhciReload

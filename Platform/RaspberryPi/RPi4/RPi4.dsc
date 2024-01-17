@@ -547,6 +547,13 @@
   #
   gRaspberryPiTokenSpaceGuid.PcdXhciPci|L"XhciPci"|gConfigDxeFormSetGuid|0x0|0
 
+  # DT contains XHCI quirk node
+  #
+  # 0  - No reload
+  # 1  - Yes, DT has Reload
+  #
+  gRaspberryPiTokenSpaceGuid.PcdXhciReload|L"XhciReload"|gConfigDxeFormSetGuid|0x0|0
+
   #
   # Common UEFI ones.
   #

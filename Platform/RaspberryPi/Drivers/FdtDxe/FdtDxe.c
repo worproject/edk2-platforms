@@ -375,6 +375,10 @@ SyncPcie (
     return EFI_NOT_FOUND;
   }
 
+  if (PcdGet32 (PcdXhciReload) != 1) {
+    return EFI_SUCCESS;
+  }
+
   /*
    * Now that we are always running without DMA translation, and with a 3G
    * limit, there shouldn't be a need to reset/reload the XHCI. The

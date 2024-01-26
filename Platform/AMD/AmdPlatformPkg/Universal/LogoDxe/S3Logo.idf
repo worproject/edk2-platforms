@@ -1,0 +1,9 @@
+// /** @file
+// Platform Logo image definition file.
+//
+// Copyright (C) 2024 Advanced Micro Devices, Inc. All rights reserved.
+//
+//
+// **/
+
+#image IMG_LOGO S3Logo.bmp

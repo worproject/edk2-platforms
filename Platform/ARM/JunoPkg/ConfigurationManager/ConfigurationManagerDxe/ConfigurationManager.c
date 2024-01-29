@@ -993,7 +993,7 @@ GetGicCInfo (
   return EFI_NOT_FOUND;
 }
 
-/** Return Lpi State Infor.
+/** Return Lpi State Info.
 
   @param [in]      This           Pointer to the Configuration Manager Protocol.
   @param [in]      CmObjectId     The Object ID of the CM object requested

@@ -87,6 +87,7 @@ AMD
 F: Platform/AMD
 M: Abner Chang <abner.chang@amd.com>
 M: Abdul Lateef Attar <abdattar@amd.com>
+R: Paul Grimes <paul.grimes@amd.com>
 
 AMD Seattle
 F: Platform/AMD/OverdriveBoard/
@@ -95,6 +96,14 @@ F: Platform/SoftIron/
 F: Silicon/AMD/Styx/
 M: Ard Biesheuvel <ardb+tianocore@kernel.org>
 M: Leif Lindholm <quic_llindhol@quicinc.com>
+
+AMD VanGoghBoard
+F: Platform/AMD/VanGoghBoard
+F: Silicon/AMD/VanGoghBoard
+M: Eric Xing <eric.xing@amd.com>
+R: Ken Yao <ken.yao@amd.com>
+R: Duke Zhai <duke.zhai@amd.com>
+R: Igniculus Fu <igniculus.fu@amd.com>
 
 Ampere Computing
 F: Platform/Ampere

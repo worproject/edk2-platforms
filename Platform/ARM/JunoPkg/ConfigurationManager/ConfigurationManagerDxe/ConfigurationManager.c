@@ -129,12 +129,12 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
      GIC_ENTRY (CPUInterfaceNumber, Mpidr, PmuIrq, VGicIrq, EnergyEfficiency)
   */
   {
-    GICC_ENTRY (0, GET_MPID (0, 0), 34, 25, 1),
-    GICC_ENTRY (1, GET_MPID (0, 1), 38, 25, 1),
-    GICC_ENTRY (2, GET_MPID (1, 0), 50, 25, 0),
-    GICC_ENTRY (3, GET_MPID (1, 1), 54, 25, 0),
-    GICC_ENTRY (4, GET_MPID (1, 2), 58, 25, 0),
-    GICC_ENTRY (5, GET_MPID (1, 3), 62, 25, 0)
+    GICC_ENTRY (0, GET_MPID (0, 0), 34, 25, 1, REFERENCE_TOKEN (PsdInfo[PSD_BIG_DOMAIN_ID])),
+    GICC_ENTRY (1, GET_MPID (0, 1), 38, 25, 1, REFERENCE_TOKEN (PsdInfo[PSD_BIG_DOMAIN_ID])),
+    GICC_ENTRY (2, GET_MPID (1, 0), 50, 25, 0, REFERENCE_TOKEN (PsdInfo[PSD_LITTLE_DOMAIN_ID])),
+    GICC_ENTRY (3, GET_MPID (1, 1), 54, 25, 0, REFERENCE_TOKEN (PsdInfo[PSD_LITTLE_DOMAIN_ID])),
+    GICC_ENTRY (4, GET_MPID (1, 2), 58, 25, 0, REFERENCE_TOKEN (PsdInfo[PSD_LITTLE_DOMAIN_ID])),
+    GICC_ENTRY (5, GET_MPID (1, 3), 62, 25, 0, REFERENCE_TOKEN (PsdInfo[PSD_LITTLE_DOMAIN_ID])),
   },
 
   // GIC Distributor Info
@@ -733,7 +733,29 @@ EDKII_PLATFORM_REPOSITORY_INFO ArmJunoPlatformRepositoryInfo = {
   {
     { REFERENCE_TOKEN (LpiInfo[1]) },
     { REFERENCE_TOKEN (LpiInfo[2]) },
-  }
+  },
+  { // Power domains
+    { // 0: big cores
+      // Revision
+      EFI_ACPI_6_5_AML_PSD_REVISION,
+      // Domain
+      PSD_BIG_DOMAIN_ID,
+      // CoordType
+      ACPI_AML_COORD_TYPE_SW_ANY,
+      // NumProc
+      2,
+    },
+    { // 1: little cores
+      // Revision
+      EFI_ACPI_6_5_AML_PSD_REVISION,
+      // Domain
+      PSD_LITTLE_DOMAIN_ID,
+      // CoordType
+      ACPI_AML_COORD_TYPE_SW_ANY,
+      // NumProc
+      4,
+    },
+  },
 };
 
 /** A helper function for returning the Configuration Manager Objects.
@@ -1133,6 +1155,55 @@ GetPciInterruptMapInfo (
       CmObject->ObjectId = CmObjectId;
       CmObject->Size = sizeof (PlatformRepo->PciInterruptMapInfo[ObjIndex]);
       CmObject->Data = (VOID*)&PlatformRepo->PciInterruptMapInfo[ObjIndex];
+      CmObject->Count = 1;
+      return EFI_SUCCESS;
+    }
+  }
+
+  return EFI_NOT_FOUND;
+}
+
+/** Return Psd Info.
+
+  @param [in]      This           Pointer to the Configuration Manager Protocol.
+  @param [in]      CmObjectId     The Object ID of the CM object requested
+  @param [in]      SearchToken    A unique token for identifying the requested
+                                  CM_ARM_PCI_INTERRUPT_MAP_INFO object.
+  @param [in, out] CmObject       Pointer to the Configuration Manager Object
+                                  descriptor describing the requested Object.
+
+  @retval EFI_SUCCESS             Success.
+  @retval EFI_INVALID_PARAMETER   A parameter is invalid.
+  @retval EFI_NOT_FOUND           The required object information is not found.
+**/
+EFI_STATUS
+EFIAPI
+GetPsdInfo (
+  IN  CONST EDKII_CONFIGURATION_MANAGER_PROTOCOL  * CONST This,
+  IN  CONST CM_OBJECT_ID                                  CmObjectId,
+  IN  CONST CM_OBJECT_TOKEN                               SearchToken,
+  IN  OUT   CM_OBJ_DESCRIPTOR                     * CONST CmObject
+  )
+{
+  EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
+  UINT32                            TotalObjCount;
+  UINT32                            ObjIndex;
+
+  if ((This == NULL) || (CmObject == NULL)) {
+    ASSERT (This != NULL);
+    ASSERT (CmObject != NULL);
+    return EFI_INVALID_PARAMETER;
+  }
+
+  PlatformRepo = This->PlatRepoInfo;
+
+  TotalObjCount = ARRAY_SIZE (PlatformRepo->PsdInfo);
+
+  for (ObjIndex = 0; ObjIndex < TotalObjCount; ObjIndex++) {
+    if (SearchToken == (CM_OBJECT_TOKEN)&PlatformRepo->PsdInfo[ObjIndex]) {
+      CmObject->ObjectId = CmObjectId;
+      CmObject->Size = sizeof (PlatformRepo->PsdInfo[ObjIndex]);
+      CmObject->Data = (VOID*)&PlatformRepo->PsdInfo[ObjIndex];
       CmObject->Count = 1;
       return EFI_SUCCESS;
     }
@@ -1545,6 +1616,19 @@ GetArmNameSpaceObject (
                  ARRAY_SIZE (PlatformRepo->PciInterruptMapInfo),
                  Token,
                  GetPciInterruptMapInfo,
+                 CmObject
+                 );
+      break;
+
+    case EArmObjPsdInfo:
+      Status = HandleCmObjectRefByToken (
+                 This,
+                 CmObjectId,
+                 PlatformRepo->PsdInfo,
+                 sizeof (PlatformRepo->PsdInfo),
+                 ARRAY_SIZE (PlatformRepo->PsdInfo),
+                 Token,
+                 GetPsdInfo,
                  CmObject
                  );
       break;

@@ -41,7 +41,8 @@ extern CHAR8  ssdtpci_aml_code[];
           Mpidr,                                                         \
           PmuIrq,                                                        \
           VGicIrq,                                                       \
-          EnergyEfficiency                                               \
+          EnergyEfficiency,                                              \
+          PsdToken                                                       \
           ) {                                                            \
     CPUInterfaceNumber,       /* UINT32  CPUInterfaceNumber           */ \
     CPUInterfaceNumber,       /* UINT32  AcpiProcessorUid             */ \
@@ -57,7 +58,15 @@ extern CHAR8  ssdtpci_aml_code[];
     VGicIrq,                  /* UINT32  VGICMaintenanceInterrupt     */ \
     0,                        /* UINT64  GICRBaseAddress              */ \
     Mpidr,                    /* UINT64  MPIDR                        */ \
-    EnergyEfficiency          /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    EnergyEfficiency,         /* UINT8   ProcessorPowerEfficiencyClass*/ \
+    0,                        /* UINT16  SpeOverflowInterrupt         */ \
+    0,                        /* UINT32  ProximityDomain              */ \
+    0,                        /* UINT32  ClockDomain                  */ \
+    0,                        /* UINT32  AffinityFlags                */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN CpcToken             */ \
+    0,                        /* UINT16 TrbeInterrupt                 */ \
+    CM_NULL_TOKEN,            /* CM_OBJECT_TOKEN EtToken              */ \
+    PsdToken,                 /* CM_OBJECT_TOKEN PsdToken             */ \
     }
 
 /** A helper macro for populating the Processor Hierarchy Node flags
@@ -196,6 +205,14 @@ typedef EFI_STATUS (*CM_OBJECT_HANDLER_PROC) (
 #define LPI_STATE_COUNT                 (CORES_LPI_STATE_COUNT +              \
                                          CLUSTERS_LPI_STATE_COUNT)
 
+/** Psd domains:
+    - 0: big cores
+    - 1: little cores
+*/
+#define PSD_BIG_DOMAIN_ID       0
+#define PSD_LITTLE_DOMAIN_ID    1
+#define PSD_DOMAIN_COUNT        2
+
 /** A structure describing the platform configuration
     manager repository information
 */
@@ -282,6 +299,9 @@ typedef struct PlatformRepositoryInfo {
 
   // Cores Low Power Idle state references (LPI)
   CM_ARM_OBJ_REF                        CoresLpiRef[CORES_LPI_STATE_COUNT];
+
+  // Power domains
+  CM_ARM_PSD_INFO                       PsdInfo[PSD_DOMAIN_COUNT];
 
   /// Juno Board Revision
   UINT32                                JunoRevision;

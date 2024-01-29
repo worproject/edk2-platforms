@@ -83,6 +83,9 @@
 !ifdef DYNAMIC_TABLES_FRAMEWORK
   *_*_*_PLATFORM_FLAGS = -DDYNAMIC_TABLES_FRAMEWORK
 !endif
+!ifdef ENABLE_CPC
+  *_*_*_PLATFORM_FLAGS = -DENABLE_CPC
+!endif
 
 ################################################################################
 #
@@ -202,6 +205,14 @@
   # ACPI Table Version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdAcpiExposedTableVersions|0x20
+
+!ifdef ENABLE_CPC
+  #
+  # Allow some relaxation on some specific points for the platforms that desire it.
+  #   BIT0: Allow the absence of some registers in the _CPC object.
+  #
+  gEdkiiDynamicTablesPkgTokenSpaceGuid.PcdDevelopmentPlatformRelaxations|0x1
+!endif
 
 [PcdsPatchableInModule]
   # Console Resolution (Full HD)

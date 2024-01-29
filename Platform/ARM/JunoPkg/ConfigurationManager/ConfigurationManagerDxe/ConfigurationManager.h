@@ -303,6 +303,13 @@ typedef struct PlatformRepositoryInfo {
   // Power domains
   CM_ARM_PSD_INFO                       PsdInfo[PSD_DOMAIN_COUNT];
 
+  //
+  // Dynamically populated fields from here.
+  //
+
+  // Cpc info (1 for each PSD domain)
+  CM_ARM_CPC_INFO                       CpcInfo[PSD_DOMAIN_COUNT];
+
   /// Juno Board Revision
   UINT32                                JunoRevision;
 } EDKII_PLATFORM_REPOSITORY_INFO;

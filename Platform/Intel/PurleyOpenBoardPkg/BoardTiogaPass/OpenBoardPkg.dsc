@@ -1,7 +1,7 @@
 ## @file
 #  The main build description file for the TiogaPass board.
 #
-# Copyright (c) 2018 - 2023, Intel Corporation. All rights reserved.<BR>
+# Copyright (c) 2018 - 2024, Intel Corporation. All rights reserved.<BR>
 # Copyright (c) 2021, American Megatrends International LLC.<BR>
 # SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -160,6 +160,8 @@
 !else
   BoardBdsHookLib|$(PLATFORM_BOARD_PACKAGE)/Override/Platform/Intel/BoardModulePkg/Library/BoardBdsHookLib/BoardBdsHookLib.inf
 !endif
+
+[LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.UEFI_DRIVER]
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
   IpmiBaseLib|OutOfBandManagement/IpmiFeaturePkg/Library/IpmiBaseLib/IpmiBaseLib.inf
 !endif
@@ -169,6 +171,8 @@
   TestPointCheckLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointCheckLib/SmmTestPointCheckLib.inf
 !endif
   TestPointLib|$(PLATFORM_PACKAGE)/Test/Library/TestPointLib/SmmTestPointLib.inf
+
+[LibraryClasses.common.DXE_SMM_DRIVER, LibraryClasses.common.MM_STANDALONE]
 !if gIpmiFeaturePkgTokenSpaceGuid.PcdIpmiFeatureEnable == TRUE
   IpmiBaseLib|OutOfBandManagement/IpmiFeaturePkg/Library/SmmIpmiBaseLib/SmmIpmiBaseLib.inf
 !endif

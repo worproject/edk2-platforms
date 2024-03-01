@@ -1,7 +1,7 @@
 ## @file
 #  Configuration Manager Dxe
 #
-#  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+#  Copyright (c) 2021 - 2024, ARM Limited. All rights reserved.<BR>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -42,6 +42,7 @@
 
 [LibraryClasses]
   ArmPlatformLib
+  HobLib
   PrintLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
@@ -169,6 +170,9 @@
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio32Translation
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieMmio64Translation
   gArmNeoverseN1SocTokenSpaceGuid.PcdRemotePcieSegmentNumber
+
+[Guids]
+  gArmNeoverseN1SocPlatformInfoDescriptorGuid
 
 [Depex]
   TRUE

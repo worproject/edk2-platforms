@@ -1,7 +1,7 @@
 /** @file
   Configuration Manager Dxe
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021 - 2024, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -16,6 +16,7 @@
 #include <IndustryStandard/SerialPortConsoleRedirectionTable.h>
 #include <Library/ArmLib.h>
 #include <Library/DebugLib.h>
+#include <Library/HobLib.h>
 #include <Library/IoLib.h>
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
@@ -1242,19 +1243,27 @@ InitializePlatformRepository (
   IN  EDKII_PLATFORM_REPOSITORY_INFO  * CONST PlatRepoInfo
   )
 {
-  NEOVERSEN1SOC_PLAT_INFO       *PlatInfo;
   UINT64                        Dram2Size;
   UINT64                        RemoteDdrSize;
+  VOID                          *PlatInfoHob;
+
+  PlatInfoHob = GetFirstGuidHob (&gArmNeoverseN1SocPlatformInfoDescriptorGuid);
+
+  if (PlatInfoHob == NULL) {
+    DEBUG ((DEBUG_ERROR, "Platform HOB is NULL\n"));
+    return EFI_NOT_FOUND;
+  }
+
+  PlatRepoInfo->PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)GET_GUID_HOB_DATA (PlatInfoHob);
 
   RemoteDdrSize = 0;
 
-  PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)NEOVERSEN1SOC_PLAT_INFO_STRUCT_BASE;
-  Dram2Size = ((PlatInfo->LocalDdrSize - 2) * SIZE_1GB);
+  Dram2Size = ((PlatRepoInfo->PlatInfo->LocalDdrSize - 2) * SIZE_1GB);
 
   PlatRepoInfo->MemAffInfo[LOCAL_DDR_REGION2].Length = Dram2Size;
 
-  if (PlatInfo->MultichipMode == 1) {
-    RemoteDdrSize = ((UINT64)(PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
+  if (PlatRepoInfo->PlatInfo->MultichipMode == 1) {
+    RemoteDdrSize = ((UINT64)(PlatRepoInfo->PlatInfo->RemoteDdrSize - 2) * SIZE_1GB);
 
     // Update Remote DDR Region1
     PlatRepoInfo->MemAffInfo[REMOTE_DDR_REGION1].ProximityDomain = 1;
@@ -1512,7 +1521,6 @@ GetGicCInfo (
   )
 {
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
-  NEOVERSEN1SOC_PLAT_INFO           *PlatInfo;
   UINT32                            TotalObjCount;
   UINT32                            ObjIndex;
 
@@ -1523,9 +1531,8 @@ GetGicCInfo (
   }
 
   PlatformRepo = This->PlatRepoInfo;
-  PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)NEOVERSEN1SOC_PLAT_INFO_STRUCT_BASE;
 
-  if (PlatInfo->MultichipMode == 1) {
+  if (PlatformRepo->PlatInfo->MultichipMode == 1) {
     TotalObjCount = PLAT_CPU_COUNT * 2;
   } else {
     TotalObjCount = PLAT_CPU_COUNT;
@@ -1623,7 +1630,6 @@ GetStandardNameSpaceObject (
 {
   EFI_STATUS                        Status;
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
-  NEOVERSEN1SOC_PLAT_INFO           *PlatInfo;
   UINT32                            AcpiTableCount;
 
   if ((This == NULL) || (CmObject == NULL)) {
@@ -1634,9 +1640,8 @@ GetStandardNameSpaceObject (
 
   Status = EFI_NOT_FOUND;
   PlatformRepo = This->PlatRepoInfo;
-  PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)NEOVERSEN1SOC_PLAT_INFO_STRUCT_BASE;
   AcpiTableCount = ARRAY_SIZE (PlatformRepo->CmAcpiTableList);
-  if (PlatInfo->MultichipMode == 0)
+  if (PlatformRepo->PlatInfo->MultichipMode == 0)
         AcpiTableCount -= 1;
 
   switch (GET_CM_OBJECT_ID (CmObjectId)) {
@@ -1697,7 +1702,6 @@ GetArmNameSpaceObject (
 {
   EFI_STATUS                        Status;
   EDKII_PLATFORM_REPOSITORY_INFO  * PlatformRepo;
-  NEOVERSEN1SOC_PLAT_INFO           *PlatInfo;
   UINT32                            GicRedistCount;
   UINT32                            GicCpuCount;
   UINT32                            ProcHierarchyInfoCount;
@@ -1719,8 +1723,7 @@ GetArmNameSpaceObject (
   PlatformRepo = This->PlatRepoInfo;
 
   // Probe for multi chip information
-  PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)NEOVERSEN1SOC_PLAT_INFO_STRUCT_BASE;
-  if (PlatInfo->MultichipMode == 1) {
+  if (PlatformRepo->PlatInfo->MultichipMode == 1) {
     GicRedistCount = 2;
     GicCpuCount = PLAT_CPU_COUNT * 2;
     ProcHierarchyInfoCount = PLAT_PROC_HIERARCHY_NODE_COUNT * 2;

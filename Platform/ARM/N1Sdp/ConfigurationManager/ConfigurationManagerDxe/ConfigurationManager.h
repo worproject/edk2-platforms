@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2021-2024, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -301,6 +301,9 @@ typedef struct PlatformRepositoryInfo {
 
   /// Memory Affinity Info
   CM_ARM_MEMORY_AFFINITY_INFO           MemAffInfo[DDR_REGION_COUNT];
+
+  /// N1Sdp Platform Info
+  NEOVERSEN1SOC_PLAT_INFO               *PlatInfo;
 
 } EDKII_PLATFORM_REPOSITORY_INFO;
 

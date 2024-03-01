@@ -1,6 +1,6 @@
 /** @file
 
-  Copyright (c) 2018 - 2021, ARM Limited. All rights reserved.<BR>
+  Copyright (c) 2018 - 2024, ARM Limited. All rights reserved.<BR>
 
   SPDX-License-Identifier: BSD-2-Clause-Patent
 
@@ -10,6 +10,7 @@
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
+#include <Library/PeiServicesLib.h>
 #include <NeoverseN1Soc.h>
 
 // The total number of descriptors, including the final "end-of-table" descriptor.
@@ -30,15 +31,33 @@ ArmPlatformGetVirtualMemoryMap (
   IN     ARM_MEMORY_REGION_DESCRIPTOR  **VirtualMemoryMap
   )
 {
-  UINTN                         Index;
-  ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
-  EFI_RESOURCE_ATTRIBUTE_TYPE   ResourceAttributes;
-  NEOVERSEN1SOC_PLAT_INFO       *PlatInfo;
-  UINT64                        DramBlock2Size;
-  UINT64                        RemoteDdrSize;
+  UINTN                          Index;
+  ARM_MEMORY_REGION_DESCRIPTOR   *VirtualMemoryTable;
+  EFI_RESOURCE_ATTRIBUTE_TYPE    ResourceAttributes;
+  CONST NEOVERSEN1SOC_PLAT_INFO  *PlatInfo;
+  UINT64                         DramBlock2Size;
+  UINT64                         RemoteDdrSize;
+  EFI_STATUS                     Status;
 
   Index = 0;
-  PlatInfo = (NEOVERSEN1SOC_PLAT_INFO *)NEOVERSEN1SOC_PLAT_INFO_STRUCT_BASE;
+
+  Status = PeiServicesLocatePpi (
+             &gArmNeoverseN1SocPlatformInfoDescriptorPpiGuid,
+             0,
+             NULL,
+             (VOID **)&PlatInfo
+             );
+  if (EFI_ERROR (Status)) {
+    DEBUG ((
+      DEBUG_ERROR,
+      "[%a]: failed to locate gArmNeoverseN1SocPlatformInfoDescriptorPpiGuid - %r\n",
+      gEfiCallerBaseName,
+      Status
+      ));
+      *VirtualMemoryMap = NULL;
+      return;
+  }
+
   DramBlock2Size = ((UINT64)(PlatInfo->LocalDdrSize -
                              NEOVERSEN1SOC_DRAM_BLOCK1_SIZE / SIZE_1GB) *
                             (UINT64)SIZE_1GB);

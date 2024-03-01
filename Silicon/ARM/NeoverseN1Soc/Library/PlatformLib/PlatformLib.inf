@@ -64,3 +64,4 @@
 [Ppis]
   gArmMpCoreInfoPpiGuid
   gArmNeoverseN1SocParameterPpiGuid
+  gArmNeoverseN1SocPlatformInfoDescriptorPpiGuid

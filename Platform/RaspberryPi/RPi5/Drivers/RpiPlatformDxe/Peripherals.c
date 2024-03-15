@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -12,9 +12,12 @@
 #include <Library/Bcm2712GpioLib.h>
 #include <Library/DebugLib.h>
 #include <Library/UefiBootServicesTableLib.h>
+#include <Library/UefiRuntimeServicesTableLib.h>
 #include <Protocol/BrcmStbSdhciDevice.h>
 
 #include "Peripherals.h"
+#include "ConfigTable.h"
+#include "RpiPlatformDxe.h"
 
 STATIC
 EFI_STATUS
@@ -90,6 +93,46 @@ InitGpioPinctrls (
   return EFI_SUCCESS;
 }
 
+BCM2712_PCIE_PLATFORM_PROTOCOL  mPciePlatform = {
+  .Mem32BusBase = PCI_RESERVED_MEM32_BASE,
+  .Mem32Size    = PCI_RESERVED_MEM32_SIZE,
+
+  .Settings         = {
+    [1] = { // Connector (configurable)
+      .Enabled      = PCIE1_SETTINGS_ENABLED_DEFAULT,
+      .MaxLinkSpeed = PCIE1_SETTINGS_MAX_LINK_SPEED_DEFAULT
+    },
+    [2] = { // RP1 (fixed)
+      .Enabled      = TRUE,
+      .MaxLinkSpeed = 2,
+      .RcbMatchMps  = TRUE,
+      .VdmToQosMap  = 0xbbaa9888
+    }
+  }
+};
+
+STATIC
+EFI_STATUS
+EFIAPI
+RegisterPciePlatform (
+  VOID
+  )
+{
+  EFI_STATUS  Status;
+  EFI_HANDLE  Handle = NULL;
+
+  ASSERT_PROTOCOL_ALREADY_INSTALLED (NULL, &gBcm2712PciePlatformProtocolGuid);
+  Status = gBS->InstallMultipleProtocolInterfaces (
+                  &Handle,
+                  &gBcm2712PciePlatformProtocolGuid,
+                  &mPciePlatform,
+                  NULL
+                  );
+  ASSERT_EFI_ERROR (Status);
+
+  return Status;
+}
+
 EFI_STATUS
 EFIAPI
 SetupPeripherals (
@@ -99,6 +142,39 @@ SetupPeripherals (
   InitGpioPinctrls ();
 
   RegisterSdControllers ();
+  RegisterPciePlatform ();
 
   return EFI_SUCCESS;
+}
+
+VOID
+EFIAPI
+ApplyPeripheralVariables (
+  VOID
+  )
+{
+}
+
+VOID
+EFIAPI
+SetupPeripheralVariables (
+  VOID
+  )
+{
+  EFI_STATUS    Status;
+  UINTN         Size;
+
+  Size = sizeof (BCM2712_PCIE_CONTROLLER_SETTINGS);
+  Status = gRT->GetVariable (L"Pcie1Settings",
+                  &gRpiPlatformFormSetGuid,
+                  NULL, &Size, &mPciePlatform.Settings[1]);
+  if (EFI_ERROR (Status)) {
+    Status = gRT->SetVariable (
+                    L"Pcie1Settings",
+                    &gRpiPlatformFormSetGuid,
+                    EFI_VARIABLE_NON_VOLATILE | EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS,
+                    Size,
+                    &mPciePlatform.Settings[1]);
+    ASSERT_EFI_ERROR (Status);
+  }
 }

@@ -1,0 +1,38 @@
+#/** @file
+#
+#  Copyright (c) 2024, Mario Bălănică <mariobalanica02@gmail.com>
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+#
+#**/
+
+[Defines]
+  INF_VERSION                    = 0x0001001B
+  BASE_NAME                      = Bcm2712PciHostBridgeLib
+  FILE_GUID                      = 04d39ac0-9ca7-4653-8fdd-4e5436e0791c
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PciHostBridgeLib|DXE_DRIVER
+
+[Sources]
+  Bcm2712PciHostBridge.c
+  Bcm2712PciHostBridgeLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  Silicon/Broadcom/Bcm27xx/Bcm27xx.dec
+
+[LibraryClasses]
+  BaseLib
+  DebugLib
+  DevicePathLib
+  IoLib
+  MemoryAllocationLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gBcm2712PciePlatformProtocolGuid      ## CONSUMES
+
+[Depex]
+  gBcm2712PciePlatformProtocolGuid

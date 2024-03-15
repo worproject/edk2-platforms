@@ -2,7 +2,7 @@
  *
  *  Differentiated System Definition Table (DSDT)
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -59,7 +59,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
         Name (RBUF, ResourceTemplate () {
           QWORDMEMORY_BUF (00, ResourceProducer)
         })
-        QWORDMEMORY_SET (00, BCM2712_LEGACY_BUS_BASE, BCM2712_LEGACY_BUS_LENGTH)
+        QWORD_SET (00, BCM2712_LEGACY_BUS_BASE, BCM2712_LEGACY_BUS_LENGTH, 0)
         Return (RBUF)
       }
 
@@ -97,7 +97,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
             QWORDMEMORY_BUF (00, ResourceConsumer)
             Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { PL011_DEBUG_INTERRUPT }
           })
-          QWORDMEMORY_SET (00, PL011_DEBUG_BASE_ADDRESS, PL011_DEBUG_LENGTH)
+          QWORD_SET (00, PL011_DEBUG_BASE_ADDRESS, PL011_DEBUG_LENGTH, 0)
           Return (RBUF)
         }
 
@@ -110,6 +110,78 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
       }
     } // Device (SOCB)
 
+    //
+    // PCIe Root Complexes
+    //
+    // These (and _STA) are patched by the platform driver:
+    //
+    Name (PBMA, ACPI_PATCH_BYTE_VALUE)
+    Name (BB32, ACPI_PATCH_QWORD_VALUE)
+    Name (MS32, ACPI_PATCH_QWORD_VALUE)
+
+    Device (PCI0) {
+      Name (_SEG, 0)
+      Name (_STA, 0xF)
+
+      Name (CFGB, BCM2712_BRCMSTB_PCIE0_BASE)
+      Name (CFGS, BCM2712_BRCMSTB_PCIE_LENGTH)
+      Name (MB32, BCM2712_BRCMSTB_PCIE0_CPU_MEM_BASE)
+      Name (MB64, BCM2712_BRCMSTB_PCIE0_CPU_MEM64_BASE)
+      Name (MS64, BCM2712_BRCMSTB_PCIE_MEM64_SIZE)
+
+      Name (_PRT, Package () {
+        Package (4) { 0x0FFFF, 0, 0, 241 },
+        Package (4) { 0x0FFFF, 1, 0, 242 },
+        Package (4) { 0x0FFFF, 2, 0, 243 },
+        Package (4) { 0x0FFFF, 3, 0, 244 }
+      })
+
+      Include ("PcieCommon.asi")
+    }
+
+    Device (PCI1) {
+      Name (_SEG, 1)
+      Name (_STA, 0xF)
+
+      Name (CFGB, BCM2712_BRCMSTB_PCIE1_BASE)
+      Name (CFGS, BCM2712_BRCMSTB_PCIE_LENGTH)
+      Name (MB32, BCM2712_BRCMSTB_PCIE1_CPU_MEM_BASE)
+      Name (MB64, BCM2712_BRCMSTB_PCIE1_CPU_MEM64_BASE)
+      Name (MS64, BCM2712_BRCMSTB_PCIE_MEM64_SIZE)
+
+      Name (_PRT, Package () {
+        Package (4) { 0x0FFFF, 0, 0, 251 },
+        Package (4) { 0x0FFFF, 1, 0, 252 },
+        Package (4) { 0x0FFFF, 2, 0, 253 },
+        Package (4) { 0x0FFFF, 3, 0, 254 }
+      })
+
+      Include ("PcieCommon.asi")
+    }
+
+    Device (PCI2) {
+      Name (_SEG, 2)
+      Name (_STA, 0xF)
+
+      Name (CFGB, BCM2712_BRCMSTB_PCIE2_BASE)
+      Name (CFGS, BCM2712_BRCMSTB_PCIE_LENGTH)
+      Name (MB32, BCM2712_BRCMSTB_PCIE2_CPU_MEM_BASE)
+      Name (MB64, BCM2712_BRCMSTB_PCIE2_CPU_MEM64_BASE)
+      Name (MS64, BCM2712_BRCMSTB_PCIE_MEM64_SIZE)
+
+      Name (_PRT, Package () {
+        Package (4) { 0x0FFFF, 0, 0, 261 },
+        Package (4) { 0x0FFFF, 1, 0, 262 },
+        Package (4) { 0x0FFFF, 2, 0, 263 },
+        Package (4) { 0x0FFFF, 3, 0, 264 }
+      })
+
+      Include ("PcieCommon.asi")
+    }
+
+    //
+    // RP1 I/O Bridge
+    //
     Device (RP1B) {
       Name (_HID, "ACPI0004")
       Name (_UID, 0x1)
@@ -117,11 +189,18 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
       // Parent bus is non-coherent
       Name (_CCA, 0x0)
 
-      // Firmware mapped BAR
-      Name (PBAR, FixedPcdGet64 (Rp1PciPeripheralsBar))
+      // Firmware mapped BAR - patched by platform driver
+      Name (PBAR, ACPI_PATCH_QWORD_VALUE)
 
       // Shared level interrupt - PCIE2 INTA# SPI
       Name (PINT, 261)
+
+      Method (_STA) {
+        If (PBAR == ACPI_PATCH_QWORD_VALUE) {
+          Return (0x0)
+        }
+        Return (0xF)
+      }
 
       Include ("Rp1.asi")
     }
@@ -183,7 +262,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
           QWORDMEMORY_BUF (00, ResourceConsumer)
           Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 305 }
         })
-        QWORDMEMORY_SET (00, BCM2712_BRCMSTB_SDIO1_HOST_BASE, BCM2712_BRCMSTB_SDIO_HOST_LENGTH)
+        QWORD_SET (00, BCM2712_BRCMSTB_SDIO1_HOST_BASE, BCM2712_BRCMSTB_SDIO_HOST_LENGTH, 0)
         Return (RBUF)
       }
 
@@ -303,7 +382,7 @@ DefinitionBlock ("Dsdt.aml", "DSDT", 2, "RPIFDN", "RPI5    ", 2)
           QWORDMEMORY_BUF (00, ResourceConsumer)
           Interrupt (ResourceConsumer, Level, ActiveHigh, Exclusive) { 306 }
         })
-        QWORDMEMORY_SET (00, BCM2712_BRCMSTB_SDIO2_HOST_BASE, BCM2712_BRCMSTB_SDIO_HOST_LENGTH)
+        QWORD_SET (00, BCM2712_BRCMSTB_SDIO2_HOST_BASE, BCM2712_BRCMSTB_SDIO_HOST_LENGTH, 0)
         Return (RBUF)
       }
 

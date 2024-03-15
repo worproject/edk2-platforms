@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -8,6 +8,11 @@
 
 #ifndef __RP1_H__
 #define __RP1_H__
+
+#define PCI_VENDOR_ID_RPILTD                        0x1de4
+#define PCI_DEVICE_ID_RP1                           0x0001
+
+#define RP1_PERIPHERAL_BAR_INDEX                    1
 
 //
 // BAR1 Peripherals

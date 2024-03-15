@@ -1,6 +1,6 @@
 #/** @file
 #
-#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -29,24 +29,36 @@
   Platform/RaspberryPi/RPi5/RPi5.dec
   Silicon/Broadcom/BroadcomPkg.dec
   Silicon/Broadcom/Bcm27xx/Bcm27xx.dec
+  Silicon/RaspberryPi/RpiSiliconPkg/RpiSiliconPkg.dec
 
 [LibraryClasses]
   AcpiLib
+  BaseLib
+  BaseMemoryLib
+  Bcm2712GpioLib
+  BoardInfoLib
+  BoardRevisionHelperLib
   DebugLib
   DevicePathLib
+  DxeServicesTableLib
   HiiLib
+  MemoryAllocationLib
+  PeCoffGetEntryPointLib
   UefiLib
   UefiBootServicesTableLib
   UefiRuntimeServicesTableLib
   UefiDriverEntryPoint
-  Bcm2712GpioLib
 
 [Guids]
   gRpiPlatformFormSetGuid
+  gEfiEventReadyToBootGuid
 
 [Protocols]
   gEfiAcpiSdtProtocolGuid                     ## CONSUMES
   gBrcmStbSdhciDeviceProtocolGuid             ## PRODUCES
+  gRp1BusProtocolGuid                         ## CONSUMES
+  gEfiPciIoProtocolGuid                       ## CONSUMES
+  gBcm2712PciePlatformProtocolGuid            ## PRODUCES
 
 [Pcd]
   gRaspberryPiTokenSpaceGuid.PcdSystemTableMode

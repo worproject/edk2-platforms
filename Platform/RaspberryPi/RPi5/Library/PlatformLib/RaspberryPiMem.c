@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *  Copyright (c) 2019, Pete Batard <pete@akeo.ie>
  *  Copyright (c) 2017-2018, Andrey Warkentin <andrey.warkentin@gmail.com>
  *  Copyright (c) 2014, Linaro Limited. All rights reserved.
@@ -56,6 +56,8 @@ ArmPlatformGetVirtualMemoryMap (
   EFI_STATUS                    Status;
   UINT32                        RevisionCode = 0;
   UINT64                        TotalMemorySize;
+  UINT64                        MemorySizeBelow3GB;
+  UINT64                        MemorySizeBelow4GB;
   UINTN                         Index = 0;
   ARM_MEMORY_REGION_DESCRIPTOR  *VirtualMemoryTable;
 
@@ -77,6 +79,9 @@ ArmPlatformGetVirtualMemoryMap (
   // Compute the total RAM size available on this platform
   TotalMemorySize = BoardRevisionGetMemorySize (RevisionCode);
   DEBUG ((DEBUG_INFO, "Total RAM: 0x%ll08X\n", TotalMemorySize));
+
+  MemorySizeBelow3GB = MIN(TotalMemorySize, 3UL * SIZE_1GB);
+  MemorySizeBelow4GB = MIN(TotalMemorySize, 4UL * SIZE_1GB);
 
   VirtualMemoryTable = (ARM_MEMORY_REGION_DESCRIPTOR*)AllocatePages
                        (EFI_SIZE_TO_PAGES (sizeof (ARM_MEMORY_REGION_DESCRIPTOR) *
@@ -125,14 +130,36 @@ ArmPlatformGetVirtualMemoryMap (
   VirtualMemoryInfo[Index].Type             = RPI_MEM_UNMAPPED_REGION;
   VirtualMemoryInfo[Index++].Name           = L"GPU Reserved";
 
-  // System RAM >= 1 GB
-  if (TotalMemorySize > SIZE_1GB) {
+  // Memory in the 1GB - 3GB range is always available.
+  if (MemorySizeBelow3GB > SIZE_1GB) {
     VirtualMemoryTable[Index].PhysicalBase  = SIZE_1GB;
+    VirtualMemoryTable[Index].VirtualBase   = VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Length        = MemorySizeBelow3GB - VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Attributes    = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+    VirtualMemoryInfo[Index].Type           = RPI_MEM_BASIC_REGION;
+    VirtualMemoryInfo[Index++].Name         = L"Extended System RAM < 3GB";
+  }
+
+  //
+  // Memory in the 3GB - 4GB range may be reserved for 32-bit PCIe BAR space.
+  // RpiPlatformDxe can reclaim part of it as system RAM depending on the needs.
+  //
+  if (MemorySizeBelow4GB > 3UL * SIZE_1GB) {
+    VirtualMemoryTable[Index].PhysicalBase  = 3UL * SIZE_1GB;
+    VirtualMemoryTable[Index].VirtualBase   = VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Length        = MemorySizeBelow4GB - VirtualMemoryTable[Index].PhysicalBase;
+    VirtualMemoryTable[Index].Attributes    = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
+    VirtualMemoryInfo[Index].Type           = RPI_MEM_UNMAPPED_REGION;
+    VirtualMemoryInfo[Index++].Name         = L"Extended System RAM < 4GB";
+  }
+
+  if (TotalMemorySize > 4UL * SIZE_1GB) {
+    VirtualMemoryTable[Index].PhysicalBase  = 4UL * SIZE_1GB;
     VirtualMemoryTable[Index].VirtualBase   = VirtualMemoryTable[Index].PhysicalBase;
     VirtualMemoryTable[Index].Length        = TotalMemorySize - VirtualMemoryTable[Index].PhysicalBase;
     VirtualMemoryTable[Index].Attributes    = ARM_MEMORY_REGION_ATTRIBUTE_WRITE_BACK;
     VirtualMemoryInfo[Index].Type           = RPI_MEM_BASIC_REGION;
-    VirtualMemoryInfo[Index++].Name         = L"System RAM >= 1GB";
+    VirtualMemoryInfo[Index++].Name         = L"Extended System RAM >= 4GB";
   }
 
   // SoC device registers

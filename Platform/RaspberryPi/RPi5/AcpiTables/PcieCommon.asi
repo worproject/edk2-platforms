@@ -1,0 +1,107 @@
+/* @file
+ *
+ *  Copyright (c) 2024, Mario Bălănică <mariobalanica02@gmail.com>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ */
+
+#include <IndustryStandard/Bcm2712Pcie.h>
+
+//
+// PBMA - Max Bus Number
+// CFGB - RC Base
+// CFGS - RC Size
+// MB32 - 32-bit memory base
+// BB32 - 32-bit memory bus base
+// MS32 - 32-bit memory size
+// MB64 - 64-bit memory base
+// MS64 - 64-bit memory size
+//
+Name (_HID, "PNP0A08")
+Name (_CID, "PNP0A03")
+Name (_CCA, 0)
+Name (_BBN, 0)
+Method (_UID) {
+  Return (_SEG)
+}
+
+Method (_INI, 0, Serialized) {
+  OperationRegion (OCFG, SystemMemory, CFGB + PCIE_EXT_CFG_INDEX, 0x4)
+  Field (OCFG, DWordAcc, NoLock, Preserve) {
+    CFGI, 32
+  }
+  //
+  // Ensure the small ECAM window is pointing at BDF 01:00.0,
+  // for OSes that can only consume a single-function device.
+  //
+  CFGI = 0x00100000
+}
+
+Method (_CRS, 0, Serialized) {
+  Name (RBUF, ResourceTemplate () {
+    WORDBUSNUMBER_BUF (00, ResourceProducer)
+    QWORDMEMORY_BUF (01, ResourceProducer)
+    QWORDMEMORY_BUF (02, ResourceProducer)
+  })
+  WORD_SET (00, _BBN, (PBMA - _BBN) + 1, 0)
+  QWORD_SET (01, BB32, MS32, MB32 - BB32)
+  QWORD_SET (02, MB64, MS64, 0)
+  Return (RBUF)
+}
+
+Device (RES0) {
+  Name (_HID, "AMZN0001")
+  Name (_CID, "PNP0C02")
+  Method (_UID) {
+    Return (_SEG)
+  }
+  Method (_CRS, 0, Serialized) {
+    Name (RBUF, ResourceTemplate () {
+      QWORDMEMORY_BUF (00, ResourceConsumer)
+    })
+    QWORD_SET (00, CFGB + PCIE_EXT_CFG_DATA, 0x1000, 0)
+    Return (RBUF)
+  }
+}
+
+Name (SUPP, Zero) // PCI _OSC Support Field value
+Name (CTRL, Zero) // PCI _OSC Control Field value
+
+Method (_OSC, 4) {
+  If (Arg0 == ToUUID ("33DB4D5B-1FF7-401C-9657-7441C03DD766")) {
+    // Create DWord-adressable fields from the Capabilities Buffer
+    CreateDWordField (Arg3, 0, CDW1)
+    CreateDWordField (Arg3, 4, CDW2)
+    CreateDWordField (Arg3, 8, CDW3)
+
+    // Save Capabilities DWord2 & 3
+    SUPP = CDW2
+    CTRL = CDW3
+
+    // Mask out native hot plug control
+    CTRL &= 0x1E
+
+    // Always allow native PME, AER and Capability Structure control
+    // Never allow SHPC and LTR control
+    CTRL &= 0x1D
+
+    // Unknown revision
+    If (Arg1 != 1) {
+      Cdw1 |= 0x08
+    }
+
+    // Capabilities bits were masked
+    If (CDW3 != CTRL) {
+      CDW1 |= 0x10
+    }
+
+    // Update DWORD3 in the buffer
+    CDW3 = CTRL
+    Return (Arg3)
+  } Else {
+    // Unrecognized UUID
+    CDW1 |= 4
+    Return (Arg3)
+  }
+}

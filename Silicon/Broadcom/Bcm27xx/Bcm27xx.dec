@@ -1,5 +1,6 @@
 ## @file
 #
+#  Copyright (c) 2024, Mario Bălănică <mariobalanica02@gmail.com>
 #  Copyright (c) 2019, Pete Batard <pete@akeo.ie>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
@@ -17,6 +18,9 @@
 
 [Guids]
   gBcm27xxTokenSpaceGuid = {0x44045e56, 0x7056, 0x4be6, {0x88, 0xc0, 0x49, 0x0c, 0x67, 0x90, 0x2f, 0xba}}
+
+[Protocols]
+  gBcm2712PciePlatformProtocolGuid = { 0xf411a098, 0xc82b, 0x4920, { 0x90, 0x07, 0xca, 0x70, 0xb3, 0x65, 0x33, 0x89 } }
 
 [PcdsFixedAtBuild.common]
   gBcm27xxTokenSpaceGuid.PcdBcm27xxRegistersAddress|0x0|UINT32|0x00000001

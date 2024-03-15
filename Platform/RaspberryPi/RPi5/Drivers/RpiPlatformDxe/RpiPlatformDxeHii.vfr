@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -13,6 +13,7 @@
 #include <ConfigVars.h>
 
 #include "ConfigTable.h"
+#include "Peripherals.h"
 
 formset
     guid      = RPI_PLATFORM_FORMSET_GUID,
@@ -35,6 +36,21 @@ formset
       name  = AcpiSdLimitUhs,
       guid  = RPI_PLATFORM_FORMSET_GUID;
 
+    efivarstore ACPI_PCIE_ECAM_COMPAT_MODE_VARSTORE_DATA,
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = AcpiPcieEcamCompatMode,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
+
+    efivarstore ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_VARSTORE_DATA,
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = AcpiPcie32BitBarSpaceSizeMB,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
+
+    efivarstore BCM2712_PCIE_CONTROLLER_SETTINGS,
+      attribute = EFI_VARIABLE_BOOTSERVICE_ACCESS | EFI_VARIABLE_RUNTIME_ACCESS | EFI_VARIABLE_NON_VOLATILE,
+      name  = Pcie1Settings,
+      guid  = RPI_PLATFORM_FORMSET_GUID;
+
     form formid = 1,
       title  = STRING_TOKEN(STR_FORM_SET_TITLE);
 
@@ -44,6 +60,10 @@ formset
       goto 0x1000,
         prompt = STRING_TOKEN(STR_SYSTEM_TABLE_FORM_TITLE),
         help = STRING_TOKEN(STR_SYSTEM_TABLE_FORM_HELP);
+
+      goto 0x1001,
+        prompt = STRING_TOKEN(STR_PCIE_FORM_TITLE),
+        help = STRING_TOKEN(STR_PCIE_FORM_HELP);
     endform;
 
     form formid = 0x1000,
@@ -81,6 +101,54 @@ formset
             flags       = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
             default     = ACPI_SD_LIMIT_UHS_DEFAULT,
           endcheckbox;
+
+          subtitle text = STRING_TOKEN(STR_NULL_STRING);
+          subtitle text = STRING_TOKEN(STR_ACPI_PCIE_SUBTITLE);
+
+          oneof varid = AcpiPcieEcamCompatMode.Value,
+            prompt      = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_PROMPT),
+            help        = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_HELP),
+            flags       = NUMERIC_SIZE_4 | INTERACTIVE | RESET_REQUIRED,
+            default     = ACPI_PCIE_ECAM_COMPAT_MODE_DEFAULT,
+            option text = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_DEN0115), value = ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_DEN0115, flags = 0;
+            option text = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_GRAVITON), value = ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_GRAVITON, flags = 0;
+            option text = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_DEN0115), value = ACPI_PCIE_ECAM_COMPAT_MODE_DEN0115, flags = 0;
+            option text = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6), value = ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6, flags = 0;
+            option text = STRING_TOKEN(STR_ACPI_PCIE_ECAM_COMPAT_MODE_GRAVITON), value = ACPI_PCIE_ECAM_COMPAT_MODE_GRAVITON, flags = 0;
+          endoneof;
+
+          numeric varid = AcpiPcie32BitBarSpaceSizeMB.Value,
+            prompt  = STRING_TOKEN(STR_ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_PROMPT),
+            help    = STRING_TOKEN(STR_ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_HELP),
+            flags   = DISPLAY_UINT_DEC | NUMERIC_SIZE_4 | INTERACTIVE | RESET_REQUIRED,
+            minimum = ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_MINIMUM,
+            maximum = ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_MAXIMUM,
+            step    = ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_STEP,
+            default = ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_DEFAULT,
+          endnumeric;
         endif;
+    endform;
+
+    form formid = 0x1001,
+        title  = STRING_TOKEN(STR_PCIE_FORM_TITLE);
+
+        subtitle text = STRING_TOKEN(STR_PCIE1_SUBTITLE);
+
+        checkbox varid = Pcie1Settings.Enabled,
+          prompt      = STRING_TOKEN(STR_ENABLED),
+          help        = STRING_TOKEN(STR_NULL_STRING),
+          flags       = CHECKBOX_DEFAULT | CHECKBOX_DEFAULT_MFG | RESET_REQUIRED,
+          default     = PCIE1_SETTINGS_ENABLED_DEFAULT,
+        endcheckbox;
+
+        oneof varid = Pcie1Settings.MaxLinkSpeed,
+          prompt      = STRING_TOKEN(STR_PCIE_LINK_SPEED_PROMPT),
+          help        = STRING_TOKEN(STR_PCIE_LINK_SPEED_HELP),
+          flags       = NUMERIC_SIZE_1 | INTERACTIVE | RESET_REQUIRED,
+          default     = PCIE1_SETTINGS_MAX_LINK_SPEED_DEFAULT,
+          option text = STRING_TOKEN(STR_PCIE_LINK_SPEED_GEN1), value = 1, flags = 0;
+          option text = STRING_TOKEN(STR_PCIE_LINK_SPEED_GEN2), value = 2, flags = 0;
+          option text = STRING_TOKEN(STR_PCIE_LINK_SPEED_GEN3), value = 3, flags = 0;
+        endoneof;
     endform;
 endformset;

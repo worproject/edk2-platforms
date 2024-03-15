@@ -1,0 +1,51 @@
+/** @file
+ *
+ *  PCI Express Memory-mapped Configuration Space base address description table (MCFG)
+ *
+ *  Copyright (c) 2024, Mario Bălănică <mariobalanica02@gmail.com>
+ *
+ *  SPDX-License-Identifier: BSD-2-Clause-Patent
+ *
+ **/
+
+#include <Rpi5McfgTable.h>
+
+#include "AcpiTables.h"
+
+//
+// MCFG is patched by RpiPlatformDxe.
+//
+RPI5_MCFG_TABLE Mcfg = {
+  {
+    ACPI_HEADER (
+      EFI_ACPI_6_4_PCI_EXPRESS_MEMORY_MAPPED_CONFIGURATION_SPACE_BASE_ADDRESS_DESCRIPTION_TABLE_SIGNATURE,
+      RPI5_MCFG_TABLE,
+      EFI_ACPI_MEMORY_MAPPED_CONFIGURATION_SPACE_ACCESS_TABLE_REVISION
+      ),
+  },
+  {
+    {
+      BCM2712_BRCMSTB_PCIE0_BASE + PCIE_EXT_CFG_DATA,
+      0,  // PciSegmentNumber
+      0,  // PciBusMin
+      0,  // PciBusMax
+      0   // Reserved
+    },
+    {
+      BCM2712_BRCMSTB_PCIE1_BASE + PCIE_EXT_CFG_DATA,
+      1,  // PciSegmentNumber
+      0,  // PciBusMin
+      0,  // PciBusMax
+      0   // Reserved
+    },
+    {
+      BCM2712_BRCMSTB_PCIE2_BASE + PCIE_EXT_CFG_DATA,
+      2,  // PciSegmentNumber
+      0,  // PciBusMin
+      0,  // PciBusMax
+      0   // Reserved
+    }
+  }
+};
+
+VOID* CONST ReferenceAcpiTable = &Mcfg;

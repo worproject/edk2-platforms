@@ -1,6 +1,6 @@
 #/** @file
 #
-#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -18,5 +18,5 @@
 [Guids]
   gRpiSiliconTokenSpaceGuid = { 0x0b3ce57a, 0xa82b, 0x4ada, { 0x8f, 0xb5, 0x52, 0xc8, 0x72, 0x30, 0x1f, 0xdb } }
 
-[PcdsFixedAtBuild, PcdsPatchableInModule, PcdsDynamic, PcdsDynamicEx]
-  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar|0x0|UINT64|0x00000001
+[Protocols]
+  gRp1BusProtocolGuid = { 0xf1417a30, 0x5418, 0x4cd5, { 0x8e, 0x65, 0xf9, 0x02, 0x51, 0x21, 0xb5, 0x7f } }

@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -8,6 +8,8 @@
 
 #include <Uefi.h>
 #include <Guid/RpiPlatformFormSetGuid.h>
+#include <Library/BoardInfoLib.h>
+#include <Library/BoardRevisionHelperLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
 #include <Library/HiiLib.h>
@@ -15,6 +17,9 @@
 
 #include "ConfigTable.h"
 #include "Peripherals.h"
+
+UINT32 mBoardRevisionCode;
+UINT64 mSystemMemorySize;
 
 extern UINT8 RpiPlatformDxeHiiBin[];
 extern UINT8 RpiPlatformDxeStrings[];
@@ -90,6 +95,7 @@ SetupVariables (
   )
 {
   SetupConfigTableVariables ();
+  SetupPeripheralVariables ();
 }
 
 STATIC
@@ -100,6 +106,7 @@ ApplyVariables (
   )
 {
   ApplyConfigTableVariables ();
+  ApplyPeripheralVariables ();
 }
 
 EFI_STATUS
@@ -110,6 +117,15 @@ RpiPlatformDxeEntryPoint (
   )
 {
   EFI_STATUS Status;
+
+  Status = BoardInfoGetRevisionCode (&mBoardRevisionCode);
+  if (EFI_ERROR (Status)) {
+    DEBUG ((DEBUG_ERROR, "%a: Failed to get board revision. Status=%r\n",
+            __func__, Status));
+    ASSERT (FALSE);
+  }
+
+  mSystemMemorySize = BoardRevisionGetMemorySize (mBoardRevisionCode);
 
   SetupVariables ();
   ApplyVariables ();

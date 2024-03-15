@@ -2,7 +2,7 @@
 #
 #  ACPI table data and ASL sources required to boot the platform.
 #
-#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -23,6 +23,7 @@
   Madt.aslc
   Pptt.aslc
   Spcr.aslc
+  Mcfg.aslc
 
 [Packages]
   ArmPkg/ArmPkg.dec
@@ -52,4 +53,3 @@
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq1
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq2
   gRaspberryPiTokenSpaceGuid.PcdGicPmuIrq3
-  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar

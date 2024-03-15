@@ -1,6 +1,6 @@
 # @file
 #
-#  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+#  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
 #  Copyright (c) 2011 - 2020, ARM Limited. All rights reserved.
 #  Copyright (c) 2017 - 2018, Andrei Warkentin <andrey.warkentin@gmail.com>
 #  Copyright (c) 2015 - 2021, Intel Corporation. All rights reserved.
@@ -188,6 +188,9 @@
   NonDiscoverableDeviceRegistrationLib|MdeModulePkg/Library/NonDiscoverableDeviceRegistrationLib/NonDiscoverableDeviceRegistrationLib.inf
 
   Bcm2712GpioLib|Silicon/Broadcom/Bcm27xx/Library/Bcm2712GpioLib/Bcm2712GpioLib.inf
+
+  PciHostBridgeLib|Silicon/Broadcom/Bcm27xx/Library/Bcm2712PciHostBridgeLib/Bcm2712PciHostBridgeLib.inf
+  PciSegmentLib|Silicon/Broadcom/Bcm27xx/Library/Bcm2712PciSegmentLib/PciSegmentLib.inf
 
 [LibraryClasses.common.SEC]
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
@@ -414,6 +417,8 @@
 
   gRaspberryPiTokenSpaceGuid.PcdFdtSize|0x20000
 
+  gEmbeddedTokenSpaceGuid.PcdPrePiCpuIoSize|40
+
   # UARTs
   gArmPlatformTokenSpaceGuid.PL011UartClkInHz|44000000
   gArmPlatformTokenSpaceGuid.PL011UartInterrupt|153
@@ -442,11 +447,6 @@
   # RNG
   #
   gBcm283xTokenSpaceGuid.PcdBcm2838RngBaseAddress|0x107d208000
-
-  #
-  # RP1 BAR1 preconfigured by the VPU
-  #
-  gRpiSiliconTokenSpaceGuid.Rp1PciPeripheralsBar|0x1f00000000
 
   ## Default Terminal Type
   ## 0-PCANSI, 1-VT100, 2-VT00+, 3-UTF8, 4-TTYTERM
@@ -663,11 +663,17 @@
   # PCI Support
   #
   ArmPkg/Drivers/ArmPciCpuIo2Dxe/ArmPciCpuIo2Dxe.inf
-  # MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
+  MdeModulePkg/Bus/Pci/PciHostBridgeDxe/PciHostBridgeDxe.inf
   MdeModulePkg/Bus/Pci/PciBusDxe/PciBusDxe.inf
   MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
   EmbeddedPkg/Drivers/NonCoherentIoMmuDxe/NonCoherentIoMmuDxe.inf {
     <PcdsFixedAtBuild>
+      #
+      # Limit DMA to bottom 3 GB to account for 32-bit BAR space.
+      # We may attempt to reclaim the memory already reserved for this,
+      # so without a hard limit here, devices in UEFI would start running
+      # into corruption issues.
+      #
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceOffset|0x00000000
       gEmbeddedTokenSpaceGuid.PcdDmaDeviceLimit|0xbfffffff
   }

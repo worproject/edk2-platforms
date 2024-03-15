@@ -1,6 +1,6 @@
 /** @file
  *
- *  Copyright (c) 2023, Mario Bălănică <mariobalanica02@gmail.com>
+ *  Copyright (c) 2023-2024, Mario Bălănică <mariobalanica02@gmail.com>
  *
  *  SPDX-License-Identifier: BSD-2-Clause-Patent
  *
@@ -9,6 +9,9 @@
 #langdef en-US  "English"
 
 #string STR_NULL_STRING                                    #language en-US ""
+#string STR_AUTO                                           #language en-US "Auto"
+#string STR_ENABLED                                        #language en-US "Enabled"
+#string STR_DISABLED                                       #language en-US "Disabled"
 
 #string STR_FORM_SET_TITLE                                 #language en-US "Raspberry Pi Configuration"
 #string STR_FORM_SET_TITLE_HELP                            #language en-US "Configure various platform settings."
@@ -48,3 +51,38 @@
                                                                            "- in 'BRCMSTB + Bay Trail' mode, speed is limited to HS. Disabling this limit is not possible.\n"
                                                                            "- in 'Full Bay Trail' mode, speed is increased to DDR50. It also becomes possible to disable all other UHS-I limitations.\n\n"
                                                                            "For FreeBSD: speed falls back to HS. This option has no effect."
+
+#string STR_ACPI_PCIE_SUBTITLE                             #language en-US "PCI Express"
+
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_PROMPT              #language en-US "ECAM Compatibility Mode"
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_HELP                #language en-US "Choose how to expose the non-standard PCIe configuration space to the OS.\n\n"
+                                                                           "Arm DEN0115 - compatible with FreeBSD, NetBSD and ESXi Arm Fling. Exposes the full bus hierarchy.\n\n"
+                                                                           "NXPMX6 - compatible with Windows. Exposes a single device function at most.\n\n"
+                                                                           "AMAZON GRAVITON - compatible with Linux. Exposes a single device function at most.\n\n"
+                                                                           "The Auto modes select NXPMX6 for Windows and fall back to the second option when booting other OSes."
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_DEN0115      #language en-US "Auto (NXPMX6 / Arm DEN0115)"
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6_GRAVITON     #language en-US "Auto (NXPMX6 / AMAZON GRAVITON)"
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_DEN0115             #language en-US "Arm DEN0115"
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_NXPMX6              #language en-US "NXPMX6"
+#string STR_ACPI_PCIE_ECAM_COMPAT_MODE_GRAVITON            #language en-US "AMAZON GRAVITON"
+
+#string STR_ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_PROMPT      #language en-US "32-bit BAR Space Preferred Size"
+#string STR_ACPI_PCIE_32_BIT_BAR_SPACE_SIZE_MB_HELP        #language en-US "Choose the preferred size (in megabytes) for the non-prefetchable 32-bit BAR space.\n\n"
+                                                                           "By default, the firmware automatically reserves the minimum amount required by all devices connected at boot. If you intend to connect devices after the OS has booted, increasing this size might be necessary.\n\n"
+                                                                           "Note: reserved space is deducted from system RAM below 4 GB."
+
+/*
+ * PCI Express configuration
+ */
+#string STR_PCIE_FORM_TITLE                                #language en-US "PCI Express"
+#string STR_PCIE_FORM_HELP                                 #language en-US "Configure the PCIe support."
+
+#string STR_PCIE0_SUBTITLE                                 #language en-US "PCIe Controller #0"
+#string STR_PCIE1_SUBTITLE                                 #language en-US "PCIe Controller #1"
+#string STR_PCIE2_SUBTITLE                                 #language en-US "PCIe Controller #2"
+
+#string STR_PCIE_LINK_SPEED_PROMPT                         #language en-US "Link Speed"
+#string STR_PCIE_LINK_SPEED_HELP                           #language en-US "Choose the maximum supported link speed."
+#string STR_PCIE_LINK_SPEED_GEN1                           #language en-US "Gen 1 (2.5 GT/s)"
+#string STR_PCIE_LINK_SPEED_GEN2                           #language en-US "Gen 2 (5 GT/s)"
+#string STR_PCIE_LINK_SPEED_GEN3                           #language en-US "Gen 3 (8 GT/s)"

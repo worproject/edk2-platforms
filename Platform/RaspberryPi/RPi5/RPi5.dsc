@@ -696,6 +696,13 @@
   MdeModulePkg/Bus/Pci/NvmExpressDxe/NvmExpressDxe.inf
 
   #
+  # AHCI Support
+  #
+  MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
+  MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
+  MdeModulePkg/Bus/Ata/AtaBusDxe/AtaBusDxe.inf
+
+  #
   # EFI Memory Attribute Protocol Manager
   #
   Platform/RaspberryPi/Drivers/MemoryAttributeManagerDxe/MemoryAttributeManagerDxe.inf

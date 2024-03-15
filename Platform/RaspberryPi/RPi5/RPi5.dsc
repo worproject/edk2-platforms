@@ -48,6 +48,20 @@
   DEFINE TFA_BUILD_BL31 = $(TFA_BUILD_ARTIFACTS)/bl31.bin
 !endif
 
+  #
+  # DEBUG_ASSERT_ENABLED       0x01
+  # DEBUG_PRINT_ENABLED        0x02
+  # DEBUG_CODE_ENABLED         0x04
+  # CLEAR_MEMORY_ENABLED       0x08
+  # ASSERT_BREAKPOINT_ENABLED  0x10
+  # ASSERT_DEADLOOP_ENABLED    0x20
+  #
+!if $(TARGET) == RELEASE
+  DEFINE DEBUG_PROPERTY_MASK             = 0x21
+!else
+  DEFINE DEBUG_PROPERTY_MASK             = 0x2f
+!endif
+
 ################################################################################
 #
 # Library Class section - list of all Library Classes needed by this Platform.
@@ -291,17 +305,7 @@
   gEfiMdePkgTokenSpaceGuid.PcdPostCodePropertyMask|0
   gEfiMdePkgTokenSpaceGuid.PcdUefiLibMaxPrintBufferSize|320
 
-  # DEBUG_ASSERT_ENABLED       0x01
-  # DEBUG_PRINT_ENABLED        0x02
-  # DEBUG_CODE_ENABLED         0x04
-  # CLEAR_MEMORY_ENABLED       0x08
-  # ASSERT_BREAKPOINT_ENABLED  0x10
-  # ASSERT_DEADLOOP_ENABLED    0x20
-!if $(TARGET) == RELEASE
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x21
-!else
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2f
-!endif
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|$(DEBUG_PROPERTY_MASK)
 
   #  DEBUG_INIT      0x00000001  // Initialization
   #  DEBUG_WARN      0x00000002  // Warnings
@@ -594,7 +598,10 @@
   #
   # ACPI Support
   #
-  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf {
+    <PcdsFixedAtBuild>
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|$(DEBUG_PROPERTY_MASK) & ~0x04
+  }
   MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
   Platform/RaspberryPi/RPi5/AcpiTables/AcpiTables.inf
 
